@@ -1,0 +1,24 @@
+spring:
+  application:
+    name: identity
+  profiles:
+    active: ${ENVIRONMENT:development} 
+  jpa:
+    hibernate:
+      ddl-auto: none
+    open-in-view: false
+  flyway: 
+    enabled: true
+
+security:
+  jwt:
+    alg: ${JWT_ALG:RS256}
+    issuer: ${JWT_ISSUER:http://localhost:8080}
+    access-ttl-min: ${JWT_ACCESS_TTL_MIN:30}
+    refresh-ttl-days: ${JWT_REFRESH_TTL_DAYS:30}
+    private-key-pem: ${JWT_PRIVATE_KEY_PEM:}
+    public-key-pem: ${JWT_PUBLIC_KEY_PEM:}
+
+app:
+  cors:
+    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:4200}
