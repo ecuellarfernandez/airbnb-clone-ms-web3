@@ -1,0 +1,147 @@
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+frontend/dist/
+frontend/tmp/
+frontend/out-tsc/
+frontend/bazel-out/
+
+# Node
+/node_modules
+frontend/node_modules/
+npm-debug.log
+yarn-error.log
+frontend/npm-debug.log
+frontend/yarn-error.log
+package-lock.json
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+frontend/.angular/cache
+.sass-cache/
+frontend/.sass-cache/
+/connect.lock
+/coverage
+frontend/coverage/
+/libpeerconnection.log
+testem.log
+frontend/testem.log
+/typings
+frontend/typings/
+
+# Angular specific
+frontend/.editorconfig
+frontend/e2e/
+frontend/*.log
+
+# System files
+.DS_Store
+Thumbs.db
+
+#adaptar para carpetas de servicios..............................
+HELP.md
+target/
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+### Services / multi-language projects ###
+# Ignore common build outputs for services (maven, gradle, node, dotnet, go)
+**/target/
+**/build/
+**/out/
+**/bin/
+
+# Java / JVM
+*.class
+*.jar
+*.war
+*.ear
+*.nar
+*.zip
+
+# Gradle
+/.gradle/
+**/.gradle/
+gradle-app.setting
+
+# Maven wrapper and caches
+/.mvn/wrapper/maven-wrapper.jar
+**/.mvn/
+
+# Node (service-level)
+**/node_modules/
+**/npm-debug.log
+**/yarn-error.log
+**/.npm/
+
+# Environment files
+**/.env
+**/*.env.local
+**/*.env.*.local
+
+# Logs
+**/*.log
+**/logs/
+
+# IDEs
+**/.idea/
+**/*.iml
+
+# Docker
+**/docker-compose.override.yml
+
+# Ignore coverage and test reports in services
+**/coverage/
+
+# Keep helpful files
+!.github/

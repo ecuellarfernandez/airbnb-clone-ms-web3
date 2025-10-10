@@ -1,0 +1,27 @@
+#adaptar para carpetas de servicios..............................
+/mvnw text eol=lf
+*.cmd text eol=crlf
+
+# Java/Maven/Gradle
+*.jar binary
+*.war binary
+*.ear binary
+*.class binary
+pom.xml text
+build.gradle text
+gradlew text eol=lf
+/.gradlew text eol=lf
+gradlew.bat text eol=crlf
+
+# Shell scripts
+*.sh text eol=lf
+
+# Node
+package.json text
+package-lock.json text
+yarn.lock text
+
+# Editor configs
+.editorconfig text
+.gitattributes text
+.gitignore text
