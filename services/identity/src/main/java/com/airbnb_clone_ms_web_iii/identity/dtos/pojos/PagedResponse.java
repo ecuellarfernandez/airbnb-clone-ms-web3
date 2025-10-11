@@ -1,4 +1,4 @@
-package com.turihub.backend.dtos.pojos;
+package com.airbnb_clone_ms_web_iii.identity.dtos.pojos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

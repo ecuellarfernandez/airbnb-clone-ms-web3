@@ -1,0 +1,26 @@
+spring:
+  application:
+    name: identity
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+api:
+  version: v1
+
+server:
+    port: 5000
+frontend:
+    port: 4200
+
+swagger:
+  base-path: /**
+springdoc:
+  swagger-ui:
+    path: /api/docs
+    doc-expansion: none
+  api.version: ${api.version}
