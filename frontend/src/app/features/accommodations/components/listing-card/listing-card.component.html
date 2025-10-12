@@ -1,0 +1,19 @@
+<article class="tarjeta">
+    <div class="imagen">
+        <img [src]="listing.image" [alt]="listing.title" />
+    </div>
+    <div class="contenido">
+        <div class="fila">
+            <h3 class="titulo3">{{ listing.title }}</h3>
+            <span class="etiqueta-pequeña">{{ listing.city }}</span>
+        </div>
+        <p class="descripcion">{{ listing.description }}</p>
+        <div class="fila">
+            <div class="precio">
+                Bs {{ listing.price }} <small>/noche</small> ·
+                <small>{{ listing.capacity }} personas</small>
+            </div>
+            <a class="boton-ver" href="javascript:void(0)" title="Demo only">Ver detalle</a>
+        </div>
+    </div>
+</article>
