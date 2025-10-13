@@ -6,14 +6,18 @@ module.exports = {
     extend: {
       colors: {
         brand: 'var(--brand-primary)',
+        'brand-secondary': 'var(--brand-secondary)',
         bg: 'var(--bg)',
         surface: 'var(--surface)',
         'surface-2': 'var(--surface-2)',
+        'surface-3': 'var(--surface-3)',
         on: {
-          brand: 'var(--neutral-0)',
+          brand: 'var(--brand-on-primary)',
+          'brand-secondary': 'var(--brand-on-secondary)',
           bg: 'var(--text)',
           surface: 'var(--text-2)',
           'surface-2': 'var(--text-3)',
+          'surface-3': 'var(--text-4)',
         },
       },
       fontFamily: {
@@ -43,6 +47,10 @@ module.exports = {
         medium: 'var(--fw-medium)',
         bold: 'var(--fw-bold)',
         extraBold: 'var(--fw-extra-bold)',
+      },
+      maxWidth: {
+        container: 'var(--container-max)',
+        content: 'var(--content-max)',
       },
     },
   },
