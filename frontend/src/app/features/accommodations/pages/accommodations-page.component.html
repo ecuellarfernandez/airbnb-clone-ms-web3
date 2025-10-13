@@ -1,50 +1,53 @@
-<header class="encabezado">
-    <div class="contenedor">
-        <nav class="navegacion">
-            <div class="marca">Airbnb-Copia</div>
-            <div class="pestañas">
-                <span class="pestaña activa">Alojamientos</span>
-            </div>
-        </nav>
-    </div>
-</header>
+<main class="max-w-content mx-auto space-y-6">
+  <h1>Alojamientos</h1>
+  <p class="text-on-surface">Explora opciones por ciudad, precio y capacidad.</p>
 
-<main class="contenedor pagina">
-    <h1 class="titulo">Alojamientos</h1>
-    <p class="subtitulo">Explora opciones por ciudad, precio y capacidad.</p>
+  <!-- Filters debera ser componente -->
+  <section
+    class="flex flex-wrap flex-row gap-4 bg-surface-2 text-on-surface items-end p-5 rounded-md shadow-md"
+  >
+    <label class="space-y-2">
+      <span class="">Ciudad</span>
+      <select class="bg-surface-3 text-on-surface-3" [(ngModel)]="cityInput">
+        <option *ngFor="let c of cities" [value]="c">{{ c }}</option>
+      </select>
+    </label>
 
-    <section class="filtros">
-        <label class="campo">
-            <span class="etiqueta">Ciudad</span>
-            <select class="entrada" [(ngModel)]="cityInput">
-                <option *ngFor="let c of cities" [value]="c">{{ c }}</option>
-            </select>
-        </label>
+    <label class="space-y-2">
+      <span>Precio máx (Bs)</span>
+      <input
+        class="bg-surface-3 text-on-surface-3 placeholder:text-on-surface-3"
+        type="number"
+        min="0"
+        placeholder="Ej: 150"
+        [(ngModel)]="maxPriceInput"
+      />
+    </label>
 
-        <label class="campo">
-            <span class="etiqueta">Precio máx (Bs)</span>
-            <input class="entrada" type="number" min="0" placeholder="Ej: 150" [(ngModel)]="maxPriceInput" />
-        </label>
+    <label class="space-y-2">
+      <span class="">Capacidad mín (personas)</span>
+      <input
+        class="bg-surface-3 text-on-surface-3 placeholder:text-on-surface-3"
+        type="number"
+        min="1"
+        placeholder="Ej: 2"
+        [(ngModel)]="minCapacityInput"
+      />
+    </label>
 
-        <label class="campo">
-            <span class="etiqueta">Capacidad mín (personas)</span>
-            <input class="entrada" type="number" min="1" placeholder="Ej: 2" [(ngModel)]="minCapacityInput" />
-        </label>
+    <button class="btn-secondary w-max" (click)="clear()">Limpiar</button>
+    <button class="btn-primary w-max" (click)="apply()">Aplicar filtros</button>
+  </section>
+  <!-- Fin Filters -->
 
-        <button class="boton" (click)="clear()">Limpiar</button>
-        <button class="boton primario" (click)="apply()">Aplicar filtros</button>
-    </section>
+  <section
+    class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+    aria-label="Listings results"
+  >
+    <p *ngIf="results.length === 0" style="color: #777; padding: 8px 2px">
+      No se encontraron alojamientos con los filtros seleccionados.
+    </p>
 
-    <section class="rejilla" aria-label="Listings results">
-        <p *ngIf="results.length === 0" style="color:#777;padding:8px 2px;">
-            No se encontraron alojamientos con los filtros seleccionados.
-        </p>
-
-        <app-listing-card *ngFor="let l of results" [listing]="l">
-        </app-listing-card>
-    </section>
-
-    <footer class="pie">
-        <p>Footer</p>
-    </footer>
+    <app-listing-card *ngFor="let l of results" [listing]="l"> </app-listing-card>
+  </section>
 </main>
