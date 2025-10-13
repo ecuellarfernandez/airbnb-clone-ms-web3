@@ -1,9 +1,3 @@
-$brand-primary-500: #1919e6;
-$brand-primary-600: #1616cc;
-$brand-primary-700: #1313b3;
-$brand-on-primary: #ffffff;
-$brand-ring: #c7d2fe;
-
 $neutral-0: #ffffff;
 $neutral-25: #fcfcfd;
 $neutral-50: #f6f6f8;
@@ -18,6 +12,18 @@ $neutral-800: #1f2937;
 $neutral-900: #111121;
 $neutral-950: #0b0f14;
 
+$brand-primary-500: #1919e6;
+$brand-primary-600: #1616cc;
+$brand-primary-700: #1313b3;
+$brand-on-primary: $neutral-50;
+$brand-ring: #c7d2fe;
+
+$brand-secondary-500: #8b19e6;
+$brand-secondary-600: #7c16cc;
+$brand-secondary-700: #6d13b3;
+$brand-on-secondary: $neutral-50;
+$brand-secondary-ring: #e9d5ff;
+
 $accent-pink: #fb7185;
 $accent-teal: #2dd4bf;
 $accent-amber: #f59e0b;
@@ -30,15 +36,17 @@ $color-surface-3: $neutral-200;
 $color-text-light: #111a2c;
 $color-text-2-light: #334155;
 $color-text-3-light: #64748b;
+$color-text-4-light: #475569;
 $color-border-light: #e5e7eb;
 
 $color-bg-dark: $neutral-900;
 $color-surface-dark: #181828;
 $color-surface-dark-2: $neutral-800;
-$color-surface-dark-3: $neutral-900;
+$color-surface-dark-3: $neutral-600;
 $color-text-dark: #f8fafc;
 $color-text-2-dark: $neutral-400;
 $color-text-3-dark: $neutral-500;
+$color-text-4-dark: $neutral-300;
 $color-border-dark: #3a3f52;
 
 $state-success: #16a34a;
@@ -83,11 +91,16 @@ $container-max: 1280px;
 $content-max: 72rem;
 
 :root {
-  --brand-primary: #{$brand-primary-500};
   --brand-primary-hover: #{$brand-primary-600};
   --brand-primary-active: #{$brand-primary-700};
   --brand-on-primary: #{$brand-on-primary};
   --brand-ring: #{$brand-ring};
+  --brand-primary: #{$brand-primary-500};
+  --brand-secondary: #{$brand-secondary-500};
+  --brand-secondary-hover: #{$brand-secondary-600};
+  --brand-secondary-active: #{$brand-secondary-700};
+  --brand-ring-secondary: #{$brand-secondary-ring};
+  --brand-on-secondary: #{$brand-on-secondary};
 
   --neutral-0: #{$neutral-0};
   --neutral-25: #{$neutral-25};
@@ -115,6 +128,7 @@ $content-max: 72rem;
   --text: #{$color-text-light};
   --text-2: #{$color-text-2-light};
   --text-3: #{$color-text-3-light};
+  --text-4: #{$neutral-600};
   --border: #{$color-border-light};
 
   --success: #{$state-success};
@@ -166,6 +180,7 @@ $content-max: 72rem;
     --text: #{$color-text-dark};
     --text-2: #{$color-text-2-dark};
     --text-3: #{$color-text-3-dark};
+    --text-4: #{$color-text-4-dark};
     --border: #{$color-border-dark};
     --glass: #{$glass-dark};
   }
