@@ -3,14 +3,16 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'auth',
-  },
-  {
     path: 'auth',
     loadChildren: () => import('./features/auth/auth-module').then((m) => m.AuthModule),
   },
+  {
+    path: 'accommodations',
+    loadChildren: () =>
+      import('./features/accommodations/accommodations-module').then((m) => m.AccommodationsModule),
+  },
+  { path: '', pathMatch: 'full', redirectTo: 'auth' },
+  { path: '**', redirectTo: 'accommodations' },
 ];
 
 @NgModule({

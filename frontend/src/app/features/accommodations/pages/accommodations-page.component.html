@@ -1,0 +1,50 @@
+<header class="encabezado">
+    <div class="contenedor">
+        <nav class="navegacion">
+            <div class="marca">Airbnb-Copia</div>
+            <div class="pestañas">
+                <span class="pestaña activa">Alojamientos</span>
+            </div>
+        </nav>
+    </div>
+</header>
+
+<main class="contenedor pagina">
+    <h1 class="titulo">Alojamientos</h1>
+    <p class="subtitulo">Explora opciones por ciudad, precio y capacidad.</p>
+
+    <section class="filtros">
+        <label class="campo">
+            <span class="etiqueta">Ciudad</span>
+            <select class="entrada" [(ngModel)]="cityInput">
+                <option *ngFor="let c of cities" [value]="c">{{ c }}</option>
+            </select>
+        </label>
+
+        <label class="campo">
+            <span class="etiqueta">Precio máx (Bs)</span>
+            <input class="entrada" type="number" min="0" placeholder="Ej: 150" [(ngModel)]="maxPriceInput" />
+        </label>
+
+        <label class="campo">
+            <span class="etiqueta">Capacidad mín (personas)</span>
+            <input class="entrada" type="number" min="1" placeholder="Ej: 2" [(ngModel)]="minCapacityInput" />
+        </label>
+
+        <button class="boton" (click)="clear()">Limpiar</button>
+        <button class="boton primario" (click)="apply()">Aplicar filtros</button>
+    </section>
+
+    <section class="rejilla" aria-label="Listings results">
+        <p *ngIf="results.length === 0" style="color:#777;padding:8px 2px;">
+            No se encontraron alojamientos con los filtros seleccionados.
+        </p>
+
+        <app-listing-card *ngFor="let l of results" [listing]="l">
+        </app-listing-card>
+    </section>
+
+    <footer class="pie">
+        <p>Footer</p>
+    </footer>
+</main>
