@@ -16,6 +16,8 @@ public class Role {
     }
 
     @Id
+    @Getter
+    @Setter
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     private Long id;
 

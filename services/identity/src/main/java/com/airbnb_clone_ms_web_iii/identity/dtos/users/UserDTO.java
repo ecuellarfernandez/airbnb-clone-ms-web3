@@ -1,8 +1,11 @@
 package com.airbnb_clone_ms_web_iii.identity.dtos.users;
 
+import com.airbnb_clone_ms_web_iii.identity.dtos.roles.RoleDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -14,6 +17,7 @@ public class UserDTO {
     private String email;
     private String firstName;
     private String lastName;
+    private List<RoleDTO> roles;
 
     public static UserDTO fromEntity(com.airbnb_clone_ms_web_iii.identity.models.users.User user) {
         return new UserDTO(
@@ -21,7 +25,8 @@ public class UserDTO {
                 user.getUsername(),
                 user.getEmail(),
                 user.getFirstName(),
-                user.getLastName()
+                user.getLastName(),
+                user.getRoles().stream().map(RoleDTO::fromEntity).toList()
         );
     }
 
