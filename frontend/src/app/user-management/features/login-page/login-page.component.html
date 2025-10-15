@@ -1,0 +1,44 @@
+<div class="container-center-grid">
+  <div class="p-10 sm:max-w-sm bg-surface rounded-md drop-shadow-2xl">
+    <h2 class="text-center">Login to your account</h2>
+
+    <form action="#" method="POST" class="mt-10 space-y-6">
+      <div>
+        <label for="email" class="text-on-surface">Email address</label>
+        <div class="mt-2">
+          <input
+            id="email"
+            type="email"
+            name="email"
+            required
+            placeholder="Enter your mail"
+            autocomplete="email"
+          />
+        </div>
+      </div>
+
+      <div>
+        <div class="mt-2">
+          <label for="password" class="text-on-surface">Password</label>
+          <input
+            id="password"
+            type="password"
+            name="password"
+            required
+            autocomplete="current-password"
+            placeholder="Enter your password"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button class="btn-primary" type="submit">Login</button>
+      </div>
+    </form>
+
+    <p class="mt-10 text-center text-sm/6 text-on-surface">
+      Not a member?
+      <a routerLink="/auth/register"> Create an account </a>
+    </p>
+  </div>
+</div>

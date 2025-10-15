@@ -1,0 +1,82 @@
+@use 'abstracts/tokens';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base, components, utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Coolvetica';
+    font-weight: 200;
+    font-style: normal;
+    font-display: swap;
+    src: url('../assets/fonts/coolvetica.woff2') format('woff2'),
+      url('../assets/fonts/coolvetica.woff') format('woff');
+  }
+
+  body {
+    @apply font-body bg-bg text-on-bg;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-display leading-tight;
+  }
+
+  h1 {
+    @apply text-h1;
+  }
+
+  h2 {
+    @apply text-h2;
+  }
+
+  h3 {
+    @apply text-h3;
+  }
+
+  a {
+    @apply text-brand underline;
+  }
+
+  label {
+    @apply text-label font-medium;
+  }
+
+  input,
+  select {
+    @apply px-4 py-2 block w-full bg-surface-2 rounded-pill
+    outline-1 -outline-offset-1 placeholder:text-on-surface-2 focus:outline-on-surface-2 border-solid border-[1px] border-on-surface-2;
+  }
+
+  button,
+  .btn {
+    @apply w-full px-6 py-3 font-medium rounded-pill transition-all duration-200 focus:outline-none focus:ring-brand focus:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed inline-flex items-center justify-center gap-2 no-underline text-center leading-tight;
+  }
+
+  img {
+    @apply max-w-full h-auto block;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-brand text-on-brand;
+  }
+
+  .btn-secondary {
+    @apply bg-brand-secondary text-on-brand-secondary;
+  }
+}
+
+@layer utilities {
+  .container-center-grid {
+    @apply grid place-content-center h-[100vh];
+  }
+}
