@@ -1,7 +1,8 @@
 import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { RegisterPageComponent } from './pages/register-page/register-page.component';
-import { LoginPageComponent } from './pages/login-page/login-page.component';
+import { LoginPageComponent } from './features/login-page/login-page.component';
+import { RegisterPageComponent } from './features/register-page/register-page.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,5 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
-  declarations: [RegisterPageComponent, LoginPageComponent],
 })
-export class AuthRoutingModule {}
+export class UserManagementRoutingModule {}
