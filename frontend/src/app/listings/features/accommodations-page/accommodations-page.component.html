@@ -1,47 +1,42 @@
-<main class="max-w-content mx-auto space-y-6">
+<div class="space-y-5">
+        <!-- Filters debera ser componente -->
+        <section class="flex flex-wrap flex-row gap-4 bg-surface-2 text-on-surface items-end p-5 rounded-md shadow-md">
+            <label class="space-y-2">
+                <span class="">Ciudad</span>
+                <select class="bg-surface-3 text-on-surface-3">
+                <option ></option>
+                </select>
+            </label>
+
+            <label class="space-y-2">
+                <span>Precio máx (Bs)</span>
+                <input
+                class="bg-surface-3 text-on-surface-3 placeholder:text-on-surface-3"
+                type="number"
+                min="0"
+                placeholder="Ej: 150"
+                />
+            </label>
+
+            <label class="space-y-2">
+                <span class="">Capacidad mín (personas)</span>
+                <input
+                class="bg-surface-3 text-on-surface-3 placeholder:text-on-surface-3"
+                type="number"
+                min="1"
+                placeholder="Ej: 2"
+                />
+            </label>
+
+            <button class="btn-secondary w-max">Limpiar</button>
+            <button class="btn-primary w-max">Aplicar filtros</button>
+        </section>
+        <!-- Fin Filters -->
   <h1>Alojamientos</h1>
   <p class="text-on-surface">Explora opciones por ciudad, precio y capacidad.</p>
 
-  <!-- Filters debera ser componente -->
   <section
-    class="flex flex-wrap flex-row gap-4 bg-surface-2 text-on-surface items-end p-5 rounded-md shadow-md"
-  >
-    <label class="space-y-2">
-      <span class="">Ciudad</span>
-      <select class="bg-surface-3 text-on-surface-3" [(ngModel)]="cityInput">
-        <option *ngFor="let c of cities" [value]="c">{{ c }}</option>
-      </select>
-    </label>
-
-    <label class="space-y-2">
-      <span>Precio máx (Bs)</span>
-      <input
-        class="bg-surface-3 text-on-surface-3 placeholder:text-on-surface-3"
-        type="number"
-        min="0"
-        placeholder="Ej: 150"
-        [(ngModel)]="maxPriceInput"
-      />
-    </label>
-
-    <label class="space-y-2">
-      <span class="">Capacidad mín (personas)</span>
-      <input
-        class="bg-surface-3 text-on-surface-3 placeholder:text-on-surface-3"
-        type="number"
-        min="1"
-        placeholder="Ej: 2"
-        [(ngModel)]="minCapacityInput"
-      />
-    </label>
-
-    <button class="btn-secondary w-max" (click)="clear()">Limpiar</button>
-    <button class="btn-primary w-max" (click)="apply()">Aplicar filtros</button>
-  </section>
-  <!-- Fin Filters -->
-
-  <section
-    class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+    class="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 pt-5"
     aria-label="Listings results"
   >
     <p *ngIf="results.length === 0" style="color: #777; padding: 8px 2px">
@@ -50,4 +45,4 @@
 
     <app-listing-card *ngFor="let l of results" [listing]="l"> </app-listing-card>
   </section>
-</main>
+</div>
