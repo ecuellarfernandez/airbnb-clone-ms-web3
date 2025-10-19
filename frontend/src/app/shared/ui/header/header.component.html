@@ -1,98 +1,127 @@
-<header class="text-on-surface-3 border-surface-3 ">
+<header class="bg-surface-2 text-on-surface-2 border-surface-3">
+  <!-- Header Principal estilo Airbnb -->
+  <div class="max-w-container mx-auto sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo/Brand -->
+      <div class="flex-shrink-0">
+        <a [routerLink]="'/'" class="text-neutral-200 flex items-center space-x-2 no-underline">
+          <span class="text-h3 font-bold hidden sm:block">Airbbcitos</span>
+        </a>
+      </div>
 
-    <!-- Header Principal estilo Airbnb -->
-    <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="flex items-center justify-between h-20">
-            
-            <!-- Logo/Brand -->
-            <div class="flex-shrink-0">
-                <a [routerLink]="'/'" class="flex items-center space-x-2">
-                    <span class="text-h2 font-bold hidden sm:block">Airbbcitos</span>
-                </a>
+      <!-- Navegación Central -->
+      <nav class="hidden md:flex">
+        <ul class="flex items-center space-x-8">
+          <li *ngFor="let l of links">
+            <a
+              [routerLink]="l.path"
+              class="no-underline text-on-surface-3 hover:text-on-brand font-medium py-2 px-3 rounded-pill hover:bg-surface-2 transition-all duration-200 relative group"
+            >
+              {{ l.label }}
+              <span
+                class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-brand transition-all duration-300 group-hover:w-full group-hover:left-0"
+              ></span>
+            </a>
+          </li>
+        </ul>
+      </nav>
+
+      <!-- Menú Usuario/Acciones -->
+      <div class="flex items-center space-x-4">
+        <!-- Botón Anfitrión -->
+        <button
+          class="hidden lg:block hover:bg-surface-2 px-4 py-2 rounded-pill font-medium transition-colors duration-200 text-neutral-200"
+        >
+          Conviértete en anfitrión
+        </button>
+
+        <!-- Menú hamburguesa para móvil -->
+        <button
+          class="md:hidden text-on-surface hover:bg-surface-2 p-2 rounded-full transition-colors duration-200"
+        >
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 6h16M4 12h16M4 18h16"
+            />
+          </svg>
+        </button>
+
+        <!-- Perfil de usuario -->
+        <div class="relative">
+          <button
+            class="flex items-center space-x-2 bg-surface-2 border border-surface-3 rounded-pill py-2 pl-3 pr-2 hover:shadow-md transition-all duration-200"
+          >
+            <svg
+              class="w-4 h-4 text-on-surface-2"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+            <div class="w-8 h-8 bg-brand rounded-full flex items-center justify-center">
+              <svg
+                class="w-4 h-4 text-on-brand"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                />
+              </svg>
             </div>
-
-            <!-- Navegación Central -->
-            <nav class="hidden md:flex">
-                <ul class="flex items-center space-x-8">
-                    <li *ngFor="let l of links">
-                        <a [routerLink]="l.path" 
-                           class="text-on-surface-3 hover:text-on-brand font-medium py-2 px-3 rounded-pill hover:bg-surface-2 transition-all duration-200 relative group">
-                            {{l.label}}
-                            <span class="absolute bottom-0 left-1/2 w-0 h-0.5 bg-brand transition-all duration-300 group-hover:w-full group-hover:left-0"></span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-            <!-- Menú Usuario/Acciones -->
-            <div class="flex items-center space-x-4">
-                <!-- Botón Anfitrión -->
-                <button class="hidden lg:block text-on-surface hover:bg-surface-2 px-4 py-2 rounded-pill font-medium transition-colors duration-200">
-                    Conviértete en anfitrión
-                </button>
-                
-                <!-- Menú hamburguesa para móvil -->
-                <button class="md:hidden text-on-surface hover:bg-surface-2 p-2 rounded-full transition-colors duration-200">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                    </svg>
-                </button>
-
-                <!-- Perfil de usuario -->
-                <div class="relative">
-                    <button class="flex items-center space-x-2 bg-surface-2 border border-surface-3 rounded-pill py-2 pl-3 pr-2 hover:shadow-md transition-all duration-200">
-                        <svg class="w-4 h-4 text-on-surface-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                        </svg>
-                        <div class="w-8 h-8 bg-brand rounded-full flex items-center justify-center">
-                            <svg class="w-4 h-4 text-on-brand" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                            </svg>
-                        </div>
-                    </button>
-                </div>
-            </div>
+          </button>
         </div>
+      </div>
     </div>
+  </div>
 
-    <!-- Separador -->
-    <div class="border-t border-surface-3"></div>
+  <!-- Sección de Filtros (mantenida como estaba) -->
+  <div class="max-w-container mx-auto px-10 sm:px-6 lg:px-8 pt-2 pb-10">
+    <!-- Filters debera ser componente -->
+    <section
+      class="px-7 py-3 flex flex-wrap flex-row gap-1 bg-surface-3 text-on-surface items-end shadow-md max-w-content rounded-pill justify-between border-1 border-black"
+    >
+      <label class="">
+        <span class="">Ciudad</span>
+        <select class="text-on-surface-3 bg-none border-none pl-0 font-light bg-transparent">
+          <option class="m-0 pl-0" value="Santa Cruz">Santa Cruz</option>
+        </select>
+      </label>
 
-    <!-- Sección de Filtros (mantenida como estaba) -->
-    <div class="max-w-container mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <!-- Filters debera ser componente -->
-        <section class="flex flex-wrap flex-row gap-4 bg-surface-2 text-on-surface items-end p-5 rounded-md shadow-md">
-            <label class="space-y-2">
-                <span class="">Ciudad</span>
-                <select class="bg-surface-3 text-on-surface-3">
-                <option ></option>
-                </select>
-            </label>
+      <label class="">
+        <span>Fechas</span>
+        <input
+          class="text-on-surface-3 placeholder:text-on-surface-3 bg-tra border-none pl-0 font-light bg-transparent"
+          type="text"
+          placeholder="Agrega fechas"
+        />
+      </label>
 
-            <label class="space-y-2">
-                <span>Precio máx (Bs)</span>
-                <input
-                class="bg-surface-3 text-on-surface-3 placeholder:text-on-surface-3"
-                type="number"
-                min="0"
-                placeholder="Ej: 150"
-                />
-            </label>
-
-            <label class="space-y-2">
-                <span class="">Capacidad mín (personas)</span>
-                <input
-                class="bg-surface-3 text-on-surface-3 placeholder:text-on-surface-3"
-                type="number"
-                min="1"
-                placeholder="Ej: 2"
-                />
-            </label>
-
-            <button class="btn-secondary w-max">Limpiar</button>
-            <button class="btn-primary w-max">Aplicar filtros</button>
-        </section>
-        <!-- Fin Filters -->
-    </div>
-
+      <label class="">
+        <span class="">Quién</span>
+        <input
+          class="text-on-surface-3 placeholder:text-on-surface-3 border-none bg-transparent pl-0 font-light"
+          type="number"
+          min="1"
+          placeholder="¿Cuántos?"
+        />
+      </label>
+      <!-- boton con icono de lupa-->
+      <button class="btn-primary w-max">Aplicar filtros</button>
+    </section>
+    <!-- Fin Filters -->
+  </div>
 </header>
