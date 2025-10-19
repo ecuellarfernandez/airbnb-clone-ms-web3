@@ -7,7 +7,9 @@
     "baseUrl": "src",
     "paths": {
       "@styles/*": ["styles/*"],
-      "@app/*": ["app/*"]
+      "@app/*": ["app/*"],
+      "@ui/*": ["app/shared/ui/*"],
+      "@listings/*": ["app/features/listings/*"],
     },
     "types": ["node"]
   },
