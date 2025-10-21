@@ -1,0 +1,122 @@
+@use 'sass:meta';
+@use './colors' as c;
+@use './font' as f;
+@use './utilities' as u;
+
+:root {
+  --brand-primary-hover: #{c.$brand-primary-600};
+  --brand-primary-active: #{c.$brand-primary-700};
+  --brand-on-primary: #{c.$brand-on-primary};
+  --brand-ring: #{c.$brand-ring};
+  --brand-primary: #{c.$brand-primary-500};
+  --brand-secondary: #{c.$brand-secondary-500};
+  --brand-secondary-hover: #{c.$brand-secondary-600};
+  --brand-secondary-active: #{c.$brand-secondary-700};
+  --brand-ring-secondary: #{c.$brand-secondary-ring};
+  --brand-on-secondary: #{c.$brand-on-secondary};
+
+  --neutral-0: #{c.$neutral-0};
+  --neutral-25: #{c.$neutral-25};
+  --neutral-50: #{c.$neutral-50};
+  --neutral-100: #{c.$neutral-100};
+  --neutral-200: #{c.$neutral-200};
+  --neutral-300: #{c.$neutral-300};
+  --neutral-400: #{c.$neutral-400};
+  --neutral-500: #{c.$neutral-500};
+  --neutral-600: #{c.$neutral-600};
+  --neutral-700: #{c.$neutral-700};
+  --neutral-800: #{c.$neutral-800};
+  --neutral-900: #{c.$neutral-900};
+  --neutral-950: #{c.$neutral-950};
+
+  --accent-pink: #{c.$accent-pink};
+  --accent-teal: #{c.$accent-teal};
+  --accent-amber: #{c.$accent-amber};
+  --accent-violet: #{c.$accent-violet};
+
+  --bg: #{c.$color-bg-light};
+  --surface: #{c.$color-surface-light};
+  --surface-2: #{c.$color-surface-2};
+  --surface-3: #{c.$color-surface-3};
+  --text: #{c.$color-text-light};
+  --text-2: #{c.$color-text-2-light};
+  --text-3: #{c.$color-text-3-light};
+  --text-4: #{c.$neutral-600};
+  --text-on-surface: #{c.$color-text-on-surface-light};
+  --text-on-surface-2: #{c.$color-text-on-surface-2-light};
+  --text-on-surface-3: #{c.$color-text-on-surface-3-light};
+  --border: #{c.$color-border-light};
+
+  --success: #{c.$state-success};
+  --warning: #{c.$state-warning};
+  --error: #{c.$state-error};
+  --info: #{c.$state-info};
+
+  --overlay-40: #{c.$overlay-40};
+  --overlay-60: #{c.$overlay-60};
+  --glass: #{c.$glass-light};
+
+  --font-display: #{meta.inspect(f.$font-display)};
+  --font-body: #{meta.inspect(f.$font-body)};
+
+  --fs-h1: #{f.$fs-h1};
+  --fs-h2: #{f.$fs-h2};
+  --fs-h3: #{f.$fs-h3};
+  --fs-body: #{f.$fs-body};
+  --fs-label: #{f.$fs-label};
+
+  --lh-tight: #{f.$lh-tight};
+  --lh-normal: #{f.$lh-normal};
+
+  --fw-regular: #{f.$fw-regular};
+  --fw-medium: #{f.$fw-medium};
+  --fw-bold: #{f.$fw-bold};
+  --fw-extrabold: #{f.$fw-extrabold};
+
+  --radius-sm: #{u.$radius-sm};
+  --radius-md: #{u.$radius-md};
+  --radius-lg: #{u.$radius-lg};
+  --radius-xl: #{u.$radius-xl};
+  --radius-pill: #{u.$radius-pill};
+
+  --z-header: #{u.$z-header};
+  --z-overlay: #{u.$z-overlay};
+  --z-dropdown: #{u.$z-dropdown};
+
+  --container-max: #{u.$container-max};
+  --content-max: #{u.$content-max};
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #{c.$color-bg-dark};
+    --surface: #{c.$color-surface-dark};
+    --surface-2: #{c.$color-surface-dark-2};
+    --surface-3: #{c.$color-surface-dark-3};
+    --text: #{c.$color-text-dark};
+    --text-2: #{c.$color-text-2-dark};
+    --text-3: #{c.$color-text-3-dark};
+    --text-4: #{c.$color-text-4-dark};
+    --text-on-surface: #{c.$color-text-on-surface-dark};
+    --text-on-surface-2: #{c.$color-text-on-surface-2-dark};
+    --text-on-surface-3: #{c.$color-text-on-surface-3-dark};
+    --border: #{c.$color-border-dark};
+    --glass: #{c.$glass-dark};
+  }
+}
+
+:root[data-theme='dark'] {
+  --bg: #{c.$color-bg-dark};
+  --surface: #{c.$color-surface-dark};
+  --surface-2: #{c.$color-surface-dark-2};
+  --surface-3: #{c.$color-surface-dark-3};
+  --text: #{c.$color-text-dark};
+  --text-2: #{c.$color-text-2-dark};
+  --text-3: #{c.$color-text-3-dark};
+  --text-4: #{c.$color-text-4-dark};
+  --text-on-surface: #{c.$color-text-on-surface-dark};
+  --text-on-surface-2: #{c.$color-text-on-surface-2-dark};
+  --text-on-surface-3: #{c.$color-text-on-surface-3-dark};
+  --border: #{c.$color-border-dark};
+  --glass: #{c.$glass-dark};
+}
