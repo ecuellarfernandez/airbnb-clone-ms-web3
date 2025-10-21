@@ -1,0 +1,27 @@
+@use '../abstracts' as abs;
+@use '../tools/mixins' as m;
+
+@each $name, $val in abs.$font-family-dict {
+  @include m.make-class('font-#{$name}') {
+    font-family: #{$val};
+  }
+}
+
+@each $name, $val in abs.$font-size-dict {
+  @include m.make-class('fs-#{$name}') {
+    font-size: #{$val};
+    line-height: normal;
+  }
+}
+
+@each $name, $val in abs.$line-height-dict {
+  @include m.make-class('lh-#{$name}') {
+    line-height: #{$val};
+  }
+}
+
+@each $name, $val in abs.$font-weight-dict {
+  @include m.make-class('fw-#{$name}') {
+    font-weight: #{$val};
+  }
+}

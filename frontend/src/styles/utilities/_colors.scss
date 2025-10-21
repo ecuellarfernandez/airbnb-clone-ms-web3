@@ -1,0 +1,41 @@
+@use '../abstracts' as abs;
+@use '../tools/mixins' as m;
+
+@each $name, $val in abs.$colors-dict {
+  @include m.make-class('text-#{$name}') {
+    color: #{$val};
+  }
+  @include m.state-variants('text-#{$name}') {
+    color: #{$val};
+  }
+  @include m.dark-variant('text-#{$name}') {
+    color: #{$val};
+  }
+
+  @include m.make-class('bg-#{$name}') {
+    background-color: #{$val};
+  }
+  @include m.state-variants('bg-#{$name}') {
+    background-color: #{$val};
+  }
+  @include m.dark-variant('bg-#{$name}') {
+    background-color: #{$val};
+  }
+
+  @include m.make-class('border-#{$name}') {
+    border-color: #{$val};
+  }
+}
+@include m.make-class('border') {
+  border-width: 1px;
+  border-style: solid;
+}
+@include m.make-class('border-0') {
+  border-width: 0;
+}
+@include m.make-class('border-2') {
+  border-width: 2px;
+}
+@include m.make-class('border-4') {
+  border-width: 4px;
+}

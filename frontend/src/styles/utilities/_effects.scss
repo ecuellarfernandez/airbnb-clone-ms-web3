@@ -1,0 +1,37 @@
+@use '../abstracts' as abs;
+@use '../tools/mixins' as m;
+
+@each $k, $v in abs.$radii-dict {
+  @include m.make-class('rounded-#{$k}') {
+    border-radius: $v;
+  }
+}
+
+@include m.make-class('object-cover') {
+  object-fit: cover;
+}
+
+@include m.make-class('object-contain') {
+  object-fit: contain;
+}
+
+@include m.make-class('aspect-video') {
+  aspect-ratio: 16 / 9;
+}
+
+@include m.make-class('overflow-hidden') {
+  overflow: hidden;
+}
+
+@include m.make-class('shadow-sm') {
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+}
+@include m.make-class('shadow-md') {
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+@include m.make-class('shadow-lg') {
+  box-shadow: 0 10px 15px rgba(0, 0, 0, 0.15);
+}
+@include m.make-class('shadow-xl') {
+  box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2);
+}
