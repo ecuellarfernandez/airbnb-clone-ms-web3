@@ -5,10 +5,11 @@
 
 :root {
   --brand-primary-hover: #{c.$brand-primary-600};
-  --brand-primary-active: #{c.$brand-primary-700};
+  --brand-primary-active: #{c.$brand-primary-500};
   --brand-on-primary: #{c.$brand-on-primary};
   --brand-ring: #{c.$brand-ring};
   --brand-primary: #{c.$brand-primary-500};
+  
   --brand-secondary: #{c.$brand-secondary-500};
   --brand-secondary-hover: #{c.$brand-secondary-600};
   --brand-secondary-active: #{c.$brand-secondary-700};
@@ -85,6 +86,9 @@
 
   --container-max: #{u.$container-max};
   --content-max: #{u.$content-max};
+
+  --transition-duration: #{u.$transition-duration};
+  --transition-timing-function: #{u.$transition-timing-function};
 }
 
 @media (prefers-color-scheme: dark) {

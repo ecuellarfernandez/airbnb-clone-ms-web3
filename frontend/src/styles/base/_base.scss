@@ -48,3 +48,34 @@ a {
 a:hover {
   text-decoration: underline;
 }
+
+form input{
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  padding: 0.5rem 1rem;
+  width: 100%;
+}
+
+.btn, button{
+  width: 100%;
+  border-radius: var(--radius-pill);
+  border: none;
+  text-align: center;
+  padding: 0.7rem 1rem;
+  transition-property: background-color;
+  transition-duration: var(--transition-duration);
+  transition-timing-function: var(--transition-timing-function);
+}
+
+.btn-primary{
+  background-color: var(--brand-primary);
+  color: var(--brand-on-primary);
+}
+
+.btn:hover, button:hover{
+  background-color: var(--brand-primary-hover);
+  cursor: pointer;
+}
+.btn:active, button:active{
+  outline: 1px solid var(--brand-primary-active);
+}

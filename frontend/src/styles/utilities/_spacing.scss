@@ -86,6 +86,14 @@
 }
 
 @each $k, $v in abs.$space-dict {
+  @include m.make-class('space-y-#{$k}') {
+    & > :not([hidden]) ~ :not([hidden]) {
+      margin-top: $v;
+    }
+  }
+}
+
+@each $k, $v in abs.$space-dict {
   @include m.make-class('gap-#{$k}') {
     gap: $v;
   }
@@ -93,4 +101,8 @@
 
 @include m.make-class('h-full') {
   height: 100%;
+}
+
+@include m.make-class('w-full') {
+  width: 100%;
 }
