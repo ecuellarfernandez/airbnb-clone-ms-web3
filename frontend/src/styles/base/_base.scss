@@ -1,0 +1,50 @@
+@font-face {
+  font-family: 'Coolvetica';
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+  src: url('../../assets/fonts/coolvetica.woff2') format('woff2'),
+    url('../../assets/fonts/coolvetica.woff') format('woff');
+}
+
+html {
+  font-size: 16px;
+}
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  color: var(--text);
+  background-color: var(--bg);
+  line-height: var(--lh-normal);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: var(--font-display);
+  line-height: var(--lh-tight);
+  margin: 0 0 0.5em;
+  font-weight: 300;
+}
+h1 {
+  font-size: var(--fs-h1);
+}
+h2 {
+  font-size: var(--fs-h2);
+}
+h3 {
+  font-size: var(--fs-h3);
+}
+
+a {
+  color: var(--brand-primary);
+  text-decoration: none;
+}
+a:hover {
+  text-decoration: underline;
+}
