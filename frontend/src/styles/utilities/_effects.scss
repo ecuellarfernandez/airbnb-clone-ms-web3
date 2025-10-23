@@ -35,3 +35,25 @@
 @include m.make-class('shadow-xl') {
   box-shadow: 0 20px 25px rgba(0, 0, 0, 0.2);
 }
+
+@include m.make-class('border-none') {
+  border-width: 0;
+  border-style: none;
+}
+@include m.make-class('border-0') {
+  border-width: 0;
+}
+@include m.make-class('border') {
+  border-width: 1px;
+  border-style: solid;
+}
+@include m.make-class('border-2') {
+  border-width: 2px;
+}
+@include m.make-class('border-4') {
+  border-width: 4px;
+}
+
+@include m.make-class('text-nowrap') {
+  white-space: nowrap;
+}

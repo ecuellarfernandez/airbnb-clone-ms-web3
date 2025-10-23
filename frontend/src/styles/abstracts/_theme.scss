@@ -9,7 +9,7 @@
   --brand-on-primary: #{c.$brand-on-primary};
   --brand-ring: #{c.$brand-ring};
   --brand-primary: #{c.$brand-primary-500};
-  
+
   --brand-secondary: #{c.$brand-secondary-500};
   --brand-secondary-hover: #{c.$brand-secondary-600};
   --brand-secondary-active: #{c.$brand-secondary-700};
@@ -39,6 +39,7 @@
   --surface: #{c.$color-surface-light};
   --surface-2: #{c.$color-surface-2};
   --surface-3: #{c.$color-surface-3};
+  --title: #{c.$color-title-light};
   --text: #{c.$color-text-light};
   --text-2: #{c.$color-text-2-light};
   --text-3: #{c.$color-text-3-light};
@@ -97,6 +98,7 @@
     --surface: #{c.$color-surface-dark};
     --surface-2: #{c.$color-surface-dark-2};
     --surface-3: #{c.$color-surface-dark-3};
+    --title: #{c.$color-title-dark};
     --text: #{c.$color-text-dark};
     --text-2: #{c.$color-text-2-dark};
     --text-3: #{c.$color-text-3-dark};
@@ -114,6 +116,7 @@
   --surface: #{c.$color-surface-dark};
   --surface-2: #{c.$color-surface-dark-2};
   --surface-3: #{c.$color-surface-dark-3};
+  --title: #{c.$color-title-dark};
   --text: #{c.$color-text-dark};
   --text-2: #{c.$color-text-2-dark};
   --text-3: #{c.$color-text-3-dark};

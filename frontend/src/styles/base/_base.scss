@@ -45,19 +45,22 @@ a {
   color: var(--brand-primary);
   text-decoration: none;
 }
-a:hover {
-  text-decoration: underline;
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
 }
 
-form input{
+form input {
   border-radius: var(--radius-pill);
   border: 1px solid var(--border);
   padding: 0.5rem 1rem;
   width: 100%;
 }
 
-.btn, button{
-  width: 100%;
+.btn,
+button {
   border-radius: var(--radius-pill);
   border: none;
   text-align: center;
@@ -67,15 +70,34 @@ form input{
   transition-timing-function: var(--transition-timing-function);
 }
 
-.btn-primary{
+.btn-primary {
   background-color: var(--brand-primary);
   color: var(--brand-on-primary);
 }
 
-.btn:hover, button:hover{
+.btn-secondary {
+  background-color: var(--brand-secondary);
+  color: var(--brand-on-secondary);
+}
+
+.btn:hover,
+button:hover {
   background-color: var(--brand-primary-hover);
   cursor: pointer;
 }
-.btn:active, button:active{
+
+.btn:active,
+button:active {
   outline: 1px solid var(--brand-primary-active);
+}
+
+.btn-secondary:hover,
+button.secondary:hover {
+  background-color: var(--brand-secondary-hover);
+  cursor: pointer;
+}
+
+.btn-secondary:active,
+button.secondary:active {
+  outline: 1px solid var(--brand-secondary-active);
 }
