@@ -66,14 +66,21 @@
   --fs-h3: #{f.$fs-h3};
   --fs-body: #{f.$fs-body};
   --fs-label: #{f.$fs-label};
+  --fs-xs: #{f.$fs-xs};
+  --fs-sm: #{f.$fs-sm};
+  --fs-md: #{f.$fs-md};
+  --fs-lg: #{f.$fs-lg};
+  --fs-xl: #{f.$fs-xl};
 
   --lh-tight: #{f.$lh-tight};
   --lh-normal: #{f.$lh-normal};
 
-  --fw-regular: #{f.$fw-regular};
-  --fw-medium: #{f.$fw-medium};
-  --fw-bold: #{f.$fw-bold};
-  --fw-extrabold: #{f.$fw-extrabold};
+  --fw-light: #{f.$fw-light}; // 200
+  --fw-regular: #{f.$fw-regular}; //300
+  --fw-semibold: #{f.$fw-semibold}; // 400
+  --fw-medium: #{f.$fw-medium}; // 500
+  --fw-bold: #{f.$fw-bold}; // 700
+  --fw-extrabold: #{f.$fw-extrabold}; // 800
 
   --radius-sm: #{u.$radius-sm};
   --radius-md: #{u.$radius-md};
