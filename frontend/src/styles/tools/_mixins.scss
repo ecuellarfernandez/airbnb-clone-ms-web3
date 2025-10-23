@@ -1,0 +1,33 @@
+@use 'sass:map';
+@use '../abstracts' as abs;
+
+@mixin make-class($name) {
+  .#{$name} {
+    @content;
+  }
+  @each $bp, $val in abs.$breakpoints-dict {
+    @media (min-width: $val) {
+      .#{$bp}\:#{$name} {
+        @content;
+      }
+    }
+  }
+}
+
+@mixin state-variants($name) {
+  .hover\:#{$name}:hover {
+    @content;
+  }
+  .focus\:#{$name}:focus-visible {
+    @content;
+  }
+  .active\:#{$name}:active {
+    @content;
+  }
+}
+
+@mixin dark-variant($name) {
+  [data-theme='dark'] .dark\:#{$name} {
+    @content;
+  }
+}

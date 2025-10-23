@@ -1,0 +1,125 @@
+$breakpoints-dict: (
+  sm: 640px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px,
+) !default;
+
+$max-min-widths-dict: (
+  sm: 320px,
+  md: 384px,
+  lg: 512px,
+  xl: 576px,
+  2xl: 672px,
+  3xl: 768px,
+  4xl: 1024px,
+  container: var(--container-max),
+  content: var(--content-max),
+) !default;
+
+$space-dict: (
+  0: 0,
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 0.75rem,
+  4: 1rem,
+  5: 1.25rem,
+  6: 1.5rem,
+  7: 1.75rem,
+  8: 2rem,
+  9: 2.25rem,
+  10: 2.5rem,
+  11: 2.75rem,
+  12: 3rem,
+  16: 4rem,
+  20: 5rem,
+) !default;
+
+$radii-dict: (
+  sm: var(--radius-sm),
+  md: var(--radius-md),
+  lg: var(--radius-lg),
+  xl: var(--radius-xl),
+  pill: var(--radius-pill),
+) !default;
+
+$z-dict: (
+  header: var(--z-header),
+  overlay: var(--z-overlay),
+  dropdown: var(--z-dropdown),
+) !default;
+
+$colors-dict: (
+  brand-primary: var(--brand-primary),
+  on-brand-primary: var(--on-brand-primary),
+  brand-primary-hover: var(--brand-primary-hover),
+  brand-primary-active: var(--brand-primary-active),
+  brand-secondary: var(--brand-secondary),
+  on-brand-secondary: var(--on-brand-secondary),
+  brand-secondary-hover: var(--brand-secondary-hover),
+  brand-secondary-active: var(--brand-secondary-active),
+  accent-pink: var(--accent-pink),
+  accent-teal: var(--accent-teal),
+  accent-amber: var(--accent-amber),
+  accent-violet: var(--accent-violet),
+  bg: var(--bg),
+  surface: var(--surface),
+  surface-2: var(--surface-2),
+  surface-3: var(--surface-3),
+  title: var(--title),
+  1: var(--text),
+  2: var(--text-2),
+  3: var(--text-3),
+  4: var(--text-4),
+  on-surface: var(--text-on-surface),
+  on-surface-2: var(--text-on-surface-2),
+  on-surface-3: var(--text-on-surface-3),
+  border: var(--border),
+  success: var(--success),
+  warning: var(--warning),
+  error: var(--error),
+  info: var(--info),
+  neutral-0: var(--neutral-0),
+  neutral-25: var(--neutral-25),
+  neutral-50: var(--neutral-50),
+  neutral-100: var(--neutral-100),
+  neutral-200: var(--neutral-200),
+  neutral-300: var(--neutral-300),
+  neutral-400: var(--neutral-400),
+  neutral-500: var(--neutral-500),
+  neutral-600: var(--neutral-600),
+  neutral-700: var(--neutral-700),
+  neutral-800: var(--neutral-800),
+  neutral-900: var(--neutral-900),
+  neutral-950: var(--neutral-950),
+) !default;
+
+$font-family-dict: (
+  display: var(--font-display),
+  body: var(--font-body),
+) !default;
+
+$font-size-dict: (
+  h1: var(--fs-h1),
+  h2: var(--fs-h2),
+  h3: var(--fs-h3),
+  body: var(--fs-body),
+  label: var(--fs-label),
+) !default;
+
+$line-height-dict: (
+  lh-tight: var(--lh-tight),
+  lh-normal: var(--lh-normal),
+) !default;
+
+$font-weight-dict: (
+  fw-regular: var(--fw-regular),
+  fw-medium: var(--fw-medium),
+  fw-bold: var(--fw-bold),
+  fw-extrabold: var(--fw-extrabold),
+) !default;
+
+$rings: (
+  primary: var(--brand-ring),
+  secondary: var(--brand-ring-secondary),
+) !default;

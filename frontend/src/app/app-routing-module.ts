@@ -1,18 +1,23 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { AppShellComponent } from './core/layout/app-shell/app-shell.component';
 
 const routes: Routes = [
   {
-    path: 'auth',
-    loadChildren: () =>
-      import('./user-management/user-management-module').then((m) => m.UserManagementModule),
+    path: 'listings',
+    component: AppShellComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./listings/listings-module').then(m => m.ListingsModule),
+      },
+      { path: '', pathMatch: 'full', redirectTo: 'listings' }
+    ],
   },
   {
-    path: 'accommodations',
-    loadChildren: () => import('./listings/listings-module').then((m) => m.ListingsModule),
-  },
-  { path: '', pathMatch: 'full', redirectTo: 'auth' },
-  { path: '**', redirectTo: 'accommodations' },
+    path: 'auth',
+    loadChildren: () => import('./user-management/user-management-module').then(m=>m.UserManagementModule)
+  }
 ];
 
 @NgModule({

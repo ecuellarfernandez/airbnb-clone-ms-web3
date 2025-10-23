@@ -1,0 +1,22 @@
+@use '../abstracts' as abs;
+@use '../tools/mixins' as m;
+
+@each $k, $v in abs.$max-min-widths-dict {
+  @include m.make-class('max-w-#{$k}') {
+    max-width: $v;
+  }
+}
+
+@each $k, $v in abs.$max-min-widths-dict {
+  @include m.make-class('min-w-#{$k}') {
+    min-width: $v;
+  }
+}
+
+@include m.make-class('h-full') {
+  height: 100%;
+}
+
+@include m.make-class('w-full') {
+  width: 100%;
+}

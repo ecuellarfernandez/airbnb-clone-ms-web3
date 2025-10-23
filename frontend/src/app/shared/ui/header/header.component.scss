@@ -1,0 +1,66 @@
+// Estilos específicos para el header estilo Airbnb
+
+// Animación suave para los enlaces de navegación
+.nav-link {
+  position: relative;
+  
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--brand-primary);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+  }
+  
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+// Efecto hover para el logo
+.logo-container {
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.2s ease;
+  }
+}
+
+// Efecto hover para el menú de usuario
+.user-menu {
+  &:hover {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transform: translateY(-1px);
+  }
+}
+
+// Botón de anfitrión
+.host-button {
+  &:hover {
+    background-color: var(--surface-2);
+  }
+}
+
+// Responsividad
+@media (max-width: 768px) {
+  .mobile-menu {
+    display: block;
+  }
+  
+  .desktop-nav {
+    display: none;
+  }
+}
+
+@media (min-width: 769px) {
+  .mobile-menu {
+    display: none;
+  }
+  
+  .desktop-nav {
+    display: flex;
+  }
+}
