@@ -5,23 +5,22 @@
     <form action="#" method="POST" class="space-y-7">
       <div class="space-y-1">
         <label for="email" class="text-on-surface fs-label">Email address</label>
-          <input
+        <input
           class="bg-surface-2 text-on-surface-2 w-full"
-            id="email"
-            type="email"
-            name="email"
-            required
-            placeholder="Enter your mail"
-            autocomplete="email"
-          />
+          id="email"
+          type="email"
+          name="email"
+          required
+          placeholder="Enter your mail"
+          autocomplete="email"
+        />
       </div>
 
       <div>
         <div class="space-y-1">
           <label for="password" class="text-on-surface fs-label">Password</label>
-            <input
-          class="bg-surface-2
-          text-on-surface-2 w-full"
+          <input
+            class="bg-surface-2 text-on-surface-2 w-full"
             id="password"
             type="password"
             name="password"
@@ -33,11 +32,11 @@
       </div>
 
       <div>
-        <button class="btn-primary" type="submit">Login</button>
+        <button class="btn-primary w-full" type="submit">Login</button>
       </div>
     </form>
 
-    <p class="mt-10 text-center text-sm/6 text-on-surface">
+    <p class="mt-10 text-center text-on-surface fs-label">
       Not a member?
       <a routerLink="/auth/register"> Create an account </a>
     </p>
