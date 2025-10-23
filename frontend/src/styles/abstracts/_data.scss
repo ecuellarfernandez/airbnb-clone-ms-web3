@@ -5,7 +5,7 @@ $breakpoints-dict: (
   xl: 1280px,
 ) !default;
 
-$max-min-widths-dict: (
+$max-min-widths-heights-dict: (
   sm: 320px,
   md: 384px,
   lg: 512px,
@@ -105,6 +105,11 @@ $font-size-dict: (
   h3: var(--fs-h3),
   body: var(--fs-body),
   label: var(--fs-label),
+  xs: var(--fs-xs),
+  sm: var(--fs-sm),
+  md: var(--fs-md),
+  lg: var(--fs-lg),
+  xl: var(--fs-xl),
 ) !default;
 
 $line-height-dict: (
@@ -113,10 +118,12 @@ $line-height-dict: (
 ) !default;
 
 $font-weight-dict: (
-  fw-regular: var(--fw-regular),
-  fw-medium: var(--fw-medium),
-  fw-bold: var(--fw-bold),
-  fw-extrabold: var(--fw-extrabold),
+  light: var(--fw-light),
+  regular: var(--fw-regular),
+  semibold: var(--fw-semibold),
+  medium: var(--fw-medium),
+  bold: var(--fw-bold),
+  extrabold: var(--fw-extrabold),
 ) !default;
 
 $rings: (

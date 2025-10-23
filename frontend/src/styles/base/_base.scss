@@ -1,10 +1,25 @@
 @font-face {
-  font-family: 'Coolvetica';
-  font-weight: 300;
+  font-family: 'Airbbcitos';
   font-style: normal;
   font-display: swap;
-  src: url('../../assets/fonts/coolvetica.woff2') format('woff2'),
-    url('../../assets/fonts/coolvetica.woff') format('woff');
+  font-weight: 200;
+  src: url('../../assets/fonts/airbbcitos-cereal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Airbbcitos';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 500;
+  src: url('../../assets/fonts/airbbcitos-cereal-md.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Airbbcitos';
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url('../../assets/fonts/airbbcitos-cereal-bold.woff2') format('woff2');
 }
 
 html {
@@ -21,16 +36,28 @@ body {
 }
 
 h1,
+h2 {
+  font-weight: var(--fw-bold);
+}
+
+h3,
+h4,
+h5,
+h6 {
+  line-height: var(--lh-tight);
+  font-weight: var(--fw-medium);
+  margin: 0 0 0.5em;
+}
+
+h1,
 h2,
 h3,
 h4,
 h5,
 h6 {
   font-family: var(--font-display);
-  line-height: var(--lh-tight);
-  margin: 0 0 0.5em;
-  font-weight: 300;
 }
+
 h1 {
   font-size: var(--fs-h1);
 }
