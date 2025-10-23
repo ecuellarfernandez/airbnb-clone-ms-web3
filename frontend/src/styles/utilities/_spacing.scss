@@ -1,0 +1,98 @@
+@use '../abstracts' as abs;
+@use '../tools/mixins' as m;
+
+@each $k, $v in abs.$space-dict {
+  @include m.make-class('p-#{$k}') {
+    padding: $v;
+  }
+  @include m.make-class('px-#{$k}') {
+    padding-inline: $v;
+  }
+  @include m.make-class('py-#{$k}') {
+    padding-block: $v;
+  }
+  @include m.make-class('pt-#{$k}') {
+    padding-top: $v;
+  }
+  @include m.make-class('pr-#{$k}') {
+    padding-right: $v;
+  }
+  @include m.make-class('pb-#{$k}') {
+    padding-bottom: $v;
+  }
+  @include m.make-class('pl-#{$k}') {
+    padding-left: $v;
+  }
+}
+
+@each $k, $v in abs.$space-dict {
+  @include m.make-class('m-#{$k}') {
+    margin: $v;
+  }
+  @include m.make-class('mx-#{$k}') {
+    margin-inline: $v;
+  }
+  @include m.make-class('my-#{$k}') {
+    margin-block: $v;
+  }
+  @include m.make-class('mt-#{$k}') {
+    margin-top: $v;
+  }
+  @include m.make-class('mr-#{$k}') {
+    margin-right: $v;
+  }
+  @include m.make-class('mb-#{$k}') {
+    margin-bottom: $v;
+  }
+  @include m.make-class('ml-#{$k}') {
+    margin-left: $v;
+  }
+
+  @include m.make-class('-m-#{$k}') {
+    margin: -$v;
+  }
+  @include m.make-class('-mx-#{$k}') {
+    margin-inline: -$v;
+  }
+  @include m.make-class('-my-#{$k}') {
+    margin-block: -$v;
+  }
+  @include m.make-class('-mt-#{$k}') {
+    margin-top: -$v;
+  }
+  @include m.make-class('-mr-#{$k}') {
+    margin-right: -$v;
+  }
+  @include m.make-class('-mb-#{$k}') {
+    margin-bottom: -$v;
+  }
+  @include m.make-class('-ml-#{$k}') {
+    margin-left: -$v;
+  }
+}
+
+@include m.make-class('mx-auto') {
+  margin-inline: auto;
+}
+
+@each $k, $v in abs.$space-dict {
+  @include m.make-class('space-x-#{$k}') {
+    & > :not([hidden]) ~ :not([hidden]) {
+      margin-left: $v;
+    }
+  }
+}
+
+@each $k, $v in abs.$space-dict {
+  @include m.make-class('space-y-#{$k}') {
+    & > :not([hidden]) ~ :not([hidden]) {
+      margin-top: $v;
+    }
+  }
+}
+
+@each $k, $v in abs.$space-dict {
+  @include m.make-class('gap-#{$k}') {
+    gap: $v;
+  }
+}

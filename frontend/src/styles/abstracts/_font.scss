@@ -1,0 +1,17 @@
+$font-root: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+$font-display: 'Coolvetica', #{$font-root};
+$font-body: 'Inter', #{$font-root};
+
+$fs-h1: clamp(2.5rem, 6vw, 4.5rem);
+$fs-h2: clamp(1.5rem, 3vw, 2.5rem);
+$fs-h3: clamp(1.25rem, 2.2vw, 1.75rem);
+$fs-body: 1rem;
+$fs-label: 0.8125rem;
+
+$lh-tight: 1.1;
+$lh-normal: 1.5;
+
+$fw-regular: 300;
+$fw-medium: 500;
+$fw-bold: 700;
+$fw-extrabold: 800;

@@ -1,4 +1,17 @@
-@use 'abstracts/tokens';
+@use './abstracts/theme';
+
+@use './base/reset';
+@use './base/base';
+
+@use './utilities/colors';
+@use './utilities/typography';
+@use './utilities/effects';
+@use './utilities/spacing';
+@use './utilities/sizing';
+@use './utilities/layout';
+
+/* 
+@use './abstracts/theme';
 
 @tailwind base;
 @tailwind components;
@@ -7,14 +20,7 @@
 @layer base, components, utilities;
 
 @layer base {
-  @font-face {
-    font-family: 'Coolvetica';
-    font-weight: 200;
-    font-style: normal;
-    font-display: swap;
-    src: url('../assets/fonts/coolvetica.woff2') format('woff2'),
-      url('../assets/fonts/coolvetica.woff') format('woff');
-  }
+  
 
   body {
     @apply font-body bg-bg text-on-bg;
@@ -80,3 +86,4 @@
     @apply grid place-content-center h-[100vh];
   }
 }
+*/

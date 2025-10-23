@@ -1,0 +1,105 @@
+@use '../abstracts' as abs;
+@use '../tools/mixins' as m;
+
+@include m.make-class('block') {
+  display: block;
+}
+@include m.make-class('inline-block') {
+  display: inline-block;
+}
+@include m.make-class('inline') {
+  display: inline;
+}
+@include m.make-class('flex') {
+  display: flex;
+}
+@include m.make-class('grid') {
+  display: grid;
+}
+@include m.make-class('flex-col') {
+  flex-direction: column;
+}
+@include m.make-class('flex-row') {
+  flex-direction: row;
+}
+@include m.make-class('flex-wrap') {
+  flex-wrap: wrap;
+}
+@include m.make-class('flex-nowrap') {
+  flex-wrap: nowrap;
+}
+@include m.make-class('flex-wrap-reverse') {
+  flex-wrap: wrap-reverse;
+}
+@include m.make-class('flex-grow') {
+  flex-grow: 1;
+}
+@include m.make-class('flex-shrink') {
+  flex-shrink: 1;
+}
+@include m.make-class('flex-none') {
+  flex-shrink: 0;
+}
+@include m.make-class('flex-1') {
+  flex: 1;
+}
+
+@include m.make-class('items-baseline') {
+  align-items: baseline;
+}
+@include m.make-class('items-stretch') {
+  align-items: stretch;
+}
+@include m.make-class('items-flex-start') {
+  align-items: flex-start;
+}
+@include m.make-class('items-center') {
+  align-items: center;
+}
+@include m.make-class('items-start') {
+  align-items: flex-start;
+}
+@include m.make-class('items-end') {
+  align-items: flex-end;
+}
+@include m.make-class('justify-center') {
+  justify-content: center;
+}
+@include m.make-class('justify-between') {
+  justify-content: space-between;
+}
+@include m.make-class('justify-start') {
+  justify-content: flex-start;
+}
+@include m.make-class('justify-end') {
+  justify-content: flex-end;
+}
+
+@include m.make-class('grid-cols-2') {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@include m.make-class('grid-cols-3') {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+@include m.make-class('grid-cols-4') {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+@include m.make-class('grid-cols-5') {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+@include m.make-class('container') {
+  max-width: var(--container-max);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
+@include m.make-class('container-center-grid') {
+  display: grid;
+  place-content: center;
+  height: 100vh;
+}
+
+@include m.make-class('text-center') {
+  text-align: center;
+}
