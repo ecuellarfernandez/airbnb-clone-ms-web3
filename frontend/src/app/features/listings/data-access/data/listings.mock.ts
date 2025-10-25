@@ -1,4 +1,4 @@
-import { Listing } from '../models/listing.model';
+import { Listing } from '@listings/data-access/models/listing.model';
 
 export const LISTINGS_MOCK: Listing[] = [
     {

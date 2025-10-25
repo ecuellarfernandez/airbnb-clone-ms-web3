@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { AccommodationsService, Filters } from '../../data-access/services/accommodations.api';
-import { ListingCardComponent } from '@app/listings/ui/listing-card/listing-card.component';
-import { Listing } from '@app/listings/data-access/models/listing.model';
+import { AccommodationsService, Filters } from '@listings/data-access/services/accommodations.api';
+import { ListingCardComponent } from '@listings/components/listing-card/listing-card.component';
+import { Listing } from '@listings/data-access/models/listing.model';
 
 @Component({
   selector: 'app-accommodations-page',
