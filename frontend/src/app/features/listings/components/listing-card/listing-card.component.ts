@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { Listing } from '../../data-access/models/listing.model';
+import { Listing } from '@listings/data-access/models/listing.model';
 
 @Component({
   selector: 'app-listing-card',

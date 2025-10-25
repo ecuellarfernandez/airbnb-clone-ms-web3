@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { LISTINGS_MOCK } from '../data/listings.mock';
-import { Listing } from '../models/listing.model';
+import { LISTINGS_MOCK } from '@listings/data-access/data/listings.mock';
+import { Listing } from '@listings/data-access/models/listing.model';
 
 export interface Filters {
   city: string;

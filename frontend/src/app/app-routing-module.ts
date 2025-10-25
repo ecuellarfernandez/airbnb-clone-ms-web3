@@ -9,14 +9,14 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./listings/listings-module').then(m => m.ListingsModule),
+        loadChildren: () => import('@listings/listings-module').then(m => m.ListingsModule),
       },
       { path: '', pathMatch: 'full', redirectTo: 'listings' }
     ],
   },
   {
     path: 'auth',
-    loadChildren: () => import('./user-management/user-management-module').then(m=>m.UserManagementModule)
+    loadChildren: () => import('./features/auth/auth-module').then(m=>m.AuthModule)
   }
 ];
 

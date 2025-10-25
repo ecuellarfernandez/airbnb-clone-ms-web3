@@ -10,7 +10,6 @@
 @each $name, $val in abs.$font-size-dict {
   @include m.make-class('fs-#{$name}') {
     font-size: #{$val};
-    line-height: normal;
   }
 }
 
@@ -24,4 +23,8 @@
   @include m.make-class('fw-#{$name}') {
     font-weight: #{$val};
   }
+}
+
+@include m.make-class('text-nowrap') {
+  white-space: nowrap;
 }
