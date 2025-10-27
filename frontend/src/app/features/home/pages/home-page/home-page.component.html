@@ -1,0 +1,482 @@
+<div class="space-y-5">
+  <!-- Section Santa Cruz -->
+  <section class="space-y-3">
+
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <h2 class="fs-md mr-2">Alojamientos populares en Santa Cruz de la Sierra</h2>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+          role="presentation"
+          focusable="false"
+          style="
+          display: block;
+          fill: none;
+          height: 12px;
+          width: 12px;
+          stroke: currentcolor;
+          stroke-width: 5.33333;
+          overflow: visible;
+        "
+        >
+          <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+        </svg>
+      </div>
+      <div class="flex gap-2">
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m20 4-11.3 11.3a1 1 0 0 1 0 1.4L20 28"></path>
+          </svg>
+        </button>
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-7"
+      aria-label="Listings results"
+    >
+
+      <article
+        *ngFor="let listing of santaCruzListings"
+        class="flex flex-col bg-surface text-on-surface h-full overflow-hidden drop-shadow-xl pointer"
+      >
+        <img [src]="listing.image" class="aspect-square object-cover rounded-md" />
+
+        <div class="flex flex-col h-full justify-start mt-2">
+          <div class="flex justify-between items-center mt-1">
+            <h3 class="text-title m-0 fs-sm">{{ listing.title }}</h3>
+          </div>
+
+          <div class="text-2 fs-xs">
+            Bs {{ listing.price }} <small>/noche</small> ·
+            <small>{{ listing.capacity }} personas</small>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Termina section santa Cruz -->
+
+  <!-- Section Tarija -->
+  <section class="space-y-3">
+
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <h2 class="fs-md mr-2">Alojamientos populares en Tarija</h2>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+          role="presentation"
+          focusable="false"
+          style="
+          display: block;
+          fill: none;
+          height: 12px;
+          width: 12px;
+          stroke: currentcolor;
+          stroke-width: 5.33333;
+          overflow: visible;
+        "
+        >
+          <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+        </svg>
+      </div>
+      <div class="flex gap-2">
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m20 4-11.3 11.3a1 1 0 0 1 0 1.4L20 28"></path>
+          </svg>
+        </button>
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-7"
+      aria-label="Listings results"
+    >
+
+      <article
+        *ngFor="let listing of tarijaListings"
+        class="flex flex-col bg-surface text-on-surface h-full overflow-hidden drop-shadow-xl pointer"
+      >
+        <img [src]="listing.image" class="aspect-square object-cover rounded-md" />
+
+        <div class="flex flex-col h-full justify-start mt-2">
+          <div class="flex justify-between items-center mt-1">
+            <h3 class="text-title m-0 fs-sm">{{ listing.title }}</h3>
+          </div>
+
+          <div class="text-2 fs-xs">
+            Bs {{ listing.price }} <small>/noche</small> ·
+            <small>{{ listing.capacity }} personas</small>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Termina section Tarija -->
+
+  <!-- Section Sucre -->
+  <section class="space-y-3">
+
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <h2 class="fs-md mr-2">Alojamientos populares en Sucre</h2>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+          role="presentation"
+          focusable="false"
+          style="
+          display: block;
+          fill: none;
+          height: 12px;
+          width: 12px;
+          stroke: currentcolor;
+          stroke-width: 5.33333;
+          overflow: visible;
+        "
+        >
+          <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+        </svg>
+      </div>
+      <div class="flex gap-2">
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m20 4-11.3 11.3a1 1 0 0 1 0 1.4L20 28"></path>
+          </svg>
+        </button>
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-7"
+      aria-label="Listings results"
+    >
+
+      <article
+        *ngFor="let listing of sucreListings"
+        class="flex flex-col bg-surface text-on-surface h-full overflow-hidden drop-shadow-xl pointer"
+      >
+        <img [src]="listing.image" class="aspect-square object-cover rounded-md" />
+
+        <div class="flex flex-col h-full justify-start mt-2">
+          <div class="flex justify-between items-center mt-1">
+            <h3 class="text-title m-0 fs-sm">{{ listing.title }}</h3>
+          </div>
+
+          <div class="text-2 fs-xs">
+            Bs {{ listing.price }} <small>/noche</small> ·
+            <small>{{ listing.capacity }} personas</small>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Termina section Sucre -->
+
+  <!-- Section La Paz -->
+  <section class="space-y-3">
+
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <h2 class="fs-md mr-2">Alojamientos populares en La Paz</h2>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+          role="presentation"
+          focusable="false"
+          style="
+          display: block;
+          fill: none;
+          height: 12px;
+          width: 12px;
+          stroke: currentcolor;
+          stroke-width: 5.33333;
+          overflow: visible;
+        "
+        >
+          <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+        </svg>
+      </div>
+      <div class="flex gap-2">
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m20 4-11.3 11.3a1 1 0 0 1 0 1.4L20 28"></path>
+          </svg>
+        </button>
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-7"
+      aria-label="Listings results"
+    >
+
+      <article
+        *ngFor="let listing of laPazListings"
+        class="flex flex-col bg-surface text-on-surface h-full overflow-hidden drop-shadow-xl pointer"
+      >
+        <img [src]="listing.image" class="aspect-square object-cover rounded-md" />
+
+        <div class="flex flex-col h-full justify-start mt-2">
+          <div class="flex justify-between items-center mt-1">
+            <h3 class="text-title m-0 fs-sm">{{ listing.title }}</h3>
+          </div>
+
+          <div class="text-2 fs-xs">
+            Bs {{ listing.price }} <small>/noche</small> ·
+            <small>{{ listing.capacity }} personas</small>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Termina section La Paz -->
+
+  <!-- Section Cochabamba -->
+  <section class="space-y-3">
+
+    <div class="flex items-center justify-between">
+      <div class="flex items-center">
+        <h2 class="fs-md mr-2">Alojamientos populares en Cochabamba</h2>
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 32 32"
+          aria-hidden="true"
+          role="presentation"
+          focusable="false"
+          style="
+          display: block;
+          fill: none;
+          height: 12px;
+          width: 12px;
+          stroke: currentcolor;
+          stroke-width: 5.33333;
+          overflow: visible;
+        "
+        >
+          <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+        </svg>
+      </div>
+      <div class="flex gap-2">
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m20 4-11.3 11.3a1 1 0 0 1 0 1.4L20 28"></path>
+          </svg>
+        </button>
+        <button class="w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 32 32"
+            aria-hidden="true"
+            role="presentation"
+            focusable="false"
+            style="
+            display: block;
+            fill: none;
+            height: 12px;
+            width: 12px;
+            stroke: currentcolor;
+            stroke-width: 5.33333;
+            overflow: visible;
+          "
+          >
+            <path fill="none" d="m12 4 11.3 11.3a1 1 0 0 1 0 1.4L12 28"></path>
+          </svg>
+        </button>
+      </div>
+    </div>
+    <div
+      class="grid gap-4 grid-cols-2 md:grid-cols-3 lg:grid-cols-6 xl:grid-cols-7"
+      aria-label="Listings results"
+    >
+
+      <article
+        *ngFor="let listing of cochabambaListings"
+        class="flex flex-col bg-surface text-on-surface h-full overflow-hidden drop-shadow-xl pointer"
+      >
+        <img [src]="listing.image" class="aspect-square object-cover rounded-md" />
+
+        <div class="flex flex-col h-full justify-start mt-2">
+          <div class="flex justify-between items-center mt-1">
+            <h3 class="text-title m-0 fs-sm">{{ listing.title }}</h3>
+          </div>
+
+          <div class="text-2 fs-xs">
+            Bs {{ listing.price }} <small>/noche</small> ·
+            <small>{{ listing.capacity }} personas</small>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- Termina section Cochabamba -->
+
+</div>
