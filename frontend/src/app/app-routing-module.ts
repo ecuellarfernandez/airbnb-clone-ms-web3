@@ -4,6 +4,16 @@ import { AppShellComponent } from './core/layout/app-shell/app-shell.component';
 
 const routes: Routes = [
   {
+    path: '',
+    component: AppShellComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () => import('./features/home/home-module').then(m => m.HomeModule),
+      }
+        ],
+  },
+  {
     path: 'listings',
     component: AppShellComponent,
     children: [
