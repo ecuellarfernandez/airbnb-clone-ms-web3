@@ -1,3 +1,4 @@
+// Neutral colors - Escala de grises base
 $neutral-0: #ffffff;
 $neutral-25: #fcfcfd;
 $neutral-50: #f6f6f8;
@@ -9,64 +10,38 @@ $neutral-500: #6b7280;
 $neutral-600: #4b5563;
 $neutral-700: #374151;
 $neutral-800: #1f2937;
-$neutral-900: #111121;
+$neutral-900: #11181f;
 $neutral-950: #0b0f14;
 
-$brand-primary-500: #1b1bfd;
-$brand-primary-600: #1111aa;
-$brand-primary-700: #0e0e82;
+// Brand colors
+$brand-primary-500: #ff385c;
+$brand-primary-600: #dc0e63;
+$brand-primary-700: #910a3e;
 $brand-on-primary: $neutral-50;
 $brand-ring: #c7d2fe;
 
+// Brand colors
 $brand-secondary-500: #991dff;
 $brand-secondary-600: #6612a7;
 $brand-secondary-700: #2d0849;
 $brand-on-secondary: $neutral-50;
 $brand-secondary-ring: #e9d5ff;
 
+// Accent colors
 $accent-pink: #fb7185;
 $accent-teal: #2dd4bf;
 $accent-amber: #f59e0b;
 $accent-violet: #a78bfa;
 
-$color-bg-light: $neutral-50;
-$color-surface-light: $neutral-0;
-$color-surface-2: $neutral-100;
-$color-surface-3: $neutral-200;
-$color-text-light: #111a2c;
-$color-text-2-light: #334155;
-$color-text-3-light: #64748b;
-$color-text-4-light: #475569;
-$color-title-light: #0f172a;
-$color-text-on-surface-light: #111a2c;
-$color-text-on-surface-2-light: #1f2937;
-$color-text-on-surface-3-light: #374151;
-$color-border-light: #e5e7eb;
-
-$color-bg-dark: $neutral-900;
-$color-surface-dark: #181828;
-$color-surface-dark-2: $neutral-800;
-$color-surface-dark-3: $neutral-600;
-$color-text-dark: #f8fafc;
-$color-text-2-dark: $neutral-400;
-$color-text-3-dark: $neutral-500;
-$color-text-4-dark: $neutral-300;
-$color-title-dark: #ffffff;
-$color-text-on-surface-dark: $neutral-300;
-$color-text-on-surface-2-dark: $neutral-400;
-$color-text-on-surface-3-dark: $neutral-500;
-$color-border-dark: #3a3f52;
-
+// State colors
 $state-success: #16a34a;
 $state-warning: #f59e0b;
 $state-error: #ef4444;
 $state-info: #0ea5e9;
 
+// Overlay & Glass effects
 $overlay-40: rgba(0, 0, 0, 0.4);
 $overlay-60: rgba(0, 0, 0, 0.6);
 $glass-light: rgba(255, 255, 255, 0.1);
 $glass-dark: rgba(0, 0, 0, 0.2);
 
-@function color($key) {
-  @return map.get($colors, $key);
-}
