@@ -1,3 +1,11 @@
 :host {
   @apply block max-w-container mx-auto py-6 px-5;
 }
+
+.map-container{
+  position: relative;
+}
+.map-container-fixed{
+  position: fixed;
+  width: 40%;
+}

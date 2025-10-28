@@ -9,7 +9,6 @@ import { NavLink } from '@ui/header/header.component';
 })
 export class AppShellComponent {
   links: NavLink[] = [
-    { label: 'Home', path: '/' },
-    { label: 'Accommodations', path: '/accommodations' },
+    { label: 'Alojamientos', path: '/listings' },
   ];
 }

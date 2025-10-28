@@ -29,6 +29,12 @@
   }
 }
 
+@each $k, $v in abs.$screens-height-dict {
+  @include m.make-class('h-screen-#{$k}') {
+    height: $v;
+  }
+}
+
 @include m.make-class('max-h-screen') {
   max-height: 100vh;
 }
