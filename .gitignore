@@ -67,6 +67,8 @@ __pycache__/
 *.pdb
 **/venv/
 **/.venv/
+**/*.sqlite3
+**/*.sqlite
 
 #adaptar para carpetas de servicios..............................
 HELP.md
