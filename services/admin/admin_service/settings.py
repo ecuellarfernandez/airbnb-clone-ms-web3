@@ -41,6 +41,11 @@ INSTALLED_APPS = [
     'audit_logs',
 ]
 
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS' : 'audit_logs.paginators.audit_log_paginator.AuditLogResponsePaginator',
+    'PAGE_SIZE': 20,
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
