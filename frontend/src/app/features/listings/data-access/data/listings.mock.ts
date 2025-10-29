@@ -8,7 +8,13 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 100,
     capacity: 2,
     description: 'Near restaurants and nightlife. Pool and gym.',
-    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d52?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 4,
@@ -17,7 +23,13 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 160,
     capacity: 4,
     description: 'Escape the noise, amazing views.',
-    image: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d52?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1481277542470-605612bd2d61?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 5,
@@ -26,7 +38,13 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 110,
     capacity: 3,
     description: 'Open space with lots of light.',
-    image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1521783593447-5702fcdac70a?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 6,
@@ -35,16 +53,26 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 60,
     capacity: 1,
     description: 'Affordable for backpackers.',
-    image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d52?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1481277542470-605612bd2d61?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
-  {
+   {
     id: 7,
     title: 'Penthouse with view',
     city: 'La Paz',
     price: 300,
     capacity: 4,
     description: 'Panoramic terrace and jacuzzi.',
-    image: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1521783593447-5702fcdac70a?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 9,
@@ -53,16 +81,26 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 85,
     capacity: 2,
     description: 'Ideal for work trips.',
-    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1521783593447-5702fcdac70a?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
-  {
+   {
     id: 11,
     title: 'Eco lodge in the valley',
     city: 'Cochabamba',
     price: 200,
     capacity: 6,
     description: 'Surrounded by nature and hiking trails.',
-    image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1481277542470-605612bd2d61?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 12,
@@ -71,7 +109,12 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 130,
     capacity: 3,
     description: 'Next to the main square and coffee shops.',
-    image: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1521783593447-5702fcdac70a?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 13,
@@ -80,7 +123,12 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 250,
     capacity: 5,
     description: 'Private cabin with hot tub and fireplace.',
-    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 14,
@@ -89,7 +137,12 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 70,
     capacity: 2,
     description: 'Local design, shared kitchen and terrace.',
-    image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1521783593447-5702fcdac70a?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 15,
@@ -98,7 +151,13 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 450,
     capacity: 8,
     description: 'Private pool, BBQ area, and large garden.',
-    image: 'https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d52?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 16,
@@ -107,7 +166,12 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 150,
     capacity: 2,
     description: 'Romantic getaway surrounded by vineyards.',
-    image: 'https://images.unsplash.com/photo-1534996858221-380b92700493?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1534996858221-380b92700493?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1521783593447-5702fcdac70a?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 17,
@@ -116,7 +180,11 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 95,
     capacity: 3,
     description: 'Restored colonial suite with balcony view.',
-    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 18,
@@ -125,7 +193,11 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 105,
     capacity: 2,
     description: 'Perfect for business trips, fast WiFi included.',
-    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d52?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 19,
@@ -134,7 +206,11 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 55,
     capacity: 1,
     description: 'Simple and central, ideal for short stays.',
-    image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 20,
@@ -143,7 +219,12 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 170,
     capacity: 3,
     description: 'Exclusive decor and excellent service.',
-    image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1570129477492-45c003edd2be?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
 
   /* --- Nuevos: SANTA CRUZ (total 7) --- */
@@ -154,7 +235,12 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 140,
     capacity: 2,
     description: 'Zona Las Palmas: ideal para trabajo, cerca de bancos y cafés.',
-    image: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1521783593447-5702fcdac70a?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 22,
@@ -163,7 +249,13 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 260,
     capacity: 6,
     description: 'Urbanización tranquila en Urubó, con piscina y parrillero.',
-    image: 'https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1599423300746-b62533397364?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d52?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
   {
     id: 23,
@@ -172,7 +264,11 @@ export const LISTINGS_MOCK: Listing[] = [
     price: 120,
     capacity: 2,
     description: 'En el Casco Viejo, a pasos de la plaza principal.',
-    image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop'
+    image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1501045661006-fcebe0257c3f?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1524758631624-e2822e304c36?q=80&w=1200&auto=format&fit=crop'
+    ]
   },
 
   /* --- Nuevos: TARIJA (total 7) --- */

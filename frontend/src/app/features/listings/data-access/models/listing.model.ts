@@ -6,4 +6,5 @@ export interface Listing {
     capacity: number;  
     description: string;
     image: string;
+    photos?: string[];
 }
