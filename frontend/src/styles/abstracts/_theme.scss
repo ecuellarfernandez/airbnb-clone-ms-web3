@@ -35,24 +35,46 @@
   --accent-amber: #{c.$accent-amber};
   --accent-violet: #{c.$accent-violet};
 
-  --bg: #{c.$color-bg-light};
-  --surface: #{c.$color-surface-light};
-  --surface-2: #{c.$color-surface-2};
-  --surface-3: #{c.$color-surface-3};
-  --title: #{c.$color-title-light};
-  --text: #{c.$color-text-light};
-  --text-2: #{c.$color-text-2-light};
-  --text-3: #{c.$color-text-3-light};
-  --text-4: #{c.$neutral-600};
-  --text-on-surface: #{c.$color-text-on-surface-light};
-  --text-on-surface-2: #{c.$color-text-on-surface-2-light};
-  --text-on-surface-3: #{c.$color-text-on-surface-3-light};
-  --border: #{c.$color-border-light};
+  --state-success: #{c.$state-success};
+  --state-warning: #{c.$state-warning};
+  --state-error: #{c.$state-error};
+  --state-info: #{c.$state-info};
 
-  --success: #{c.$state-success};
-  --warning: #{c.$state-warning};
-  --error: #{c.$state-error};
-  --info: #{c.$state-info};
+  --bg: #{c.$neutral-100};
+  --bg-hover: #{c.$neutral-200};
+  --surface: #{c.$neutral-50};
+  --surface-hover: #{c.$neutral-100};
+  --surface-2: #{c.$neutral-25};
+  --surface-2-hover: #{c.$neutral-50};
+  --surface-3: #{c.$neutral-0};
+  --surface-3-hover: #{c.$neutral-25};
+  --title: #{c.$neutral-950};
+  --title-hover: #{c.$neutral-900};
+  --text: #{c.$neutral-900};
+  --text-hover: #{c.$neutral-950};
+  --text-2: #{c.$neutral-700};
+  --text-2-hover: #{c.$neutral-800};
+  --text-3: #{c.$neutral-600};
+  --text-3-hover: #{c.$neutral-700};
+  --text-4: #{c.$neutral-500};
+  --text-4-hover: #{c.$neutral-600};
+  --text-on-surface: #{c.$neutral-900};
+  --text-on-surface-hover: #{c.$neutral-950};
+  --text-on-surface-2: #{c.$neutral-800};
+  --text-on-surface-2-hover: #{c.$neutral-900};
+  --text-on-surface-3: #{c.$neutral-700};
+  --text-on-surface-3-hover: #{c.$neutral-800};
+  --border: #{c.$neutral-200};
+
+  --accent-pink-hover: #f43f5e;
+  --accent-teal-hover: #14b8a6;
+  --accent-amber-hover: #d97706;
+  --accent-violet-hover: #8b5cf6;
+
+  --state-success-hover: #15803d;
+  --state-warning-hover: #d97706;
+  --state-error-hover: #dc2626;
+  --state-info-hover: #0284c7;
 
   --overlay-40: #{c.$overlay-40};
   --overlay-60: #{c.$overlay-60};
@@ -101,36 +123,82 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #{c.$color-bg-dark};
-    --surface: #{c.$color-surface-dark};
-    --surface-2: #{c.$color-surface-dark-2};
-    --surface-3: #{c.$color-surface-dark-3};
-    --title: #{c.$color-title-dark};
-    --text: #{c.$color-text-dark};
-    --text-2: #{c.$color-text-2-dark};
-    --text-3: #{c.$color-text-3-dark};
-    --text-4: #{c.$color-text-4-dark};
-    --text-on-surface: #{c.$color-text-on-surface-dark};
-    --text-on-surface-2: #{c.$color-text-on-surface-2-dark};
-    --text-on-surface-3: #{c.$color-text-on-surface-3-dark};
-    --border: #{c.$color-border-dark};
+    --bg: #{c.$neutral-950};
+    --bg-hover: #{c.$neutral-900};
+    --surface: #{c.$neutral-900};
+    --surface-hover: #{c.$neutral-800};
+    --surface-2: #{c.$neutral-800};
+    --surface-2-hover: #{c.$neutral-700};
+    --surface-3: #{c.$neutral-700};
+    --surface-3-hover: #{c.$neutral-600};
+    --title: #{c.$neutral-0};
+    --title-hover: #{c.$neutral-50};
+    --text: #{c.$neutral-50};
+    --text-hover: #{c.$neutral-0};
+    --text-2: #{c.$neutral-200};
+    --text-2-hover: #{c.$neutral-100};
+    --text-3: #{c.$neutral-300};
+    --text-3-hover: #{c.$neutral-200};
+    --text-4: #{c.$neutral-400};
+    --text-4-hover: #{c.$neutral-300};
+    --text-on-surface: #{c.$neutral-100};
+    --text-on-surface-hover: #{c.$neutral-50};
+    --text-on-surface-2: #{c.$neutral-200};
+    --text-on-surface-2-hover: #{c.$neutral-100};
+    --text-on-surface-3: #{c.$neutral-300};
+    --text-on-surface-3-hover: #{c.$neutral-200};
+    --border: #{c.$neutral-800};
+    --border-hover: #{c.$neutral-700};
     --glass: #{c.$glass-dark};
+
+    --accent-pink-hover: #f43f5e;
+    --accent-teal-hover: #14b8a6;
+    --accent-amber-hover: #d97706;
+    --accent-violet-hover: #8b5cf6;
+
+    --state-success-hover: #15803d;
+    --state-warning-hover: #d97706;
+    --state-error-hover: #dc2626;
+    --state-info-hover: #0284c7;
   }
 }
 
 :root[data-theme='dark'] {
-  --bg: #{c.$color-bg-dark};
-  --surface: #{c.$color-surface-dark};
-  --surface-2: #{c.$color-surface-dark-2};
-  --surface-3: #{c.$color-surface-dark-3};
-  --title: #{c.$color-title-dark};
-  --text: #{c.$color-text-dark};
-  --text-2: #{c.$color-text-2-dark};
-  --text-3: #{c.$color-text-3-dark};
-  --text-4: #{c.$color-text-4-dark};
-  --text-on-surface: #{c.$color-text-on-surface-dark};
-  --text-on-surface-2: #{c.$color-text-on-surface-2-dark};
-  --text-on-surface-3: #{c.$color-text-on-surface-3-dark};
-  --border: #{c.$color-border-dark};
+  --bg: #{c.$neutral-950};
+  --bg-hover: #{c.$neutral-900};
+  --surface: #{c.$neutral-900};
+  --surface-hover: #{c.$neutral-800};
+  --surface-2: #{c.$neutral-800};
+  --surface-2-hover: #{c.$neutral-700};
+  --surface-3: #{c.$neutral-700};
+  --surface-3-hover: #{c.$neutral-600};
+  --title: #{c.$neutral-0};
+  --title-hover: #{c.$neutral-50};
+  --text: #{c.$neutral-50};
+  --text-hover: #{c.$neutral-0};
+  --text-2: #{c.$neutral-200};
+  --text-2-hover: #{c.$neutral-100};
+  --text-3: #{c.$neutral-300};
+  --text-3-hover: #{c.$neutral-200};
+  --text-4: #{c.$neutral-400};
+  --text-4-hover: #{c.$neutral-300};
+  --text-on-surface: #{c.$neutral-100};
+  --text-on-surface-hover: #{c.$neutral-50};
+  --text-on-surface-2: #{c.$neutral-200};
+  --text-on-surface-2-hover: #{c.$neutral-100};
+  --text-on-surface-3: #{c.$neutral-300};
+  --text-on-surface-3-hover: #{c.$neutral-200};
+  --border: #{c.$neutral-800};
+  --border-hover: #{c.$neutral-700};
   --glass: #{c.$glass-dark};
+
+  --accent-pink-hover: #f43f5e;
+  --accent-teal-hover: #14b8a6;
+  --accent-amber-hover: #d97706;
+  --accent-violet-hover: #8b5cf6;
+
+  --state-success-hover: #15803d;
+  --state-warning-hover: #d97706;
+  --state-error-hover: #dc2626;
+  --state-info-hover: #0284c7;
 }

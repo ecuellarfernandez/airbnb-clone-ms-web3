@@ -27,4 +27,12 @@ export class AccommodationsService {
       return okCity && okPrice && okCap;
     });
   }
+
+  getById(id: number): Listing | undefined {
+    return this.data.find((l) => l.id === id);
+  }
+
+  getAll(): Listing[] {
+    return this.data;
+  }
 }

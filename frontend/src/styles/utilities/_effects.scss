@@ -27,6 +27,22 @@
   overflow: hidden;
 }
 
+@include m.make-class('hidden') {
+  display: none;
+}
+
+@include m.make-class('block'){
+  display: block;
+}
+
+@include m.make-class('sticky'){
+  position: sticky;
+}
+
+@include m.make-class('top-20'){
+  top: 8vh;
+}
+
 @include m.make-class('shadow-sm') {
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
 }

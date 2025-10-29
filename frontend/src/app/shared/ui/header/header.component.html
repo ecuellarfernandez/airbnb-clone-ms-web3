@@ -3,9 +3,14 @@
   <div class="max-w-container mx-auto sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
       <!-- Logo/Brand -->
-      <div class="flex-shrink-0">
-        <a [routerLink]="'/'" class="text-neutral-200 flex items-center space-x-2 no-underline">
-          <span class="text-h3 font-bold hidden sm:block">Airbbcitos</span>
+      <div>
+        <a [routerLink]="'/'" class="text-brand-primary flex items-center no-underline space-x-1">
+
+          <svg
+            class="w-8 h-8 text-brand-primary" app-icon-logo></svg>
+
+          <span class="font-display fs-md font-bold hidden sm:block">AirBbcitos</span>
+
         </a>
       </div>
 
@@ -89,38 +94,38 @@
   </div>
 
   <!-- Sección de Filtros (mantenida como estaba) -->
-  <div class="max-w-container mx-auto px-10 sm:px-6 lg:px-8 pt-2 pb-10">
+  <div class="filter max-w-4xl mx-auto px-10 sm:px-6 lg:px-8 pt-2 pb-10">
     <!-- Filters debera ser componente -->
     <section
-      class="px-7 py-3 flex flex-wrap flex-row gap-1 bg-surface-3 text-on-surface items-end shadow-md max-w-content rounded-pill justify-between border-1 border-black"
+      class="px-7 py-3 flex flex-wrap flex-row gap-1 bg-surface-3 items-center shadow-md max-w-content rounded-pill justify-between border-2 border-color-1"
     >
-      <label class="">
-        <span class="">Ciudad</span>
-        <select class="text-on-surface-3 bg-none border-none pl-0 font-light bg-transparent">
+      <label class="flex flex-col">
+        <span class="fs-label">Ciudad</span>
+        <select class="text-on-surface-2 bg-none border-none pl-0 font-light bg-transparent placeholder:text-on-surface-2">
           <option class="m-0 pl-0" value="Santa Cruz">Santa Cruz</option>
         </select>
       </label>
 
-      <label class="">
-        <span>Fechas</span>
+      <label class="flex flex-col">
+        <span class="fs-label">Fechas</span>
         <input
-          class="text-on-surface-3 placeholder:text-on-surface-3 bg-tra border-none pl-0 font-light bg-transparent"
+          class="text-on-surface-2 placeholder:text-brand bg-tra border-none pl-0 font-light bg-transparent placeholder:text-on-surface-2"
           type="text"
           placeholder="Agrega fechas"
         />
       </label>
 
-      <label class="">
-        <span class="">Quién</span>
+      <label class="flex flex-col">
+        <span class="fs-label">Quién</span>
         <input
-          class="text-on-surface-3 placeholder:text-on-surface-3 border-none bg-transparent pl-0 font-light"
+          class="text-on-surface-3 placeholder:text-on-surface-2 border-none bg-transparent pl-0 font-light"
           type="number"
           min="1"
           placeholder="¿Cuántos?"
         />
       </label>
       <!-- boton con icono de lupa-->
-      <button class="btn-primary w-max">Aplicar filtros</button>
+      <button class="btn-primary w-max">Buscar</button>
     </section>
     <!-- Fin Filters -->
   </div>

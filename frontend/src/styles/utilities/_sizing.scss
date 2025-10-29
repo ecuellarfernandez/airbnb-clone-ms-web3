@@ -17,10 +17,24 @@
   min-height: 100vh;
 }
 
-@include m.make-class('h-full') {
-  height: 100%;
+@each $k, $v in abs.$width-heights-dict {
+  @include m.make-class('w-#{$k}') {
+    width: $v;
+  }
 }
 
-@include m.make-class('w-full') {
-  width: 100%;
+@each $k, $v in abs.$width-heights-dict {
+  @include m.make-class('h-#{$k}') {
+    height: $v;
+  }
+}
+
+@each $k, $v in abs.$screens-height-dict {
+  @include m.make-class('h-screen-#{$k}') {
+    height: $v;
+  }
+}
+
+@include m.make-class('max-h-screen') {
+  max-height: 100vh;
 }
