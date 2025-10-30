@@ -1,4 +1,9 @@
-class PagedResponse[T]:
+
+from typing import TypeVar, Generic
+
+T = TypeVar('T')
+
+class PagedResponse(Generic[T]):
     def __init__(self, success: bool = False, message: str = "", data: list[T] = None, total_pages: int = 0, current_page: int = 0):
         self.success = success
         self.message = message
