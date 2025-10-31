@@ -102,12 +102,37 @@
   padding-inline: 1rem;
 }
 
+@include m.make-class('content') {
+  max-width: var(--content-max);
+  margin-inline: auto;
+  padding-inline: 1rem;
+}
+
 @include m.make-class('container-center-grid') {
   display: grid;
   place-content: center;
   height: 100vh;
 }
 
+// Position utilities
+@include m.make-class('relative') {
+  position: relative;
+}
+@include m.make-class('absolute') {
+  position: absolute;
+}
+@include m.make-class('fixed') {
+  position: fixed;
+}
+
+// Text alignment
+@include m.make-class('text-left') {
+  text-align: left;
+}
 @include m.make-class('text-center') {
   text-align: center;
 }
+@include m.make-class('text-right') {
+  text-align: right;
+}
+

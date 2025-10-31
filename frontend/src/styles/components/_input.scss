@@ -1,0 +1,139 @@
+// ============================================
+// Input Component Styles
+// ============================================
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.input-label {
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+
+.input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text);
+  background-color: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  transition: all var(--transition-duration) var(--transition-timing-function);
+
+  &::placeholder {
+    color: var(--text-4);
+  }
+
+  &:hover:not(:disabled) {
+    border-color: var(--border-hover);
+  }
+
+  &:focus {
+    outline: none;
+    border-color: var(--brand-primary);
+    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.1);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background-color: var(--bg);
+  }
+
+  &.input-error {
+    border-color: var(--state-error);
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+  }
+
+  &.input-success {
+    border-color: var(--state-success);
+
+    &:focus {
+      box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+    }
+  }
+}
+
+.input-sm {
+  padding: 0.5rem 0.75rem;
+  font-size: var(--fs-xs);
+}
+
+.input-lg {
+  padding: 1rem 1.25rem;
+  font-size: var(--fs-md);
+}
+
+.input-error-message {
+  font-size: var(--fs-xs);
+  color: var(--state-error);
+  margin-top: 0.25rem;
+}
+
+.input-helper-text {
+  font-size: var(--fs-xs);
+  color: var(--text-3);
+  margin-top: 0.25rem;
+}
+
+// Textarea
+.textarea {
+  min-height: 100px;
+  resize: vertical;
+}
+
+// Select
+.select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+  background-position: right 0.5rem center;
+  background-repeat: no-repeat;
+  background-size: 1.5em 1.5em;
+  padding-right: 2.5rem;
+}
+
+// Checkbox and Radio
+.checkbox,
+.radio {
+  width: 1.25rem;
+  height: 1.25rem;
+  border: 2px solid var(--border);
+  cursor: pointer;
+  transition: all var(--transition-duration) var(--transition-timing-function);
+
+  &:checked {
+    background-color: var(--brand-primary);
+    border-color: var(--brand-primary);
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(255, 56, 92, 0.1);
+  }
+}
+
+.checkbox {
+  border-radius: 0.25rem;
+}
+
+.radio {
+  border-radius: 50%;
+}
+// ============================================
+// Components Index
+// ============================================
+// This file re-exports all component modules
+
+@forward './button';
+@forward './card';
+@forward './input';
+

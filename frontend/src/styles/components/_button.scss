@@ -1,0 +1,151 @@
+// ============================================
+// Button Component Styles
+// ============================================
+
+@use '../tools/mixins' as m;
+
+// Base button styles
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  font-weight: var(--fw-medium);
+  font-size: var(--fs-sm);
+  line-height: 1;
+  text-decoration: none;
+  border: none;
+  border-radius: var(--radius-lg);
+  cursor: pointer;
+  transition: all var(--transition-duration) var(--transition-timing-function);
+  white-space: nowrap;
+  user-select: none;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--brand-ring);
+    outline-offset: 2px;
+  }
+}
+
+// Button variants
+.btn-primary {
+  background-color: var(--brand-primary);
+  color: var(--on-brand-primary);
+
+  &:hover:not(:disabled) {
+    background-color: var(--brand-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--brand-primary-active);
+    transform: translateY(0);
+  }
+}
+
+.btn-secondary {
+  background-color: var(--brand-secondary);
+  color: var(--on-brand-secondary);
+
+  &:hover:not(:disabled) {
+    background-color: var(--brand-secondary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--brand-secondary-active);
+    transform: translateY(0);
+  }
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--brand-primary);
+  border: 2px solid var(--brand-primary);
+
+  &:hover:not(:disabled) {
+    background-color: var(--brand-primary);
+    color: var(--on-brand-primary);
+    transform: translateY(-1px);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--brand-primary-hover);
+    transform: translateY(0);
+  }
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--text);
+
+  &:hover:not(:disabled) {
+    background-color: var(--surface-hover);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--bg-hover);
+  }
+}
+
+.btn-danger {
+  background-color: var(--state-error);
+  color: var(--neutral-0);
+
+  &:hover:not(:disabled) {
+    background-color: var(--state-error-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  }
+
+  &:active:not(:disabled) {
+    transform: translateY(0);
+  }
+}
+
+// Button sizes
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: var(--fs-xs);
+}
+
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: var(--fs-md);
+}
+
+.btn-xl {
+  padding: 1.25rem 2.5rem;
+  font-size: var(--fs-lg);
+}
+
+// Button full width
+.btn-block {
+  width: 100%;
+}
+
+// Icon button
+.btn-icon {
+  padding: 0.75rem;
+  aspect-ratio: 1;
+}
+
+.btn-icon-sm {
+  padding: 0.5rem;
+  aspect-ratio: 1;
+}
+
+.btn-icon-lg {
+  padding: 1rem;
+  aspect-ratio: 1;
+}
+

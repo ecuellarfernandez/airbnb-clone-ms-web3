@@ -1,0 +1,54 @@
+// ============================================
+// Card Component Styles
+// ============================================
+
+.card {
+  background-color: var(--surface);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  transition: all var(--transition-duration) var(--transition-timing-function);
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.card-elevated {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+
+  &:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.card-bordered {
+  border: 1px solid var(--border);
+
+  &:hover {
+    border-color: var(--border-hover);
+  }
+}
+
+.card-header {
+  padding: 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-footer {
+  padding: 1.5rem;
+  border-top: 1px solid var(--border);
+  background-color: var(--surface-2);
+}
+
+.card-image {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
