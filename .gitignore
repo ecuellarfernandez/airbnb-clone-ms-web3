@@ -59,6 +59,17 @@ frontend/*.log
 .DS_Store
 Thumbs.db
 
+### Python ###
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pdb
+**/venv/
+**/.venv/
+**/*.sqlite3
+**/*.sqlite
+
 #adaptar para carpetas de servicios..............................
 HELP.md
 target/
