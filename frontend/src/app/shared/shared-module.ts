@@ -2,13 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './ui/header/header.component';
 import { RouterModule } from '@angular/router';
-import { CardCarouselComponent } from './ui/card-carousel/card-carousel.component';
 import { IconLogoComponent } from './ui/icon-logo/icon-logo.component';
 
 
 
 @NgModule({
-  declarations: [HeaderComponent, CardCarouselComponent, IconLogoComponent],
+  declarations: [HeaderComponent, IconLogoComponent],
   imports: [
     CommonModule,
     RouterModule
