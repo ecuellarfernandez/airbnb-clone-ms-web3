@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        hostname: kafka
+        container_name: kafka 
+        ports:
+            # Nur Port 9092 muss nach außen freigegeben werden, der Controller-Port 9093 nicht.
+            - "9092:9092" 
+        environment:
+            KAFKA_KRAFT_MODE: 'true'
+            KAFKA_PROCESS_ROLES: controller,broker 
+            KAFKA_NODE_ID: 1
+
+            # Interne Controller-Kommunikation
+            KAFKA_CONTROLLER_QUORUM_VOTERS: "1@kafka:9093"
+
+            # KRITISCHE ÄNDERUNG: Gib INTERNAL einen eigenen Port (29092)
+            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092,CONTROLLER://0.0.0.0:9093,INTERNAL://0.0.0.0:29092
+            
+            # Die Werbung muss jetzt beide Ports korrekt mappen
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092,INTERNAL://kafka:29092
+
+            # Das Listener-Sicherheitsprotokoll muss den neuen INTERNAL Listener enthalten
+            KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT,INTERNAL:PLAINTEXT
+            
+            KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+            KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+            # Andere Einstellungen
+            KAFKA_LOG_DIRS: /var/lib/kafka/data 
+            KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1 
+            KAFKA_LOG_RETENTION_HOURS: 1
+            KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
+            CLUSTER_ID: "Mk3OEYBSD34fcwNTJENDM2Qk"
+        
+        volumes:
+            - kafka_data:/var/lib/kafka/data 
+        
+volumes:
+  kafka_data:
