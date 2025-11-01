@@ -2,6 +2,7 @@ package com.airbnb_clone_ms_web_iii.identity.services.users;
 
 import com.airbnb_clone_ms_web_iii.identity.dtos.auth.LoginDTO;
 import com.airbnb_clone_ms_web_iii.identity.dtos.auth.RegisterDTO;
+import com.airbnb_clone_ms_web_iii.identity.dtos.events.users.UserCreatedEvent;
 import com.airbnb_clone_ms_web_iii.identity.models.roles.Role;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.repositories.users.UserRepository;
@@ -9,6 +10,7 @@ import com.airbnb_clone_ms_web_iii.identity.services.roles.RoleService;
 import com.airbnb_clone_ms_web_iii.identity.utils.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -19,16 +21,19 @@ import java.util.Optional;
 @Service
 public class UserService implements UserDetailsService {
 
+    private final String USER_TOPIC = "user_events";
     private final UserRepository userRepository;
     private final RoleService roleService;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Value("${app.default-role}")
     private String DEFAULT_ROLE;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService) {
+    public UserService(UserRepository userRepository, RoleService roleService, KafkaTemplate<String, Object> kafkaTemplate) {
         this.userRepository = userRepository;
         this.roleService = roleService;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     public User findByUsername(String username) {
@@ -69,6 +74,16 @@ public class UserService implements UserDetailsService {
 
         Role clientRole = roleService.findByName(DEFAULT_ROLE);
         newUser.setRoles(java.util.Collections.singletonList(clientRole));
+
+        try{
+
+            UserCreatedEvent event = new UserCreatedEvent(newUser);
+
+            kafkaTemplate.send(USER_TOPIC, event);
+            System.out.println("User created event sent for user: " + newUser.getUsername());
+        } catch (Exception e) {
+            System.out.println("Failed to send user created event: " + e.getMessage());
+        }
 
         return userRepository.save(newUser);
     }

@@ -50,6 +50,15 @@ REST_FRAMEWORK = {
     'PAGE_SIZE': 20,
 }
 
+KAFKA_CONFIG = {
+    'BOOTSTRAP_SERVERS' : 'localhost:9092',
+    'TOPICS_TO_LISTEN' : [
+        'user_events',
+        'role_events',
+    ],
+    'CONSUMER_GROUP_ID' : 'admin_service_group',
+}
+
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -84,15 +93,23 @@ WSGI_APPLICATION = 'admin_service.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
+
     "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("DB_NAME"),
-        "USER": os.getenv("DB_USER"),
-        "PASSWORD": os.getenv("DB_PASSWORD"),
-        "HOST": os.getenv("DB_HOST"),
-        "PORT": os.getenv("DB_PORT"),
-    }
+        "ENGINE": "django.db.backends.sqlite3",
+        # The database file will be created in your Django project root
+        "NAME": BASE_DIR / "db.sqlite3",
+    },
 }
+"""
+"default": {
+    "ENGINE": "django.db.backends.postgresql",
+    "NAME": os.getenv("DB_NAME"),
+    "USER": os.getenv("DB_USER"),
+    "PASSWORD": os.getenv("DB_PASSWORD"),
+    "HOST": os.getenv("DB_HOST"),
+    "PORT": os.getenv("DB_PORT"),
+}
+"""
 
 
 # Password validation
