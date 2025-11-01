@@ -17,7 +17,7 @@ def run_producer():
         producer = KafkaProducer(
             bootstrap_servers=BOOTSTRAP_SERVERS,
             value_serializer=lambda v: json.dumps(v).encode('utf-8'),
-            api_version=(0, 10),  # Stable API version
+            api_version=(2, 0, 0),  # Stable API version
             request_timeout_ms=5000  # Quick timeout for connection attempts
         )
 
