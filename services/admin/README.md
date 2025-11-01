@@ -5,7 +5,8 @@
 
 ## Pasos para levantarlo y que todo funcioen ##
 1. Crear el .env con las variables de entorno necesarias. El ejemplo del .env
-    se encuentra en la carpeta compartida del proyecto (solo miembros del equipo)
+    se encuentra en la carpeta compartida del proyecto (solo miembros del equipo)  
+    **IMPORTANTE**: Remover el BOM (Byte Order Mark) del archivo .env si es que existe.
 2. levantar la instance de Kafka desde el root de la carpeta de QUE CONTIENE
 TODOS LOS PROYECTOS (no desde el root de admin)
 (para que los microservicios puedan comunicarse)
@@ -36,3 +37,11 @@ python manange.py runserver
 ````shell
 python manage.py run_kafka_consumer
 ````
+
+
+### Datos importantes ###
+Si no se quita el BOM del .env (como se indica en el paso 2)
+hay 2 posibilidades: 
+1. Un error salte y que no cree la base de datos)
+2. No salte el error pero las tablas se crearan en la base de datos llamada
+"postgres" en lugar de la especificada en el .env

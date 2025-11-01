@@ -16,6 +16,20 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+
+def validate_database_vars():
+    DB_NAME = os.getenv("DB_NAME");
+    DB_USER = os.getenv("DB_USER");
+    DB_PASSWORD = os.getenv("DB_PASSWORD");
+    DB_HOST = os.getenv("DB_HOST");
+    DB_PORT = os.getenv("DB_PORT");
+
+    if (not DB_NAME or not DB_USER or not DB_PASSWORD or not DB_HOST or not DB_PORT):
+        raise Exception("Database configuration environment variables are not set properly.")
+
+
+validate_database_vars()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -93,22 +107,21 @@ WSGI_APPLICATION = 'admin_service.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-
+    "default": {
+        "ENGINE": "django.db.backends.postgresql",
+        "NAME": os.getenv("DB_NAME"),
+        "USER": os.getenv("DB_USER"),
+        "PASSWORD": os.getenv("DB_PASSWORD"),
+        "HOST": os.getenv("DB_HOST"),
+        "PORT": os.getenv("DB_PORT"),
+    }
+}
+"""
     "default": {
         "ENGINE": "django.db.backends.sqlite3",
         # The database file will be created in your Django project root
         "NAME": BASE_DIR / "db.sqlite3",
     },
-}
-"""
-"default": {
-    "ENGINE": "django.db.backends.postgresql",
-    "NAME": os.getenv("DB_NAME"),
-    "USER": os.getenv("DB_USER"),
-    "PASSWORD": os.getenv("DB_PASSWORD"),
-    "HOST": os.getenv("DB_HOST"),
-    "PORT": os.getenv("DB_PORT"),
-}
 """
 
 
