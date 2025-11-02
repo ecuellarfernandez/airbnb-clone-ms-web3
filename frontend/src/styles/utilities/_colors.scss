@@ -30,13 +30,13 @@
 }
 
 @each $name, $val in abs.$colors-dict {
-  @include m.make-class('border-#{$name}') {
+  @include m.make-class('border-color-#{$name}') {
     border-color: #{$val};
   }
-  @include m.state-variants('border-#{$name}') {
+  @include m.state-variants('border-color-#{$name}') {
     border-color: #{$val};
   }
-  @include m.dark-variant('border-#{$name}') {
+  @include m.dark-variant('border-color-#{$name}') {
     border-color: #{$val};
   }
 }

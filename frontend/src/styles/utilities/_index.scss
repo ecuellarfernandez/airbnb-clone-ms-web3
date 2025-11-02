@@ -1,0 +1,11 @@
+// ============================================
+// Utilities Index
+// ============================================
+// This file re-exports all utility modules
+
+@forward './colors';
+@forward './typography';
+@forward './spacing';
+@forward './sizing';
+@forward './layout';
+@forward './effects';

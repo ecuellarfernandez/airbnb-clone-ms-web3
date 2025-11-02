@@ -1,9 +1,55 @@
-// Estilos específicos para el header estilo Airbnb
+header{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  max-height: 80px;
+  overflow: hidden;
+  background: var(--surface-2, #fff);
+  box-shadow: 0 1px 0 rgba(0,0,0,0.04);
+  transition: max-height 420ms cubic-bezier(.2,.8,.2,1), box-shadow 300ms ease, transform 300ms ease;
+  will-change: max-height, box-shadow, transform;
+  z-index: 60;
+  border-bottom: 1px solid var(--surface-3);
+}
+
+.filter{
+  opacity: 0;
+  transform: translateY(-8px);
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
+  transition: opacity 320ms cubic-bezier(.2,.8,.2,1), transform 320ms cubic-bezier(.2,.8,.2,1), max-height 320ms cubic-bezier(.2,.8,.2,1);
+  backdrop-filter: blur(6px);
+}
+
+header:hover,
+header:focus-within {
+  max-height: 420px;
+  box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+  transform: translateZ(0);
+}
+
+header:hover .filter,
+header:focus-within .filter {
+  opacity: 1;
+  transform: translateY(0);
+  max-height: 600px;
+  pointer-events: auto;
+}
+
+/* Respetar preferencia de reducir animaciones */
+@media (prefers-reduced-motion: reduce) {
+  header,
+  .filter {
+    transition: none !important;
+  }
+}
 
 // Animación suave para los enlaces de navegación
 .nav-link {
   position: relative;
-  
+
   &::after {
     content: '';
     position: absolute;
@@ -15,7 +61,7 @@
     transition: all 0.3s ease;
     transform: translateX(-50%);
   }
-  
+
   &:hover::after {
     width: 100%;
   }
@@ -49,7 +95,7 @@
   .mobile-menu {
     display: block;
   }
-  
+
   .desktop-nav {
     display: none;
   }
@@ -59,7 +105,7 @@
   .mobile-menu {
     display: none;
   }
-  
+
   .desktop-nav {
     display: flex;
   }

@@ -1,0 +1,95 @@
+<div class="detail" *ngIf="!loading && listing as l">
+  <button class="back" (click)="back()">
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+    </svg>
+    <span>Volver</span>
+  </button>
+
+  <!--<div class="gallery">
+    <div class="main-photo">
+      <img [src]="l.image" [alt]="l.title" loading="eager" />
+    </div>
+    <div class="thumbnails" *ngIf="l.photos?.length">
+      <img *ngFor="let p of l.photos | slice:0:4" [src]="p" [alt]="l.title" loading="lazy" />
+    </div>
+  </div>-->
+
+  <div class="gallery">
+    <div class="main-photo" (click)="openLightbox(0)" role="button" tabindex="0" aria-label="Ver fotos">
+      <img [src]="l.image" [alt]="l.title" loading="eager" />
+      <button class="see-all" (click)="openLightbox(0); $event.stopPropagation()">
+        Ver {{ totalPhotos }} fotos
+      </button>
+    </div>
+
+    <div class="thumbnails" *ngIf="l.photos?.length">
+      <img *ngFor="let p of l.photos | slice:0:visibleThumbs; let i = index" [src]="p" [alt]="l.title" loading="lazy"
+        (click)="openLightbox(i + 1)" />
+    </div>
+  </div>
+
+  <div class="content-wrapper">
+    <div class="main-content">
+      <div class="title-section">
+        <h1>{{ l.title }}</h1>
+        <p class="city">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+          </svg>
+          {{ l.city }}
+        </p>
+      </div>
+
+      <div class="description-section">
+        <h2>Acerca de este alojamiento</h2>
+        <p class="desc">{{ l.description }}</p>
+      </div>
+    </div>
+
+    <div class="booking-card">
+      <div class="price-header">
+        <div class="price">
+          <span class="amount">${{ l.price }}</span>
+          <span class="per-night">/noche</span>
+        </div>
+      </div>
+
+      <div class="specs-list">
+        <div class="spec-item">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+            stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round"
+              d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+          </svg>
+          <span>{{ l.capacity }} huéspedes</span>
+        </div>
+      </div>
+
+      <button class="cta" (click)="bookDemo()">Reservar</button>
+      <p class="no-charge">No se te cobrará todavía</p>
+    </div>
+  </div>
+</div>
+
+<div class="loading" *ngIf="loading">
+  <div class="spinner"></div>
+  <p>Cargando...</p>
+</div>
+
+<div class="lightbox" *ngIf="showLigthbox" (click)="closeLightbox($event)" aria-modal="true" role="dialog">
+  <div class="lightbox-inner" (click)="$event.stopPropagation()">
+    <button class="close" (click)="closeLightbox($event)" aria-label="Cerrar">×</button>
+
+    <button class="nav prev" (click)="prev($event)" aria-label="Anterior">‹</button>
+
+    <img [src]="allPhotos[currentPhotoIndex]" [alt]="listing?.title">
+
+    <button class="nav next" (click)="next($event)" aria-label="Siguiente">›</button>
+
+    <div class="counter">{{ currentPhotoIndex + 1 }} / {{ totalPhotos }}</div>
+  </div>
+</div>

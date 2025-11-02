@@ -1,5 +1,6 @@
 package com.airbnb_clone_ms_web_iii.identity.controllers.roles;
 
+import com.airbnb_clone_ms_web_iii.identity.dtos.roles.ClaimCreateDTO;
 import com.airbnb_clone_ms_web_iii.identity.dtos.roles.ClaimDTO;
 import com.airbnb_clone_ms_web_iii.identity.dtos.pojos.PagedResponse;
 import com.airbnb_clone_ms_web_iii.identity.dtos.pojos.StandardResult;
@@ -25,9 +26,9 @@ public class ClaimController {
     }
 
     @PostMapping
-    public StandardResult<ClaimDTO> create(@RequestBody ClaimDTO claimDTO) {
+    public StandardResult<ClaimDTO> create(@RequestBody ClaimCreateDTO claimDTO) {
         try {
-            Claim claim = ClaimDTO.toEntity(claimDTO);
+            Claim claim = ClaimCreateDTO.toEntity(claimDTO);
             Claim saved = claimService.create(claim);
             return new StandardResult<>(true, "", ClaimDTO.fromEntity(saved));
         } catch (Exception e) {

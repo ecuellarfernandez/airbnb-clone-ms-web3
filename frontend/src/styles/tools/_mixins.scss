@@ -24,6 +24,9 @@
   .active\:#{$name}:active {
     @content;
   }
+  .placeholder\:#{$name}::placeholder {
+    @content;
+  }
 }
 
 @mixin dark-variant($name) {

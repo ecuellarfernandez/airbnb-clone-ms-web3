@@ -1,11 +1,16 @@
-<header class="bg-surface-2 text-on-surface-2 border-surface-3">
+<header class="text-on-surface-3 border-surface-3">
   <!-- Header Principal estilo Airbnb -->
-  <div class="max-w-container mx-auto sm:px-6 lg:px-8">
+  <div class="max-w-content mx-auto sm:px-6 lg:px-8">
     <div class="flex items-center justify-between h-20">
       <!-- Logo/Brand -->
-      <div class="flex-shrink-0">
-        <a [routerLink]="'/'" class="text-neutral-200 flex items-center space-x-2 no-underline">
-          <span class="text-h3 font-bold hidden sm:block">Airbbcitos</span>
+      <div>
+        <a [routerLink]="'/'" class="text-brand-primary flex items-center no-underline space-x-1">
+
+          <svg
+            class="w-8 h-8 text-brand-primary" app-icon-logo></svg>
+
+          <span class="font-display fs-md font-bold hidden sm:block">AirBbcitos</span>
+
         </a>
       </div>
 
@@ -15,7 +20,7 @@
           <li *ngFor="let l of links">
             <a
               [routerLink]="l.path"
-              class="no-underline text-on-surface-3 hover:text-on-brand font-medium py-2 px-3 rounded-pill hover:bg-surface-2 transition-all duration-200 relative group"
+              class="no-underline text-on-surface-3 hover:text-on-brand font-medium py-2 px-3 rounded-pill hover:bg-surface-3 transition-all duration-200 relative group"
             >
               {{ l.label }}
               <span
@@ -30,16 +35,16 @@
       <div class="flex items-center space-x-4">
         <!-- Botón Anfitrión -->
         <button
-          class="hidden lg:block hover:bg-surface-2 px-4 py-2 rounded-pill font-medium transition-colors duration-200 text-neutral-200"
+          class="hidden lg:block bg-surface-3 fs-xs hover:bg-surface-3-hover text-on-surface-3 px-4 py-2 rounded-pill transition-colors duration-200"
         >
           Conviértete en anfitrión
         </button>
 
         <!-- Menú hamburguesa para móvil -->
         <button
-          class="md:hidden text-on-surface hover:bg-surface-2 p-2 rounded-full transition-colors duration-200"
+          class="md:hidden text-on-surface hover:bg-surface-3 p-2 rounded-full transition-colors duration-200"
         >
-          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="w-6 h-6 text-on-surface" fill="currentColor" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -52,10 +57,10 @@
         <!-- Perfil de usuario -->
         <div class="relative">
           <button
-            class="flex items-center space-x-2 bg-surface-2 border border-surface-3 rounded-pill py-2 pl-3 pr-2 hover:shadow-md transition-all duration-200"
+            class="flex items-center space-x-2 bg-surface-3 hover:bg-surface-3-hover border-neutral-300 rounded-pill py-2 pl-3 pr-2 hover:shadow-md transition-all duration-200"
           >
             <svg
-              class="w-4 h-4 text-on-surface-2"
+              class="w-4 h-4 text-neutral-900"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -67,17 +72,13 @@
                 d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
-            <div class="w-8 h-8 bg-brand rounded-full flex items-center justify-center">
+            <div class="w-8 h-8 bg-neutral-800 rounded-pill flex items-center justify-center ">
               <svg
-                class="w-4 h-4 text-on-brand"
-                fill="none"
-                stroke="currentColor"
+                class="w-5 h-5 text-neutral-0"
+                fill="currentColor"
                 viewBox="0 0 24 24"
               >
                 <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
                   d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
                 />
               </svg>
@@ -89,38 +90,38 @@
   </div>
 
   <!-- Sección de Filtros (mantenida como estaba) -->
-  <div class="max-w-container mx-auto px-10 sm:px-6 lg:px-8 pt-2 pb-10">
+  <div class="filter max-w-4xl mx-auto px-10 sm:px-6 lg:px-8 pt-2 pb-10">
     <!-- Filters debera ser componente -->
     <section
-      class="px-7 py-3 flex flex-wrap flex-row gap-1 bg-surface-3 text-on-surface items-end shadow-md max-w-content rounded-pill justify-between border-1 border-black"
+      class="px-7 py-3 flex flex-wrap flex-row gap-1 bg-surface-3 items-center shadow-md max-w-content rounded-pill justify-between border-2 border-color-1"
     >
-      <label class="">
-        <span class="">Ciudad</span>
-        <select class="text-on-surface-3 bg-none border-none pl-0 font-light bg-transparent">
+      <label class="flex flex-col">
+        <span class="fs-label">Ciudad</span>
+        <select class="text-on-surface-2 bg-none border-none pl-0 font-light bg-transparent placeholder:text-on-surface-2">
           <option class="m-0 pl-0" value="Santa Cruz">Santa Cruz</option>
         </select>
       </label>
 
-      <label class="">
-        <span>Fechas</span>
+      <label class="flex flex-col">
+        <span class="fs-label">Fechas</span>
         <input
-          class="text-on-surface-3 placeholder:text-on-surface-3 bg-tra border-none pl-0 font-light bg-transparent"
+          class="text-on-surface-2 placeholder:text-brand bg-tra border-none pl-0 font-light bg-transparent placeholder:text-on-surface-2"
           type="text"
           placeholder="Agrega fechas"
         />
       </label>
 
-      <label class="">
-        <span class="">Quién</span>
+      <label class="flex flex-col">
+        <span class="fs-label">Quién</span>
         <input
-          class="text-on-surface-3 placeholder:text-on-surface-3 border-none bg-transparent pl-0 font-light"
+          class="text-on-surface-3 placeholder:text-on-surface-2 border-none bg-transparent pl-0 font-light"
           type="number"
           min="1"
           placeholder="¿Cuántos?"
         />
       </label>
       <!-- boton con icono de lupa-->
-      <button class="btn-primary w-max">Aplicar filtros</button>
+      <button class="btn-primary w-max">Buscar</button>
     </section>
     <!-- Fin Filters -->
   </div>
