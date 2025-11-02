@@ -116,6 +116,12 @@
 			<version>4.0.0</version>
 		</dependency>
 
+        <!-- KAFKA -->
+        <dependency>
+            <groupId>org.springframework.kafka</groupId>
+            <artifactId>spring-kafka</artifactId>
+        </dependency>
+
 	</dependencies>
 
 	<build>
