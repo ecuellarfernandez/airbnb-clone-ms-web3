@@ -1,0 +1,74 @@
+<div class="dashboard">
+    <div class="cardBox">
+        <div class="card">
+            <div>
+                <div class="numbers">{{ (vm$ | async)?.totalListings }}</div>
+                <div class="cardName">Alojamientos</div>
+            </div>
+            <div class="iconBx"><i class="ri-home-5-line"></i></div>
+        </div>
+        <div class="card">
+            <div>
+                <div class="numbers">{{ (vm$ | async)?.totalReservations }}</div>
+                <div class="cardName">Reservas</div>
+            </div>
+            <div class="iconBx"><i class="ri-calendar-check-line"></i></div>
+        </div>
+        <div class="card">
+            <div>
+                <div class="numbers">{{ (vm$ | async)?.paidReservations }}</div>
+                <div class="cardName">Pagadas</div>
+            </div>
+            <div class="iconBx"><i class="ri-bank-card-line"></i></div>
+        </div>
+        <div class="card">
+            <div>
+                <div class="numbers">\${{ (vm$ | async)?.revenueEstimated }}</div>
+                <div class="cardName">Ingresos estimados</div>
+            </div>
+            <div class="iconBx"><i class="ri-cash-line"></i></div>
+        </div>
+    </div>
+
+    <div class="details">
+        <div class="recentOrders">
+            <div class="cardHeader">
+                <h2>Top ciudades</h2>
+            </div>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Ciudad</td>
+                        <td>Cantidad</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let c of (vm$ | async)?.topCities">
+                        <td>{{ c.city }}</td>
+                        <td>{{ c.count }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="recentCustomers">
+            <div class="cardHeader">
+                <h2>Resumen</h2>
+            </div>
+            <table>
+                <tr>
+                    <td>Reservas pagadas</td>
+                    <td>{{ (vm$ | async)?.paidReservations }}</td>
+                </tr>
+                <tr>
+                    <td>Reservas pendientes</td>
+                    <td>{{ (vm$ | async)?.unpaidReservations }}</td>
+                </tr>
+                <tr>
+                    <td>Ingresos estimados</td>
+                    <td>\${{ (vm$ | async)?.revenueEstimated }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+</div>
