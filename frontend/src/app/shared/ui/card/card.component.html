@@ -1,8 +1,9 @@
-<article class="ui-card"
+<article class="ui-card space-y-2"
     [class.ui-card--box]="skin === 'box'"
     [class.ui-card--flat]="skin === 'flat'"
     [class.ui-card--outline]="skin === 'outline'"
     [class.ui-card--clickable]="clickable"
+    [ngClass]="classes"
     (click)="onCardClick($event)"
   >
 
@@ -10,15 +11,13 @@
     <ng-content select="[card-header]"></ng-content>
   </header>
 
-  <div class="ui-card__media">
+  <div *ngIf="mediaRef" class="ui-card__media">
     <ng-content select="[card-media]"></ng-content>
   </div>
 
-  <div class="ui-card__content">
-    <ng-content></ng-content>
-  </div>
+  <ng-content></ng-content>
 
-  <footer class="ui-card__actions">
+  <footer class="ui-card__actions space-y-3">
     <ng-content select="[card-actions]"></ng-content>
   </footer>
 </article>

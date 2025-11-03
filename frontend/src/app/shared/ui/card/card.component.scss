@@ -19,10 +19,11 @@
 
   &--box{
     padding: 1.5rem;
-    border: 1px solid currentColor;
     border-radius: var(--radius-sm);
-    background-color: currentColor;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  &__actions{
   }
 
   &--outline{
