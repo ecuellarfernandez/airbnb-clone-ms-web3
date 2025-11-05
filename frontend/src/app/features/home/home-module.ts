@@ -6,9 +6,9 @@ import {HomePageComponent} from '@app/features/home/pages/home-page/home-page.co
 
 @NgModule({
   declarations: [HomePageComponent],
-  imports: [
-    CommonModule,
-    HomeRoutingModule
-  ]
+    imports: [
+        CommonModule,
+        HomeRoutingModule,
+    ]
 })
 export class HomeModule { }

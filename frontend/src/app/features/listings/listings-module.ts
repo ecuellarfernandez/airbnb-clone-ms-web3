@@ -6,9 +6,13 @@ import { AccommodationsPageComponent } from '@listings/pages/listing-list/accomm
 import { ListingCardComponent } from '@listings/components/listing-card/listing-card.component';
 import { ListingDetailPageComponent } from './pages/listing-detail/listing-detail-page.component';
 import {SharedModule} from '@app/shared/shared-module';
-import { ListingsCoreComponent } from './core/listings-core/listings-core.component';
+import { CardBookDetailComponent } from './components/card-book-detail/card-book-detail.component';
+
 @NgModule({
-  declarations: [AccommodationsPageComponent, ListingCardComponent, ListingDetailPageComponent, ListingsCoreComponent],
+  declarations: [AccommodationsPageComponent, ListingCardComponent, ListingDetailPageComponent, CardBookDetailComponent],
   imports: [FormsModule, CommonModule, ListingsRoutingModule, SharedModule],
+  exports: [
+    ListingCardComponent
+  ]
 })
 export class ListingsModule {}

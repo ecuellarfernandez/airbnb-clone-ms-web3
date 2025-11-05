@@ -1,4 +1,4 @@
-<app-card skin="flat" [clickable]="clickableListing" (cardClick)="listingClick.emit(listing)">
+<app-card skin="flat" [clickable]="clickableListing" (cardClick)="listingClick.emit($event)">
   <div card-media>
     <img [src]="listing.image" [alt]="listing.title"/>
   </div>

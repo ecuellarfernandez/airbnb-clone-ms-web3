@@ -1,4 +1,13 @@
-import {Component, ContentChild, Directive, ElementRef, EventEmitter, Input, Output} from '@angular/core';
+import {
+  AfterContentInit,
+  Component,
+  ContentChildren,
+  Directive,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output
+} from '@angular/core';
 
 @Directive({
   selector: '[card-media]',
@@ -11,14 +20,19 @@ export class CardMediaDirective {}
   templateUrl: './card.component.html',
   styleUrl: './card.component.scss'
 })
-export class CardComponent {
+export class CardComponent implements AfterContentInit{
   @Input() skin: 'box' | 'flat' | 'outline' = 'flat';
   @Input() clickable = false;
   @Input() classes?: string | string[];
 
   @Output() cardClick = new EventEmitter<MouseEvent>();
 
-  @ContentChild(CardMediaDirective, { read: ElementRef }) mediaRef?: ElementRef;
+  @ContentChildren(CardMediaDirective, { read: ElementRef}) mediaRef?: ElementRef;
+  hasMedia:boolean = false;
+
+  ngAfterContentInit(): void {
+    this.hasMedia = !!this.mediaRef;
+  }
 
   onCardClick(e: MouseEvent): void {
     if (this.clickable) {
