@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import {Component, inject, OnInit} from '@angular/core';
 import { AccommodationsService, Filters } from '@listings/data-access/services/accommodations.api';
-import { ListingCardComponent } from '@listings/components/listing-card/listing-card.component';
 import { Listing } from '@listings/data-access/models/listing.model';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-accommodations-page',
@@ -17,6 +15,7 @@ export class AccommodationsPageComponent implements OnInit {
   maxPriceInput = '';
   minCapacityInput = '';
   results: Listing[] = [];
+  private router = inject(Router);
 
   constructor(private svc: AccommodationsService) {}
 
@@ -39,5 +38,9 @@ export class AccommodationsPageComponent implements OnInit {
     this.maxPriceInput = '';
     this.minCapacityInput = '';
     this.apply();
+  }
+
+  protected listingRedirect(l: Listing) {
+    this.router.navigate(['listings', l.id]);
   }
 }
