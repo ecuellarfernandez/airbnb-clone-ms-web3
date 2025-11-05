@@ -51,7 +51,7 @@
 }
 
 .gallery .main-photo {
-  position: relative; 
+  position: relative;
   width: 100%;
   height: 420px;
   border-radius: 18px;
@@ -102,7 +102,6 @@
   border: none;
   border-radius: 10px;
   background: rgba(17, 24, 39, .85);
-  color: #fff;
   cursor: pointer;
   backdrop-filter: blur(2px);
   transition: transform .15s ease, opacity .15s ease;
@@ -129,7 +128,6 @@
 .main-content .title-section h1 {
   font-size: 28px;
   font-weight: 600;
-  color: #fff;
   margin: 0 0 12px 0;
   line-height: 1.2;
 }
@@ -151,7 +149,6 @@
 .main-content .description-section h2 {
   font-size: 20px;
   font-weight: 600;
-  color: #fff;
   margin: 0 0 16px 0;
 }
 
@@ -185,7 +182,6 @@
 .booking-card .price .amount {
   font-size: 28px;
   font-weight: 600;
-  color: #fff;
 }
 
 .booking-card .price .per-night {
@@ -201,7 +197,7 @@
   margin-bottom: 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px; 
+  gap: 16px;
 }
 
 .booking-card .spec-item {
@@ -224,7 +220,6 @@
   border: none;
   border-radius: 8px;
   background: var(--brand);
-  color: #fff;
   font-weight: 600;
   font-size: 16px;
   cursor: pointer;
@@ -285,7 +280,6 @@
   border: none;
   border-radius: 50%;
   background: rgba(255, 255, 255, .15);
-  color: #fff;
   cursor: pointer;
   transition: background .2s ease;
 }
@@ -359,12 +353,12 @@
   }
 
   .content-wrapper {
-    grid-template-columns: 1fr; 
+    grid-template-columns: 1fr;
     gap: 50px;
   }
 
   .booking-card {
-    position: static; 
+    position: static;
   }
 
   .gallery .main-photo {
@@ -378,13 +372,13 @@
   }
 
   .gallery .thumbnails {
-    grid-template-columns: repeat(3, 1fr); 
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .gallery .thumbnails img {
     height: 110px;
   }
-  
+
   .main-content .title-section h1,
   .booking-card .price .amount {
     font-size: 26px;
@@ -395,7 +389,7 @@
   }
 
   .lightbox .prev {
-    left: 16px; 
+    left: 16px;
   }
 
   .lightbox .next {
@@ -423,7 +417,7 @@
   }
 
   .gallery .thumbnails {
-    grid-template-columns: repeat(2, 1fr); 
+    grid-template-columns: repeat(2, 1fr);
     gap: 8px;
     margin-top: 8px;
   }
@@ -448,7 +442,7 @@
   .lightbox .next {
     right: 8px;
   }
-  
+
   .lightbox .close {
       top: 8px;
       right: 8px;
