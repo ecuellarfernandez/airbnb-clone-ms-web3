@@ -8,6 +8,7 @@ import { Listing } from '@listings/data-access/models/listing.model';
 })
 export class ListingCardComponent {
   @Input({ required: true }) listing!: Listing;
+  @Input() showDescription: boolean = false;
   @Output() listingClick = new EventEmitter<MouseEvent>();
   clickableListing = true;
 }
