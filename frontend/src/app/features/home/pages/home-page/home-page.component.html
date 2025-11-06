@@ -1,4 +1,11 @@
 <div class="space-y-5">
+
+  <app-card-slider [title]="'Alojamientos destacados en Santa Cruz de la Sierra'">
+    <ng-container *ngFor="let item of resultsSc">
+      <app-listing-card *itemCarousel [listing]="item" (listingClick)="onListingDetail(item)"></app-listing-card>
+    </ng-container>
+  </app-card-slider>
+
   <!-- Section Santa Cruz -->
   <section class="space-y-3">
 

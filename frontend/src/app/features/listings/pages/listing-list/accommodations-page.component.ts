@@ -15,9 +15,9 @@ export class AccommodationsPageComponent implements OnInit {
   maxPriceInput = '';
   minCapacityInput = '';
   results: Listing[] = [];
-  private router = inject(Router);
 
-  constructor(private svc: AccommodationsService) {}
+  constructor(private svc: AccommodationsService,
+              private router:Router) {}
 
   ngOnInit(): void {
     this.cities = this.svc.getCities();
@@ -41,6 +41,6 @@ export class AccommodationsPageComponent implements OnInit {
   }
 
   protected listingRedirect(l: Listing) {
-    this.router.navigate(['listings', l.id]);
+    this.router.navigate(['/listings', l.id]);
   }
 }

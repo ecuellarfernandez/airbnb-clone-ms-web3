@@ -1,0 +1,100 @@
+.carousel-container {
+  position: relative;
+  gap: 16px;
+  width: 100%;
+}
+
+.carousel-controls{
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.carousel {
+  overflow: hidden;
+  width: 100%;
+  flex: 1;
+}
+
+.carousel-inner {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.4s ease-in-out;
+}
+
+.carousel-item {
+  flex-shrink: 0;
+}
+
+.carousel-btn {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  flex-shrink: 0;
+  transition: all 0.2s ease;
+
+  &:hover:not(:disabled) {
+    background: #f7f7f7;
+    border-color: #333;
+    transform: scale(1.05);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+
+  .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ddd;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+
+    &.active {
+      background: #333;
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    &:hover {
+      background: #999;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 767px) {
+  .carousel-container {
+    gap: 8px;
+  }
+
+  .carousel-inner {
+    gap: 8px;
+  }
+
+  .carousel-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+}
+

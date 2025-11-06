@@ -6,13 +6,13 @@ import { ListingDetailPageComponent } from '@app/features/listings/pages/listing
 
 const routes: Routes = [
   {
-    path: ':id',
-    component: ListingDetailPageComponent,
-  },
-  {
-    path: '',
+    path: 'listings',
     component: AccommodationsPageComponent,
   },
+  {
+    path: ':id',
+    component: ListingDetailPageComponent,
+  }
 ];
 
 @NgModule({
