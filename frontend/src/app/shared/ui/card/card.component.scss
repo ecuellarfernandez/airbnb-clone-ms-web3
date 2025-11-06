@@ -1,7 +1,7 @@
 .ui-card{
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 0.5rem;
 
   &__media::ng-deep img {
     width: 100%;
@@ -29,13 +29,7 @@
     border-radius: var(--radius-sm);
   }
 
-  &--clickable{
+  &--clickable {
     cursor: pointer;
-    transition: transform 300ms ease;
-
-    &:hover{
-      transform: scale(102%);
-    }
   }
-
 }

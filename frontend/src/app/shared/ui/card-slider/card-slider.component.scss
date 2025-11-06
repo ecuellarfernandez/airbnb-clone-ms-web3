@@ -1,0 +1,141 @@
+.carousel-wrapper {
+  width: 100%;
+}
+
+.carousel-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.carousel-header{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  height: 100%;
+  padding: 10px 0;
+}
+.carousel-controls{
+  display: flex;
+  gap: .5rem;
+  margin:10px 0;
+  position: absolute;
+  right: 1%;
+}
+
+.carousel {
+  overflow: hidden;
+  width: 100%;
+  flex: 1;
+
+  &.draggable {
+    cursor: grab;
+
+    &:active {
+      cursor: grabbing;
+    }
+  }
+}
+
+.carousel-inner {
+  display: flex;
+  gap: 16px;
+  transition: transform 0.4s ease-in-out;
+  user-select: none;
+
+  &.dragging {
+    transition: none;
+    cursor: grabbing;
+  }
+}
+
+.carousel-item {
+  flex-shrink: 0;
+}
+
+.carousel-btn {
+  &:hover:not(:disabled) {
+    border-color: #333;
+    transform: scale(1.05);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+
+  &-prev {
+    margin-left: -20px;
+  }
+
+  &-next {
+    margin-right: -20px;
+  }
+}
+
+.carousel-indicators {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 16px;
+
+  .indicator {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ddd;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: all 0.2s ease;
+
+    &.active {
+      background: #333;
+      width: 24px;
+      border-radius: 4px;
+    }
+
+    &:hover {
+      background: #999;
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 1023px) {
+  .carousel-title {
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+
+  .carousel-inner {
+    gap: 12px;
+  }
+
+  .carousel-btn {
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 767px) {
+  .carousel-title {
+    font-size: 18px;
+    margin-bottom: 12px;
+  }
+
+  .carousel-inner {
+    gap: 8px;
+  }
+
+  .carousel-btn {
+    width: 32px;
+    height: 32px;
+    font-size: 18px;
+  }
+}
+
