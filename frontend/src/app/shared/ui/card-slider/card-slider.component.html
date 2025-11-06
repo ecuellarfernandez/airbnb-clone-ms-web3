@@ -1,21 +1,23 @@
 <div class="carousel-wrapper">
-  <h2 *ngIf="title" class="carousel-title">{{ title }}</h2>
-
-  <div class="carousel-container">
+  <div class="carousel-header">
+    <h2 *ngIf="title" class="carousel-title fs-md">{{ title }}</h2>
     <div class="carousel-controls" *ngIf="totalCards > cardsVisible && !isMobileOrTablet">
       <button
-        class="carousel-btn carousel-btn-prev"
+        class="carousel-btn  carousel-btn-prev w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center"
         (click)="prev()"
         [disabled]="!canGoPrev">
         &#8249;
       </button>
       <button
-        class="carousel-btn carousel-btn-next"
+        class="carousel-btn carousel-btn-next w-10 h-10 bg-surface-2 text-on-surface-2 hover:bg-surface-2-hover hover:text-on-surface-2-hover rounded-pill flex items-center justify-center"
         (click)="next()"
         [disabled]="!canGoNext">
         &#8250;
       </button>
     </div>
+  </div>
+
+  <div class="carousel-container">
 
     <div
       #carousel
