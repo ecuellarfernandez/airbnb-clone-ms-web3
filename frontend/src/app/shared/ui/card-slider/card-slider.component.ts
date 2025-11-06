@@ -28,6 +28,7 @@ export class CarouselItemDirective {
   styleUrl: './card-slider.component.scss'
 })
 export class CardSliderComponent implements AfterViewInit {
+  @Input() title?: string;
   @Input() indicators?: boolean = false;
   @ContentChildren(CarouselItemDirective) items!: QueryList<CarouselItemDirective>;
   @ViewChild('carousel') private carouselContainer!: ElementRef;
@@ -37,6 +38,13 @@ export class CardSliderComponent implements AfterViewInit {
   cardsVisible: number = 6; // Tarjetas visibles a la vez (responsive)
   currentIndex: number = 0; // Índice de la primera tarjeta visible
   gap: number = 16; // Gap entre tarjetas en px
+
+  // Drag functionality
+  isDragging: boolean = false;
+  startX: number = 0;
+  scrollLeft: number = 0;
+  dragThreshold: number = 5;
+  isMobileOrTablet: boolean = false;
 
   constructor(
     private cdr: ChangeDetectorRef,
@@ -67,10 +75,59 @@ export class CardSliderComponent implements AfterViewInit {
 
     if (width < 768) {
       this.cardsVisible = 2;
+      this.isMobileOrTablet = true;
     } else if (width < 1024) {
       this.cardsVisible = 4;
+      this.isMobileOrTablet = true;
     } else {
       this.cardsVisible = 6;
+      this.isMobileOrTablet = false;
+    }
+  }
+
+  // Drag functionality
+  onDragStart(event: MouseEvent | TouchEvent): void {
+    if (!this.isMobileOrTablet) return;
+
+    this.isDragging = true;
+    const clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
+    this.startX = clientX;
+
+    const currentTransform = this.carouselInner.nativeElement.style.transform;
+    const matrix = new DOMMatrix(currentTransform);
+    this.scrollLeft = matrix.m41; // translateX value
+  }
+
+  onDragMove(event: MouseEvent | TouchEvent): void {
+    if (!this.isDragging || !this.isMobileOrTablet) return;
+
+    event.preventDefault();
+    const clientX = event instanceof MouseEvent ? event.clientX : event.touches[0].clientX;
+    const deltaX = clientX - this.startX;
+
+    this.carouselInner.nativeElement.style.transform = `translateX(${this.scrollLeft + deltaX}px)`;
+  }
+
+  onDragEnd(event: MouseEvent | TouchEvent): void {
+    if (!this.isDragging || !this.isMobileOrTablet) return;
+
+    this.isDragging = false;
+
+    const clientX = event instanceof MouseEvent ? event.clientX : event.changedTouches[0].clientX;
+    const deltaX = clientX - this.startX;
+
+    // Determinar dirección del swipe
+    if (Math.abs(deltaX) > this.dragThreshold) {
+      if (deltaX > 50 && this.canGoPrev) {
+        this.prev();
+      } else if (deltaX < -50 && this.canGoNext) {
+        this.next();
+      } else {
+        // Volver a la posición actual si el swipe no fue suficiente
+        this.updateSliderPosition();
+      }
+    } else {
+      this.updateSliderPosition();
     }
   }
 

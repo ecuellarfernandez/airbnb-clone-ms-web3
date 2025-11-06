@@ -1,40 +1,54 @@
-<div class="carousel-container">
-  <div class="carousel-controls">
-    <button
-      class="carousel-btn carousel-btn-prev"
-      (click)="prev()"
-      [disabled]="!canGoPrev"
-      *ngIf="totalCards > cardsVisible">
-      &#8249;
-    </button>
-    <button
-      class="carousel-btn carousel-btn-next"
-      (click)="next()"
-      [disabled]="!canGoNext"
-      *ngIf="totalCards > cardsVisible">
-      &#8250;
-    </button>
-  </div>
+<div class="carousel-wrapper">
+  <h2 *ngIf="title" class="carousel-title">{{ title }}</h2>
 
-  <div #carousel class="carousel">
+  <div class="carousel-container">
+    <div class="carousel-controls" *ngIf="totalCards > cardsVisible && !isMobileOrTablet">
+      <button
+        class="carousel-btn carousel-btn-prev"
+        (click)="prev()"
+        [disabled]="!canGoPrev">
+        &#8249;
+      </button>
+      <button
+        class="carousel-btn carousel-btn-next"
+        (click)="next()"
+        [disabled]="!canGoNext">
+        &#8250;
+      </button>
+    </div>
+
     <div
-      #carouselInner
-      class="carousel-inner">
+      #carousel
+      class="carousel"
+      [class.draggable]="isMobileOrTablet">
       <div
-        *ngFor="let item of items"
-        class="carousel-item"
-        [style.width]="getCardWidth()">
-        <ng-container *ngTemplateOutlet="item.template"></ng-container>
+        #carouselInner
+        class="carousel-inner"
+        (mousedown)="onDragStart($event)"
+        (mousemove)="onDragMove($event)"
+        (mouseup)="onDragEnd($event)"
+        (mouseleave)="isDragging && onDragEnd($event)"
+        (touchstart)="onDragStart($event)"
+        (touchmove)="onDragMove($event)"
+        (touchend)="onDragEnd($event)"
+        [class.dragging]="isDragging">
+        <div
+          *ngFor="let item of items"
+          class="carousel-item"
+          [style.width]="getCardWidth()">
+          <ng-container *ngTemplateOutlet="item.template"></ng-container>
+        </div>
       </div>
     </div>
   </div>
-</div>
-<div class="carousel-indicators" *ngIf="totalCards > cardsVisible && indicators">
-  <button
-    *ngFor="let i of pages"
-    class="indicator"
-    [class.active]="i === currentIndex"
-    (click)="goToPage(i)">
-  </button>
+
+  <div class="carousel-indicators" *ngIf="totalCards > cardsVisible && (indicators || isMobileOrTablet)">
+    <button
+      *ngFor="let i of pages"
+      class="indicator"
+      [class.active]="i === currentIndex"
+      (click)="goToPage(i)">
+    </button>
+  </div>
 </div>
 
