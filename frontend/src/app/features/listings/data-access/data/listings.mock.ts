@@ -421,5 +421,35 @@ export const LISTINGS_MOCK: Listing[] = [
     capacity: 4,
     description: 'Clima templado, áreas verdes y churrasquera.',
     image: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop'
-  }
+  },
+  {
+    id: 40,
+    title: 'Modern apt in Equipetrol',
+    city: 'Santa Cruz',
+    price: 100,
+    capacity: 2,
+    description: 'Near restaurants and nightlife. Pool and gym.',
+    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d52?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop'
+    ]
+  },
+  {
+    id: 50,
+    title: 'Modern apt in Equipetrol',
+    city: 'Santa Cruz',
+    price: 100,
+    capacity: 2,
+    description: 'Near restaurants and nightlife. Pool and gym.',
+    image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop',
+    photos: [
+      'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1519710164239-da123dc03ef4?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1505691723518-36a5ac3b2d52?q=80&w=1200&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1499951360447-b19be8fe80f5?q=80&w=1200&auto=format&fit=crop'
+    ]
+  },
 ];

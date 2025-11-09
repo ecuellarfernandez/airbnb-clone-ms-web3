@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { LISTINGS_MOCK } from '../../../listings/data-access/data/listings.mock';
 import { Listing } from '../../../listings/data-access/models/listing.model';
+import {AccommodationsService, Filters} from '@listings/data-access/services/accommodations.api';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-home-page',
@@ -9,6 +11,10 @@ import { Listing } from '../../../listings/data-access/models/listing.model';
   styleUrl: './home-page.component.scss'
 })
 export class HomePageComponent implements OnInit {
+
+  constructor(private svc: AccommodationsService, private router: Router) {}
+  resultsSc: Listing[] = [];
+
   santaCruzListings: Listing[] = [];
   tarijaListings: Listing[] = [];
   sucreListings: Listing[] = [];
@@ -17,6 +23,12 @@ export class HomePageComponent implements OnInit {
 
   ngOnInit() {
     this.groupListingsByCity();
+    const filters: Filters = {
+      city: "Santa Cruz",
+      maxPrice:"",
+      minCapacity: "",
+    };
+    this.resultsSc = this.svc.filter(filters);
   }
 
   private groupListingsByCity() {
@@ -25,5 +37,9 @@ export class HomePageComponent implements OnInit {
     this.sucreListings = LISTINGS_MOCK.filter(l => l.city === 'Sucre');
     this.laPazListings = LISTINGS_MOCK.filter(l => l.city === 'La Paz');
     this.cochabambaListings = LISTINGS_MOCK.filter(l => l.city === 'Cochabamba');
+  }
+
+  protected onListingDetail(listing: Listing) {
+    this.router.navigate(['/listings/detail', listing.id]);
   }
 }

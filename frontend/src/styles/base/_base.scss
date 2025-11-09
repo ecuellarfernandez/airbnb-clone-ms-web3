@@ -111,6 +111,7 @@ button {
 .btn:hover,
 button:hover {
   background-color: var(--brand-primary-hover);
+  color: var(--brand-on-primary);
   cursor: pointer;
 }
 
@@ -122,6 +123,7 @@ button:active {
 .btn-secondary:hover,
 button.secondary:hover {
   background-color: var(--brand-secondary-hover);
+  color: var(--brand-on-secondary);
   cursor: pointer;
 }
 

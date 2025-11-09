@@ -1,0 +1,130 @@
+<div class="listing-form-page">
+  <!-- Sidebar -->
+  <aside class="listing-form-page__sidebar">
+    <div class="listing-form-page__brand">
+      <h1 class="listing-form-page__brand-title">AirBbcitos</h1>
+      <p class="listing-form-page__brand-subtitle">Host Panel</p>
+    </div>
+    
+    <!-- Step Indicator -->
+    <nav class="listing-form-page__steps">
+      <div 
+        *ngFor="let step of steps; trackBy: trackByStepId"
+        class="listing-form-page__step"
+        [class.listing-form-page__step--current]="step.current"
+        [class.listing-form-page__step--completed]="step.completed"
+        (click)="onStepClick(step.id)"
+      >
+        <div class="listing-form-page__step-indicator">
+          <span class="listing-form-page__step-number">{{ steps.indexOf(step) + 1 }}</span>
+        </div>
+        <span class="listing-form-page__step-label">{{ step.label }}</span>
+      </div>
+    </nav>
+  </aside>
+
+  <main class="listing-form-page__main">
+    <div class="listing-form-page__container">
+      <header class="listing-form-page__header">
+        <h2 class="listing-form-page__title">Basics</h2>
+        <p class="listing-form-page__subtitle">
+          Let's get started by adding the basic information about your space
+        </p>
+      </header>
+
+      <form  class="listing-form-page__form">
+        <div class="listing-form-page__field">
+          <label for="title" class="listing-form-page__label">
+            Listing Title
+          </label>
+          <input
+            id="title"
+            type="text"
+            class="listing-form-page__input"
+            [class.listing-form-page__input--error]="getFieldError('title')"
+            placeholder="e.g. Cozy Studio near the University Library"
+            formControlName="title"
+          />
+          <div *ngIf="getFieldError('title')" class="listing-form-page__error">
+            {{ getFieldError('title') }}
+          </div>
+        </div>
+
+        <div class="listing-form-page__field">
+          <label for="description" class="listing-form-page__label">
+            Description
+          </label>
+          <textarea
+            id="description"
+            class="listing-form-page__textarea"
+            [class.listing-form-page__textarea--error]="getFieldError('description')"
+            placeholder="Tell guests what makes your place special. Mention nearby academic facilities, study-friendly features, and house rules."
+            formControlName="description"
+            rows="5"
+          ></textarea>
+          <div *ngIf="getFieldError('description')" class="listing-form-page__error">
+            {{ getFieldError('description') }}
+          </div>
+        </div>
+
+        <div class="listing-form-page__field">
+          <label for="location" class="listing-form-page__label">
+            Location
+          </label>
+          <div class="listing-form-page__input-wrapper">
+            <svg class="listing-form-page__input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"></path>
+            </svg>
+            <input
+              id="location"
+              type="text"
+              class="listing-form-page__input listing-form-page__input--with-icon"
+              [class.listing-form-page__input--error]="getFieldError('location')"
+              placeholder="Enter address"
+              formControlName="location"
+            />
+          </div>
+          <div *ngIf="getFieldError('location')" class="listing-form-page__error">
+            {{ getFieldError('location') }}
+          </div>
+          
+          <div class="listing-form-page__map">
+            <div class="listing-form-page__map-content">
+              <svg class="listing-form-page__map-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+              </svg>
+              <p>Map will be displayed here</p>
+            </div>
+          </div>
+        </div>
+      </form>
+
+      <footer class="listing-form-page__footer">
+        <button
+          type="button"
+          class="listing-form-page__button listing-form-page__button--secondary"
+          (click)="onSaveDraft()"
+        >
+          Save Draft
+        </button>
+        <div class="listing-form-page__button-group">
+          <button
+            type="button"
+            class="listing-form-page__button listing-form-page__button--secondary"
+            (click)="onBack()"
+          >
+            Back
+          </button>
+          <button
+            type="button"
+            class="listing-form-page__button listing-form-page__button--primary"
+            (click)="onNextStep()"
+          >
+            Next Step
+          </button>
+        </div>
+      </footer>
+    </div>
+  </main>
+</div>

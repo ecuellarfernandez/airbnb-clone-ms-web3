@@ -25,8 +25,7 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('@listings/listings-module').then(m => m.ListingsModule),
-      },
-      { path: '', pathMatch: 'full', redirectTo: 'listings' }
+      }
     ],
   },
   {
