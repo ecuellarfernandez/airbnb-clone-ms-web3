@@ -40,6 +40,6 @@ export class HomePageComponent implements OnInit {
   }
 
   protected onListingDetail(listing: Listing) {
-    this.router.navigate(['/listings', listing.id]);
+    this.router.navigate(['/listings/detail', listing.id]);
   }
 }

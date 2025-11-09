@@ -41,6 +41,6 @@ export class AccommodationsPageComponent implements OnInit {
   }
 
   protected listingRedirect(l: Listing) {
-    this.router.navigate(['/listings', l.id]);
+    this.router.navigate(['/listings/detail', l.id]);
   }
 }
