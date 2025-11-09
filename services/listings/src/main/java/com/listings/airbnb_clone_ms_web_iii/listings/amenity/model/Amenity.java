@@ -1,23 +1,22 @@
-package com.listings.airbnb_clone_ms_web_iii.listings.model;
+package com.listings.airbnb_clone_ms_web_iii.listings.amenity.model;
 
 import jakarta.persistence.*;
 
 import java.util.UUID;
 
 @Entity
-public class CategoryType {
+public class Amenity {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @Column(nullable = false)
     private UUID id;
 
-    @Column(nullable = false)
-    private String name;
+    @Column(length = 100, nullable = false)
+    private String title;
 
-    @Column(nullable = false)
+    @Column(length = 255, nullable = true)
     private String description;
 
-    public CategoryType() {}
+    public Amenity() {}
 
     public UUID getId() {
         return id;
@@ -27,12 +26,12 @@ public class CategoryType {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
     public String getDescription() {

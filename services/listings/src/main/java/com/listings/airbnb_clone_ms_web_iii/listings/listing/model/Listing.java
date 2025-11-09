@@ -1,8 +1,7 @@
-package com.listings.airbnb_clone_ms_web_iii.listings.model;
+package com.listings.airbnb_clone_ms_web_iii.listings.listing.model;
 
 import jakarta.persistence.*;
 
-import java.util.ArrayList;
 import java.util.UUID;
 
 @Entity

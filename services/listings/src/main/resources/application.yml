@@ -38,3 +38,14 @@ custom:
 app:
   cors:
     allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:4200}
+
+management:
+  endpoint:
+    health:
+      show-details: when_authorized
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  security:
+    enabled: true

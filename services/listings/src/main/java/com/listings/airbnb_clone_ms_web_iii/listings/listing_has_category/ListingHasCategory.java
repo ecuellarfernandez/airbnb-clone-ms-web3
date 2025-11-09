@@ -1,11 +1,13 @@
-package com.listings.airbnb_clone_ms_web_iii.listings.model;
+package com.listings.airbnb_clone_ms_web_iii.listings.listing_has_category;
 
+import com.listings.airbnb_clone_ms_web_iii.listings.category.model.Category;
+import com.listings.airbnb_clone_ms_web_iii.listings.listing.model.Listing;
 import jakarta.persistence.*;
 
 import java.util.UUID;
 
 @Entity
-public class ListingHasAmenity {
+public class ListingHasCategory {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -15,10 +17,10 @@ public class ListingHasAmenity {
     private Listing listing;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "amenity_id", nullable = false)
-    private Amenity amenity;
+    @JoinColumn(name="category_id", nullable = false)
+    private Category category;
 
-    public ListingHasAmenity() {}
+    public ListingHasCategory() {}
 
     public UUID getId() {
         return id;
@@ -36,11 +38,11 @@ public class ListingHasAmenity {
         this.listing = listing;
     }
 
-    public Amenity getAmenity() {
-        return amenity;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setAmenity(Amenity amenity) {
-        this.amenity = amenity;
+    public void setCategory(Category category) {
+        this.category = category;
     }
 }
