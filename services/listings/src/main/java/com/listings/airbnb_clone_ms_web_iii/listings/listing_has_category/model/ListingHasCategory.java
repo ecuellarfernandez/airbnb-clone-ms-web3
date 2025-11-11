@@ -1,4 +1,4 @@
-package com.listings.airbnb_clone_ms_web_iii.listings.listing_has_category;
+package com.listings.airbnb_clone_ms_web_iii.listings.listing_has_category.model;
 
 import com.listings.airbnb_clone_ms_web_iii.listings.category.model.Category;
 import com.listings.airbnb_clone_ms_web_iii.listings.listing.model.Listing;

@@ -2,6 +2,7 @@ package com.listings.airbnb_clone_ms_web_iii.listings.listing.model;
 
 import jakarta.persistence.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -24,6 +25,15 @@ public class Listing {
 
     @Column(nullable = false)
     private UUID hostId;
+
+    @Column(nullable = false)
+    private String mainPhoto;
+
+    // Provisional
+    @ElementCollection
+    @CollectionTable(name = "listing_photos", joinColumns = @JoinColumn(name = "listing_id"))
+    @Column(nullable = false)
+    private List<String> photos;
 
     public Listing() {}
 
