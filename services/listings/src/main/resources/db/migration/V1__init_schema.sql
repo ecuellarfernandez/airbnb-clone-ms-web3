@@ -29,7 +29,9 @@ CREATE TABLE listing (
     price NUMERIC(12,2) NOT NULL,
     capacity INTEGER NOT NULL,
     host_id UUID NOT NULL,
-    main_photo_url VARCHAR(255) NOT NULL
+    main_photo_url VARCHAR(255) NOT NULL,
+    latitude NUMERIC(10, 8),
+    longitude NUMERIC(11, 8)
 );
 
 -- Tabla para fotos adicionales del listing (relación @ElementCollection)

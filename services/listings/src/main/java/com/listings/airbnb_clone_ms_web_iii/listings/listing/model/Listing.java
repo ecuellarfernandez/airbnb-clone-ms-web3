@@ -29,6 +29,12 @@ public class Listing {
     @Column(nullable = false)
     private String mainPhotoUrl;
 
+    @Column
+    private Double latitude;
+
+    @Column
+    private Double longitude;
+
     // Provisional
     @ElementCollection
     @CollectionTable(name = "listing_photos", joinColumns = @JoinColumn(name = "listing_id"))
