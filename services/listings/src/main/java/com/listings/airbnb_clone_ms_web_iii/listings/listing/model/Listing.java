@@ -90,4 +90,36 @@ public class Listing {
     public void setHostId(UUID hostId) {
         this.hostId = hostId;
     }
+
+    public String getMainPhotoUrl() {
+        return mainPhotoUrl;
+    }
+
+    public void setMainPhotoUrl(String mainPhotoUrl) {
+        this.mainPhotoUrl = mainPhotoUrl;
+    }
+
+    public Double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(Double latitude) {
+        this.latitude = latitude;
+    }
+
+    public Double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(Double longitude) {
+        this.longitude = longitude;
+    }
+
+    public List<String> getPhotosUrl() {
+        return photosUrl;
+    }
+
+    public void setPhotosUrl(List<String> photosUrl) {
+        this.photosUrl = photosUrl;
+    }
 }
