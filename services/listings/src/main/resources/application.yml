@@ -2,7 +2,7 @@ spring:
   application:
     name: listings
   datasource:
-    url: jdbc:postgresql://${LISTINGS_DB_HOST:localhost}:5432/listings
+    url: ${LISTINGS_DB_URL}
     username: ${LISTINGS_DB_USER:postgres}
     password: ${LISTINGS_DB_PASSWORD:postgres}
   kafka:

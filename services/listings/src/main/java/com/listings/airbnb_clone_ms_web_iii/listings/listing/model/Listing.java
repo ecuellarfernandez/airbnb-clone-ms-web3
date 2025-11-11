@@ -27,13 +27,13 @@ public class Listing {
     private UUID hostId;
 
     @Column(nullable = false)
-    private String mainPhoto;
+    private String mainPhotoUrl;
 
     // Provisional
     @ElementCollection
     @CollectionTable(name = "listing_photos", joinColumns = @JoinColumn(name = "listing_id"))
     @Column(nullable = false)
-    private List<String> photos;
+    private List<String> photosUrl;
 
     public Listing() {}
 

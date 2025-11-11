@@ -1,5 +1,6 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.listing.dto;
 
+import com.listings.airbnb_clone_ms_web_iii.listings.amenity.dto.AmenitySummaryDto;
 import com.listings.airbnb_clone_ms_web_iii.listings.category.dto.CategorySummaryDto;
 
 import java.util.List;
