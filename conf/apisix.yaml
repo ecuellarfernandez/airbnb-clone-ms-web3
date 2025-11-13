@@ -1,0 +1,38 @@
+
+upstreams:
+  - id: 1
+    name: identity-upstream
+    type: roundrobin
+    nodes:
+      "host.docker.internal:5000": 1
+
+services:
+  - id: 1
+    name: identity-service-policies
+    upstream_id: 1
+    plugins:
+      cors:
+        allow_origins: "*"
+
+routes:
+  #BASE ROUTE OF CLAIMS
+  - id: 1
+    name: identity-prefix-router
+    uri: /api/identity/* 
+    methods: ["GET", "POST", "PUT", "DELETE"]
+    service_id: 1 
+
+    plugins:
+      proxy-rewrite:
+        regex_uri: ["(^/api)/identity/(.*)", "$1/$2"] 
+      cors:
+        allow_origins: "*"
+
+  #SUB BASE CLAIMS HEALTH
+  - id: 3
+    name: identity-route-health
+    upstream_id: 1
+    uri: /api/health
+    methods: ["GET"]
+    service_id: 1
+#END

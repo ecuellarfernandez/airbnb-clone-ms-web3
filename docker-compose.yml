@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+
+    apisix:
+        image: apache/apisix:latest
+        container_name: apisix-standalone-microservices
+        volumes:
+            - ./conf/config.yaml:/usr/local/apisix/conf/config.yaml:ro
+            - ./conf/apisix.yaml:/usr/local/apisix/conf/apisix.yaml:ro
+        ports:
+            - "9000:9000"
+        extra_hosts:
+            - "host.docker.internal:host-gateway"
+
     kafka:
         image: confluentinc/cp-kafka:latest
         hostname: kafka
