@@ -1,0 +1,11 @@
+apisix:
+  #PORT OF THE GATEWAY
+  node_listen: 9000
+  plugins: ["cors", "proxy-rewrite", "uri-rewrite"]
+
+deployment:
+  role: data_plane
+  role_data_plane:
+    config_provider: yaml
+
+#END
