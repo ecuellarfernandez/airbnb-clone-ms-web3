@@ -1,15 +1,10 @@
 
 import threading
 import json
-import time
 from kafka import KafkaConsumer
 from django.conf import settings
-from pyexpat.errors import messages
-from sqlparse.engine.grouping import group_identifier
 
-from audit_logs.models import AuditLog
-
-from events.handlers.handler import event_handler
+from infrastructure_layer.event_processor import event_processor
 
 class KafkaConsumerThread(threading.Thread):
     """Thread to run Kafka consumer. Start with: python manage.py run_kafka_consumer"""
@@ -53,8 +48,14 @@ class KafkaConsumerThread(threading.Thread):
     def _process_message(self, message):
         topic_name = message.topic
         event_value = message.value
-        print(f"[KAFKA] Received message on topic: {topic_name} with value: {event_value}")
-        event_handler.handle_event(topic_name, event_value)
+        event_name = event_value.get('eventType')
+
+        print("-" * 50)
+        print(f"[KAFKA] Topic: {topic_name}")
+        print(f"[KAFKA] Event Name (Type): {event_name}")
+        print(f"[KAFKA] Raw Value: {event_value}")
+        print("-" * 50)
+        event_processor.handle_event(topic_name=topic_name, event_name=event_name, event_value=event_value)
 
     def stop(self):
         """Sets the event flag to signal the thread to stop."""

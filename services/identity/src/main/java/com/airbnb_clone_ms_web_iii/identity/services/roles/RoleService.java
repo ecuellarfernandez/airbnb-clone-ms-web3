@@ -58,6 +58,8 @@ public class RoleService {
 
         //if role has a claim with the same id, do nothing
         if(role.getClaims().stream().anyMatch(c -> c.getId().equals(claim.getId()))){
+            ClaimAddedEvent event = new ClaimAddedEvent(1L, claim, roleId);
+            kafkaTemplate.send(ROLE_TOPIC, event);
             return role;
         }
 
