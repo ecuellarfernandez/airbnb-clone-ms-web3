@@ -2,21 +2,29 @@ spring:
   application:
     name: listings
   datasource:
-    url: ${LISTINGS_DB_URL}
+    url: ${LISTINGS_DB_URL:jdbc:postgresql://localhost:5432/listings_db}
     username: ${LISTINGS_DB_USER:postgres}
     password: ${LISTINGS_DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
   kafka:
-    bootstrap-servers: localhost:9092
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
     producer:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   jpa:
     hibernate:
-      ddl-auto: none
-    show-sql: true
+      ddl-auto: none  # ✅ Correcto: Flyway maneja el schema
+    show-sql: ${JPA_SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
   flyway:
     enabled: true
     locations: classpath:db/migration
+    baseline-on-migrate: true  # Para DBs existentes
+    placeholders:
+      seed_demo_data: ${FLYWAY_SEED_DATA:true}  # Control del seeder
 
 security:
   jwt:
@@ -32,8 +40,15 @@ security:
 server:
   port: ${LISTINGS_PORT:8081}
 
+# Configuración para manejo de imágenes
 custom:
-  image-path: ${LISTINGS_IMAGE_PATH:/static/images/}
+  # Para fase actual (URLs externas de Unsplash)
+  use-external-images: ${USE_EXTERNAL_IMAGES:true}
+
+  # Para fase futura (microservicio Media)
+  media-service:
+    base-url: ${MEDIA_SERVICE_URL:http://localhost:8082}
+    enabled: ${MEDIA_SERVICE_ENABLED:false}
 
 app:
   cors:
@@ -46,6 +61,11 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,info
+        include: health,info,flyway
   security:
     enabled: true
+
+logging:
+  level:
+    org.flywaydb: INFO
+    com.yourproject.listings: DEBUG
