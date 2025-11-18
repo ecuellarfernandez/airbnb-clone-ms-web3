@@ -3,7 +3,6 @@ package com.listings.airbnb_clone_ms_web_iii.listings.domain.service;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Category;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Listing;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.ListingImage;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -16,7 +15,6 @@ import java.util.List;
  * 3. Contiene reglas de negocio complejas del dominio
  */
 @Service
-@Slf4j
 public class ListingDomainService {
 
     /**
@@ -27,8 +25,6 @@ public class ListingDomainService {
      * @throws IllegalStateException si el listing no cumple los requisitos
      */
     public void validateListingForActivation(Listing listing) {
-        log.debug("Validating listing {} for activation", listing.getId());
-
         // Regla 1: Debe tener al menos una imagen
         if (listing.getImages() == null || listing.getImages().isEmpty()) {
             throw new IllegalStateException("Cannot activate listing without images");
@@ -67,8 +63,6 @@ public class ListingDomainService {
                             minimumPrice, listing.getPrice().getCurrency())
             );
         }
-
-        log.info("Listing {} passed all activation validations", listing.getId());
     }
 
     /**
@@ -94,10 +88,8 @@ public class ListingDomainService {
 
         if (numberOfNights >= 30) {
             discount = new BigDecimal("0.20"); // 20%
-            log.debug("Applying 20% discount for {} nights stay", numberOfNights);
         } else if (numberOfNights >= 7) {
             discount = new BigDecimal("0.10"); // 10%
-            log.debug("Applying 10% discount for {} nights stay", numberOfNights);
         }
 
         BigDecimal discountAmount = baseTotal.multiply(discount);
@@ -146,9 +138,6 @@ public class ListingDomainService {
         // Umbral: 5+ puntos para ser destacado
         boolean isFeatured = score >= 5;
 
-        log.debug("Listing {} scored {} points, featured: {}",
-                listing.getId(), score, isFeatured);
-
         return isFeatured;
     }
 
@@ -176,7 +165,5 @@ public class ListingDomainService {
                     "Listing cannot have multiple space type categories. Found: " + spaceTypeCategories
             );
         }
-
-        log.debug("Category compatibility validation passed for {} categories", categories.size());
     }
 }
