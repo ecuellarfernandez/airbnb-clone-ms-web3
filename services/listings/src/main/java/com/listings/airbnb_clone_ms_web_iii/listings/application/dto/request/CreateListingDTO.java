@@ -2,20 +2,12 @@ package com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class CreateListingDTO {
 
     @NotNull(message = "Host ID is required")
@@ -57,4 +49,100 @@ public class CreateListingDTO {
 
     @NotEmpty(message = "At least one image is required")
     private List<CreateListingImageDTO> images;
+
+    public UUID getHostId() {
+        return hostId;
+    }
+
+    public void setHostId(UUID hostId) {
+        this.hostId = hostId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocationDTO getLocation() {
+        return location;
+    }
+
+    public void setLocation(LocationDTO location) {
+        this.location = location;
+    }
+
+    public BigDecimal getPriceAmount() {
+        return priceAmount;
+    }
+
+    public void setPriceAmount(BigDecimal priceAmount) {
+        this.priceAmount = priceAmount;
+    }
+
+    public String getPriceCurrency() {
+        return priceCurrency;
+    }
+
+    public void setPriceCurrency(String priceCurrency) {
+        this.priceCurrency = priceCurrency;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public Integer getBedrooms() {
+        return bedrooms;
+    }
+
+    public void setBedrooms(Integer bedrooms) {
+        this.bedrooms = bedrooms;
+    }
+
+    public Integer getBathrooms() {
+        return bathrooms;
+    }
+
+    public void setBathrooms(Integer bathrooms) {
+        this.bathrooms = bathrooms;
+    }
+
+    public Set<UUID> getCategoryIds() {
+        return categoryIds;
+    }
+
+    public void setCategoryIds(Set<UUID> categoryIds) {
+        this.categoryIds = categoryIds;
+    }
+
+    public Set<UUID> getAmenityIds() {
+        return amenityIds;
+    }
+
+    public void setAmenityIds(Set<UUID> amenityIds) {
+        this.amenityIds = amenityIds;
+    }
+
+    public List<CreateListingImageDTO> getImages() {
+        return images;
+    }
+
+    public void setImages(List<CreateListingImageDTO> images) {
+        this.images = images;
+    }
 }

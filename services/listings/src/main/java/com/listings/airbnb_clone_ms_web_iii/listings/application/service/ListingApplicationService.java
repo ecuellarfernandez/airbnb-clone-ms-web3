@@ -12,8 +12,6 @@ import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.CategoryR
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.service.ListingDomainService;
 import com.listings.airbnb_clone_ms_web_iii.listings.presentation.exception.ListingNotFoundException;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +27,6 @@ import java.util.UUID;
  */
 @Service
 @Transactional
-@RequiredArgsConstructor
-@Slf4j
 public class ListingApplicationService implements ListingServicePort {
 
     private final ListingRepository listingRepository;
@@ -38,6 +34,18 @@ public class ListingApplicationService implements ListingServicePort {
     private final AmenityRepository amenityRepository;
     private final ListingDomainService listingDomainService;
     private final ListingMapper listingMapper;
+
+    public ListingApplicationService(ListingRepository listingRepository,
+                                     CategoryRepository categoryRepository,
+                                     AmenityRepository amenityRepository,
+                                     ListingDomainService listingDomainService,
+                                     ListingMapper listingMapper) {
+        this.listingRepository = listingRepository;
+        this.categoryRepository = categoryRepository;
+        this.amenityRepository = amenityRepository;
+        this.listingDomainService = listingDomainService;
+        this.listingMapper = listingMapper;
+    }
 
     // ========================================
     // CREATE
@@ -51,8 +59,6 @@ public class ListingApplicationService implements ListingServicePort {
      */
     @Override
     public ListingDetailDTO create(CreateListingDTO dto) {
-        log.info("Creating listing with title: {}", dto.getTitle());
-
         Listing listing = listingMapper.toEntity(dto);
 
         dto.getImages().forEach(imageDto -> {
@@ -82,8 +88,6 @@ public class ListingApplicationService implements ListingServicePort {
 
         Listing saved = listingRepository.save(listing);
 
-        log.info("Listing created successfully with ID: {}", saved.getId());
-
         return listingMapper.toDetailDTO(saved);
     }
 
@@ -99,11 +103,7 @@ public class ListingApplicationService implements ListingServicePort {
     @Override
     @Transactional(readOnly = true)
     public List<ListingSummaryDTO> findAllActive() {
-        log.info("Finding all active listings");
-
         List<Listing> listings = listingRepository.findAllActive();
-
-        log.info("Found {} active listings", listings.size());
 
         return listingMapper.toSummaryDTOList(listings);
     }
@@ -118,8 +118,6 @@ public class ListingApplicationService implements ListingServicePort {
     @Override
     @Transactional(readOnly = true)
     public ListingDetailDTO findById(UUID id) {
-        log.info("Finding listing by ID: {}", id);
-
         Listing listing = listingRepository.findByIdWithRelations(id)
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found with id: " + id));
 
@@ -135,12 +133,7 @@ public class ListingApplicationService implements ListingServicePort {
     @Override
     @Transactional(readOnly = true)
     public List<ListingSummaryDTO> findByHostId(UUID hostId) {
-        log.info("Finding listings by host ID: {}", hostId);
-
         List<Listing> listings = listingRepository.findByHostId(hostId);
-
-        log.info("Found {} listings for host {}", listings.size(), hostId);
-
         return listingMapper.toSummaryDTOList(listings);
     }
 
@@ -163,14 +156,10 @@ public class ListingApplicationService implements ListingServicePort {
             Integer minCapacity,
             UUID categoryId
     ) {
-        log.info("Finding listings with filters - city: {}, minPrice: {}, maxPrice: {}, capacity: {}, category: {}",
-                city, minPrice, maxPrice, minCapacity, categoryId);
 
         List<Listing> listings = listingRepository.findByFilters(
                 city, minPrice, maxPrice, minCapacity, categoryId
         );
-
-        log.info("Found {} listings matching filters", listings.size());
 
         return listingMapper.toSummaryDTOList(listings);
     }
@@ -189,8 +178,6 @@ public class ListingApplicationService implements ListingServicePort {
      */
     @Override
     public ListingDetailDTO update(UUID id, UpdateListingDTO dto) {
-        log.info("Updating listing with ID: {}", id);
-
         Listing listing = listingRepository.findByIdWithRelations(id)
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found with id: " + id));
 
@@ -281,8 +268,6 @@ public class ListingApplicationService implements ListingServicePort {
 
         Listing updated = listingRepository.save(listing);
 
-        log.info("Listing updated successfully with ID: {}", updated.getId());
-
         return listingMapper.toDetailDTO(updated);
     }
 
@@ -294,7 +279,6 @@ public class ListingApplicationService implements ListingServicePort {
      */
     @Override
     public void setPrimaryImage(UUID listingId, UUID imageId) {
-        log.info("Setting primary image {} for listing {}", imageId, listingId);
 
         Listing listing = listingRepository.findByIdWithRelations(listingId)
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found with id: " + listingId));
@@ -309,8 +293,6 @@ public class ListingApplicationService implements ListingServicePort {
 
         listing.setPrimaryImage(imageId);
         listingRepository.save(listing);
-
-        log.info("Primary image set successfully for listing {}", listingId);
     }
 
     // ========================================
@@ -325,15 +307,11 @@ public class ListingApplicationService implements ListingServicePort {
      */
     @Override
     public void delete(UUID id) {
-        log.info("Deleting listing with ID: {}", id);
-
         if (!listingRepository.existsById(id)) {
             throw new ListingNotFoundException("Listing not found with id: " + id);
         }
 
         listingRepository.deleteById(id);
-
-        log.info("Listing deleted successfully with ID: {}", id);
     }
 
     // ========================================
@@ -350,8 +328,6 @@ public class ListingApplicationService implements ListingServicePort {
      */
     @Override
     public void activate(UUID id) {
-        log.info("Activating listing with ID: {}", id);
-
         Listing listing = listingRepository.findByIdWithRelations(id)
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found with id: " + id));
 
@@ -362,8 +338,6 @@ public class ListingApplicationService implements ListingServicePort {
         listing.activate();
 
         listingRepository.save(listing);
-
-        log.info("Listing activated successfully with ID: {}", id);
     }
 
     /**
@@ -374,16 +348,12 @@ public class ListingApplicationService implements ListingServicePort {
      */
     @Override
     public void deactivate(UUID id) {
-        log.info("Deactivating listing with ID: {}", id);
-
         Listing listing = listingRepository.findById(id)
                 .orElseThrow(() -> new ListingNotFoundException("Listing not found with id: " + id));
 
         listing.deactivate();
 
         listingRepository.save(listing);
-
-        log.info("Listing deactivated successfully with ID: {}", id);
     }
 
 }

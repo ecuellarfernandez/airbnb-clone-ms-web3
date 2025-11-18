@@ -1,19 +1,9 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-
 import java.math.BigDecimal;
 import java.util.UUID;
 
-@Data
-@Builder
-@NoArgsConstructor
-@AllArgsConstructor
 public class ListingSummaryDTO {
-
     private UUID id;
     private String title;
     private String city;
@@ -23,4 +13,91 @@ public class ListingSummaryDTO {
     private Integer capacity;
     private String primaryImageUrl;
     private Boolean isActive;
+
+    public ListingSummaryDTO() {
+    }
+
+    public ListingSummaryDTO(UUID id, String title, String city, String country, BigDecimal priceAmount, String priceCurrency, Integer capacity, String primaryImageUrl, Boolean isActive) {
+        this.id = id;
+        this.title = title;
+        this.city = city;
+        this.country = country;
+        this.priceAmount = priceAmount;
+        this.priceCurrency = priceCurrency;
+        this.capacity = capacity;
+        this.primaryImageUrl = primaryImageUrl;
+        this.isActive = isActive;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
+    }
+
+    public String getCountry() {
+        return country;
+    }
+
+    public void setCountry(String country) {
+        this.country = country;
+    }
+
+    public BigDecimal getPriceAmount() {
+        return priceAmount;
+    }
+
+    public void setPriceAmount(BigDecimal priceAmount) {
+        this.priceAmount = priceAmount;
+    }
+
+    public String getPriceCurrency() {
+        return priceCurrency;
+    }
+
+    public void setPriceCurrency(String priceCurrency) {
+        this.priceCurrency = priceCurrency;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public void setCapacity(Integer capacity) {
+        this.capacity = capacity;
+    }
+
+    public String getPrimaryImageUrl() {
+        return primaryImageUrl;
+    }
+
+    public void setPrimaryImageUrl(String primaryImageUrl) {
+        this.primaryImageUrl = primaryImageUrl;
+    }
+
+    public Boolean getActive() {
+        return isActive;
+    }
+
+    public void setActive(Boolean active) {
+        isActive = active;
+    }
 }
