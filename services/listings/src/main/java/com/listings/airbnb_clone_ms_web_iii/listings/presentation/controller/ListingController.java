@@ -1,5 +1,6 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.presentation.controller;
 
+import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.StandardResult;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.CreateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.UpdateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingDetailDTO;
@@ -11,21 +12,20 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Logger;
 
-/**
- * REST Controller para gestión de Listings.
- * Adaptador de entrada en arquitectura hexagonal.
- */
 @RestController
 @RequestMapping("/api/listings")
-@Tag(name = "Listings", description = "Endpoints para gestion de alojamientos")
+@Tag(name = "Listings", description = "API para gestión de alojamientos")
+@CrossOrigin(origins = "*")
 public class ListingController {
+
+    private static final Logger logger = Logger.getLogger(ListingController.class.getName());
 
     private final ListingServicePort listingService;
 
@@ -33,154 +33,216 @@ public class ListingController {
         this.listingService = listingService;
     }
 
-    // ========================================
-    // CREATE - Solo para anfitriones autenticados
-    // ========================================
-
+    // CREATE
     @PostMapping
-    @Operation(summary = "Crear un nuevo listing", description = "Solo anfitriones pueden crear listings")
-    public ResponseEntity<ListingDetailDTO> createListing(
+    @Operation(summary = "Crear listing")
+    public ResponseEntity<StandardResult<ListingDetailDTO>> create(
             @Valid @RequestBody CreateListingDTO dto
     ) {
-        ListingDetailDTO created = listingService.create(dto);
+        try {
+            logger.info("Creating listing: " + dto.getTitle());
 
-        return ResponseEntity
-                .status(HttpStatus.CREATED)
-                .body(created);
+            ListingDetailDTO created = listingService.create(dto);
+
+            return ResponseEntity
+                    .status(HttpStatus.CREATED)
+                    .body(StandardResult.success(created, "Listing created successfully"));
+
+        } catch (IllegalArgumentException e) {
+            logger.warning("Invalid argument: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(StandardResult.error(e.getMessage(), "INVALID_INPUT"));
+
+        } catch (Exception e) {
+            logger.severe("Error creating listing: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StandardResult.error("Failed to create listing", "INTERNAL_ERROR"));
+        }
     }
 
-    // ========================================
-    // READ - Publicos
-    // ========================================
+    // READ
 
     @GetMapping("/{id}")
-    @Operation(summary = "Obtener detalle de un listing", description = "Información completa del alojamiento")
-    public ResponseEntity<ListingDetailDTO> getListingById(
-            @Parameter(description = "ID del listing")
-            @PathVariable UUID id
-    ) {
-        ListingDetailDTO listing = listingService.findById(id);
+    @Operation(summary = "Obtener listing por ID")
+    public ResponseEntity<StandardResult<ListingDetailDTO>> getById(@PathVariable UUID id) {
+        try {
+            logger.info("Getting listing: " + id);
 
-        return ResponseEntity.ok(listing);
+            ListingDetailDTO listing = listingService.findById(id);
+
+            return ResponseEntity.ok(StandardResult.success(listing));
+
+        } catch (RuntimeException e) {
+            logger.warning("Listing not found: " + id);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(StandardResult.error("Listing not found", "NOT_FOUND"));
+
+        } catch (Exception e) {
+            logger.severe("Error getting listing: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StandardResult.error("Failed to get listing", "INTERNAL_ERROR"));
+        }
     }
 
     @GetMapping
-    @Operation(
-            summary = "Buscar listings con filtros",
-            description = "Busca alojamientos por ciudad, fechas y otros filtros. La URL es compartible."
-    )
-    public ResponseEntity<List<ListingSummaryDTO>> searchListings(
-            @Parameter(description = "Ciudad (ej: Santa Cruz, La Paz)")
-            @RequestParam(required = false) String city,
-
-            @Parameter(description = "Precio mínimo por noche")
-            @RequestParam(required = false) BigDecimal minPrice,
-
-            @Parameter(description = "Precio máximo por noche")
-            @RequestParam(required = false) BigDecimal maxPrice,
-
-            @Parameter(description = "Número mínimo de huéspedes")
-            @RequestParam(required = false) Integer capacity,
-
-            @Parameter(description = "ID de categoría para filtrar")
-            @RequestParam(required = false) UUID categoryId
+    @Operation(summary = "Buscar listings con filtros")
+    public ResponseEntity<StandardResult<List<ListingSummaryDTO>>> search(
+            @Parameter(description = "Ciudad") @RequestParam(required = false) String city,
+            @Parameter(description = "Precio mínimo") @RequestParam(required = false) BigDecimal minPrice,
+            @Parameter(description = "Precio máximo") @RequestParam(required = false) BigDecimal maxPrice,
+            @Parameter(description = "Capacidad mínima") @RequestParam(required = false) Integer capacity,
+            @Parameter(description = "ID de categoría") @RequestParam(required = false) UUID categoryId
     ) {
-        // Si no hay filtros, devolver todos los activos
-        if (city == null && minPrice == null && maxPrice == null && capacity == null && categoryId == null) {
-            List<ListingSummaryDTO> listings = listingService.findAllActive();
-            return ResponseEntity.ok(listings);
-        }
+        try {
+            logger.info("Searching listings - city: " + city);
 
-        // Aplicar filtros
-        List<ListingSummaryDTO> listings = listingService.findByFilters(
-                city, minPrice, maxPrice, capacity, categoryId
-        );
-        return ResponseEntity.ok(listings);
+            List<ListingSummaryDTO> listings;
+
+            if (city == null && minPrice == null && maxPrice == null && capacity == null && categoryId == null) {
+                listings = listingService.findAllActive();
+            } else {
+                listings = listingService.findByFilters(city, minPrice, maxPrice, capacity, categoryId);
+            }
+
+            String message = listings.size() + " listings found";
+            return ResponseEntity.ok(StandardResult.success(listings, message));
+
+        } catch (Exception e) {
+            logger.severe("Error searching listings: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StandardResult.error("Failed to search listings", "INTERNAL_ERROR"));
+        }
     }
 
     @GetMapping("/host/{hostId}")
-    @Operation(
-            summary = "Obtener mis listings como anfitrión",
-            description = "Lista todos los listings (activos e inactivos) del anfitrión autenticado"
-    )
-    public ResponseEntity<List<ListingSummaryDTO>> getMyListings(
-            @Parameter(description = "ID del anfitrión")
-            @PathVariable UUID hostId
-            // FALTA: Validar que hostId == usuario autenticado (Security)
-    ) {
-        List<ListingSummaryDTO> listings = listingService.findByHostId(hostId);
-        return ResponseEntity.ok(listings);
+    @Operation(summary = "Obtener listings de un anfitrión")
+    public ResponseEntity<StandardResult<List<ListingSummaryDTO>>> getByHost(@PathVariable UUID hostId) {
+        try {
+            logger.info("Getting listings by host: " + hostId);
+
+            List<ListingSummaryDTO> listings = listingService.findByHostId(hostId);
+
+            return ResponseEntity.ok(StandardResult.success(listings));
+
+        } catch (Exception e) {
+            logger.severe("Error getting listings by host: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StandardResult.error("Failed to get host listings", "INTERNAL_ERROR"));
+        }
     }
 
-    // ========================================
-    // UPDATE - Solo el propietario o admin
-    // ========================================
+    // UPDATE
 
     @PutMapping("/{id}")
-    @Operation(
-            summary = "Actualizar un listing",
-            description = "Solo el anfitrión propietario puede actualizar su listing"
-    )
-    public ResponseEntity<ListingDetailDTO> updateListing(
-            @Parameter(description = "ID del listing")
+    @Operation(summary = "Actualizar listing")
+    public ResponseEntity<StandardResult<ListingDetailDTO>> update(
             @PathVariable UUID id,
-
             @Valid @RequestBody UpdateListingDTO dto
-            // FALTA: Validar que el listing pertenece al usuario autenticado
     ) {
-        ListingDetailDTO updated = listingService.update(id, dto);
-        return ResponseEntity.ok(updated);
+        try {
+            logger.info("Updating listing: " + id);
+
+            ListingDetailDTO updated = listingService.update(id, dto);
+
+            return ResponseEntity.ok(StandardResult.success(updated, "Listing updated successfully"));
+
+        } catch (RuntimeException e) {
+            logger.warning("Listing not found: " + id);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(StandardResult.error("Listing not found", "NOT_FOUND"));
+
+        } catch (Exception e) {
+            logger.severe("Error updating listing: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StandardResult.error("Failed to update listing", "INTERNAL_ERROR"));
+        }
     }
 
-    // ========================================
-    // PUBLISH / UNPUBLISH - Solo el propietario
-    // ========================================
-
     @PatchMapping("/{id}/publish")
-    @Operation(
-            summary = "Publicar un listing",
-            description = "Activa el listing para que sea visible en búsquedas. Valida que tenga información completa."
-    )
-    public ResponseEntity<Void> publishListing(
-            @Parameter(description = "ID del listing")
-            @PathVariable UUID id
-            // FALTA: Validar que el listing pertenece al usuario autenticado
-    ) {
-        listingService.activate(id);
-        return ResponseEntity.noContent().build();
+    @Operation(summary = "Publicar listing")
+    public ResponseEntity<StandardResult<Void>> publish(@PathVariable UUID id) {
+        try {
+            logger.info("Publishing listing: " + id);
+
+            listingService.activate(id);
+
+            return ResponseEntity.ok(StandardResult.success(null, "Listing published successfully"));
+
+        } catch (IllegalStateException e) {
+            logger.warning("Cannot publish listing: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.BAD_REQUEST)
+                    .body(StandardResult.error(e.getMessage(), "VALIDATION_ERROR"));
+
+        } catch (RuntimeException e) {
+            logger.warning("Listing not found: " + id);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(StandardResult.error("Listing not found", "NOT_FOUND"));
+
+        } catch (Exception e) {
+            logger.severe("Error publishing listing: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StandardResult.error("Failed to publish listing", "INTERNAL_ERROR"));
+        }
     }
 
     @PatchMapping("/{id}/unpublish")
-    @PreAuthorize("hasRole('HOST') or hasRole('ADMIN')")
-    @Operation(
-            summary = "Despublicar un listing",
-            description = "Desactiva el listing (deja de mostrarse en búsquedas)"
-    )
-    public ResponseEntity<Void> unpublishListing(
-            @Parameter(description = "ID del listing")
-            @PathVariable UUID id
-            // FALTA: Validar que el listing pertenece al usuario autenticado
-    ) {
-        listingService.deactivate(id);
-        return ResponseEntity.noContent().build();
+    @Operation(summary = "Despublicar listing")
+    public ResponseEntity<StandardResult<Void>> unpublish(@PathVariable UUID id) {
+        try {
+            logger.info("Unpublishing listing: " + id);
+
+            listingService.deactivate(id);
+
+            return ResponseEntity.ok(StandardResult.success(null, "Listing unpublished successfully"));
+
+        } catch (RuntimeException e) {
+            logger.warning("Listing not found: " + id);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(StandardResult.error("Listing not found", "NOT_FOUND"));
+
+        } catch (Exception e) {
+            logger.severe("Error unpublishing listing: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StandardResult.error("Failed to unpublish listing", "INTERNAL_ERROR"));
+        }
     }
 
-    // ========================================
-    // DELETE - Solo el propietario o admin
-    // ========================================
+    // DELETE
 
     @DeleteMapping("/{id}")
-    @Operation(
-            summary = "Eliminar un listing",
-            description = "Elimina permanentemente el listing. Solo el propietario o admin."
-    )
-    public ResponseEntity<Void> deleteListing(
-            @Parameter(description = "ID del listing")
-            @PathVariable UUID id
-            // FALTA: Validar que el listing pertenece al usuario autenticado
-    ) {
-        listingService.delete(id);
+    @Operation(summary = "Eliminar listing")
+    public ResponseEntity<StandardResult<Void>> delete(@PathVariable UUID id) {
+        try {
+            logger.info("Deleting listing: " + id);
 
-        return ResponseEntity.noContent().build();
+            listingService.delete(id);
+
+            return ResponseEntity.ok(StandardResult.success(null, "Listing deleted successfully"));
+
+        } catch (RuntimeException e) {
+            logger.warning("Listing not found: " + id);
+            return ResponseEntity
+                    .status(HttpStatus.NOT_FOUND)
+                    .body(StandardResult.error("Listing not found", "NOT_FOUND"));
+
+        } catch (Exception e) {
+            logger.severe("Error deleting listing: " + e.getMessage());
+            return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(StandardResult.error("Failed to delete listing", "INTERNAL_ERROR"));
+        }
     }
 }
