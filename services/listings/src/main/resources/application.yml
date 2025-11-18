@@ -13,7 +13,7 @@ spring:
       value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
   jpa:
     hibernate:
-      ddl-auto: none  # ✅ Correcto: Flyway maneja el schema
+      ddl-auto: none
     show-sql: ${JPA_SHOW_SQL:true}
     properties:
       hibernate:
@@ -38,21 +38,7 @@ security:
     public-key-pem: ${JWT_PUBLIC_KEY_PEM:}
 
 server:
-  port: ${LISTINGS_PORT:8081}
-
-# Configuración para manejo de imágenes
-custom:
-  # Para fase actual (URLs externas de Unsplash)
-  use-external-images: ${USE_EXTERNAL_IMAGES:true}
-
-  # Para fase futura (microservicio Media)
-  media-service:
-    base-url: ${MEDIA_SERVICE_URL:http://localhost:8082}
-    enabled: ${MEDIA_SERVICE_ENABLED:false}
-
-app:
-  cors:
-    allowed-origins: ${APP_CORS_ALLOWED_ORIGINS:http://localhost:4200}
+  port: ${LISTINGS_PORT:5004}
 
 management:
   endpoint:
@@ -65,7 +51,14 @@ management:
   security:
     enabled: true
 
+springdoc:
+  swagger-ui:
+    path: /api/docs
+  api-docs:
+    path: /api/docs-json
+
 logging:
   level:
     org.flywaydb: INFO
+    com.listings: DEBUG
     com.yourproject.listings: DEBUG
