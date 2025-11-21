@@ -1,0 +1,19 @@
+<app-card skin="flat" [clickable]="clickableListing" (cardClick)="listingClick.emit($event)">
+  <div card-media>
+    <img [src]="listing.image" [alt]="listing.title"/>
+  </div>
+
+  <div class="">
+    <h3 class="text-title mt-2 fs-sm">{{ listing.title }}</h3>
+
+    <div class="text-2 fs-xs">
+
+      <div *ngIf="showDescription" class="my-2 text-4 fs-xs">{{listing.description}}</div>
+
+      Bs {{ listing.price }}<small>/noche</small> ·
+
+      <small>{{ listing.capacity }} personas</small>
+    </div>
+
+  </div>
+</app-card>

@@ -1,0 +1,44 @@
+<div class="container-center-grid">
+  <div class="p-10 py-12 sm:max-w-md bg-surface rounded-md drop-shadow-2xl space-y-10">
+    <h2 class="text-center">Login to your account</h2>
+
+    <form action="#" method="POST" class="space-y-7">
+      <div class="space-y-1">
+        <label for="email" class="text-on-surface fs-label">Email address</label>
+        <input
+          class="bg-surface-2 text-on-surface-2 w-full"
+          id="email"
+          type="email"
+          name="email"
+          required
+          placeholder="Enter your mail"
+          autocomplete="email"
+        />
+      </div>
+
+      <div>
+        <div class="space-y-1">
+          <label for="password" class="text-on-surface fs-label">Password</label>
+          <input
+            class="bg-surface-2 text-on-surface-2 w-full"
+            id="password"
+            type="password"
+            name="password"
+            required
+            autocomplete="current-password"
+            placeholder="Enter your password"
+          />
+        </div>
+      </div>
+
+      <div>
+        <button class="btn-primary w-full" type="submit">Login</button>
+      </div>
+    </form>
+
+    <p class="mt-10 text-center text-on-surface fs-label">
+      Not a member?
+      <a routerLink="/auth/register"> Create an account </a>
+    </p>
+  </div>
+</div>
