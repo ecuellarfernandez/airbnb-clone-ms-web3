@@ -1,6 +1,7 @@
 package com.airbnb_clone_ms_web_iii.identity.services.security;
 
 
+import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import io.jsonwebtoken.JwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -26,6 +27,7 @@ public class JwtService {
                         .stream()
                         .map(GrantedAuthority::getAuthority)
                         .toList())
+                .claim("id", ((User) userDetails).getId())
                 .setIssuedAt(new Date())
                 .setExpiration(new Date(System.currentTimeMillis() + jwtExpirationMs))
                 .signWith(SignatureAlgorithm.HS256, jwtSecret)
@@ -38,6 +40,14 @@ public class JwtService {
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public Long extractUserId(String token){
+        return Long.parseLong(Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody()
+                .getId());
     }
 
     public boolean validateToken(String token, UserDetails userDetails){

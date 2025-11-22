@@ -1,0 +1,95 @@
+@use '../reservations/admin-reservations.page.component' as *; 
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user img {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+}
+
+.row-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.small {
+    background: #162036;
+    color: #e5e7eb;
+    border: 1px solid var(--line);
+    padding: 8px 10px;
+    border-radius: 9px;
+    cursor: pointer;
+}
+
+.small.danger {
+    border-color: #3b1f25;
+    background: #2a1116;
+    color: #ffc3cb;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+    text-transform: capitalize;
+}
+
+.badge.admin {
+    background: #2a1130;
+    color: #ffc3ff;
+    border: 1px solid #3b1f49;
+}
+
+.badge.host {
+    background: #101f2a;
+    color: #9ad4ff;
+    border: 1px solid #1e3242;
+}
+
+.paid {
+    background: #15391f;
+    color: #88f1a8;
+    border: 1px solid #214d2e;
+}
+
+.unpaid {
+    background: #2a1116;
+    color: #ffc3cb;
+    border: 1px solid #3b1f25;
+}
+
+.muted {
+    color: var(--muted);
+}
