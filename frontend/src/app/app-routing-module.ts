@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MainLayoutComponent } from './presentation/layout/main-layout/main-layout.component';
-import { AuthLayoutComponent } from './presentation/layout/auth-layout/auth-layout.component';
+import { MainLayoutComponent } from '@core/layouts/main-layout/main-layout.component';
+import { AuthLayoutComponent } from '@core/layouts/auth-layout/auth-layout.component';
 
 const routes: Routes = [
   {
@@ -10,7 +10,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./presentation/home/home-module').then(m => m.HomeModule),
+        loadChildren: () => import('@features/home/presentation/home-module').then(m => m.HomeModule),
       },
       {
         path: 'home',
@@ -25,7 +25,7 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./presentation/listings/listings-module').then(m => m.ListingsModule),
+        loadChildren: () => import('@features/listings/presentation/listings-module').then(m => m.ListingsModule),
       }
     ],
   },
@@ -35,14 +35,13 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        loadChildren: () => import('./presentation/auth/auth-module').then(m => m.AuthModule)
+        loadChildren: () => import('@features/auth/presentation/auth-module').then(m => m.AuthModule)
       }
     ]
-    loadChildren: () => import('./features/auth/auth-module').then(m=>m.AuthModule)
   },
   {
     path: 'admin',
-    loadChildren: () => import('./features/admin/admin-routing-module').then(m => m.AdminRoutingModule)
+    loadChildren: () => import('@features/admin/presentation/admin.module').then(m => m.AdminModule)
   }
 ];
 

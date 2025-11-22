@@ -3,9 +3,9 @@ import { BrowserModule, provideClientHydration, withEventReplay } from '@angular
 
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { LayoutModule } from './presentation/layout/layout-module';
-import { AccommodationsRepository } from '@domain/repositories/accommodations.repository';
-import { AccommodationsRepositoryImpl } from './infrastructure/repositories/accommodations.repository.impl';
+import { CoreModule } from '@core/core.module';
+import { AccommodationsRepository } from '@features/listings/domain/repositories/accommodations.repository';
+import { AccommodationsRepositoryImpl } from '@features/listings/infrastructure/repositories/accommodations.repository.impl';
 
 @NgModule({
   declarations: [
@@ -14,7 +14,7 @@ import { AccommodationsRepositoryImpl } from './infrastructure/repositories/acco
   imports: [
     BrowserModule,
     AppRoutingModule,
-    LayoutModule
+    CoreModule
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),

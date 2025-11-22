@@ -12,20 +12,17 @@
       "@app/*": [
         "app/*"
       ],
-      "@ui/*": [
-        "app/presentation/shared/ui/*"
+      "@features/*": [
+        "app/features/*"
       ],
-      "@listings/*": [
-        "app/presentation/listings/*"
+      "@shared/*": [
+        "app/shared/*"
       ],
-      "@domain/*": [
-        "app/domain/*"
+      "@layout/*": [
+        "app/layout/*"
       ],
-      "@application/*": [
-        "app/application/*"
-      ],
-      "@presentation/*": [
-        "app/presentation/*"
+      "@core/*": [
+        "app/core/*"
       ]
     },
     "types": [
