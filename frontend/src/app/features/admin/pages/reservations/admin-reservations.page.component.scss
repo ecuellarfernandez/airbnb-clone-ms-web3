@@ -1,0 +1,147 @@
+:root {
+    --brand: #ff385c;
+    --card: #101827;
+    --line: #1f2937;
+    --muted: #9aa3af;
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+}
+
+.card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: 16px;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.input {
+    background: #0b1220;
+    border: 1px solid var(--line);
+    color: #e5e7eb;
+    padding: 10px 12px;
+    border-radius: 10px;
+    min-width: 260px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid var(--line);
+    text-align: left;
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.user img {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+}
+
+.badge {
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 12px;
+}
+
+.paid {
+    background: #15391f;
+    color: #88f1a8;
+    border: 1px solid #214d2e;
+}
+
+.unpaid {
+    background: #2a1116;
+    color: #ffc3cb;
+    border: 1px solid #3b1f25;
+}
+
+.customers .customer {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 4px;
+    border-bottom: 1px solid var(--line);
+}
+
+.customers .customer img {
+    width: 36px;
+    height: 36px;
+    border-radius: 999px;
+}
+
+.muted {
+    color: var(--muted);
+}
+
+.small {
+    font-size: 12px;
+}
+
+.summary {
+    display: flex;
+    gap: 8px;
+    margin: 8px 0 12px;
+
+    .pill {
+        background: var(--surface-2, #f3f4f6);
+        color: var(--on-surface-2, #111827);
+        border-radius: 999px;
+        padding: 6px 10px;
+        font-size: 12px;
+
+        &.success {
+            background: #e6f6ee;
+            color: #0f5132;
+        }
+
+        &.warn {
+            background: #fff4e6;
+            color: #8a4500;
+        }
+    }
+}
+
+.badge.paid {
+    background: #e6f6ee;
+    color: #0f5132;
+}
+
+.badge.unpaid {
+    background: #fff4e6;
+    color: #8a4500;
+}
+
+.row-actions {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+
+
+@media (max-width: 1024px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+}

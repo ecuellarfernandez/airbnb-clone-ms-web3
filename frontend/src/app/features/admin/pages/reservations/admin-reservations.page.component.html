@@ -1,0 +1,62 @@
+<div class="grid">
+    <div class="card">
+        <div class="cardHeader">
+            <h2>Reservas</h2>
+            <input class="input" [(ngModel)]="q" (ngModelChange)="onSearchChange($event)"
+                placeholder="Buscar por usuario o alojamiento..." />
+        </div>
+
+        <div class="summary">
+            <div class="pill">Total: <strong>{{ (reservationsVM$ | async)?.total }}</strong></div>
+            <div class="pill success">Pagadas: <strong>{{ (reservationsVM$ | async)?.paid }}</strong></div>
+            <div class="pill warn">Pendientes: <strong>{{ (reservationsVM$ | async)?.unpaid }}</strong></div>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Alojamiento</th>
+                    <th>Ingreso</th>
+                    <th>Salida</th>
+                    <th>Total</th>
+                    <th>Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let r of (reservationsVM$ | async)?.items">
+                    <td class="user">
+                        <img [src]="r.user.avatar" alt="">
+                        <div>
+                            <strong>{{ r.user.name }}</strong>
+                            <small>#{{ r.user.id }}</small>
+                        </div>
+                    </td>
+                    <td>{{ r.listingTitle }}</td>
+                    <td>{{ r.checkIn | date:'dd/MM/yyyy' }}</td>
+                    <td>{{ r.checkOut | date:'dd/MM/yyyy' }}</td>
+                    <td>${{ r.total }}</td>
+                    <td>
+                        <span class="badge" [class.paid]="r.paid" [class.unpaid]="!r.paid">
+                            {{ r.paid ? 'Pagado' : 'Pendiente' }}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="card customers">
+        <div class="cardHeader">
+            <h2>Clientes recientes</h2>
+        </div>
+        <div class="customer" *ngFor="let r of (reservationsVM$ | async)?.items">
+            <img [src]="r.user.avatar" alt="">
+            <div>
+                <div class="name">{{ r.user.name }}</div>
+                <div class="muted">{{ r.listingTitle }}</div>
+            </div>
+            <span class="small muted">{{ r.paid ? 'Pagado' : 'Pendiente' }}</span>
+        </div>
+    </div>
+</div>
