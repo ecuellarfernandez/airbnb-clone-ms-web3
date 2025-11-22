@@ -1,0 +1,101 @@
+<header class="text-on-surface-3 border-surface-3">
+  <!-- Header Principal estilo Airbnb -->
+  <div class="max-w-content mx-auto sm:px-6 lg:px-8">
+    <div class="flex items-center justify-between h-20">
+      <!-- Logo/Brand -->
+      <div>
+        <a [routerLink]="'/'" class="text-brand-primary flex items-center no-underline space-x-1">
+
+          <svg class="w-8 h-8 text-brand-primary" app-icon-logo></svg>
+
+          <span class="font-display fs-md font-bold hidden sm:block">AirBbcitos</span>
+
+        </a>
+      </div>
+
+      <!-- Search Pill (Center) -->
+      <div class="hidden md:flex flex-1 justify-center" *ngIf="variant === 'default'">
+        <div
+          class="flex items-center border border-neutral-300 rounded-full shadow-sm hover:shadow-md transition-shadow cursor-pointer py-2.5 pl-6 pr-2 bg-surface">
+          <button class="text-sm font-medium text-on-surface px-4 border-r border-neutral-300">Anywhere</button>
+          <button class="text-sm font-medium text-on-surface px-4 border-r border-neutral-300">Any week</button>
+          <button class="text-sm font-light text-on-surface-2 px-4">Add guests</button>
+          <div class="bg-brand p-2 rounded-full text-white ml-2">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+              stroke="currentColor" class="w-4 h-4">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Section (User Menu) -->
+      <div class="flex items-center justify-end space-x-1" [class.flex-1]="variant === 'default'">
+        <ng-container *ngIf="variant === 'default'">
+          <button
+            class="hidden md:block text-sm font-medium text-on-surface hover:bg-neutral-100 px-4 py-3 rounded-full transition-colors">
+            Airbnb your home
+          </button>
+          <button class="hidden md:block p-3 hover:bg-neutral-100 rounded-full transition-colors mr-1">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+              stroke="currentColor" class="w-5 h-5 text-on-surface">
+              <path stroke-linecap="round" stroke-linejoin="round"
+                d="M12 21a9.004 9.004 0 008.716-6.747M12 21a9.004 9.004 0 01-8.716-6.747M12 21c2.485 0 4.5-4.03 4.5-9S14.485 3 12 3m0 18c-2.485 0-4.5-4.03-4.5-9S9.515 3 12 3m0 0a8.997 8.997 0 017.843 4.582M12 3a8.997 8.997 0 00-7.843 4.582m15.686 0A11.953 11.953 0 0112 10.5c-2.998 0-5.74-1.1-7.843-2.918m15.686 0A8.959 8.959 0 0121 12c0 .778-.099 1.533-.284 2.253m0 0A17.919 17.919 0 0112 16.5c-3.162 0-6.133-.815-8.716-2.247m0 0A9.015 9.015 0 013 12c0-1.605.42-3.113 1.157-4.418" />
+            </svg>
+          </button>
+          <!-- User Menu Button -->
+          <div class="relative ml-2">
+            <button (click)="toggleUserMenu()"
+              class="flex items-center space-x-2 border border-neutral-300 rounded-full p-1 pl-3 hover:shadow-md transition-shadow bg-surface">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+                stroke="currentColor" class="w-5 h-5 text-on-surface">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+              </svg>
+              <div class="bg-neutral-500 rounded-full p-1">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"
+                  class="w-6 h-6 text-white">
+                  <path fill-rule="evenodd"
+                    d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
+                    clip-rule="evenodd" />
+                </svg>
+              </div>
+            </button>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Sección de Filtros (mantenida como estaba) -->
+  <div class="filter max-w-4xl mx-auto px-10 sm:px-6 lg:px-8 pt-2 pb-10" *ngIf="variant === 'default'">
+    <!-- Filters debera ser componente -->
+    <section
+      class="px-7 py-3 flex flex-wrap flex-row gap-1 bg-surface-3 items-center shadow-md max-w-content rounded-pill justify-between border-2 border-color-1">
+      <label class="flex flex-col">
+        <span class="fs-label">Ciudad</span>
+        <select
+          class="text-on-surface-2 bg-none border-none pl-0 font-light bg-transparent placeholder:text-on-surface-2">
+          <option class="m-0 pl-0" value="Santa Cruz">Santa Cruz</option>
+        </select>
+      </label>
+
+      <label class="flex flex-col">
+        <span class="fs-label">Fechas</span>
+        <input
+          class="text-on-surface-2 placeholder:text-brand bg-tra border-none pl-0 font-light bg-transparent placeholder:text-on-surface-2"
+          type="text" placeholder="Agrega fechas" />
+      </label>
+
+      <label class="flex flex-col">
+        <span class="fs-label">Quién</span>
+        <input class="text-on-surface-3 placeholder:text-on-surface-2 border-none bg-transparent pl-0 font-light"
+          type="number" min="1" placeholder="¿Cuántos?" />
+      </label>
+      <!-- boton con icono de lupa-->
+      <button class="btn-primary w-max">Buscar</button>
+    </section>
+    <!-- Fin Filters -->
+  </div>
+</header>

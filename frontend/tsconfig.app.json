@@ -6,13 +6,36 @@
     "outDir": "./out-tsc/app",
     "baseUrl": "src",
     "paths": {
-      "@styles/*": ["styles/*"],
-      "@app/*": ["app/*"],
-      "@ui/*": ["app/shared/ui/*"],
-      "@listings/*": ["app/features/listings/*"],
+      "@styles/*": [
+        "styles/*"
+      ],
+      "@app/*": [
+        "app/*"
+      ],
+      "@ui/*": [
+        "app/presentation/shared/ui/*"
+      ],
+      "@listings/*": [
+        "app/presentation/listings/*"
+      ],
+      "@domain/*": [
+        "app/domain/*"
+      ],
+      "@application/*": [
+        "app/application/*"
+      ],
+      "@presentation/*": [
+        "app/presentation/*"
+      ]
     },
-    "types": ["node"]
+    "types": [
+      "node"
+    ]
   },
-  "include": ["src/**/*.ts"],
-  "exclude": ["src/**/*.spec.ts"]
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
 }
