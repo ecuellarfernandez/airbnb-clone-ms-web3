@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from '@core/layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from '@core/layouts/auth-layout/auth-layout.component';
+import { PageNotFoundComponent } from '@core/pages/page-not-found/page-not-found.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
   {
     path: 'admin',
     loadChildren: () => import('@features/admin/presentation/admin.module').then(m => m.AdminModule)
+  },
+  {
+    path: '**',
+    component: PageNotFoundComponent
   }
 ];
 

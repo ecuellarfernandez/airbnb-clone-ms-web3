@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MainLayoutComponent } from './layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from './layouts/auth-layout/auth-layout.component';
 import { HeaderComponent } from './layouts/header/header.component';
+import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared-module';
 
@@ -10,7 +11,8 @@ import { SharedModule } from '../shared/shared-module';
   declarations: [
     MainLayoutComponent,
     AuthLayoutComponent,
-    HeaderComponent
+    HeaderComponent,
+    PageNotFoundComponent
   ],
   imports: [
     CommonModule,
@@ -20,7 +22,8 @@ import { SharedModule } from '../shared/shared-module';
   exports: [
     MainLayoutComponent,
     AuthLayoutComponent,
-    HeaderComponent
+    HeaderComponent,
+    PageNotFoundComponent
   ]
 })
 export class CoreModule {
