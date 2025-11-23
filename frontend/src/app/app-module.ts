@@ -1,9 +1,10 @@
 import { NgModule, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { BrowserModule, provideClientHydration, withEventReplay } from '@angular/platform-browser';
-
 import { AppRoutingModule } from './app-routing-module';
 import { App } from './app';
-import { CoreModule } from './core/core-module';
+import { CoreModule } from '@core/core.module';
+import { AccommodationsRepository } from '@features/listings/domain/repositories/accommodations.repository';
+import { AccommodationsRepositoryImpl } from '@features/listings/infrastructure/repositories/accommodations.repository.impl';
 
 @NgModule({
   declarations: [
@@ -16,6 +17,7 @@ import { CoreModule } from './core/core-module';
   ],
   providers: [
     provideBrowserGlobalErrorListeners(),
+    { provide: AccommodationsRepository, useClass: AccommodationsRepositoryImpl },
     provideClientHydration(withEventReplay())
   ],
   bootstrap: [App]

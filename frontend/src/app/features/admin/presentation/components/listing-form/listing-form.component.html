@@ -1,0 +1,51 @@
+<h3 class="form-title">{{ value ? 'Editar alojamiento' : 'Nuevo alojamiento' }}</h3>
+
+<form [formGroup]="form" (ngSubmit)="submit()" class="grid">
+    <label>
+        <span>Título</span>
+        <input formControlName="title" placeholder="Ej: Modern loft en Equipetrol" />
+    </label>
+
+    <label>
+        <span>Ciudad</span>
+        <select formControlName="city">
+            <option>Santa Cruz</option>
+            <option>Tarija</option>
+            <option>Sucre</option>
+            <option>La Paz</option>
+            <option>Cochabamba</option>
+        </select>
+    </label>
+
+    <label>
+        <span>Precio (Bs/noche)</span>
+        <input type="number" formControlName="price" />
+    </label>
+
+    <label>
+        <span>Capacidad</span>
+        <input type="number" formControlName="capacity" />
+    </label>
+
+    <label class="full">
+        <span>Imagen principal (URL)</span>
+        <input formControlName="image" placeholder="https://images.unsplash.com/..." />
+    </label>
+
+    <label class="full">
+        <span>Descripción</span>
+        <textarea rows="3" formControlName="description" placeholder="Breve descripción del alojamiento"></textarea>
+    </label>
+
+    <label class="full">
+        <span>Fotos adicionales (URLs separadas por coma)</span>
+        <textarea rows="2" formControlName="photos" placeholder="https://img1.jpg, https://img2.jpg"></textarea>
+    </label>
+
+    <div class="actions">
+        <button type="button" class="btn ghost" (click)="cancel.emit()">Cancelar</button>
+        <button type="submit" class="btn brand" [disabled]="form.invalid">
+            {{ value ? 'Actualizar' : 'Guardar' }}
+        </button>
+    </div>
+</form>
