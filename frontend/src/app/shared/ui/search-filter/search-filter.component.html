@@ -1,0 +1,70 @@
+<div class="search-filter-container">
+    <!-- Collapsed State (Pill) -->
+    <div class="search-pill" *ngIf="!isExpanded" (click)="toggleExpanded()">
+        <button class="pill-section">{{ locationText }}</button>
+        <div class="pill-divider"></div>
+        <button class="pill-section">{{ dateText }}</button>
+        <div class="pill-divider"></div>
+        <button class="pill-section pill-guests">{{ guestText }}</button>
+        <div class="search-icon-wrapper">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                stroke="currentColor" class="search-icon">
+                <path stroke-linecap="round" stroke-linejoin="round"
+                    d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+            </svg>
+        </div>
+    </div>
+
+    <!-- Expanded State (Full Filter Bar) -->
+    <div class="search-bar-expanded" *ngIf="isExpanded">
+        <div class="filter-fields">
+            <!-- Location Field -->
+            <div class="filter-field" (click)="openLocationModal()">
+                <label class="field-label">Dónde</label>
+                <input type="text" class="field-input" [value]="filters.location" placeholder="Explora destinos"
+                    readonly />
+            </div>
+
+            <div class="field-divider"></div>
+
+            <!-- Dates Field -->
+            <div class="filter-field" (click)="openDateModal()">
+                <label class="field-label">Fechas</label>
+                <input type="text" class="field-input" [value]="dateText === 'Any week' ? '' : dateText"
+                    placeholder="Agrega fechas" readonly />
+            </div>
+
+            <div class="field-divider"></div>
+
+            <!-- Guests Field -->
+            <div class="filter-field filter-field-guests" (click)="openGuestModal()">
+                <label class="field-label">Quién</label>
+                <input type="text" class="field-input" [value]="guestText === 'Add guests' ? '' : guestText"
+                    placeholder="¿Cuántos?" readonly />
+            </div>
+
+            <!-- Search Button -->
+            <button class="search-btn" (click)="onSearch()">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
+                    stroke="currentColor" class="btn-icon">
+                    <path stroke-linecap="round" stroke-linejoin="round"
+                        d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
+                </svg>
+                <span>Buscar</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Backdrop for expanded state -->
+<div class="search-backdrop" *ngIf="isExpanded" (click)="toggleExpanded()"></div>
+
+<!-- Modals -->
+<app-location-search [isOpen]="isLocationModalOpen" [selectedLocation]="filters.location"
+    (locationSelect)="onLocationSelect($event)" (close)="closeModals()"></app-location-search>
+
+<app-date-picker [isOpen]="isDateModalOpen" [dateRange]="dateRange" (dateRangeChange)="onDateRangeChange($event)"
+    (close)="closeModals()"></app-date-picker>
+
+<app-guest-selector [isOpen]="isGuestModalOpen" [guests]="guestCounts" (guestsChange)="onGuestsChange($event)"
+    (close)="closeModals()"></app-guest-selector>
