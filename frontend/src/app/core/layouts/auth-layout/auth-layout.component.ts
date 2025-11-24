@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavLink } from '../header/header.component';
+
 
 @Component({
     selector: 'app-auth-layout',
@@ -8,5 +8,4 @@ import { NavLink } from '../header/header.component';
     styleUrl: './auth-layout.component.scss'
 })
 export class AuthLayoutComponent {
-    links: NavLink[] = [];
 }
