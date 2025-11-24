@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { NavLink } from '../header/header.component';
 
 @Component({
   selector: 'app-main-layout',
@@ -8,7 +7,4 @@ import { NavLink } from '../header/header.component';
   styleUrl: './main-layout.component.scss'
 })
 export class MainLayoutComponent {
-  links: NavLink[] = [
-    { label: 'Alojamientos', path: '/listings' },
-  ];
 }
