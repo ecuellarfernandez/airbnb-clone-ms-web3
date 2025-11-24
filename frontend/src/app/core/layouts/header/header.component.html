@@ -13,9 +13,8 @@
 
         </div>
 
-        <!-- Search Filter (Center) -->
-        <div class="search-section" *ngIf="variant === 'default'">
-          <app-search-filter></app-search-filter>
+        <div class="nav-tabs-section" *ngIf="variant === 'default' && showNavTabs" [class.hidden]="isScrolled">
+          <app-nav-tabs [tabs]="navTabs" [activeTabId]="activeTabId" (tabChange)="onTabChange($event)"></app-nav-tabs>
         </div>
 
         <!-- Right Section (User Menu) -->
@@ -55,8 +54,8 @@
     </div>
   </div>
 
-  <!-- Navigation Tabs -->
-  <div class="nav-tabs-section" *ngIf="variant === 'default' && showNavTabs" [class.hidden]="isScrolled">
-    <app-nav-tabs [tabs]="navTabs" [activeTabId]="activeTabId" (tabChange)="onTabChange($event)"></app-nav-tabs>
+  <!-- Search Filter (Center) -->
+  <div class="search-section" *ngIf="variant === 'default'">
+    <app-search-filter></app-search-filter>
   </div>
 </header>

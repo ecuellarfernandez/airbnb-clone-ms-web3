@@ -20,6 +20,7 @@
     background: transparent;
     border: none;
     cursor: pointer;
+    position: relative;
     transition: all 0.2s ease;
     color: var(--text-on-surface-2);
 
@@ -29,6 +30,11 @@
 
     &.active {
         color: var(--text-on-surface);
+    }
+
+    &:focus-within {
+        outline: none;
+        outline-offset: none;
     }
 }
 
@@ -57,9 +63,15 @@
 }
 
 .badge-new {
-    font-size: 0.625rem;
-    font-weight: var(--fw-bold);
-    color: var(--brand-primary);
+    position: absolute;
+    top: 0;
+    left: 25%;
+    font-size: 0.47rem;
+    background-color: var(--brand-primary);
+    padding: 0.15rem 0.4rem;
+    border-radius: 999px 999px 999px 0;
+    font-weight: var(--fw-extrabold);
+    color: var(--brand-on-primary);
     letter-spacing: 0.05em;
 }
 
