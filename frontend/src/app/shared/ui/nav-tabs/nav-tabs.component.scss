@@ -1,0 +1,117 @@
+.nav-tabs {
+    border-bottom: 1px solid var(--border);
+    background: var(--surface-2);
+}
+
+.tabs-container {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    display: flex;
+    gap: 2rem;
+    padding: 0 2rem;
+}
+
+.tab-item {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    transition: all 0.2s ease;
+    color: var(--text-on-surface-2);
+
+    &:hover {
+        color: var(--text-on-surface);
+    }
+
+    &.active {
+        color: var(--text-on-surface);
+    }
+
+    &:focus-within {
+        outline: none;
+        outline-offset: none;
+    }
+}
+
+.tab-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    .icon {
+        width: 1.5rem;
+        height: 1.5rem;
+    }
+}
+
+.tab-content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.125rem;
+}
+
+.tab-label {
+    font-size: var(--fs-sm);
+    font-weight: var(--fw-medium);
+    white-space: nowrap;
+}
+
+.badge-new {
+    position: absolute;
+    top: 0;
+    left: 25%;
+    font-size: 0.47rem;
+    background-color: var(--brand-primary);
+    padding: 0.15rem 0.4rem;
+    border-radius: 999px 999px 999px 0;
+    font-weight: var(--fw-extrabold);
+    color: var(--brand-on-primary);
+    letter-spacing: 0.05em;
+}
+
+.active-indicator {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--text-on-surface);
+    animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .tabs-container {
+        gap: 1rem;
+        padding: 0 1rem;
+    }
+
+    .tab-item {
+        gap: 0.375rem;
+    }
+
+    .tab-icon .icon {
+        width: 1.25rem;
+        height: 1.25rem;
+    }
+
+    .tab-label {
+        font-size: var(--fs-xs);
+    }
+}

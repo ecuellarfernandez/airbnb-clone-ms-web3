@@ -1,0 +1,100 @@
+<div class="date-picker-modal" *ngIf="isOpen" (click)="onClose()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <!-- Tabs -->
+        <div class="tabs-header">
+            <button class="tab-btn" [class.active]="activeTab === 'dates'" (click)="activeTab = 'dates'">
+                Fechas
+            </button>
+            <button class="tab-btn" [class.active]="activeTab === 'months'" (click)="activeTab = 'months'">
+                Meses
+            </button>
+            <button class="tab-btn" [class.active]="activeTab === 'flexible'" (click)="activeTab = 'flexible'">
+                Flexible
+            </button>
+        </div>
+
+        <!-- Calendar View -->
+        <div class="calendar-view" *ngIf="activeTab === 'dates'">
+            <!-- Month Navigation -->
+            <div class="month-navigation">
+                <button class="nav-btn" (click)="previousMonth()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+                    </svg>
+                </button>
+                <button class="nav-btn" (click)="nextMonthNav()">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" />
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Calendars -->
+            <div class="calendars-container">
+                <!-- Current Month -->
+                <div class="calendar">
+                    <div class="calendar-header">{{ currentMonthName }}</div>
+                    <div class="weekdays">
+                        <div class="weekday">L</div>
+                        <div class="weekday">Ma</div>
+                        <div class="weekday">Mi</div>
+                        <div class="weekday">J</div>
+                        <div class="weekday">V</div>
+                        <div class="weekday">S</div>
+                        <div class="weekday">D</div>
+                    </div>
+                    <div class="days-grid">
+                        <button *ngFor="let day of currentMonthDays" class="day-cell"
+                            [class.empty]="day.getTime() === 0" [class.selected]="isSelected(day)"
+                            [class.in-range]="isInRange(day)" [disabled]="day.getTime() === 0"
+                            (click)="onDateClick(day)">
+                            {{ day.getTime() !== 0 ? day.getDate() : '' }}
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Next Month -->
+                <div class="calendar">
+                    <div class="calendar-header">{{ nextMonthName }}</div>
+                    <div class="weekdays">
+                        <div class="weekday">L</div>
+                        <div class="weekday">Ma</div>
+                        <div class="weekday">Mi</div>
+                        <div class="weekday">J</div>
+                        <div class="weekday">V</div>
+                        <div class="weekday">S</div>
+                        <div class="weekday">D</div>
+                    </div>
+                    <div class="days-grid">
+                        <button *ngFor="let day of nextMonthDays" class="day-cell" [class.empty]="day.getTime() === 0"
+                            [class.selected]="isSelected(day)" [class.in-range]="isInRange(day)"
+                            [disabled]="day.getTime() === 0" (click)="onDateClick(day)">
+                            {{ day.getTime() !== 0 ? day.getDate() : '' }}
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Exact Days Options -->
+            <div class="exact-days">
+                <button class="exact-day-btn" (click)="addExactDays(1)">± 1 día</button>
+                <button class="exact-day-btn" (click)="addExactDays(2)">± 2 días</button>
+                <button class="exact-day-btn" (click)="addExactDays(3)">± 3 días</button>
+                <button class="exact-day-btn" (click)="addExactDays(7)">± 7 días</button>
+                <button class="exact-day-btn" (click)="addExactDays(14)">± 14 días</button>
+            </div>
+        </div>
+
+        <!-- Months View -->
+        <div class="months-view" *ngIf="activeTab === 'months'">
+            <p class="placeholder-text">Vista de meses - Próximamente</p>
+        </div>
+
+        <!-- Flexible View -->
+        <div class="flexible-view" *ngIf="activeTab === 'flexible'">
+            <p class="placeholder-text">Vista flexible - Próximamente</p>
+        </div>
+    </div>
+</div>

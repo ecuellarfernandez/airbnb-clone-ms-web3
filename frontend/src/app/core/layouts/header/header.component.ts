@@ -1,9 +1,7 @@
-import { Component, Input } from '@angular/core';
-
-export interface NavLink {
-  label: string;
-  path: string;
-}
+import { Component, Input, HostListener, OnInit, OnDestroy } from '@angular/core';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter, Subscription } from 'rxjs';
+import { NavTab } from '../../../shared/ui/nav-tabs/nav-tabs.component';
 
 export interface FilterState {
   city: string;
@@ -17,37 +15,70 @@ export interface FilterState {
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
-  @Input() links: NavLink[] = [];
+export class HeaderComponent implements OnInit, OnDestroy {
   @Input() variant: 'default' | 'simple' = 'default';
 
-  filters: FilterState = {
-    city: '',
-    maxPrice: null,
-    guests: null
-  };
-
   isUserMenuOpen = false;
+  activeTabId: string = 'accommodations';
+  showNavTabs = true;
+  private routerSubscription: Subscription | null = null;
 
-  constructor() { }
+  navTabs: NavTab[] = [
+    {
+      id: 'accommodations',
+      label: 'Alojamientos',
+      icon: 'home'
+    },
+    {
+      id: 'experiences',
+      label: 'Experiencias',
+      icon: 'experience',
+      isNew: true
+    },
+    {
+      id: 'services',
+      label: 'Servicios',
+      icon: 'service',
+      isNew: true
+    }
+  ];
 
-  onSearch(): void {
-    console.log('Searching with filters:', this.filters);
+  isScrolled = false;
+
+  constructor(private router: Router) { }
+
+  ngOnInit() {
+    this.checkRoute();
+    this.routerSubscription = this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.checkRoute();
+    });
   }
 
-  clearFilters(): void {
-    this.filters = {
-      city: '',
-      maxPrice: null,
-      guests: null
-    };
+  ngOnDestroy() {
+    if (this.routerSubscription) {
+      this.routerSubscription.unsubscribe();
+    }
+  }
+
+  private checkRoute() {
+    // Hide nav tabs if we are on a listing detail page
+    // Pattern: /listings/detail/:id
+    this.showNavTabs = !this.router.url.includes('/listings/detail/');
+  }
+
+  @HostListener('window:scroll', [])
+  onWindowScroll() {
+    this.isScrolled = window.scrollY > 0;
   }
 
   toggleUserMenu(): void {
     this.isUserMenuOpen = !this.isUserMenuOpen;
   }
 
-  onLocationSearch(searchTerm: string): void {
-    console.log('Searching location:', searchTerm);
+  onTabChange(tabId: string): void {
+    this.activeTabId = tabId;
+    console.log('Tab changed to:', tabId);
   }
 }

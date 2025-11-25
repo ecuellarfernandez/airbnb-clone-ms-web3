@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    show-sql: false
+
+logging:
+  level:
+    root: WARN
+
+custom:
+  image-path: ${LISTINGS_IMAGE_PATH:/opt/images/}
