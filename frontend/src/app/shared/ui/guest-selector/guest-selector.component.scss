@@ -1,0 +1,132 @@
+.guest-selector-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--overlay-40);
+    z-index: 70;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding-top: 10rem;
+    animation: fadeIn 0.2s ease;
+}
+
+.modal-content {
+    background: var(--surface-3);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+    padding: 2rem;
+    min-width: 400px;
+    max-width: 500px;
+    animation: slideUp 0.3s ease;
+}
+
+.guest-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 0;
+}
+
+.guest-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+
+.guest-label {
+    font-size: var(--fs-body);
+    font-weight: var(--fw-medium);
+    color: var(--text-on-surface);
+}
+
+.guest-description {
+    font-size: var(--fs-sm);
+    color: var(--text-on-surface-2);
+}
+
+.guest-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.control-btn {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--surface-3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    color: var(--text-on-surface-2);
+
+    &:hover:not(:disabled) {
+        border-color: var(--text-on-surface);
+        color: var(--text-on-surface);
+    }
+
+    &:disabled {
+        opacity: 0.3;
+        cursor: not-allowed;
+    }
+
+    .icon {
+        width: 1rem;
+        height: 1rem;
+    }
+}
+
+.count {
+    font-size: var(--fs-body);
+    font-weight: var(--fw-medium);
+    color: var(--text-on-surface);
+    min-width: 2rem;
+    text-align: center;
+}
+
+.divider {
+    height: 1px;
+    background: var(--border);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+// Responsive
+@media (max-width: 768px) {
+    .modal-content {
+        min-width: auto;
+        width: 90%;
+        max-width: 400px;
+        padding: 1.5rem;
+    }
+
+    .guest-row {
+        padding: 1rem 0;
+    }
+}

@@ -3,15 +3,14 @@ package com.airbnb_clone_ms_web_iii.identity.controllers.security;
 import com.airbnb_clone_ms_web_iii.identity.dtos.auth.LoginDTO;
 import com.airbnb_clone_ms_web_iii.identity.dtos.auth.RegisterDTO;
 import com.airbnb_clone_ms_web_iii.identity.dtos.pojos.*;
+import com.airbnb_clone_ms_web_iii.identity.dtos.users.UserDTO;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.services.security.JwtService;
 import com.airbnb_clone_ms_web_iii.identity.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/auth")
@@ -64,4 +63,24 @@ public class AuthController {
         return result;
     }
 
+
+    @GetMapping("/me")
+    public ResponseEntity getMe(@RequestHeader("Authorization") String authHeader){
+        StandardResult result = new StandardResult<>();
+        try{
+            String token = authHeader.replace("Bearer ", "");
+            String username = jwtService.extractUsername(token);
+            User theUser = userService.findByUsername(username);
+            UserDTO userDTO = UserDTO.fromEntity(theUser);
+            result.setData(userDTO);
+            result.setSuccess(true);
+        }catch(Exception ex){
+            result.setSuccess(false);
+            result.setErrorMessage(ex.getMessage());
+        }
+
+        return ResponseEntity
+                .status(result.isSuccess() ? HttpStatus.OK : HttpStatus.UNAUTHORIZED)
+                .body(result);
+    }
 }

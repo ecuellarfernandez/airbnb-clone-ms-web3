@@ -1,0 +1,86 @@
+:root {
+    --brand: #ff385c;
+    --bg: #0b1220;
+    --card: #101827;
+    --muted: #9aa3af;
+    --line: #1f2937;
+}
+
+.admin {
+    display: flex;
+    min-height: 100vh;
+    background: var(--bg);
+    color: #e5e7eb;
+}
+
+.sidebar {
+    width: 240px;
+    background: #0f1626;
+    border-right: 1px solid var(--line);
+    padding: 16px;
+}
+
+.brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 8px 16px;
+}
+
+.brand img {
+    height: 22px;
+}
+
+.sidebar nav {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.sidebar nav a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: #cdd3df;
+    text-decoration: none;
+}
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+    background: #141d2f;
+    color: #fff;
+    box-shadow: 0 0 0 1px #1d2840 inset;
+}
+
+.main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding: 0 20px;
+    border-bottom: 1px solid var(--line);
+}
+
+.user {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.user img {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+}
+
+.content {
+    padding: 24px;
+}

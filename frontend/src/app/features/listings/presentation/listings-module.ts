@@ -1,0 +1,18 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ListingsRoutingModule } from './listings-routing-module';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ListingDetailPageComponent } from './pages/listing-detail/listing-detail-page.component';
+import { CardBookDetailComponent } from './components/card-book-detail/card-book-detail.component';
+import { AccommodationsPageComponent } from './pages/listing-list/accommodations-page.component';
+import { ListingCardComponent } from './components/listing-card/listing-card.component';
+import { SharedModule } from '../../../shared/shared-module';
+
+@NgModule({
+  declarations: [AccommodationsPageComponent, ListingCardComponent, ListingDetailPageComponent, CardBookDetailComponent],
+  imports: [FormsModule, CommonModule, ListingsRoutingModule, SharedModule],
+  exports: [
+    ListingCardComponent
+  ]
+})
+export class ListingsModule { }

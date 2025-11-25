@@ -1,0 +1,52 @@
+<div class="card">
+    <header class="cardHeader">
+        <h2>Usuarios</h2>
+    </header>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Usuario</th>
+                <th>Email</th>
+                <th>Rol</th>
+                <th>Estado</th>
+                <th style="width: 360px;">Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let u of (users$ | async)">
+                <td class="user">
+                    <img [src]="u.avatar" alt="Avatar del usuario" />
+                    <div>
+                        <strong>{{ u.name }}</strong>
+                        <div class="muted">#{{ u.id }}</div>
+                    </div>
+                </td>
+
+                <td class="muted">{{ u.email }}</td>
+
+                <td>
+                    <span class="badge" [class.admin]="u.role === 'admin'" [class.host]="u.role === 'host'">
+                        {{ u.role }}
+                    </span>
+                </td>
+
+                <td>
+                    <span class="badge" [class.paid]="u.active" [class.unpaid]="!u.active">
+                        {{ u.active ? 'Activo' : 'Inactivo' }}
+                    </span>
+                </td>
+
+                <td class="row-actions">
+                    <button class="small" (click)="toggle(u)">
+                        {{ u.active ? 'Desactivar' : 'Activar' }}
+                    </button>
+                    <button class="small" (click)="makeGuest(u)">Guest</button>
+                    <button class="small" (click)="promote(u)">Host</button>
+                    <button class="small danger" (click)="makeAdmin(u)">Admin</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,101 @@
+<div class="guest-selector-modal" *ngIf="isOpen" (click)="onClose()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <!-- Adultos -->
+        <div class="guest-row">
+            <div class="guest-info">
+                <div class="guest-label">Adultos</div>
+                <div class="guest-description">Edad: 13 años o más</div>
+            </div>
+            <div class="guest-controls">
+                <button class="control-btn" [disabled]="guests.adults === 0" (click)="decrement('adults')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                    </svg>
+                </button>
+                <span class="count">{{ guests.adults }}</span>
+                <button class="control-btn" (click)="increment('adults')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Niños -->
+        <div class="guest-row">
+            <div class="guest-info">
+                <div class="guest-label">Niños</div>
+                <div class="guest-description">Edades 2 – 12</div>
+            </div>
+            <div class="guest-controls">
+                <button class="control-btn" [disabled]="guests.children === 0" (click)="decrement('children')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                    </svg>
+                </button>
+                <span class="count">{{ guests.children }}</span>
+                <button class="control-btn" (click)="increment('children')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Bebés -->
+        <div class="guest-row">
+            <div class="guest-info">
+                <div class="guest-label">Bebés</div>
+                <div class="guest-description">Menos de 2 años</div>
+            </div>
+            <div class="guest-controls">
+                <button class="control-btn" [disabled]="guests.infants === 0" (click)="decrement('infants')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                    </svg>
+                </button>
+                <span class="count">{{ guests.infants }}</span>
+                <button class="control-btn" (click)="increment('infants')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Mascotas -->
+        <div class="guest-row">
+            <div class="guest-info">
+                <div class="guest-label">Mascotas</div>
+                <div class="guest-description">¿Traes un animal de servicio?</div>
+            </div>
+            <div class="guest-controls">
+                <button class="control-btn" [disabled]="guests.pets === 0" (click)="decrement('pets')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
+                    </svg>
+                </button>
+                <span class="count">{{ guests.pets }}</span>
+                <button class="control-btn" (click)="increment('pets')">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2"
+                        stroke="currentColor" class="icon">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
