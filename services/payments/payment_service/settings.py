@@ -18,6 +18,19 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+def validate_database_vars():
+    DB_NAME = os.getenv("DB_NAME");
+    DB_USER = os.getenv("DB_USER");
+    DB_PASSWORD = os.getenv("DB_PASSWORD");
+    DB_HOST = os.getenv("DB_HOST");
+    DB_PORT = os.getenv("DB_PORT");
+
+    if (not DB_NAME or not DB_USER or not DB_PASSWORD or not DB_HOST or not DB_PORT):
+        raise Exception("Database configuration environment variables are not set properly.")
+
+
+validate_database_vars()
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -50,6 +63,17 @@ REST_FRAMEWORK = {
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 20,
 }
+
+
+KAFKA_CONFIG = {
+    'BOOTSTRAP_SERVERS' : 'localhost:9092',
+    'TOPICS_TO_LISTEN' : [
+        'booking_events',
+        'payment_events',
+    ],
+    'CONSUMER_GROUP_ID' : 'payment_service_group',
+}
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
