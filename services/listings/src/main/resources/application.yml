@@ -1,0 +1,64 @@
+spring:
+  application:
+    name: listings
+  datasource:
+    url: ${LISTINGS_DB_URL:jdbc:postgresql://localhost:5432/listings_db}
+    username: ${LISTINGS_DB_USER:postgres}
+    password: ${LISTINGS_DB_PASSWORD:postgres}
+    driver-class-name: org.postgresql.Driver
+  kafka:
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: ${JPA_SHOW_SQL:true}
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true  # Para DBs existentes
+    placeholders:
+      seed_demo_data: ${FLYWAY_SEED_DATA:true}  # Control del seeder
+
+security:
+  jwt:
+    secret: ${JWT_KEY}
+    expiration: ${JWT_EXPIRATION:3600}
+    alg: ${JWT_ALG:RS256}
+    issuer: ${JWT_ISSUER:http://localhost:8080}
+    access-ttl-min: ${JWT_ACCESS_TTL_MIN:30}
+    refresh-ttl-days: ${JWT_REFRESH_TTL_DAYS:30}
+    private-key-pem: ${JWT_PRIVATE_KEY_PEM:}
+    public-key-pem: ${JWT_PUBLIC_KEY_PEM:}
+
+server:
+  port: ${LISTINGS_PORT:5004}
+
+management:
+  endpoint:
+    health:
+      show-details: when_authorized
+  endpoints:
+    web:
+      exposure:
+        include: health,info,flyway
+  security:
+    enabled: true
+
+springdoc:
+  swagger-ui:
+    path: /api/docs
+  api-docs:
+    path: /api/docs-json
+
+logging:
+  level:
+    org.flywaydb: INFO
+    com.listings: DEBUG
+    com.yourproject.listings: DEBUG
