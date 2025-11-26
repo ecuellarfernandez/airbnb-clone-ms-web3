@@ -1,0 +1,10 @@
+spring:
+  jpa:
+    show-sql: true
+
+logging:
+  level:
+    org.springframework: DEBUG
+
+custom:
+  image-path: ${LISTINGS_IMAGE_PATH:/static/images/}
