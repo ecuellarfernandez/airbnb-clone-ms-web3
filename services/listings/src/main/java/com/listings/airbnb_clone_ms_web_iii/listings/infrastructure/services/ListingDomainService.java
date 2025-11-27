@@ -1,8 +1,9 @@
-package com.listings.airbnb_clone_ms_web_iii.listings.domain.service;
+package com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.services;
 
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Category;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Listing;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.ListingImage;
+import com.listings.airbnb_clone_ms_web_iii.listings.domain.services.ListingDomainServiceInt;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -15,7 +16,7 @@ import java.util.List;
  * 3. Contiene reglas de negocio complejas del dominio
  */
 @Service
-public class ListingDomainService {
+public class ListingDomainService implements ListingDomainServiceInt {
 
     /**
      * Valida que un listing cumpla con todas las reglas de negocio
