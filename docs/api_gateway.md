@@ -41,6 +41,12 @@ En este punto, se puede trabajar con las mismas rutas con las que trabajaríamos
 1. Identity-Service: 5000
 2. Admin-Service: 5001
 3. Payment-Service: 5002
+4. Listing-Service: 5003  
+
+5. Kafka-UI: 7092
+5. Kafka: 9092  
+
+6. APISIX: 9000
 
 - Como pueden ver, los puertos internos de los microservicios inician en el 5000 y van de forma ascendente. Tomar en cuenta al crear un nuevo microservicio. **SI 2 MICROSERVICIOS TIENEN EL MISMO PUERTO CONFIGURADO EN SUS RESPECTIVOS PROYECTO, HABRÁ ERROR**
 
