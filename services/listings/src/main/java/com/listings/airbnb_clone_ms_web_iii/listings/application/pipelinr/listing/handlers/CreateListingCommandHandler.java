@@ -1,6 +1,7 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.listing.handlers;
 
 import an.awesome.pipelinr.Command;
+import an.awesome.pipelinr.Pipeline;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingDetailDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.listing.commands.CreateListingCommand;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.port.ListingServicePort;
@@ -15,14 +16,17 @@ public class CreateListingCommandHandler implements Command.Handler<CreateListin
 
     private final ListingServicePort listingService;
     private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final Pipeline pipeline;
 
-    public CreateListingCommandHandler(ListingServicePort listingService, KafkaTemplate<String, Object> kafkaTemplate) {
+    public CreateListingCommandHandler(ListingServicePort listingService,
+                                       KafkaTemplate<String, Object> kafkaTemplate,
+                                       Pipeline pipeline) {
         this.listingService = listingService;
         this.kafkaTemplate = kafkaTemplate;
+        this.pipeline = pipeline;
     }
 
     @Override
-    @Transactional
     public ListingDetailDTO handle(CreateListingCommand createListingCommand) {
 
         //Aqui va a ir la logica de creacion
