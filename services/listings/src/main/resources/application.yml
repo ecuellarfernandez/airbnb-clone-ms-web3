@@ -43,7 +43,7 @@ security:
     public-key-pem: ${JWT_PUBLIC_KEY_PEM:}
 
 server:
-  port: ${LISTINGS_PORT:5004}
+  port: ${LISTINGS_PORT:5003}
 
 management:
   endpoint:

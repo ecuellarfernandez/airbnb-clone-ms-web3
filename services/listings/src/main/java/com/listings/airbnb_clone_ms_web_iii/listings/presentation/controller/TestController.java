@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/tests")
+@RequestMapping("/api/test")
 @Tag(name = "Tests Controller", description = "Controller for testing purposes")
 @CrossOrigin(origins = "*")
 public class TestController {
@@ -32,6 +32,11 @@ public class TestController {
         String response = pipeline.send(command);
         logger.info("Kafka test event sent with response: " + response);
         return ResponseEntity.ok("Kafka test event sent successfully with response: " + response);
+    }
+
+    @GetMapping("/health")
+    public ResponseEntity<String> healthCheck() {
+        return ResponseEntity.ok("Listings Service is up and running!");
     }
 
 }
