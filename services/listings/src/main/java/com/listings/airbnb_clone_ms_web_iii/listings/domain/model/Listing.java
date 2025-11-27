@@ -26,6 +26,8 @@ public class Listing {
     private Location location;
 
     @Embedded
+    @AttributeOverride(name = "amount", column = @Column(name = "price_amount", nullable = false))
+    @AttributeOverride(name = "currency", column = @Column(name = "price_currency", nullable = false))
     private Price price;
 
     @Column(nullable = false)
