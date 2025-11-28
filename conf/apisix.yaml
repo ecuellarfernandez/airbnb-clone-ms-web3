@@ -68,8 +68,8 @@ routes:
     service_id: 2
     plugins:
       proxy-rewrite:
-        #Leading "/" because without it it does not work
-        regex_uri: ["(^/api)/admin-service/(.*)", "$1/$2/"] #trailing slash only in django
+        #Leading "/" because without it it does not work in django
+        regex_uri: ["(^/api)/admin-service/(.*)", "$1/$2/"] 
 
   - id: 3
     name: payments-prefix-router
