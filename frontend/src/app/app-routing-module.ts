@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from '@core/layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from '@core/layouts/auth-layout/auth-layout.component';
 import { PageNotFoundComponent } from '@core/pages/page-not-found/page-not-found.component';
+import { UserProfilePageComponent } from '@features/user-profile/user-profile-page.component';
 
 const routes: Routes = [
   {
@@ -29,6 +30,20 @@ const routes: Routes = [
         loadChildren: () => import('@features/listings/presentation/listings-module').then(m => m.ListingsModule),
       }
     ],
+  },
+  {
+    path: 'users',
+    children: [
+      {
+        path: 'profile',
+        component: UserProfilePageComponent,
+      },
+      {
+        path: '',
+        redirectTo: 'profile',
+        pathMatch: 'full'
+      }
+    ]
   },
   {
     path: 'auth',
