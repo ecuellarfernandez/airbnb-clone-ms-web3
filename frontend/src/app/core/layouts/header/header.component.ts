@@ -21,6 +21,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isUserMenuOpen = false;
   activeTabId: string = 'accommodations';
   showNavTabs = true;
+
+  isDetailPage = false;
+
+  searchIsExpanded = false;
+
   private routerSubscription: Subscription | null = null;
 
   navTabs: NavTab[] = [
@@ -43,11 +48,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
     }
   ];
 
-  isScrolled = false;
-
   constructor(private router: Router) { }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.checkRoute();
     this.routerSubscription = this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -56,21 +59,29 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    if (this.routerSubscription) {
-      this.routerSubscription.unsubscribe();
+  ngOnDestroy(): void {
+    this.routerSubscription?.unsubscribe();
+  }
+
+  onWindowScroll(): void {
+    if (!this.isDetailPage) return;
+
+    if (window.scrollY > 20 && this.searchIsExpanded) {
+      this.searchIsExpanded = false;
+      this.showNavTabs = false;
     }
   }
 
-  private checkRoute() {
-    // Hide nav tabs if we are on a listing detail page
-    // Pattern: /listings/detail/:id
-    this.showNavTabs = !this.router.url.includes('/listings/detail/');
-  }
+  private checkRoute(): void {
+    this.isDetailPage = this.router.url.includes('/listings/detail/');
 
-  @HostListener('window:scroll', [])
-  onWindowScroll() {
-    this.isScrolled = window.scrollY > 0;
+    if (this.isDetailPage) {
+      this.searchIsExpanded = false;
+      this.showNavTabs = false;
+    } else {
+      this.searchIsExpanded = true;
+      this.showNavTabs = true;
+    }
   }
 
   toggleUserMenu(): void {
@@ -80,5 +91,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onTabChange(tabId: string): void {
     this.activeTabId = tabId;
     console.log('Tab changed to:', tabId);
+  }
+
+  onExpandedChange(expanded: boolean) {
+    this.searchIsExpanded = expanded;
+
+    if (this.isDetailPage) {
+      this.showNavTabs = expanded;
+    }
   }
 }

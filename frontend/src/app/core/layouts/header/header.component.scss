@@ -1,11 +1,26 @@
 .header-container {
-  // position: fixed;
-  // top: 0;
-  // left: 0;
-  // width: 100%;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
   background: var(--surface-2);
   box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
   z-index: 60;
+  padding-bottom: 10px;
+  transition: padding-bottom 0.25s ease, box-shadow 0.15s ease, background 0.15s ease;
+}
+
+.header-container.expanded {
+  padding-bottom: 30px; 
+
+  .header-detail-collapsed .header-content {
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
+}
+.header-detail-expanded .header-content {
+  padding-top: 1.75rem;
+  padding-bottom: 1.75rem;
+}
 }
 
 .header-main {
@@ -14,8 +29,11 @@
 
 .header-content {
   display: flex;
+  align-items: center;
   justify-content: space-between;
+  gap: 2rem;
 }
+
 
 .logo-icon {
   width: 2rem;
@@ -33,24 +51,112 @@
   }
 }
 
-// Search Section
 .search-section {
   flex: 1;
   display: flex;
   justify-content: center;
+  width: 100%;
   max-width: 850px;
+  margin: 0 auto;
 
   @media (max-width: 768px) {
     display: none;
   }
 }
 
-// User Section
+.search-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.search-compact-wrapper {
+  margin-top: 0.75rem;
+  margin-bottom: 0.5rem;
+  display: flex;
+  justify-content: center;
+}
+
+.search-compact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface-3);
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+  transition: box-shadow 0.15s ease, transform 0.15s ease, background 0.15s ease;
+
+  &:hover {
+    background: var(--surface);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+    transform: translateY(-1px);
+  }
+}
+
+pill-section {
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--text-on-surface);
+  margin-right: 0.25rem;
+}
+
+.pill-placeholder {
+  font-size: var(--fs-xs);
+  color: var(--text-on-surface-2);
+  margin-right: 0.5rem;
+}
+
+.pill-divider {
+  width: 1px;
+  height: 1.5rem;
+  background: var(--border);
+  margin: 0 0.5rem;
+}
+
+.pill-icon {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--brand-primary);
+  margin-left: 0.25rem;
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
+    color: #fff;
+  }
+}
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--overlay-40);
+  z-index: 80;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 90px;
+  animation: fadeIn 0.18s ease;
+}
+
+.search-overlay-inner {
+  width: 100%;
+  max-width: 950px;
+  padding: 0 1rem;
+}
+
+
 .user-section {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   flex-shrink: 0;
+  justify-content: flex-end;
 }
 
 .airbnb-home-btn {
@@ -102,7 +208,6 @@
 
 .user-menu-wrapper {
   position: relative;
-  margin-left: 0.5rem;
 }
 
 .user-menu-btn {
@@ -125,6 +230,7 @@
   width: 1.25rem;
   height: 1.25rem;
   color: var(--text-on-surface);
+  margin-right: 4px;
 }
 
 .avatar-icon {
@@ -150,10 +256,13 @@
 
 .filter {
   display: none;
-  /* Temporarily hide old filter */
 }
 
 .nav-tabs-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+
   transition: transform 0.2s ease, opacity 0.2s ease, height 0.2s ease;
   transform-origin: top;
   height: auto;

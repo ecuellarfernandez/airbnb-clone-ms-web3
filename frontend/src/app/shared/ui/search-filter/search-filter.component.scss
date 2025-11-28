@@ -1,6 +1,16 @@
 .search-filter-container {
     position: relative;
     z-index: 50;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.search-pill,
+.search-bar-expanded {
+    margin: 0 auto;
+    max-width: 850px; // antes 720px
+    width: 100%;
 }
 
 // Collapsed State (Pill)
@@ -35,6 +45,18 @@
         color: var(--text-on-surface-2);
         font-weight: var(--fw-regular);
     }
+}
+
+.pill-title {
+    display: block;
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+}
+
+.pill-subtitle {
+    display: block;
+    font-size: var(--fs-xs);
+    color: var(--text-on-surface-2);
 }
 
 .pill-divider {
@@ -113,9 +135,17 @@
         background: var(--surface);
     }
 
-    &.filter-field-guests {
+    /*&.filter-field-guests {
         flex: 0.8;
-    }
+    }*/
+}
+
+.filter-field.filter-field-guests {
+    flex: 0.8;
+    margin-right: 0.25rem;
+    /* separa el botón rosa */
+    border-top-right-radius: var(--radius-pill);
+    border-bottom-right-radius: var(--radius-pill);
 }
 
 .field-label {
@@ -159,6 +189,7 @@
     transition: all 0.2s ease;
     white-space: nowrap;
 
+
     &:hover {
         background: var(--brand-primary-hover);
         transform: scale(1.05);
@@ -169,6 +200,15 @@
         width: 1rem;
         height: 1rem;
     }
+}
+
+.search-btn.search-btn-compact {
+    padding: 0.75rem;
+    border-radius: var(--radius-pill);
+}
+
+.search-btn.search-btn-compact span {
+    display: none;
 }
 
 .search-backdrop {

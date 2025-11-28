@@ -1,0 +1,91 @@
+.booking-card {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+
+  &__price-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+  }
+
+  &__price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  &__nights {
+    font-size: 0.875rem;
+    color: var(--text-3);
+  }
+
+  &__fields {
+    border: 1px solid white;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--surface-1);
+  }
+
+  &__dates-row {
+    display: flex;
+    border-bottom: 1px solid white;
+  }
+
+  &__guests-row {
+    display: flex;
+  }
+
+  &__field {
+    flex: 1;
+    padding: 0.75rem 0.9rem;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+
+    &:focus-visible {
+      outline: 2px solid var(--brand-ring);
+      outline-offset: -2px;
+    }
+  }
+
+  &__field--left {
+    border-right: 1px solid white;
+    border-radius: 0 !important;
+  }
+
+  &__field-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--text-3);
+  }
+
+  &__field-value {
+    display: block;
+    font-size: 0.875rem;
+    color: var(--text);
+  }
+
+  &__guest-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+  }
+
+  &__chevron {
+    font-size: 0.875rem;
+    color: var(--text-3);
+  }
+
+  &__note {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    text-align: center;
+    color: var(--text-3);
+  }
+}

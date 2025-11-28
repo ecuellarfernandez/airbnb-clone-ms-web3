@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, OnChanges, SimpleChanges, Output, EventEmitter } from '@angular/core';
 import { SearchFilterService, SearchFilters } from '../../../core/services/search-filter.service';
 import { Subscription } from 'rxjs';
 import { GuestCounts } from '../guest-selector/guest-selector.component';
@@ -9,8 +9,13 @@ import { GuestCounts } from '../guest-selector/guest-selector.component';
   templateUrl: './search-filter.component.html',
   styleUrl: './search-filter.component.scss'
 })
-export class SearchFilterComponent implements OnInit, OnDestroy {
-  isExpanded: boolean = false;
+export class SearchFilterComponent implements OnInit, OnDestroy, OnChanges {
+  //@Input() startExpanded: boolean = true;
+  @Input() compact: boolean = false;     
+  @Output() expandedChange = new EventEmitter<boolean>();
+
+  isExpanded: boolean = true;
+
   isLocationModalOpen: boolean = false;
   isDateModalOpen: boolean = false;
   isGuestModalOpen: boolean = false;
@@ -30,9 +35,26 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   constructor(private searchFilterService: SearchFilterService) { }
 
   ngOnInit(): void {
+    this.isExpanded = !this.compact;
+    this.expandedChange.emit(this.isExpanded);
+
     this.subscription = this.searchFilterService.filters$.subscribe(
       filters => this.filters = filters
     );
+  }
+
+  // Para que al cambiar de ruta (home/detalle) se actualice el estado
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes['compact'] && !changes['compact'].firstChange) {
+      this.compact = changes['compact'].currentValue;
+      this.isExpanded = !this.compact;
+    }
+
+    if (!this.isExpanded) {
+        this.closeModals();
+    }
+
+    this.expandedChange.emit(this.isExpanded);
   }
 
   ngOnDestroy(): void {
@@ -75,20 +97,56 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     };
   }
 
+  get hasActiveFilter(): boolean {
+    const totalGuests = this.searchFilterService.getTotalGuests();
+    return !!(
+      this.filters.location ||
+      this.filters.checkIn ||
+      this.filters.checkOut ||
+      totalGuests
+    );
+  }
+
+  collapse(): void {
+    this.isExpanded = false;
+    this.expandedChange.emit(false);
+    this.closeModals();
+  }
+
   toggleExpanded(): void {
-    this.isExpanded = !this.isExpanded;
+    if (this.isExpanded){
+      this.collapse();
+    } else {
+      this.isExpanded = true;
+      this.expandedChange.emit(true);
+    }
+  }
+
+  expandAndOpen(section: 'location' | 'dates' | 'guests'): void {
+    this.isExpanded = true;
+    this.expandedChange.emit(true);
+
+    this.isLocationModalOpen = section === 'location';
+    this.isDateModalOpen = section === 'dates';
+    this.isGuestModalOpen = section === 'guests';
   }
 
   openLocationModal(): void {
     this.isLocationModalOpen = true;
+    this.isDateModalOpen = false;
+    this.isGuestModalOpen = false;
   }
 
   openDateModal(): void {
     this.isDateModalOpen = true;
+    this.isLocationModalOpen = false;
+    this.isGuestModalOpen = false;
   }
 
   openGuestModal(): void {
     this.isGuestModalOpen = true;
+    this.isLocationModalOpen = false;
+    this.isDateModalOpen = false;
   }
 
   onLocationSelect(location: string): void {
@@ -111,7 +169,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
 
   onSearch(): void {
     this.searchFilterService.executeSearch();
-    this.isExpanded = false;
+    this.collapse();
   }
 
   closeModals(): void {

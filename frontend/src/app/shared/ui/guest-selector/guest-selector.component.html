@@ -1,5 +1,8 @@
 <div class="guest-selector-modal" *ngIf="isOpen" (click)="onClose()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content" [ngClass]="{
+      'modal-content--search': variant === 'search',
+      'modal-content--booking': variant === 'booking'
+    }"  (click)="$event.stopPropagation()">
         <!-- Adultos -->
         <div class="guest-row">
             <div class="guest-info">
@@ -12,6 +15,7 @@
                         stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
                     </svg>
+                    -
                 </button>
                 <span class="count">{{ guests.adults }}</span>
                 <button class="control-btn" (click)="increment('adults')">
@@ -19,6 +23,7 @@
                         stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
                     </svg>
+                    +
                 </button>
             </div>
         </div>
@@ -37,6 +42,7 @@
                         stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
                     </svg>
+                    -
                 </button>
                 <span class="count">{{ guests.children }}</span>
                 <button class="control-btn" (click)="increment('children')">
@@ -44,6 +50,7 @@
                         stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
                     </svg>
+                    +
                 </button>
             </div>
         </div>
@@ -62,6 +69,7 @@
                         stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
                     </svg>
+                    -
                 </button>
                 <span class="count">{{ guests.infants }}</span>
                 <button class="control-btn" (click)="increment('infants')">
@@ -69,6 +77,7 @@
                         stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
                     </svg>
+                    +
                 </button>
             </div>
         </div>
@@ -87,6 +96,7 @@
                         stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
                     </svg>
+                    -
                 </button>
                 <span class="count">{{ guests.pets }}</span>
                 <button class="control-btn" (click)="increment('pets')">
@@ -94,6 +104,7 @@
                         stroke="currentColor" class="icon">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
                     </svg>
+                    +
                 </button>
             </div>
         </div>

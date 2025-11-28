@@ -1,39 +1,64 @@
 .date-picker-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: var(--overlay-40);
     z-index: 70;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 8rem;
     animation: fadeIn 0.2s ease;
 }
 
-.modal-content {
+.date-picker-modal .modal-content {
+    position: absolute;
     background: var(--surface-3);
     border-radius: var(--radius-lg);
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    min-width: 700px;
+    padding: 1.5rem 2rem 1.75rem;
+    //min-width: 700px;
     max-width: 850px;
-    animation: slideUp 0.3s ease;
-    overflow: hidden;
+    width: 100%;
+    //overflow: hidden;
+}
+
+.modal-content--search {
+    top: 225px;
+    right: 30%;
+    //transform: translateX(-50%);
+}
+
+.modal-content--booking {
+    top: 790px;
+    left: 38%;
+    //right: 8%;
+    transform: none;
+    max-width: 720px;
+
+    /*@media (min-width: 1280px){
+        right: 12%;
+    }*/
 }
 
 .tabs-header {
     display: flex;
-    gap: 1rem;
+    justify-content: center;
+    //gap: 1rem;
     padding: 1.5rem 1.5rem 0;
     border-bottom: 1px solid var(--border);
+    margin-bottom: 0.75rem;
+}
+
+.tabs-pill{
+    display: inline-flex;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: 0.25rem;
+    box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.05);
 }
 
 .tab-btn {
+    min-width: 110px;
     padding: 0.75rem 1.5rem;
     background: transparent;
     border: none;
+    border-radius: var(--radius-lg);
     border-bottom: 2px solid transparent;
     cursor: pointer;
     font-size: var(--fs-sm);
@@ -51,8 +76,14 @@
     }
 }
 
+.tab-btn:hover {
+    color: var(--text-on-surface);
+    background-color: rgba(255, 255, 255, 0.12);
+}
+
+
 .calendar-view {
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem 2rem;
 }
 
 .month-navigation {
@@ -62,27 +93,48 @@
 }
 
 .nav-btn {
+    position: relative;
     width: 2rem;
     height: 2rem;
     border-radius: 50%;
-    border: 1px solid var(--border);
-    background: var(--surface-3);
+    border: none;
+    background: transparent;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.2s ease;
+    //transition: all 0.2s ease;
+    padding: 0;
+    outline: none;
     color: var(--text-on-surface-2);
-
-    &:hover {
-        border-color: var(--text-on-surface);
-        color: var(--text-on-surface);
-    }
 
     .icon {
         width: 1rem;
         height: 1rem;
+        position: relative;
+        z-index: 1;
+        pointer-events: none;
     }
+
+    &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: 50%;
+        background: transparent;
+        box-shadow: 0 0 0 0 transparent;
+        transition: all 0.2s ease;
+    }
+
+    &:hover::before {
+        background: rgba(255, 255, 255, 0.05);
+        box-shadow: 0 0 0 1px var(--border);
+    }
+
+    &:hover {
+        color: var(--text-on-surface); 
+    }
+
 }
 
 .calendars-container {
@@ -129,6 +181,8 @@
 
 .day-cell {
     aspect-ratio: 1;
+    box-sizing: border-box;
+    border: 1px solid transparent;
     border: none;
     background: transparent;
     border-radius: var(--radius-sm);
@@ -140,7 +194,7 @@
 
     &:hover:not(:disabled):not(.empty) {
         background: var(--surface);
-        border: 1px solid var(--text-on-surface);
+        border-color: var(--text-on-surface);
     }
 
     &.empty {
@@ -221,7 +275,10 @@
 
 // Responsive
 @media (max-width: 768px) {
-    .modal-content {
+    .date-picker-modal .modal-content {
+        top: 120px;
+        left: 50%;
+        transform: translateX(-50%);
         min-width: auto;
         width: 95%;
         max-width: 700px;

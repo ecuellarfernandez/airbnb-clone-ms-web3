@@ -3,6 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { MainLayoutComponent } from '@core/layouts/main-layout/main-layout.component';
 import { AuthLayoutComponent } from '@core/layouts/auth-layout/auth-layout.component';
 import { PageNotFoundComponent } from '@core/pages/page-not-found/page-not-found.component';
+import { BookingLayoutComponent } from '@core/layouts/booking-layout/booking-layout.component';
+
 
 const routes: Routes = [
   {
@@ -27,6 +29,17 @@ const routes: Routes = [
       {
         path: '',
         loadChildren: () => import('@features/listings/presentation/listings-module').then(m => m.ListingsModule),
+      }
+    ],
+  },
+  {
+    path: 'reservations',
+    component: BookingLayoutComponent,
+    children: [
+      {
+        path: '',
+        loadChildren: () =>
+          import('@app/features/reservations/presentation/reservations-module').then(m => m.ReservationsModule),
       }
     ],
   },

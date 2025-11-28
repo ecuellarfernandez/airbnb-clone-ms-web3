@@ -21,6 +21,7 @@ export class GuestSelectorComponent {
     infants: 0,
     pets: 0
   };
+  @Input() variant: 'search' | 'booking' = 'search';
   @Output() guestsChange = new EventEmitter<GuestCounts>();
   @Output() close = new EventEmitter<void>();
 
