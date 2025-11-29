@@ -1,4 +1,11 @@
 
+consumers:
+  - username: identity-service-issuer
+    plugins:
+      jwt-auth:
+        secret: "NUESTRAKEYTEMPORALUNICAMENTEPARADESARROLLOYNOUSARENPRODUCCION"
+        key: "identity-service-key"
+
 upstreams:
   - id: 1
     name: identity-upstream
@@ -28,12 +35,18 @@ services:
     name: identity-service-policies
     upstream_id: 1
     plugins:
+      jwt-auth:
+        anonymous: true #this allows the token to be absent
+        failed_http_status: 403 #if there's a token but it's invalid
       cors:
         allow_origins: "*"
   - id: 2
     name: admin-service-policies
     upstream_id: 2
     plugins:
+      jwt-auth:
+        anonymous: true #this allows the token to be absent
+        failed_http_status: 403 #if there's a token but it's invalid
       cors:
         allow_origins: "*"
 
@@ -41,12 +54,18 @@ services:
     name: payments-service-policies
     upstream_id: 3
     plugins:
+      jwt-auth:
+        anonymous: true #this allows the token to be absent
+        failed_http_status: 403 #if there's a token but it's invalid
       cors:
         allow_origins: "*"
   - id: 4
     name: listings-service-policies
     upstream_id: 4
-    plugins:
+    plugins:      
+      jwt-auth:
+        anonymous: true #this allows the token to be absent
+        failed_http_status: 403 #if there's a token but it's invalid
       cors:
         allow_origins: "*"
 
@@ -59,6 +78,9 @@ routes:
     service_id: 1 
     plugins:
       proxy-rewrite:
+        set_headers:
+          X-User-ID: $jwt_claim_id
+          X-User-Roles: $jwt_claim_roles
         regex_uri: ["(^/api)/identity-service/(.*)", "$1/$2"] 
 
   - id: 2

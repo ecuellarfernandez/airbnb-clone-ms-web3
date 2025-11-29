@@ -39,12 +39,7 @@ security:
   jwt:
     secret: ${JWT_KEY}
     expiration: ${JWT_EXPIRATION:3600}
-    alg: ${JWT_ALG:RS256}
-    issuer: ${JWT_ISSUER:http://localhost:8080}
-    access-ttl-min: ${JWT_ACCESS_TTL_MIN:30}
-    refresh-ttl-days: ${JWT_REFRESH_TTL_DAYS:30}
-    private-key-pem: ${JWT_PRIVATE_KEY_PEM:}
-    public-key-pem: ${JWT_PUBLIC_KEY_PEM:}
+    alg: ${JWT_ALG:HS256}
 
 app:
   default-role: CLIENT
