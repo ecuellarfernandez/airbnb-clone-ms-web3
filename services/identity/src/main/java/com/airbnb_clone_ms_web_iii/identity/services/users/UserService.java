@@ -10,6 +10,8 @@ import com.airbnb_clone_ms_web_iii.identity.services.roles.RoleService;
 import com.airbnb_clone_ms_web_iii.identity.utils.security.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -49,6 +51,28 @@ public class UserService implements UserDetailsService {
     public User findById(Long id) {
         return userRepository.findById(id)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public Page<User> findBySearch(String searchTerm, int pageSize, int pageNumber){
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        return userRepository.searchUsers(searchTerm, pageRequest);
+    }
+
+    // aceptar enum Role.RoleName directamente (coincide con el controlador y repositorio)
+    public Page<User> findByRole(Role.RoleName roleName, int pageSize, int pageNumber) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
+        return userRepository.findByRole(roleName, pageRequest);
+    }
+
+    // sobrecarga para aceptar String (case-insensitive) y convertir a enum
+    public Page<User> findByRole(String roleName, int pageSize, int pageNumber) {
+        Role.RoleName parsed;
+        try {
+            parsed = Role.RoleName.valueOf(roleName.toUpperCase());
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Invalid role name: " + roleName);
+        }
+        return findByRole(parsed, pageSize, pageNumber);
     }
 
     public User saveUser(RegisterDTO registerDTO){
@@ -96,6 +120,32 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Invalid password");
         }
         return user;
+    }
+
+    public User addRoleToUser(User user, Long roleId){
+        Optional<Role> role = roleService.findById(roleId);
+
+        if(role.isEmpty()){
+            throw new IllegalArgumentException("Role not found");
+        }
+        if(user.getRoles().contains(role.get())){
+            throw new IllegalArgumentException("User already has this role");
+        }
+        user.getRoles().add(role.get());
+        return userRepository.save(user);
+    }
+
+    public User revokeRoleFromUser(User user, Long roleId){
+        Optional<Role> role = roleService.findById(roleId);
+
+        if(role.isEmpty()){
+            throw new IllegalArgumentException("Role not found");
+        }
+        if(!user.getRoles().contains(role.get())){
+            throw new IllegalArgumentException("User does not have this role");
+        }
+        user.getRoles().remove(role.get());
+        return userRepository.save(user);
     }
 
     @Override

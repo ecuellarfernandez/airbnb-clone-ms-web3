@@ -11,6 +11,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class JwtService {
@@ -43,11 +44,19 @@ public class JwtService {
     }
 
     public Long extractUserId(String token){
-        return Long.parseLong(Jwts.parser()
+        return Jwts.parser()
                 .setSigningKey(jwtSecret)
                 .parseClaimsJws(token)
                 .getBody()
-                .getId());
+                .get("id", Long.class);
+    }
+
+    public List<String> extractRoles(String token){
+        return Jwts.parser()
+                .setSigningKey(jwtSecret)
+                .parseClaimsJws(token)
+                .getBody()
+                .get("roles", List.class);
     }
 
     public boolean validateToken(String token, UserDetails userDetails){
