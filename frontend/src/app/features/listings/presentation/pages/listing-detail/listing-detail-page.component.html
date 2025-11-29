@@ -6,15 +6,6 @@
     <span>Volver</span>
   </button>
 
-  <!--<div class="gallery">
-    <div class="main-photo">
-      <img [src]="l.image" [alt]="l.title" loading="eager" />
-    </div>
-    <div class="thumbnails" *ngIf="l.photos?.length">
-      <img *ngFor="let p of l.photos | slice:0:4" [src]="p" [alt]="l.title" loading="lazy" />
-    </div>
-  </div>-->
-
   <div class="gallery">
     <div class="main-photo" (click)="openLightbox(0)" role="button" tabindex="0" aria-label="Ver fotos">
       <img [src]="l.image" [alt]="l.title" loading="eager" />
@@ -50,8 +41,7 @@
       </div>
     </div>
 
-    <app-card-book-detail [price]="l.price" [capacity]="l.capacity" (book)="bookDemo()"></app-card-book-detail>
-
+<app-card-book-detail [price]="l.price" [capacity]="l.capacity" (book)="bookDemo($event)"></app-card-book-detail>
   </div>
 </div>
 

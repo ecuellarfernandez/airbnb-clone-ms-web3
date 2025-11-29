@@ -2,6 +2,8 @@ import { Component, Input, HostListener, OnInit, OnDestroy } from '@angular/core
 import { Router, NavigationEnd } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { NavTab } from '../../../shared/ui/nav-tabs/nav-tabs.component';
+import { ThemeService, Theme } from '@app/core/services/theme.service';
+import { Listing } from '@features/listings/domain/models/listing.model';
 
 export interface FilterState {
   city: string;
@@ -21,6 +23,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isUserMenuOpen = false;
   activeTabId: string = 'accommodations';
   showNavTabs = true;
+  showListingForm = false;
+  editingListing: Listing | null = null;
+
   private routerSubscription: Subscription | null = null;
 
   navTabs: NavTab[] = [
@@ -45,7 +50,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   isScrolled = false;
 
-  constructor(private router: Router) { }
+  currentTheme: Theme = 'light';
+
+  constructor(private router: Router, private themeService: ThemeService) { }
 
   ngOnInit() {
     this.checkRoute();
@@ -54,6 +61,8 @@ export class HeaderComponent implements OnInit, OnDestroy {
     ).subscribe(() => {
       this.checkRoute();
     });
+
+    this.currentTheme = this.themeService.theme;
   }
 
   ngOnDestroy() {
@@ -63,8 +72,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private checkRoute() {
-    // Hide nav tabs if we are on a listing detail page
-    // Pattern: /listings/detail/:id
     this.showNavTabs = !this.router.url.includes('/listings/detail/');
   }
 
@@ -80,5 +87,24 @@ export class HeaderComponent implements OnInit, OnDestroy {
   onTabChange(tabId: string): void {
     this.activeTabId = tabId;
     console.log('Tab changed to:', tabId);
+  }
+
+  onToggleTheme(): void {
+    this.themeService.toggleTheme();
+    this.currentTheme = this.themeService.theme;
+  }
+
+  openListingForm(): void {
+    this.editingListing = null;
+    this.showListingForm = true;
+  }
+  closeListingForm(): void {
+    this.showListingForm = false;
+  }
+
+  handleListingSubmit(payload: Partial<Listing>): void {
+    console.log('Nuevo alojamiento creado desde header:', payload);
+
+    this.showListingForm = false;
   }
 }

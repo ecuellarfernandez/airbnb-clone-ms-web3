@@ -122,7 +122,7 @@
 }
 
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme]) {
     --bg: #{c.$neutral-950};
     --bg-hover: #{c.$neutral-900};
     --surface: #{c.$neutral-900};

@@ -10,10 +10,13 @@ import { GuestCounts } from '../guest-selector/guest-selector.component';
   styleUrl: './search-filter.component.scss'
 })
 export class SearchFilterComponent implements OnInit, OnDestroy {
-  isExpanded: boolean = false;
+  isExpanded: boolean = true;
+  showBackdrop: boolean = false;
   isLocationModalOpen: boolean = false;
   isDateModalOpen: boolean = false;
   isGuestModalOpen: boolean = false;
+
+  activeField: 'location' | 'dates' | 'guests' | null = null;
 
   filters: SearchFilters = {
     location: '',
@@ -80,14 +83,17 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
 
   openLocationModal(): void {
+    this.activeField = 'location';
     this.isLocationModalOpen = true;
   }
 
   openDateModal(): void {
+    this.activeField = 'dates';
     this.isDateModalOpen = true;
   }
 
   openGuestModal(): void {
+    this.activeField = 'guests';
     this.isGuestModalOpen = true;
   }
 
@@ -111,12 +117,23 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
 
   onSearch(): void {
     this.searchFilterService.executeSearch();
-    this.isExpanded = false;
+    this.closeExpanded();
   }
 
   closeModals(): void {
     this.isLocationModalOpen = false;
     this.isDateModalOpen = false;
     this.isGuestModalOpen = false;
+    this.activeField = null;
+  }
+
+  openExpandedWithOverlay(): void {
+    this.isExpanded = true;
+    this.showBackdrop = true;
+  }
+
+  closeExpanded(): void {
+    this.isExpanded = false;
+    this.showBackdrop = false;
   }
 }

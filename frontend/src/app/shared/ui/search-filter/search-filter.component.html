@@ -1,6 +1,6 @@
 <div class="search-filter-container">
     <!-- Collapsed State (Pill) -->
-    <div class="search-pill" *ngIf="!isExpanded" (click)="toggleExpanded()">
+    <div class="search-pill" *ngIf="!isExpanded" (click)="openExpandedWithOverlay()">
         <button class="pill-section">{{ locationText }}</button>
         <div class="pill-divider"></div>
         <button class="pill-section">{{ dateText }}</button>
@@ -19,7 +19,8 @@
     <div class="search-bar-expanded" *ngIf="isExpanded">
         <div class="filter-fields">
             <!-- Location Field -->
-            <div class="filter-field" (click)="openLocationModal()">
+            <div class="filter-field" [class.filter-field--active]="activeField === 'location'"
+                (click)="openLocationModal()">
                 <label class="field-label">Dónde</label>
                 <input type="text" class="field-input" [value]="filters.location" placeholder="Explora destinos"
                     readonly />
@@ -28,7 +29,7 @@
             <div class="field-divider"></div>
 
             <!-- Dates Field -->
-            <div class="filter-field" (click)="openDateModal()">
+            <div class="filter-field" [class.filter-field--active]="activeField === 'dates'" (click)="openDateModal()">
                 <label class="field-label">Fechas</label>
                 <input type="text" class="field-input" [value]="dateText === 'Any week' ? '' : dateText"
                     placeholder="Agrega fechas" readonly />
@@ -37,27 +38,27 @@
             <div class="field-divider"></div>
 
             <!-- Guests Field -->
-            <div class="filter-field filter-field-guests" (click)="openGuestModal()">
+            <div class="filter-field filter-field-guests" [class.filter-field--active]="activeField === 'guests'"
+                (click)="openGuestModal()">
                 <label class="field-label">Quién</label>
                 <input type="text" class="field-input" [value]="guestText === 'Add guests' ? '' : guestText"
                     placeholder="¿Cuántos?" readonly />
             </div>
 
             <!-- Search Button -->
-            <button class="search-btn" (click)="onSearch()">
+            <button class="search-btn" (click)="onSearch()" aria-label="Buscar">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5"
                     stroke="currentColor" class="btn-icon">
                     <path stroke-linecap="round" stroke-linejoin="round"
                         d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
                 </svg>
-                <span>Buscar</span>
             </button>
         </div>
     </div>
 </div>
 
-<!-- Backdrop for expanded state -->
-<div class="search-backdrop" *ngIf="isExpanded" (click)="toggleExpanded()"></div>
+<!-- Backdrop for expanded state (solo cuando venga desde la pill) -->
+<div class="search-backdrop" *ngIf="showBackdrop" (click)="closeExpanded()"></div>
 
 <!-- Modals -->
 <app-location-search [isOpen]="isLocationModalOpen" [selectedLocation]="filters.location"

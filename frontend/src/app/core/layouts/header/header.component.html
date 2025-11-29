@@ -5,12 +5,10 @@
       <div class="header-content py-7">
         <!-- Logo/Brand -->
         <div class="flex items-center">
-
           <a [routerLink]="'/'" class="flex items-center">
             <svg class="logo-icon" app-icon-logo></svg>
             <span class="logo-text">AirBbcitos</span>
           </a>
-
         </div>
 
         <div class="nav-tabs-section" *ngIf="variant === 'default' && showNavTabs" [class.hidden]="isScrolled">
@@ -20,7 +18,7 @@
         <!-- Right Section (User Menu) -->
         <div class="user-section">
           <ng-container *ngIf="variant === 'default'">
-            <button class="airbnb-home-btn">
+            <button class="airbnb-home-btn" type="button" (click)="openListingForm()">
               Airbnb your home
             </button>
             <button class="globe-btn">
@@ -31,6 +29,34 @@
               </svg>
             </button>
 
+            <button type="button" class="theme-toggle-btn" (click)="onToggleTheme()"
+              [attr.aria-label]="currentTheme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'">
+
+              <svg *ngIf="currentTheme === 'dark'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                class="icon theme-icon">
+                <circle cx="12" cy="12" r="4"></circle>
+                <path d="M12 2v2"></path>
+                <path d="M12 20v2"></path>
+                <path d="M4.93 4.93l1.41 1.41"></path>
+                <path d="M17.66 17.66l1.41 1.41"></path>
+                <path d="M2 12h2"></path>
+                <path d="M20 12h2"></path>
+                <path d="M6.34 17.66l-1.41 1.41"></path>
+                <path d="M19.07 4.93l-1.41 1.41"></path>
+              </svg>
+
+              <svg *ngIf="currentTheme === 'light'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+                class="icon theme-icon">
+                <path d="M21 12.79A9 9 0 0111.21 3
+             7 7 0 1019 14.79
+             9.05 9.05 0 0121 12.79z" />
+              </svg>
+
+            </button>
+
+
             <!-- User Menu Button -->
             <div class="user-menu-wrapper">
               <button (click)="toggleUserMenu()" class="user-menu-btn">
@@ -39,13 +65,13 @@
                   <path stroke-linecap="round" stroke-linejoin="round"
                     d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
-                <div class="avatar-icon">
+                <!--<div class="avatar-icon">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="icon">
                     <path fill-rule="evenodd"
                       d="M7.5 6a4.5 4.5 0 119 0 4.5 4.5 0 01-9 0zM3.751 20.105a8.25 8.25 0 0116.498 0 .75.75 0 01-.437.695A18.683 18.683 0 0112 22.5c-2.786 0-5.433-.608-7.812-1.7a.75.75 0 01-.437-.695z"
                       clip-rule="evenodd" />
                   </svg>
-                </div>
+                </div>-->
               </button>
             </div>
           </ng-container>
@@ -53,6 +79,20 @@
       </div>
     </div>
   </div>
+
+  <div
+  class="host-modal-backdrop"
+  *ngIf="showListingForm"
+  (click)="closeListingForm()"
+>
+  <div class="host-modal" (click)="$event.stopPropagation()">
+    <app-listing-form
+      [value]="editingListing"
+      (cancel)="closeListingForm()"
+      (submitForm)="handleListingSubmit($event)"
+    ></app-listing-form>
+  </div>
+</div>
 
   <!-- Search Filter (Center) -->
   <div class="search-section" *ngIf="variant === 'default'">

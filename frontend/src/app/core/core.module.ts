@@ -6,13 +6,17 @@ import { HeaderComponent } from './layouts/header/header.component';
 import { PageNotFoundComponent } from './pages/page-not-found/page-not-found.component';
 import { RouterModule } from '@angular/router';
 import { SharedModule } from '../shared/shared-module';
+import { BookingLayoutComponent } from './layouts/booking-layout/booking-layout.component';
+
 
 @NgModule({
   declarations: [
     MainLayoutComponent,
     AuthLayoutComponent,
     HeaderComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    BookingLayoutComponent,
+
   ],
   imports: [
     CommonModule,
@@ -23,7 +27,9 @@ import { SharedModule } from '../shared/shared-module';
     MainLayoutComponent,
     AuthLayoutComponent,
     HeaderComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    BookingLayoutComponent,
+
   ]
 })
 export class CoreModule {

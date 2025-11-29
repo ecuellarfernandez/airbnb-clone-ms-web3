@@ -1,0 +1,251 @@
+<!-- src/app/shared/ui/listing-form/listing-form.component.html -->
+<div class="listing-wizard">
+    <!-- Header general -->
+    <header class="wizard-header">
+        <div class="wizard-header-main">
+            <div class="wizard-header-icon">
+                <!-- Icono “logo casa” -->
+                <svg class="wizard-header-logo" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M3 10.75 12 4l9 6.75V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.25Z"
+                        fill="currentColor" />
+                </svg>
+            </div>
+            <div>
+                <h1 class="wizard-title">Publica tu propiedad</h1>
+                <p class="wizard-subtitle">
+                    Completa el formulario para listar tu espacio
+                </p>
+            </div>
+        </div>
+    </header>
+
+    <!-- Barra de progreso -->
+    <section class="wizard-progress">
+        <div class="wizard-progress-bars">
+            <div *ngFor="let s of steps" class="wizard-progress-bar"
+                [class.wizard-progress-bar--active]="s <= currentStep"></div>
+        </div>
+        <p class="wizard-progress-step">Paso {{ currentStep }} de 4</p>
+    </section>
+
+    <!-- Card principal -->
+    <section class="wizard-card">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <!-- PASO 1 -->
+            <div class="wizard-step" *ngIf="currentStep === 1">
+                <h2 class="step-title">¿Qué tipo de propiedad ofreces?</h2>
+
+                <div class="property-type-grid">
+                    <button type="button" *ngFor="let type of propertyTypes" class="property-type-card"
+                        [class.property-type-card--active]="form.value.propertyType === type"
+                        (click)="selectPropertyType(type)">
+                        <span class="property-type-icon" aria-hidden="true">
+                            <svg viewBox="0 0 24 24">
+                                <path d="M3 10.75 12 4l9 6.75V20a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9.25Z"
+                                    stroke="currentColor" stroke-width="1.7" fill="none" stroke-linecap="round"
+                                    stroke-linejoin="round" />
+                            </svg>
+                        </span>
+                        <span class="property-type-label">{{ type }}</span>
+                    </button>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Título de tu anuncio</label>
+                    <input type="text" formControlName="title" class="field-input"
+                        placeholder="Ej: Hermoso apartamento con vista al mar" />
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Descripción</label>
+                    <textarea rows="4" formControlName="description" class="field-input field-textarea"
+                        placeholder="Describe tu espacio y lo que lo hace especial..."></textarea>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">URL de imagen principal (opcional)</label>
+                    <input type="text" formControlName="image" class="field-input"
+                        placeholder="https://imagenes-tu-casa.com/fachada.jpg" />
+                </div>
+            </div>
+
+            <!-- PASO 2 -->
+            <div class="wizard-step" *ngIf="currentStep === 2">
+                <h2 class="step-title step-title--with-icon">
+                    <span class="step-icon" aria-hidden="true">
+                        <svg viewBox="0 0 24 24">
+                            <path d="M12 21s-6-5.373-6-10a6 6 0 1 1 12 0c0 4.627-6 10-6 10Z" stroke="currentColor"
+                                stroke-width="1.7" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                            <circle cx="12" cy="11" r="2.5" fill="currentColor" />
+                        </svg>
+                    </span>
+                    ¿Dónde está ubicada?
+                </h2>
+
+                <div class="field-group">
+                    <label class="field-label">Dirección</label>
+                    <input type="text" formControlName="address" class="field-input" placeholder="Calle y número" />
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="field-label">Ciudad</label>
+                        <input type="text" formControlName="city" class="field-input" placeholder="Ciudad" />
+                    </div>
+                    <div class="field-group">
+                        <label class="field-label">País</label>
+                        <input type="text" formControlName="country" class="field-input" placeholder="País" />
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASO 3 -->
+            <div class="wizard-step" *ngIf="currentStep === 3">
+                <h2 class="step-title">Detalles de la propiedad</h2>
+
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="field-label">Huéspedes</label>
+                        <input type="number" formControlName="guests" min="1" class="field-input" />
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">Habitaciones</label>
+                        <input type="number" formControlName="bedrooms" min="0" class="field-input" />
+                    </div>
+                </div>
+
+                <div class="field-row">
+                    <div class="field-group">
+                        <label class="field-label">Camas</label>
+                        <input type="number" formControlName="beds" min="1" class="field-input" />
+                    </div>
+
+                    <div class="field-group">
+                        <label class="field-label">Baños</label>
+                        <input type="number" formControlName="bathrooms" min="1" step="0.5" class="field-input" />
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Servicios disponibles</label>
+                    <div class="amenities-grid">
+                        <button type="button" *ngFor="let amenity of amenitiesList" class="amenity-card"
+                            [class.amenity-card--active]="isAmenitySelected(amenity.id)"
+                            (click)="toggleAmenity(amenity.id)">
+                            <span class="amenity-icon" [ngSwitch]="amenity.id" aria-hidden="true">
+                                <!-- WiFi -->
+                                <svg *ngSwitchCase="'wifi'" viewBox="0 0 24 24">
+                                    <path d="M4 9a12 12 0 0 1 16 0" fill="none" stroke="currentColor" stroke-width="1.6"
+                                        stroke-linecap="round" />
+                                    <path d="M6.5 11.5a8 8 0 0 1 11 0" fill="none" stroke="currentColor"
+                                        stroke-width="1.6" stroke-linecap="round" />
+                                    <path d="M9 14a4 4 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="1.6"
+                                        stroke-linecap="round" />
+                                    <circle cx="12" cy="18" r="1.2" fill="currentColor" />
+                                </svg>
+
+                                <!-- Parking -->
+                                <svg *ngSwitchCase="'parking'" viewBox="0 0 24 24">
+                                    <path d="M7 4h6a4 4 0 0 1 0 8H9v8H7Z" fill="none" stroke="currentColor"
+                                        stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                                    <path d="M9 6h3.2a2 2 0 0 1 0 4H9Z" fill="none" stroke="currentColor"
+                                        stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+
+                                <!-- Cocina (tenedor + cuchillo) -->
+                                <svg *ngSwitchCase="'kitchen'" viewBox="0 0 24 24">
+                                    <path d="M6 3v7a2 2 0 0 0 2 2v9" fill="none" stroke="currentColor"
+                                        stroke-width="1.6" stroke-linecap="round" />
+                                    <path d="M10 3v7a2 2 0 0 1-2 2" fill="none" stroke="currentColor" stroke-width="1.6"
+                                        stroke-linecap="round" />
+                                    <path d="M15 3c1.5 0 3 1.2 3 3v4h-3v11" fill="none" stroke="currentColor"
+                                        stroke-width="1.6" stroke-linecap="round" />
+                                </svg>
+
+                                <!-- TV -->
+                                <svg *ngSwitchCase="'tv'" viewBox="0 0 24 24">
+                                    <rect x="4" y="5" width="16" height="11" rx="1.5" ry="1.5" fill="none"
+                                        stroke="currentColor" stroke-width="1.6" />
+                                    <path d="M9 19h6" fill="none" stroke="currentColor" stroke-width="1.6"
+                                        stroke-linecap="round" />
+                                    <path d="M10 4l2 2 2-2" fill="none" stroke="currentColor" stroke-width="1.6"
+                                        stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+
+                                <!-- Aire acondicionado (copito de nieve) -->
+                                <svg *ngSwitchCase="'ac'" viewBox="0 0 24 24">
+                                    <path d="M12 3v18M5 7l14 10M5 17 19 7M3 12h18" fill="none" stroke="currentColor"
+                                        stroke-width="1.6" stroke-linecap="round" />
+                                </svg>
+
+                                <!-- fallback por si agregas otros amenities -->
+                                <svg *ngSwitchDefault viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="5" fill="none" stroke="currentColor"
+                                        stroke-width="1.6" />
+                                </svg>
+                            </span>
+
+                            <span class="amenity-label">{{ amenity.label }}</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PASO 4 -->
+            <div class="wizard-step" *ngIf="currentStep === 4">
+                <h2 class="step-title">Precio y reglas de la casa</h2>
+
+                <div class="field-group">
+                    <label class="field-label">Precio por noche (Bs)</label>
+                    <input type="number" formControlName="price" min="1" class="field-input field-input--large"
+                        placeholder="100" />
+                </div>
+
+                <div class="field-group">
+                    <label class="field-label">Reglas de la casa</label>
+                    <textarea rows="4" formControlName="houseRules" class="field-input field-textarea"
+                        placeholder="Ej: No fumar, no mascotas, horario de silencio después de las 22:00..."></textarea>
+                </div>
+
+                <div class="summary-box">
+                    <p class="summary-title">Resumen:</p>
+                    <p class="summary-text">
+                        {{ form.value.propertyType || 'Tipo de propiedad' }}
+                        en {{ form.value.city || 'Ciudad' }},
+                        {{ form.value.country || 'País' }}<br />
+                        {{ form.value.guests }} huéspedes ·
+                        {{ form.value.bedrooms }} habitaciones ·
+                        {{ form.value.beds }} camas ·
+                        {{ form.value.bathrooms }} baños<br />
+                        <span class="summary-price">
+                            Bs {{ form.value.price || 0 }}
+                        </span>
+                        por noche
+                    </p>
+                </div>
+            </div>
+
+            <!-- FOOTER: botones -->
+            <footer class="wizard-footer">
+                <button type="button" class="btn-ghost" (click)="onCancel()">
+                    Cancelar
+                </button>
+
+                <div class="wizard-footer-right">
+                    <button *ngIf="currentStep > 1" type="button" class="btn-secondary" (click)="prevStep()">
+                        Anterior
+                    </button>
+
+                    <button *ngIf="currentStep < maxStep" type="button" class="btn-primary" (click)="nextStep()">
+                        Siguiente
+                    </button>
+
+                    <button *ngIf="currentStep === maxStep" type="submit" class="btn-primary">
+                        {{ value ? 'Guardar cambios' : 'Publicar propiedad' }}
+                    </button>
+                </div>
+            </footer>
+        </form>
+    </section>
+</div>
