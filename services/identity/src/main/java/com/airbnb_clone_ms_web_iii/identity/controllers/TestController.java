@@ -17,29 +17,21 @@ public class TestController {
 
     @GetMapping("/echo-headers")
     public ResponseEntity<Map<String, String>> getDiagnosticInfo(
-            @RequestHeader(name = "X-User-ID", required = false) String userIdHeader,
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader,
             @RequestHeader(name = "X-User-Roles", required = false) String rolesHeader,
+            @RequestHeader(name = "X-Identity-Key", required = false) String identityKeyHeader,
             HttpServletRequest request) {
-
-        // When anonymous: 'userIdHeader' will be null or empty.
-        boolean isAuthenticated = userIdHeader != null && !userIdHeader.isEmpty();
 
         Map<String, String> diagnostics = new HashMap<>();
 
-        // --- APISIX JWT/HEADER INJECTION CHECK ---
-        diagnostics.put("status", isAuthenticated ? "SUCCESS: CLAIMS INJECTED" : "SUCCESS: ANONYMOUS ACCESS");
+        // We expect the subject ("admin") to appear here
         diagnostics.put("userId", Optional.ofNullable(userIdHeader).orElse("ANONYMOUS"));
         diagnostics.put("userRoles", Optional.ofNullable(rolesHeader).orElse("NONE"));
 
         // --- APISIX URI REWRITE CHECK ---
-        // This shows the actual URL path the Spring Boot service received *after* APISIX finished processing it.
         diagnostics.put("received_uri", request.getRequestURI());
 
-        // --- DEBUGGING ---
-        diagnostics.put("proxy_rewrite_check", "SUCCESS");
-        diagnostics.put("expected_call", "/api/identity/diagnostic/echo-headers");
-        diagnostics.put("service_target", "/api/diagnostic/echo-headers");
-
+        diagnostics.put("identityKey", Optional.ofNullable(identityKeyHeader).orElse("NONE"));
 
         return ResponseEntity.ok(diagnostics);
     }
