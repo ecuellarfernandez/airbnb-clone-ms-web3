@@ -76,7 +76,8 @@ routes:
     methods: ["GET", "POST", "PUT", "DELETE"]
     service_id: 1 
     plugins:
-      jwt-auth: {}
+      jwt-auth:
+        anonymous: true
       serverless-pre-function:
         phase: access
         functions:
@@ -102,6 +103,10 @@ routes:
               end
 
               local claims = decoded.payload
+
+              if token then
+                ngx.req.set_header("X-User-Token", tostring(token))
+              end
 
               if claims.id then
                 ngx.req.set_header("X-User-Id", tostring(claims.id))

@@ -44,6 +44,7 @@ public class TestController {
     public ResponseEntity<Map<String, String>> getDiagnosticInfo(
             @RequestHeader(name = "X-User-Id", required = false) String userIdHeader,
             @RequestHeader(name = "X-User-Roles", required = false) String rolesHeader,
+            @RequestHeader(name = "X-User-Token", required = false) String userToken,
             @RequestHeader(name = "X-Identity-Key", required = false) String identityKeyHeader,
             HttpServletRequest request) {
 
@@ -52,6 +53,7 @@ public class TestController {
         // We expect the subject ("admin") to appear here
         diagnostics.put("userId", Optional.ofNullable(userIdHeader).orElse("ANONYMOUS"));
         diagnostics.put("userRoles", Optional.ofNullable(rolesHeader).orElse("NONE"));
+        diagnostics.put("userToken", Optional.ofNullable(userToken).orElse("NONE"));
 
         // --- APISIX URI REWRITE CHECK ---
         diagnostics.put("received_uri", request.getRequestURI());
