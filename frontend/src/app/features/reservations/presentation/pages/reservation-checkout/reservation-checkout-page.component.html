@@ -1,0 +1,162 @@
+<main class="checkout-main">
+    <div class="checkout-main__header">
+        <button class="back-btn" type="button" (click)="goBack()">
+            ←
+        </button>
+        <h1 class="checkout-title">Solicita reservar</h1>
+    </div>
+
+    <div class="checkout-main__grid">
+        <section class="checkout-main__left">
+            <div class="checkout-payment-card">
+                <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()" class="payment-form">
+                    <h2 class="section-title">1. Agrega un método de pago</h2>
+
+                    <div class="method-row method-row--selected">
+                        <div class="method-row__content">
+                            <span class="method-row__text">Tarjeta de crédito o débito</span>
+                        </div>
+                        <input type="radio" name="paymentMethod" value="card" checked />
+                    </div>
+
+                    <div class="field-group payment-fields-group">
+                        <div class="form-group form-group--number">
+                            <label>Número de tarjeta</label>
+                            <input type="text" formControlName="cardNumber" />
+                        </div>
+
+                        <div class="form-row form-row--small">
+                            <div class="form-group">
+                                <label>Caducidad</label>
+                                <input type="text" placeholder="MM/AA" formControlName="expiry" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Código CVV</label>
+                                <input type="text" formControlName="cvv" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3 class="section-subtitle">Dirección de facturación</h3>
+
+                    <div class="field-group billing-fields-group">
+                        <div class="form-group">
+                            <label>Dirección</label>
+                            <input type="text" formControlName="address" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Número de apartamento o suite</label>
+                            <input type="text" formControlName="apartment" />
+                        </div>
+
+                        <div class="form-group">
+                            <label>Ciudad</label>
+                            <input type="text" formControlName="city" />
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label>Estado/Provincia/Departamento</label>
+                                <input type="text" formControlName="state" />
+                            </div>
+
+                            <div class="form-group">
+                                <label>Código postal</label>
+                                <input type="text" formControlName="postalCode" />
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group--last">
+                            <label>País/región</label>
+                            <select formControlName="country">
+                                <option value="Bolivia">Bolivia</option>
+                                <option value="Chile">Chile</option>
+                                <option value="Perú">Perú</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            Siguiente
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <aside class="checkout-main__right" *ngIf="listing">
+            <div class="checkout-summary-card">
+                <div class="summary-header">
+                    <img class="summary-image" [src]="listing.image" [alt]="listing.title" />
+
+                    <div class="summary-info">
+                        <p class="summary-location summary-location--secondary">
+                            Apartamento entero
+                        </p>
+
+                        <h3 class="summary-title">
+                            {{ listing.title }}
+                        </h3>
+
+                        <div class="summary-rating">
+                            <span class="star-icon">⭐</span>
+                            <span class="rating-value">4.98</span>
+                            <span class="rating-count">(46)</span>
+                        </div>
+
+                        <p class="summary-favorite">
+                            {{ listing.capacity }} huésped(es) · Favorito entre huéspedes
+                        </p>
+                    </div>
+                </div>
+
+
+
+                <div class="summary-section summary-details">
+                    <div class="summary-row summary-row--header">
+                        <span class="summary-label">Fechas</span>
+                        <button type="button" class="link-button">Cambiar</button>
+                    </div>
+
+                    <p class="summary-value" *ngIf="checkIn && checkOut">
+                        {{ checkIn | date: 'd MMM' }} – {{ checkOut | date: 'd MMM y' }}
+                    </p>
+
+                    <div class="summary-row summary-row--header summary-row--guest">
+                        <span class="summary-label">Huéspedes</span>
+                        <button type="button" class="link-button">Cambiar</button>
+                    </div>
+                    <p class="summary-value">
+                        {{ guestsLabel }}
+                    </p>
+                </div>
+
+                <div class="summary-section summary-price">
+                    <p class="section-subtitle">Información del precio</p>
+
+                    <div class="summary-row summary-row--item" *ngIf="nights && listing">
+                        <span class="price-item-name">
+                            {{ nights }} noche(s) x {{ listing.price | currency:'BOB':'symbol':'1.0-0' }}
+                        </span>
+                        <span class="price-item-value">
+                            {{ totalPrice | currency:'BOB':'symbol':'1.0-0' }}
+                        </span>
+                    </div>
+
+                    <div class="summary-row summary-row--total" *ngIf="totalPrice">
+                        <span class="total-label">Total (antes de impuestos)</span>
+                        <span class="total-value">
+                            {{ totalPrice | currency:'BOB':'symbol':'1.0-0' }}
+                        </span>
+                    </div>
+
+                    <a href="#" class="price-breakdown">Desglose del precio</a>
+                </div>
+            </div>
+        </aside>
+
+    </div>
+</main>

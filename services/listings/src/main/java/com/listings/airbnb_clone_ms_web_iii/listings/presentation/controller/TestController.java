@@ -4,13 +4,14 @@ import an.awesome.pipelinr.Pipeline;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.test.commands.SendKafkaEventCommand;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.classifiers.kafka.producible.ProducibleEvents;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
 import java.util.logging.Logger;
 
 @RestController
@@ -37,6 +38,29 @@ public class TestController {
     @GetMapping("/health")
     public ResponseEntity<String> healthCheck() {
         return ResponseEntity.ok("Listings Service is up and running!");
+    }
+
+    @GetMapping("/echo-headers")
+    public ResponseEntity<Map<String, String>> getDiagnosticInfo(
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader,
+            @RequestHeader(name = "X-User-Roles", required = false) String rolesHeader,
+            @RequestHeader(name = "X-User-Token", required = false) String userToken,
+            @RequestHeader(name = "X-Identity-Key", required = false) String identityKeyHeader,
+            HttpServletRequest request) {
+
+        Map<String, String> diagnostics = new HashMap<>();
+
+        // We expect the subject ("admin") to appear here
+        diagnostics.put("userId", Optional.ofNullable(userIdHeader).orElse("ANONYMOUS"));
+        diagnostics.put("userRoles", Optional.ofNullable(rolesHeader).orElse("NONE"));
+        diagnostics.put("userToken", Optional.ofNullable(userToken).orElse("NONE"));
+
+        // --- APISIX URI REWRITE CHECK ---
+        diagnostics.put("received_uri", request.getRequestURI());
+
+        diagnostics.put("identityKey", Optional.ofNullable(identityKeyHeader).orElse("NONE"));
+
+        return ResponseEntity.ok(diagnostics);
     }
 
 }

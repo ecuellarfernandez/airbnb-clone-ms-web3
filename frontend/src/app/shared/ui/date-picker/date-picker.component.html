@@ -1,17 +1,23 @@
 <div class="date-picker-modal" *ngIf="isOpen" (click)="onClose()">
-    <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-content"  [ngClass]="{
+      'modal-content--search': variant === 'search',
+      'modal-content--booking': variant === 'booking'
+    }" (click)="$event.stopPropagation()">
         <!-- Tabs -->
         <div class="tabs-header">
-            <button class="tab-btn" [class.active]="activeTab === 'dates'" (click)="activeTab = 'dates'">
-                Fechas
-            </button>
-            <button class="tab-btn" [class.active]="activeTab === 'months'" (click)="activeTab = 'months'">
-                Meses
-            </button>
-            <button class="tab-btn" [class.active]="activeTab === 'flexible'" (click)="activeTab = 'flexible'">
-                Flexible
-            </button>
+            <div class="tabs-pill">
+                <button class="tab-btn" [class.active]="activeTab === 'dates'" (click)="activeTab = 'dates'">
+                    Fechas
+                </button>
+                <button class="tab-btn" [class.active]="activeTab === 'months'" (click)="activeTab = 'months'">
+                    Meses
+                </button>
+                <button class="tab-btn" [class.active]="activeTab === 'flexible'" (click)="activeTab = 'flexible'">
+                    Flexible
+                </button>
+            </div>
         </div>
+
 
         <!-- Calendar View -->
         <div class="calendar-view" *ngIf="activeTab === 'dates'">

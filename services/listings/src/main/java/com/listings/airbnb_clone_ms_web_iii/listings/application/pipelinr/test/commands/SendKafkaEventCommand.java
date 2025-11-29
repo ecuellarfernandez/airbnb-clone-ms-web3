@@ -4,6 +4,7 @@ import an.awesome.pipelinr.Command;
 
 public class SendKafkaEventCommand implements Command<String> {
 
+    public int userId;
     public String eventType;
     public String eventData;
 

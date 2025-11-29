@@ -1,26 +1,40 @@
 .guest-selector-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: var(--overlay-40);
     z-index: 70;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 10rem;
     animation: fadeIn 0.2s ease;
 }
 
-.modal-content {
+.guest-selector-modal .modal-content{
+    position: absolute;
     background: var(--surface-3);
     border-radius: var(--radius-lg);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    padding: 2rem;
-    min-width: 400px;
-    max-width: 500px;
-    animation: slideUp 0.3s ease;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    padding: 1.5rem 2rem;
+    width: 100%;
+    max-height: 520px;
+    max-width: 420px;
+    //display: flex;
+    //flex-direction: column;
+    //overflow: hidden;
+}
+
+.modal-content--search {
+    top: 225px;
+    right: 50%;
+    transform: translateX(calc(50% + 215px));
+}
+
+.modal-content--booking {
+    top: 925px;
+    left: 58%;
+    //right: 10%;
+    transform: none;
+
+    /*@media (min-width: 1280px){
+        right: 12%;
+    }*/
 }
 
 .guest-row {
@@ -119,8 +133,10 @@
 
 // Responsive
 @media (max-width: 768px) {
-    .modal-content {
-        min-width: auto;
+    .guest-selector-modal .modal-content {
+        top: 120px;
+        right: 50%;
+        transform: translateX(50%);
         width: 90%;
         max-width: 400px;
         padding: 1.5rem;

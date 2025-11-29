@@ -1,7 +1,7 @@
 apisix:
   #PORT OF THE GATEWAY
   node_listen: 9000
-  plugins: ["cors", "proxy-rewrite", "uri-rewrite"]
+  plugins: ["cors", "proxy-rewrite", "jwt-auth", "uri-rewrite", "serverless-pre-function"]
 
 deployment:
   role: data_plane

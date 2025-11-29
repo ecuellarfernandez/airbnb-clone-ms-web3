@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { IconLogoComponent } from './ui/icon-logo/icon-logo.component';
 import { CardComponent } from './ui/card/card.component';
 import { CardSliderComponent } from './ui/card-slider/card-slider.component';
@@ -9,6 +9,7 @@ import { SearchFilterComponent } from './ui/search-filter/search-filter.componen
 import { DatePickerComponent } from './ui/date-picker/date-picker.component';
 import { GuestSelectorComponent } from './ui/guest-selector/guest-selector.component';
 import { LocationSearchComponent } from './ui/location-search/location-search.component';
+import { ListingFormComponent } from './ui/listing-form/listing-form.component';
 
 @NgModule({
   declarations: [
@@ -19,11 +20,13 @@ import { LocationSearchComponent } from './ui/location-search/location-search.co
     SearchFilterComponent,
     DatePickerComponent,
     GuestSelectorComponent,
-    LocationSearchComponent
+    LocationSearchComponent, 
+    ListingFormComponent,
   ],
   imports: [
     CommonModule,
-    FormsModule
+    FormsModule,
+    ReactiveFormsModule,
   ],
   exports: [
     CommonModule,
@@ -35,7 +38,8 @@ import { LocationSearchComponent } from './ui/location-search/location-search.co
     SearchFilterComponent,
     DatePickerComponent,
     GuestSelectorComponent,
-    LocationSearchComponent
+    LocationSearchComponent,
+    ListingFormComponent,
   ]
 })
 export class SharedModule { }
