@@ -1,10 +1,13 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.presentation.controller;
 
+import an.awesome.pipelinr.Pipeline;
+import an.awesome.pipelinr.Pipelinr;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.StandardResult;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.CreateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.UpdateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingDetailDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingSummaryDTO;
+import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.listing.commands.CreateListingCommand;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.port.ListingServicePort;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -26,11 +29,12 @@ import java.util.logging.Logger;
 public class ListingController {
 
     private static final Logger logger = Logger.getLogger(ListingController.class.getName());
-
     private final ListingServicePort listingService;
+    private final Pipeline pipeline;
 
-    public ListingController(ListingServicePort listingService) {
+    public ListingController(ListingServicePort listingService, Pipeline pipeline) {
         this.listingService = listingService;
+        this.pipeline = pipeline;
     }
 
     // CREATE
@@ -42,7 +46,8 @@ public class ListingController {
         try {
             logger.info("Creating listing: " + dto.getTitle());
 
-            ListingDetailDTO created = listingService.create(dto);
+            CreateListingCommand command = new CreateListingCommand(dto);
+            ListingDetailDTO created = command.execute(pipeline);
 
             return ResponseEntity
                     .status(HttpStatus.CREATED)

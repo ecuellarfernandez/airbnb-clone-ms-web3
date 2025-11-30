@@ -1,33 +1,28 @@
 .location-search-modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    inset: 0;
     background: var(--overlay-40);
     z-index: 70;
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    padding-top: 10rem;
     animation: fadeIn 0.2s ease;
 }
 
-.modal-content {
+.location-search-modal .modal-content{
+    position: absolute;
+    top: 225px;
+    left: 50%;
+    transform: translateX(calc(-50% - 215px));
     background: var(--surface-3);
     border-radius: var(--radius-lg);
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    min-width: 450px;
-    max-width: 550px;
-    max-height: 70vh;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
+    width: 420px;
+    max-height: 480px;
     display: flex;
     flex-direction: column;
-    animation: slideUp 0.3s ease;
     overflow: hidden;
 }
 
 .search-header {
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem 1rem;
     border-bottom: 1px solid var(--border);
 }
 
@@ -68,7 +63,21 @@
 
 .suggestions-list {
     overflow-y: auto;
-    max-height: calc(70vh - 5rem);
+    max-height: 380px; // antes calc(70vh - 5rem)
+    padding-bottom: 0.25rem;
+}
+
+.suggestions-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.suggestions-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.suggestions-list::-webkit-scrollbar-thumb {
+    background: var(--border);
+    border-radius: 999px;
 }
 
 .suggestion-item {
@@ -151,8 +160,11 @@
 
 // Responsive
 @media (max-width: 768px) {
-    .modal-content {
-        min-width: auto;
+    .location-search-modal .modal-content {
+        position: absolute;
+        top: 120px;
+        left: 50%;
+        transform: translateX(-50%);
         width: 90%;
         max-width: 500px;
     }

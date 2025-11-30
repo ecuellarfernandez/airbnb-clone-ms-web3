@@ -1,4 +1,4 @@
-package com.listings.airbnb_clone_ms_web_iii.listings.domain.service;
+package com.listings.airbnb_clone_ms_web_iii.listings.domain.domain_services;
 
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Category;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Listing;

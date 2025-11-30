@@ -4,6 +4,10 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { GetListingByIdUseCase } from '@features/listings/application/use-cases/get-listing-by-id.use-case';
 import { Listing } from '@features/listings/domain/models/listing.model';
 
+interface BookPayload {
+    dateRange: { checkIn: Date | null; checkOut: Date | null };
+    guests: { adults: number; children: number; infants: number; pets: number };
+}
 
 @Component({
     selector: 'app-listing-detail-page',
@@ -26,6 +30,7 @@ export class ListingDetailPageComponent implements OnInit {
         private location: Location,
         private getListingByIdUseCase: GetListingByIdUseCase
     ) { }
+
 
     ngOnInit(): void {
         const idParam = this.route.snapshot.paramMap.get('id');
@@ -67,8 +72,22 @@ export class ListingDetailPageComponent implements OnInit {
         this.location.back();
     }
 
-    bookDemo(): void {
-        alert('Reservation successful');
+    bookDemo(payload: BookPayload): void {
+        if (!this.listing) return;
+
+        const { dateRange, guests } = payload;
+
+        this.router.navigate(['/reservations/checkout'], {
+            queryParams: {
+                listingId: this.listing.id,
+                checkIn: dateRange.checkIn?.toISOString() ?? null,
+                checkOut: dateRange.checkOut?.toISOString() ?? null,
+                adults: guests.adults,
+                children: guests.children,
+                infants: guests.infants,
+                pets: guests.pets,
+            },
+        });
     }
 
     openLightbox(index = 0): void {

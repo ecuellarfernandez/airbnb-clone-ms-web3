@@ -1,0 +1,40 @@
+package com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.persistence.adapter;
+
+import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.ListingImage;
+import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingImageRepository;
+import com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.persistence.jpa.JpaListingImageRepository;
+import org.springframework.stereotype.Component;
+
+import java.util.List;
+import java.util.UUID;
+
+@Component
+public class ListingImageRepositoryAdapter implements ListingImageRepository {
+
+    private final JpaListingImageRepository jpaRepository;
+
+    public ListingImageRepositoryAdapter(JpaListingImageRepository jpaRepository) {
+        this.jpaRepository = jpaRepository;
+    }
+
+    @Override
+    public List<ListingImage> saveAll(List<ListingImage> listingImages) {
+        return jpaRepository.saveAll(listingImages);
+    }
+
+    @Override
+    public ListingImage save(ListingImage listingImage) {
+        return jpaRepository.save(listingImage);
+    }
+
+    @Override
+    public void deleteById(UUID id) {
+        jpaRepository.deleteById(id);
+    }
+
+    @Override
+    public List<ListingImage> findByListingId(UUID listingId) {
+        return jpaRepository.findByListingId(listingId);
+    }
+}
+

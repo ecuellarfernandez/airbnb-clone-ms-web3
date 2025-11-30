@@ -1,6 +1,15 @@
 .search-filter-container {
     position: relative;
     z-index: 50;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.search-pill,
+.search-bar-expanded {
+    width: 100%;
+    max-width: 850px;
 }
 
 // Collapsed State (Pill)
@@ -66,109 +75,105 @@
 
 // Expanded State (Full Filter Bar)
 .search-bar-expanded {
-    background: var(--surface-3);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-pill);
-    padding: 0.5rem;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    animation: expandIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transform-origin: center top;
+  width: 100%;
+  max-width: 850px;
+  height: 64px;                         /* altura exacta */
+  background: var(--surface-3);
+  border: 1px solid var(--border);
+  border-radius: 999px;                 /* pill */
+  padding: 0;                    /* solo horizontal */
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: stretch;                  /* centra verticalmente todo */
+  animation: expandIn 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
+  transform-origin: center top;
 }
 
 .filter-fields {
-    display: flex;
-    align-items: center;
-    gap: 0;
+  display: flex;
+  align-items: stretch;
+  height: 100%;                         /* que ocupen los 64px */
+  flex: 1;
+  border-radius: 999px;
+  overflow: hidden;
 }
 
 .filter-field {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    padding: 0.75rem 1.5rem;
-    cursor: pointer;
-    border-radius: var(--radius-pill);
-    transition: background 0.2s ease;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;              /* centra label + input en los 64px */
+  padding: 0 1.75rem;
+  cursor: pointer;
+  border-radius: 999px;
+  transition: background 0.15s ease;
 
-    // Staggered animation for fields
-    opacity: 0;
-    animation: slideDownFade 0.4s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  &:hover {
+    background: var(--surface);
+  }
 
-    &:nth-child(1) {
-        animation-delay: 100ms;
-    }
-
-    &:nth-child(3) {
-        animation-delay: 150ms;
-    }
-
-    // Divider is 2
-    &:nth-child(5) {
-        animation-delay: 200ms;
-    }
-
-    // Divider is 4
-
-    &:hover {
-        background: var(--surface);
-    }
-
-    &.filter-field-guests {
-        flex: 0.8;
-    }
+  &.filter-field-guests {
+    flex: 0.9;                          /* un poco más estrecha, como Airbnb */
+  }
 }
 
 .field-label {
-    font-size: var(--fs-xs);
-    font-weight: var(--fw-bold);
-    color: var(--text-on-surface);
-    margin-bottom: 0.25rem;
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-bold);
+  color: var(--text-on-surface);
+  margin-bottom: 0.125rem;
+  line-height: 1.1;
 }
 
 .field-input {
-    border: none;
-    background: transparent;
-    font-size: var(--fs-sm);
-    color: var(--text-on-surface-2);
-    outline: none;
-    cursor: pointer;
+  border: none;
+  background: transparent;
+  font-size: var(--fs-sm);
+  color: var(--text-on-surface-2);
+  outline: none;
+  cursor: pointer;
+  line-height: 1.2;
 
-    &::placeholder {
-        color: var(--text-on-surface-2);
-    }
+  &::placeholder {
+    color: var(--text-on-surface-2);
+  }
 }
 
 .field-divider {
-    width: 1px;
-    height: 2rem;
-    background: var(--border);
+  align-self: center;
+  width: 1px;
+  height: 24px;                         /* más corto, como en Airbnb */
+  background: var(--border);
 }
 
 .search-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--brand-primary);
-    color: white;
-    border: none;
-    border-radius: var(--radius-pill);
-    padding: 0.875rem 1.5rem;
-    font-size: var(--fs-sm);
-    font-weight: var(--fw-bold);
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  height: 60px;                         /* un poco más bajo que la barra */
+  padding: 0 1.5rem;
+  margin-right: 0.75rem;
+  background: var(--brand-primary);
+  color: #fff;
+  border: none;
+  border-radius: 999px;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: transform 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
 
-    &:hover {
-        background: var(--brand-primary-hover);
-        transform: scale(1.05);
-        box-shadow: 0 4px 12px rgba(255, 56, 92, 0.2);
-    }
+  &:hover {
+    background: var(--brand-primary-hover);
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(255, 56, 92, 0.35);
+  }
 
-    .btn-icon {
-        width: 1rem;
-        height: 1rem;
-    }
+  .btn-icon {
+    width: 1rem;
+    height: 1rem;
+  }
 }
 
 .search-backdrop {

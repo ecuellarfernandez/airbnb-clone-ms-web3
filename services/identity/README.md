@@ -30,13 +30,18 @@ Database migrations are managed using Flyway.
 Although the Entity Manager uses hibernate.
 To run the migration, proceed with these steps:
 1. Execute the Application Once, so the Hibernate Engine
-creates the tables  
+creates the tables. Make sure this configuration is like this in application.yml:
+```yml
+  flyway:
+    enabled: false
+```
 2. Stop the application and activate this configuration
 in the application.yml file:
 ```yml
   flyway:
     enabled: true
 ```
+3. Run the application again, and the migrations will be applied.
 
 ### Role and Claims system ###
 this microservice implements a Role and Claims system

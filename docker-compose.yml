@@ -48,3 +48,15 @@ services:
             KAFKA_LOG_RETENTION_CHECK_INTERVAL_MS: 60000
             KAFKA_GROUP_INITIAL_REBALANCE_DELAY_MS: 0
             CLUSTER_ID: "Mk3OEYBSD34fcwNTJENDM2Qk"
+
+    kafka-ui:
+      image: provectuslabs/kafka-ui:latest
+      container_name: kafka-ui
+      ports:
+        - "7092:7092"
+      environment:
+        SERVER_PORT: 7092
+        KAFKA_CLUSTERS_0_NAME: local-kraft-cluster
+        KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: kafka:29092 # Connect to the Kafka service name
+      depends_on:
+        - kafka

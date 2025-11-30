@@ -1,4 +1,5 @@
 
+
 upstreams:
   - id: 1
     name: identity-upstream
@@ -16,6 +17,11 @@ upstreams:
     type: roundrobin
     nodes:
       "host.docker.internal:5002": 1
+  - id: 4
+    name: listings-upstream
+    type: roundrobin
+    nodes:
+      "host.docker.internal:5003": 1
     
 
 services:
@@ -23,12 +29,96 @@ services:
     name: identity-service-policies
     upstream_id: 1
     plugins:
+      serverless-pre-function:
+        phase: access
+        functions:
+          - |
+            return function(conf, ctx)
+              local jwt = require("resty.jwt")
+              local headers = ngx.req.get_headers()
+
+              local auth = headers["Authorization"] or headers["authorization"]
+              if not auth then
+                return
+              end
+
+              local token = auth:match("Bearer%s+(.+)")
+              if not token then
+                return
+              end
+
+              -- decode payload only (jwt-auth already verified signature)
+              local decoded = jwt:load_jwt(token)
+              if not decoded or not decoded.payload then
+                return
+              end
+
+              local claims = decoded.payload
+
+              if token then
+                ngx.req.set_header("X-User-Token", tostring(token))
+              end
+
+              if claims.id then
+                ngx.req.set_header("X-User-Id", tostring(claims.id))
+              end
+
+              if claims.roles then
+                ngx.req.set_header("X-User-Roles", table.concat(claims.roles, ";"))
+              end
+
+              if claims.key then
+                ngx.req.set_header("X-Identity-Key", tostring(claims.key))
+              end
+            end
       cors:
         allow_origins: "*"
   - id: 2
     name: admin-service-policies
     upstream_id: 2
     plugins:
+      serverless-pre-function:
+        phase: access
+        functions:
+          - |
+            return function(conf, ctx)
+              local jwt = require("resty.jwt")
+              local headers = ngx.req.get_headers()
+
+              local auth = headers["Authorization"] or headers["authorization"]
+              if not auth then
+                return
+              end
+
+              local token = auth:match("Bearer%s+(.+)")
+              if not token then
+                return
+              end
+
+              -- decode payload only (jwt-auth already verified signature)
+              local decoded = jwt:load_jwt(token)
+              if not decoded or not decoded.payload then
+                return
+              end
+
+              local claims = decoded.payload
+
+              if token then
+                ngx.req.set_header("X-User-Token", tostring(token))
+              end
+
+              if claims.id then
+                ngx.req.set_header("X-User-Id", tostring(claims.id))
+              end
+
+              if claims.roles then
+                ngx.req.set_header("X-User-Roles", table.concat(claims.roles, ";"))
+              end
+
+              if claims.key then
+                ngx.req.set_header("X-Identity-Key", tostring(claims.key))
+              end
+            end
       cors:
         allow_origins: "*"
 
@@ -36,39 +126,157 @@ services:
     name: payments-service-policies
     upstream_id: 3
     plugins:
+      serverless-pre-function:
+        phase: access
+        functions:
+          - |
+            return function(conf, ctx)
+              local jwt = require("resty.jwt")
+              local headers = ngx.req.get_headers()
+
+              local auth = headers["Authorization"] or headers["authorization"]
+              if not auth then
+                return
+              end
+
+              local token = auth:match("Bearer%s+(.+)")
+              if not token then
+                return
+              end
+
+              -- decode payload only (jwt-auth already verified signature)
+              local decoded = jwt:load_jwt(token)
+              if not decoded or not decoded.payload then
+                return
+              end
+
+              local claims = decoded.payload
+
+              if token then
+                ngx.req.set_header("X-User-Token", tostring(token))
+              end
+
+              if claims.id then
+                ngx.req.set_header("X-User-Id", tostring(claims.id))
+              end
+
+              if claims.roles then
+                ngx.req.set_header("X-User-Roles", table.concat(claims.roles, ";"))
+              end
+
+              if claims.key then
+                ngx.req.set_header("X-Identity-Key", tostring(claims.key))
+              end
+            end
       cors:
         allow_origins: "*"
+  - id: 4
+    name: listings-service-policies
+    upstream_id: 4
+    plugins:      
+      serverless-pre-function:
+        phase: access
+        functions:
+          - |
+            return function(conf, ctx)
+              local jwt = require("resty.jwt")
+              local headers = ngx.req.get_headers()
 
+              local auth = headers["Authorization"] or headers["authorization"]
+              if not auth then
+                return
+              end
+
+              local token = auth:match("Bearer%s+(.+)")
+              if not token then
+                return
+              end
+
+              -- decode payload only (jwt-auth already verified signature)
+              local decoded = jwt:load_jwt(token)
+              if not decoded or not decoded.payload then
+                return
+              end
+
+              local claims = decoded.payload
+
+              if token then
+                ngx.req.set_header("X-User-Token", tostring(token))
+              end
+
+              if claims.id then
+                ngx.req.set_header("X-User-Id", tostring(claims.id))
+              end
+
+              if claims.roles then
+                ngx.req.set_header("X-User-Roles", table.concat(claims.roles, ";"))
+              end
+
+              if claims.key then
+                ngx.req.set_header("X-Identity-Key", tostring(claims.key))
+              end
+            end
+      cors:
+        allow_origins: "*"
 
 routes:
   #BASE ROUTE OF CLAIMS
   - id: 1
     name: identity-prefix-router
     uri: /api/identity-service/* 
-    methods: ["GET", "POST", "PUT", "DELETE"]
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     service_id: 1 
     plugins:
+      cors:
+        allow_origins: "*"
+        allow_methods: "*"
+        allow_headers: "*"
+        expose_headers: "*"
       proxy-rewrite:
         regex_uri: ["(^/api)/identity-service/(.*)", "$1/$2"] 
 
   - id: 2
     name: admin-prefix-router
     uri: /api/admin-service/*
-    methods: ["GET", "POST", "PUT", "DELETE"]
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     service_id: 2
     plugins:
+      cors:
+        allow_origins: "*"
+        allow_methods: "*"
+        allow_headers: "*"
+        expose_headers: "*"
       proxy-rewrite:
-        #Leading "/" because without it it does not work
-        regex_uri: ["(^/api)/admin-service/(.*)", "$1/$2/"]
+        #Leading "/" because without it it does not work in django
+        regex_uri: ["(^/api)/admin-service/(.*)", "$1/$2/"] 
 
   - id: 3
     name: payments-prefix-router
     uri: /api/payments-service/*
-    methods: ["GET", "POST", "PUT", "DELETE"]
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
     service_id: 3
     plugins:
+      cors:
+        allow_origins: "*"
+        allow_methods: "*"
+        allow_headers: "*"
+        expose_headers: "*"
       proxy-rewrite:
         #Leading "/" because without it it does not work
         regex_uri: ["(^/api)/payments-service/(.*)", "$1/$2/"]
+
+  - id: 4
+    name: listings-prefix-router
+    uri: /api/listings-service/*
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+    service_id: 4
+    plugins:
+      cors:
+        allow_origins: "*"
+        allow_methods: "*"
+        allow_headers: "*"
+        expose_headers: "*"
+      proxy-rewrite:
+        regex_uri: ["(^/api)/listings-service/(.*)", "$1/$2"]
 
 #END

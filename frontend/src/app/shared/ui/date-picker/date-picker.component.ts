@@ -14,6 +14,7 @@ interface DateRange {
 export class DatePickerComponent {
   @Input() isOpen: boolean = false;
   @Input() dateRange: DateRange = { checkIn: null, checkOut: null };
+  @Input() variant: 'search' | 'booking' = 'search';
   @Output() dateRangeChange = new EventEmitter<DateRange>();
   @Output() close = new EventEmitter<void>();
 

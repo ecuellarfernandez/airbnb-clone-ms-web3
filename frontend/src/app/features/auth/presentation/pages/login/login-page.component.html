@@ -2,18 +2,25 @@
   <div class="p-10 py-12 sm:max-w-md bg-surface rounded-md drop-shadow-2xl space-y-10">
     <h2 class="text-center">Login to your account</h2>
 
-    <form action="#" method="POST" class="space-y-7">
+    <div class="text-success text-center text-sm" *ngIf="successMessage">
+      {{ successMessage }}
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-7">
       <div class="space-y-1">
-        <label for="email" class="text-on-surface fs-label">Email address</label>
+        <label for="username" class="text-on-surface fs-label">Username</label>
         <input
           class="bg-surface-2 text-on-surface-2 w-full"
-          id="email"
-          type="email"
-          name="email"
-          required
-          placeholder="Enter your mail"
-          autocomplete="email"
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="Enter your username"
+          autocomplete="username"
+          [class.border-error]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched"
         />
+        <div class="text-error text-xs" *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
+          Username is required
+        </div>
       </div>
 
       <div>
@@ -23,22 +30,31 @@
             class="bg-surface-2 text-on-surface-2 w-full"
             id="password"
             type="password"
-            name="password"
-            required
+            formControlName="password"
             autocomplete="current-password"
             placeholder="Enter your password"
+            [class.border-error]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched"
           />
+          <div class="text-error text-xs" *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
+            Password is required
+          </div>
         </div>
       </div>
 
+      <div class="text-error text-center text-sm" *ngIf="errorMessage">
+        {{ errorMessage }}
+      </div>
+
       <div>
-        <button class="btn-primary w-full" type="submit">Login</button>
+        <button class="btn-primary w-full" type="submit" [disabled]="isLoading">
+          {{ isLoading ? 'Logging in...' : 'Login' }}
+        </button>
       </div>
     </form>
 
     <p class="mt-10 text-center text-on-surface fs-label">
       Not a member?
-      <a routerLink="/auth/register"> Create an account </a>
+      <a routerLink="/auth/register" class="cursor-pointer hover:underline">Create an account</a>
     </p>
   </div>
 </div>

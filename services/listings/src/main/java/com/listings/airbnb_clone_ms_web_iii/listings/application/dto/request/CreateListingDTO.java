@@ -3,7 +3,6 @@ package com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -25,11 +24,9 @@ public class CreateListingDTO {
     @NotNull(message = "Location is required")
     private LocationDTO location;
 
+    @Valid
     @NotNull(message = "Price is required")
-    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
-    private BigDecimal priceAmount;
-
-    private String priceCurrency = "USD";
+    private PriceDTO price;
 
     @NotNull(message = "Capacity is required")
     @Min(value = 1, message = "Capacity must be at least 1")
@@ -49,6 +46,22 @@ public class CreateListingDTO {
 
     @NotEmpty(message = "At least one image is required")
     private List<CreateListingImageDTO> images;
+
+    public CreateListingDTO() {}
+
+    public CreateListingDTO(UUID hostId, String title, String description, LocationDTO location, PriceDTO price, Integer capacity, Integer bedrooms, Integer bathrooms, Set<UUID> categoryIds, Set<UUID> amenityIds, List<CreateListingImageDTO> images) {
+        this.hostId = hostId;
+        this.title = title;
+        this.description = description;
+        this.location = location;
+        this.price = price;
+        this.capacity = capacity;
+        this.bedrooms = bedrooms;
+        this.bathrooms = bathrooms;
+        this.categoryIds = categoryIds;
+        this.amenityIds = amenityIds;
+        this.images = images;
+    }
 
     public UUID getHostId() {
         return hostId;
@@ -82,20 +95,12 @@ public class CreateListingDTO {
         this.location = location;
     }
 
-    public BigDecimal getPriceAmount() {
-        return priceAmount;
+    public PriceDTO getPrice() {
+        return price;
     }
 
-    public void setPriceAmount(BigDecimal priceAmount) {
-        this.priceAmount = priceAmount;
-    }
-
-    public String getPriceCurrency() {
-        return priceCurrency;
-    }
-
-    public void setPriceCurrency(String priceCurrency) {
-        this.priceCurrency = priceCurrency;
+    public void setPrice(PriceDTO price) {
+        this.price = price;
     }
 
     public Integer getCapacity() {
@@ -145,4 +150,83 @@ public class CreateListingDTO {
     public void setImages(List<CreateListingImageDTO> images) {
         this.images = images;
     }
+
+    public static CreateListingDTOBuilder builder() {
+        return new CreateListingDTOBuilder();
+    };
+
+    public static class CreateListingDTOBuilder {
+        private UUID hostId;
+        private String title;
+        private String description;
+        private LocationDTO location;
+        private PriceDTO price;
+        private Integer capacity;
+        private Integer bedrooms;
+        private Integer bathrooms;
+        private Set<UUID> categoryIds;
+        private Set<UUID> amenityIds;
+        private List<CreateListingImageDTO> images;
+
+        public  CreateListingDTOBuilder hostId(UUID hostId) {
+            this.hostId = hostId;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder title(String title) {
+            this.title = title;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder description(String description) {
+            this.description = description;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder location(LocationDTO location) {
+            this.location = location;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder price(PriceDTO price) {
+            this.price = price;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder capacity(Integer capacity) {
+            this.capacity = capacity;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder bedrooms(Integer bedrooms) {
+            this.bedrooms = bedrooms;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder bathrooms(Integer bathrooms) {
+            this.bathrooms = bathrooms;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder categoryIds(Set<UUID> categoryIds) {
+            this.categoryIds = categoryIds;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder amenityIds(Set<UUID> amenityIds) {
+            this.amenityIds = amenityIds;
+            return this;
+        }
+
+        public  CreateListingDTOBuilder images(List<CreateListingImageDTO> images) {
+            this.images = images;
+            return this;
+        }
+
+        public CreateListingDTO build() {
+            return new CreateListingDTO(hostId, title, description, location, price, capacity, bedrooms, bathrooms, categoryIds, amenityIds, images);
+        }
+
+    }
+
 }

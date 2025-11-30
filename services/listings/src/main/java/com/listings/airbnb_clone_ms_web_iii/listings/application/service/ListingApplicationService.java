@@ -10,16 +10,19 @@ import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.*;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.AmenityRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.CategoryRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingRepository;
-import com.listings.airbnb_clone_ms_web_iii.listings.domain.service.ListingDomainService;
+import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingImageRepository;
+import com.listings.airbnb_clone_ms_web_iii.listings.domain.domain_services.ListingDomainService;
 import com.listings.airbnb_clone_ms_web_iii.listings.presentation.exception.ListingNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * Application Service para Listings.
@@ -32,17 +35,20 @@ public class ListingApplicationService implements ListingServicePort {
     private final ListingRepository listingRepository;
     private final CategoryRepository categoryRepository;
     private final AmenityRepository amenityRepository;
+    private final ListingImageRepository listingImageRepository;
     private final ListingDomainService listingDomainService;
     private final ListingMapper listingMapper;
 
     public ListingApplicationService(ListingRepository listingRepository,
                                      CategoryRepository categoryRepository,
                                      AmenityRepository amenityRepository,
+                                     ListingImageRepository listingImageRepository,
                                      ListingDomainService listingDomainService,
                                      ListingMapper listingMapper) {
         this.listingRepository = listingRepository;
         this.categoryRepository = categoryRepository;
         this.amenityRepository = amenityRepository;
+        this.listingImageRepository = listingImageRepository;
         this.listingDomainService = listingDomainService;
         this.listingMapper = listingMapper;
     }
@@ -58,37 +64,54 @@ public class ListingApplicationService implements ListingServicePort {
      * @return Listing creado con todos sus detalles
      */
     @Override
+    @Transactional
     public ListingDetailDTO create(CreateListingDTO dto) {
+        // Mapear DTO a entidad
         Listing listing = listingMapper.toEntity(dto);
 
-        dto.getImages().forEach(imageDto -> {
-            ListingImage image = ListingImage.builder()
-                    .mediaId(imageDto.getMediaId())
-                    .mediaUrl(imageDto.getMediaUrl())
-                    .isPrimary(imageDto.getIsPrimary())
-                    .displayOrder(imageDto.getDisplayOrder())
-                    .build();
-            listing.addImage(image);
-        });
+        // Cargar y asignar categorías
+        if (dto.getCategoryIds() != null && !dto.getCategoryIds().isEmpty()) {
+            Set<Category> categories = categoryRepository.findAllByIds(dto.getCategoryIds());
+            if (categories.isEmpty()) {
+                throw new IllegalArgumentException("Invalid category IDs provided");
+            }
 
-        Set<Category> categories = categoryRepository.findAllByIds(dto.getCategoryIds());
-        if (categories.isEmpty()) {
-            throw new IllegalArgumentException("Invalid category IDs provided");
+            // Validar compatibilidad
+            List<Category> categoryList = new ArrayList<>(categories);
+            listingDomainService.validateCategoryCompatibility(categoryList);
+
+            categories.forEach(listing::addCategory);
         }
 
-        List<Category> categoryList = new ArrayList<>(categories);
-        listingDomainService.validateCategoryCompatibility(categoryList);
-
-        categories.forEach(listing::addCategory);
-
+        // Cargar y asignar amenities
         if (dto.getAmenityIds() != null && !dto.getAmenityIds().isEmpty()) {
             Set<Amenity> amenities = amenityRepository.findAllByIds(dto.getAmenityIds());
             amenities.forEach(listing::addAmenity);
         }
 
-        Listing saved = listingRepository.save(listing);
+        // Guardar listing
+        Listing savedListing = listingRepository.save(listing);
 
-        return listingMapper.toDetailDTO(saved);
+        // Guardar imagenes
+        if (dto.getImages() != null && !dto.getImages().isEmpty()) {
+            final UUID listingId = savedListing.getId();
+            List<ListingImage> images = dto.getImages().stream()
+                    .map(imgDto -> {
+                        ListingImage img = new ListingImage();
+                        img.setListingId(listingId);
+                        img.setMediaUrl(imgDto.getMediaUrl());
+                        img.setDisplayOrder(imgDto.getDisplayOrder() != null ? imgDto.getDisplayOrder() : 0);
+                        img.setIsPrimary(imgDto.getIsPrimary() != null ? imgDto.getIsPrimary() : false);
+                        img.setCreatedAt(LocalDateTime.now());
+                        return img;
+                    }).collect(Collectors.toList());
+            listingImageRepository.saveAll(images);
+
+            savedListing = listingRepository.findByIdWithRelations(savedListing.getId())
+                    .orElseThrow(() -> new ListingNotFoundException("Listing not found after creation"));
+        }
+
+        return listingMapper.toDetailDTO(savedListing);
     }
 
     // ========================================
@@ -247,7 +270,6 @@ public class ListingApplicationService implements ListingServicePort {
 
             dto.getImages().forEach(imageDto -> {
                 ListingImage image = ListingImage.builder()
-                        .mediaId(imageDto.getMediaId())
                         .mediaUrl(imageDto.getMediaUrl())
                         .isPrimary(imageDto.getIsPrimary())
                         .displayOrder(imageDto.getDisplayOrder())
