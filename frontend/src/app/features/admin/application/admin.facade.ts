@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, forkJoin, switchMap } from 'rxjs';
 import { Listing } from '@features/listings/domain/models/listing.model';
 import { Reservation } from '@features/reservations/domain/models/reservation.model';
-import { User } from '@features/users/domain/models/user.model';
+import { User, Role } from '@features/users/domain/models/user.model';
+import { AdminUsersService } from '../services/admin-user.service';
 
 @Injectable({ providedIn: 'root' })
 export class AdminFacade {
@@ -15,32 +16,64 @@ export class AdminFacade {
     private _users = new BehaviorSubject<User[]>([]);
     users$ = this._users.asObservable();
 
-    constructor() {
-        // Reemplazar con un repositorio real o fuente de datos real
-        import('@features/listings/presentation/data-access/data/listings.mock').then((mod) => {
-            this._listings.next(mod.LISTINGS_MOCK);
+    private rolesCache: Role[] = [];
+
+    constructor(private adminService : AdminUsersService) {
+        this.loadInitialData();
+    }
+
+    private loadInitialData(){
+        forkJoin({
+            usersResp: this.adminService.getUsers(),
+            rolesResp: this.adminService.getRoles()
+        }).subscribe(({ usersResp, rolesResp }) => {
+            if (usersResp.success) {
+                this._users.next(this.mapUsers(usersResp.content));
+            }
+            if (rolesResp.success) {
+                this.rolesCache = rolesResp.content;
+            }
         });
 
-        this._users.next([
-            { id: 1, name: 'Andrea Rojas', email: 'andrea@demo.com', role: 'admin', active: true, avatar: 'https://i.pravatar.cc/64?img=5' },
-            { id: 2, name: 'Ulises Gomez', email: 'ulises@demo.com', role: 'host', active: true, avatar: 'https://i.pravatar.cc/64?img=11' },
-            { id: 3, name: 'Carla Pérez', email: 'carla@demo.com', role: 'guest', active: true, avatar: 'https://i.pravatar.cc/64?img=15' },
-            { id: 4, name: 'David Rossi', email: 'david@demo.com', role: 'guest', active: false, avatar: 'https://i.pravatar.cc/64?img=23' },
-        ]);
+    }
 
-        const R: Reservation[] = [
-            { id: 1, user: { id: 3, name: 'Carla Pérez', avatar: 'https://i.pravatar.cc/64?img=14' }, listingId: 1, listingTitle: 'Modern apt in Equipetrol', checkIn: '2025-12-01', checkOut: '2025-12-05', paid: false, total: 400, status: 'active' },
-            { id: 2, user: { id: 2, name: 'Ulises Gomez', avatar: 'https://i.pravatar.cc/64?img=13' }, listingId: 5, listingTitle: 'Minimalist loft', checkIn: '2025-11-10', checkOut: '2025-11-13', paid: true, total: 330, status: 'active' },
-            { id: 3, user: { id: 1, name: 'Andrea Rojas', avatar: 'https://i.pravatar.cc/64?img=5' }, listingId: 2, listingTitle: 'Eco House', checkIn: '2025-10-21', checkOut: '2025-10-23', paid: true, total: 180, status: 'cancelled' },
-            { id: 4, user: { id: 4, name: 'David Rossi', avatar: 'https://i.pravatar.cc/64?img=23' }, listingId: 3, listingTitle: 'Casa moderna', checkIn: '2025-12-15', checkOut: '2025-12-20', paid: false, total: 700, status: 'active' },
-            { id: 5, user: { id: 3, name: 'Carla Pérez', avatar: 'https://i.pravatar.cc/64?img=14' }, listingId: 6, listingTitle: 'Loft urbano', checkIn: '2025-12-04', checkOut: '2025-12-06', paid: true, total: 220, status: 'active' },
-            { id: 6, user: { id: 2, name: 'Ulises Gomez', avatar: 'https://i.pravatar.cc/64?img=13' }, listingId: 7, listingTitle: 'Lake View', checkIn: '2026-01-11', checkOut: '2026-01-14', paid: false, total: 420, status: 'active' },
-            { id: 7, user: { id: 4, name: 'David Rossi', avatar: 'https://i.pravatar.cc/64?img=23' }, listingId: 4, listingTitle: 'Cabaña rústica', checkIn: '2025-09-10', checkOut: '2025-09-12', paid: true, total: 160, status: 'active' },
-            { id: 8, user: { id: 3, name: 'Carla Pérez', avatar: 'https://i.pravatar.cc/64?img=14' }, listingId: 8, listingTitle: 'Depto céntrico', checkIn: '2025-11-22', checkOut: '2025-11-25', paid: false, total: 300, status: 'active' },
-            { id: 9, user: { id: 1, name: 'Andrea Rojas', avatar: 'https://i.pravatar.cc/64?img=5' }, listingId: 9, listingTitle: 'Studio minimal', checkIn: '2025-07-01', checkOut: '2025-07-03', paid: true, total: 120, status: 'active' },
-            { id: 10, user: { id: 2, name: 'Ulises Gomez', avatar: 'https://i.pravatar.cc/64?img=13' }, listingId: 1, listingTitle: 'Modern apt in Equipetrol', checkIn: '2025-08-10', checkOut: '2025-08-12', paid: true, total: 200, status: 'active' },
-        ];
-        this._reservations.next(R);
+    private mapUsers(users: User[]): User[] {
+        return users.map(u => ({
+            ...u,
+            avatar: u.avatar || `https://ui-avatars.com/api/?name=${u.firstName}+${u.lastName}&background=random`
+        }));
+    }
+
+    toggleRole(user: User, roleName: string) {
+        const role = this.rolesCache.find(r => r.name === roleName.toUpperCase());
+        
+        if (!role) {
+            console.error(`Rol ${roleName} no encontrado en la BD. Roles disponibles:`, this.rolesCache);
+            return;
+        }
+
+        const hasRole = user.roles.some(r => r.id === role.id);
+        console.log(`${hasRole ? 'Removiendo' : 'Agregando'} rol ${roleName} al usuario ${user.id}`);
+        
+        const request$ = hasRole
+            ? this.adminService.removeRoleFromUser(user.id, role.id)
+            : this.adminService.addRoleToUser(user.id, role.id);
+
+        request$.pipe(
+            switchMap(() => this.adminService.getUsers())
+        ).subscribe({
+            next: (resp) => {
+                if (resp.success) {
+                    console.log('Usuarios actualizados:', resp.content);
+                    this._users.next(this.mapUsers(resp.content));
+                } else {
+                    console.error('Error en respuesta:', resp);
+                }
+            },
+            error: (err) => {
+                console.error('Error al cambiar rol:', err);
+            }
+        });
     }
 
     create(listing: Partial<Listing>) {
@@ -78,11 +111,19 @@ export class AdminFacade {
         this._reservations.next(next);
     }
 
-    toggleActive(id: number) {
-        const next = this._users.value.map(u => (u.id === id ? { ...u, active: !u.active } : u));
-        this._users.next(next);
-    }
-    setRole(id: number, role: User['role']) {
+toggleActive(userId: number, roleId: number) {
+    const next = this._users.value.map(u => {
+        if (u.id === userId) {
+            const updatedRoles = u.roles.map(r => 
+                r.id === roleId ? { ...r, active: !r.active } : r
+            );
+            return { ...u, roles: updatedRoles };
+        }
+        return u;
+    });
+    this._users.next(next);
+}
+    setRole(id: number, role: User['roles']) {
         const next = this._users.value.map(u => (u.id === id ? { ...u, role } : u));
         this._users.next(next);
     }

@@ -8,43 +8,47 @@
             <tr>
                 <th>Usuario</th>
                 <th>Email</th>
-                <th>Rol</th>
-                <th>Estado</th>
-                <th style="width: 360px;">Acciones</th>
+                <th>Roles</th>
+                <th style="width: 300px;">Acciones</th>
             </tr>
         </thead>
 
         <tbody>
             <tr *ngFor="let u of (users$ | async)">
                 <td class="user">
-                    <img [src]="u.avatar" alt="Avatar del usuario" />
+                    <img [src]="u.avatar" alt="Avatar" />
                     <div>
-                        <strong>{{ u.name }}</strong>
-                        <div class="muted">#{{ u.id }}</div>
+                        <strong>{{ u.firstName }} {{ u.lastName }}</strong>
+                        <div class="muted">@{{ u.username }}</div>
                     </div>
                 </td>
 
                 <td class="muted">{{ u.email }}</td>
 
                 <td>
-                    <span class="badge" [class.admin]="u.role === 'admin'" [class.host]="u.role === 'host'">
-                        {{ u.role }}
-                    </span>
-                </td>
-
-                <td>
-                    <span class="badge" [class.paid]="u.active" [class.unpaid]="!u.active">
-                        {{ u.active ? 'Activo' : 'Inactivo' }}
-                    </span>
+                    <ng-container *ngFor="let r of u.roles">
+                        <span *ngIf="r.name !== 'CLIENT' || u.roles.length === 1"
+                              class="badge" 
+                              [class.admin]="r.name === 'ADMIN'" 
+                              [class.host]="r.name === 'HOST'"
+                              [class.client]="r.name === 'CLIENT'">
+                            {{ r.name }}
+                        </span>
+                    </ng-container>
                 </td>
 
                 <td class="row-actions">
-                    <button class="small" (click)="toggle(u)">
-                        {{ u.active ? 'Desactivar' : 'Activar' }}
+                    <button class="small" 
+                            [class.active-role]="hasRole(u, 'HOST')"
+                            (click)="toggleRole(u, 'HOST')">
+                        {{ hasRole(u, 'HOST') ? 'Quitar Host' : 'Hacer Host' }}
                     </button>
-                    <button class="small" (click)="makeGuest(u)">Guest</button>
-                    <button class="small" (click)="promote(u)">Host</button>
-                    <button class="small danger" (click)="makeAdmin(u)">Admin</button>
+                    
+                    <button class="small danger" 
+                            [class.active-role]="hasRole(u, 'ADMIN')"
+                            (click)="toggleRole(u, 'ADMIN')">
+                        {{ hasRole(u, 'ADMIN') ? 'Quitar Admin' : 'Hacer Admin' }}
+                    </button>
                 </td>
             </tr>
         </tbody>
