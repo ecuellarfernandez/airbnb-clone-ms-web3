@@ -24,8 +24,8 @@ public interface ListingMapper {
     @Mapping(target = "createdAt", ignore = true)
     @Mapping(target = "updatedAt", ignore = true)
     @Mapping(target = "isActive", constant = "false")
-    @Mapping(source = "priceAmount", target = "price.amount")
-    @Mapping(source = "priceCurrency", target = "price.currency")
+    @Mapping(source = "price.amount", target = "price.amount")
+    @Mapping(source = "price.currency", target = "price.currency")
     Listing toEntity(CreateListingDTO dto);
 
     Location toLocation(LocationDTO dto);
