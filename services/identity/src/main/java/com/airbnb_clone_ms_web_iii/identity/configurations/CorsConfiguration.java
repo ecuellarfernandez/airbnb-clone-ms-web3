@@ -22,11 +22,14 @@ public class CorsConfiguration {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/**") // Apply to all paths
-                        .allowedOrigins(("http://localhost:" + serverPort), ("http://localhost:" + frontendPort)) // Specify allowed origins
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Specify allowed HTTP methods
-                        .allowedHeaders("*") // Allow all headers
-                        .allowCredentials(true) // Allow sending of credentials (e.g., cookies, authorization headers)
-                        .maxAge(3600); // Cache preflight requests for 1 hour
+                        .allowedOriginPatterns(
+                                "http://localhost:*",
+                                "http://127.0.0.1:*"
+                        ) // Specify allowed origins
+                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                        .allowedHeaders("*")
+                        .allowCredentials(true)
+                        .maxAge(3600);
             }
         };
     }
