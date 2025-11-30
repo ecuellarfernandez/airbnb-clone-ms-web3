@@ -2,32 +2,60 @@
   <div class="p-10 py-12 sm:max-w-xl bg-surface rounded-md drop-shadow-2xl space-y-10">
     <h2 class="text-center">Register for an account</h2>
 
-    <form action="#" method="POST" class="mt-10 space-y-7">
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="mt-10 space-y-7">
       <div class="md:flex gap-4">
-        <div class="space-y-1">
-          <label for="name" class="text-on-surface fs-label">Name</label>
+        <div class="space-y-1 flex-1">
+          <label for="firstName" class="text-on-surface fs-label">First Name</label>
           <input
-            id="name"
+            id="firstName"
             type="text"
-            name="name"
-            required
-            placeholder="Enter your name"
-            autocomplete="name"
-            class="bg-surface-2 text-on-surface-2"
+            formControlName="firstName"
+            placeholder="Enter your first name"
+            autocomplete="given-name"
+            [class.bg-surface-2]="true"
+            [class.text-on-surface-2]="true"
+            [class.border-error]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched"
           />
+          <div class="text-error text-xs" *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+            First name is required
+          </div>
         </div>
 
-        <div class="space-y-1">
-          <label for="surname" class="text-on-surface fs-label">Surname</label>
+        <div class="space-y-1 flex-1">
+          <label for="lastName" class="text-on-surface fs-label">Last Name</label>
           <input
-            id="surname"
+            id="lastName"
             type="text"
-            name="surname"
-            required
-            placeholder="Enter your surname"
-            autocomplete="surname"
-            class="bg-surface-2 text-on-surface-2"
+            formControlName="lastName"
+            placeholder="Enter your last name"
+            autocomplete="family-name"
+            [class.bg-surface-2]="true"
+            [class.text-on-surface-2]="true"
+            [class.border-error]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched"
           />
+          <div class="text-error text-xs" *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+            Last name is required
+          </div>
+        </div>
+      </div>
+
+      <div class="space-y-1">
+        <label for="username" class="text-on-surface fs-label">Username</label>
+        <input
+          id="username"
+          type="text"
+          formControlName="username"
+          placeholder="Enter your username"
+          autocomplete="username"
+          [class.bg-surface-2]="true"
+          [class.text-on-surface-2]="true"
+          [class.border-error]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+        />
+        <div class="text-error text-xs" *ngIf="registerForm.get('username')?.hasError('required') && registerForm.get('username')?.touched">
+          Username is required
+        </div>
+        <div class="text-error text-xs" *ngIf="registerForm.get('username')?.hasError('minlength') && registerForm.get('username')?.touched">
+          Username must be at least 3 characters
         </div>
       </div>
 
@@ -36,12 +64,19 @@
         <input
           id="email"
           type="email"
-          name="email"
-          required
+          formControlName="email"
           placeholder="Enter your email"
           autocomplete="email"
-          class="bg-surface-2 text-on-surface-2"
+          [class.bg-surface-2]="true"
+          [class.text-on-surface-2]="true"
+          [class.border-error]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched"
         />
+        <div class="text-error text-xs" *ngIf="registerForm.get('email')?.hasError('required') && registerForm.get('email')?.touched">
+          Email is required
+        </div>
+        <div class="text-error text-xs" *ngIf="registerForm.get('email')?.hasError('email') && registerForm.get('email')?.touched">
+          Invalid email format
+        </div>
       </div>
 
       <div class="space-y-1">
@@ -49,35 +84,52 @@
         <input
           id="password"
           type="password"
-          name="password"
-          required
+          formControlName="password"
           placeholder="Enter your password"
           autocomplete="new-password"
-          class="bg-surface-2 text-on-surface-2"
+          [class.bg-surface-2]="true"
+          [class.text-on-surface-2]="true"
+          [class.border-error]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
         />
+        <div class="text-error text-xs" *ngIf="registerForm.get('password')?.hasError('required') && registerForm.get('password')?.touched">
+          Password is required
+        </div>
+        <div class="text-error text-xs" *ngIf="registerForm.get('password')?.hasError('minlength') && registerForm.get('password')?.touched">
+          Password must be at least 6 characters
+        </div>
       </div>
 
       <div class="space-y-1">
-        <label for="confirm-password" class="text-on-surface fs-label">Confirm Password</label>
+        <label for="confirmPassword" class="text-on-surface fs-label">Confirm Password</label>
         <input
-          id="confirm-password"
+          id="confirmPassword"
           type="password"
-          name="confirm-password"
-          required
+          formControlName="confirmPassword"
           placeholder="Confirm your password"
           autocomplete="new-password"
-          class="bg-surface-2 text-on-surface-2"
+          [class.bg-surface-2]="true"
+          [class.text-on-surface-2]="true"
+          [class.border-error]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched"
         />
+        <div class="text-error text-xs" *ngIf="registerForm.get('confirmPassword')?.hasError('passwordMismatch') && registerForm.get('confirmPassword')?.touched">
+          Passwords do not match
+        </div>
+      </div>
+
+      <div class="text-error text-center text-sm" *ngIf="errorMessage">
+        {{ errorMessage }}
       </div>
 
       <div class="space-y-1">
-        <button class="btn-primary w-full" type="submit">Register</button>
+        <button class="btn-primary w-full" type="submit" [disabled]="isLoading">
+          {{ isLoading ? 'Creating Account...' : 'Register' }}
+        </button>
       </div>
     </form>
 
     <p class="mt-10 text-center fs-label text-on-surface">
       You already have an account?
-      <a routerLink="/auth/login">Login</a>
+      <a routerLink="/auth/login" class="cursor-pointer hover:underline">Login</a>
     </p>
   </div>
 </div>
