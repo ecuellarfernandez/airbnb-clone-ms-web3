@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '@core/config/api.config';
 import { User, Role } from '@features/users/domain/models/user.model';
-import { StandardResult, PagedResponse } from '@core/model/api-response.model'; // Asumiendo que creaste estas interfaces
+import { StandardResult, PagedResponse } from '@core/model/api-response.model';
 
 @Injectable({ providedIn: 'root' })
 export class AdminUsersService {
@@ -12,11 +12,28 @@ export class AdminUsersService {
 
   constructor(private http: HttpClient) {}
 
+  // GET /api/users/{id}
+  getUserById(id: number): Observable<StandardResult<User>> {
+    return this.http.get<StandardResult<User>>(`${this.usersUrl}/${id}`);
+  }
+
   // GET /api/users/search
-  getUsers(page = 0, pageSize = 20, search = ''): Observable<PagedResponse<User>> {
-    return this.http.get<PagedResponse<User>>(
-      `${this.usersUrl}/search?search=${search}&page=${page}&pageSize=${pageSize}`
-    );
+  searchUsers(searchTerm: string = '', page: number = 0, pageSize: number = 20): Observable<PagedResponse<User>> {
+    const params = new HttpParams()
+      .set('search', searchTerm)
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    return this.http.get<PagedResponse<User>>(`${this.usersUrl}/search`, { params });
+  }
+
+  // GET /api/users/get-by-role/{roleName}
+  getUsersByRole(roleName: string, page: number = 0, pageSize: number = 20): Observable<PagedResponse<User>> {
+    const params = new HttpParams()
+      .set('page', page.toString())
+      .set('pageSize', pageSize.toString());
+
+    return this.http.get<PagedResponse<User>>(`${this.usersUrl}/get-by-role/${roleName}`, { params });
   }
 
   // GET /api/roles

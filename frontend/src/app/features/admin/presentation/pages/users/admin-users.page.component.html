@@ -1,9 +1,59 @@
 <div class="card">
     <header class="cardHeader">
         <h2>Usuarios</h2>
+        
+        <div class="header-actions">
+            <!-- Buscador -->
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    [(ngModel)]="searchTerm"
+                    (keydown)="onSearchKeydown($event)"
+                    placeholder="Buscar por nombre, email o username..."
+                    class="search-input" />
+                <button 
+                    (click)="onSearchClick()"
+                    class="search-button"
+                    [disabled]="isLoading">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+            </div>
+
+            <!-- Filtro por rol -->
+            <div class="role-filter">
+                <select 
+                    [(ngModel)]="selectedRoleFilter"
+                    (change)="onRoleFilterChange(selectedRoleFilter)"
+                    class="filter-select">
+                    <option value="">Todos los roles</option>
+                    <option *ngFor="let role of roles" [value]="role.name">{{ role.name }}</option>
+                </select>
+            </div>
+
+            <!-- Botón limpiar filtros -->
+            <button 
+                *ngIf="searchTerm || selectedRoleFilter"
+                (click)="clearFilters()"
+                class="btn-clear">
+                Limpiar filtros
+            </button>
+        </div>
     </header>
 
-    <table>
+    <!-- Mensaje de error -->
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+    </div>
+
+    <!-- Loading -->
+    <div *ngIf="isLoading" class="loading">
+        Cargando usuarios...
+    </div>
+
+    <table *ngIf="!isLoading && users.length > 0">
         <thead>
             <tr>
                 <th>Usuario</th>
@@ -14,7 +64,7 @@
         </thead>
 
         <tbody>
-            <tr *ngFor="let u of (users$ | async)">
+            <tr *ngFor="let u of users">
                 <td class="user">
                     <img [src]="u.avatar" alt="Avatar" />
                     <div>
@@ -53,4 +103,36 @@
             </tr>
         </tbody>
     </table>
+
+    <!-- Empty state -->
+    <div *ngIf="!isLoading && users.length === 0" class="empty-state">
+        <p>No se encontraron usuarios</p>
+    </div>
+
+    <!-- Paginación -->
+    <div *ngIf="!isLoading && users.length > 0" class="pagination">
+        <div class="pagination-info">
+            Mostrando {{ (currentPage * pageSize) + 1 }} - {{ Math.min((currentPage + 1) * pageSize, totalElements) }} de {{ totalElements }} usuarios
+        </div>
+        
+        <div class="pagination-controls">
+            <button 
+                (click)="previousPage()"
+                [disabled]="currentPage === 0"
+                class="btn-pagination">
+                ← Anterior
+            </button>
+            
+            <span class="page-indicator">
+                Página {{ currentPage + 1 }} de {{ totalPages }}
+            </span>
+            
+            <button 
+                (click)="nextPage()"
+                [disabled]="isLastPage"
+                class="btn-pagination">
+                Siguiente →
+            </button>
+        </div>
+    </div>
 </div>

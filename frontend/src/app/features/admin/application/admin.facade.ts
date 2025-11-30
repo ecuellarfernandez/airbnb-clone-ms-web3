@@ -24,7 +24,7 @@ export class AdminFacade {
 
     private loadInitialData(){
         forkJoin({
-            usersResp: this.adminService.getUsers(),
+            usersResp: this.adminService.searchUsers('', 0, 100),
             rolesResp: this.adminService.getRoles()
         }).subscribe(({ usersResp, rolesResp }) => {
             if (usersResp.success) {
@@ -60,7 +60,7 @@ export class AdminFacade {
             : this.adminService.addRoleToUser(user.id, role.id);
 
         request$.pipe(
-            switchMap(() => this.adminService.getUsers())
+            switchMap(() => this.adminService.searchUsers('', 0, 100))
         ).subscribe({
             next: (resp) => {
                 if (resp.success) {
