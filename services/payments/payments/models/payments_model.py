@@ -16,6 +16,7 @@ class Payment(models.Model):
     amount = models.FloatField()
     status = models.CharField(choices=status_options, default='PENDING', blank=False)
     receipt_hash = models.CharField(blank=False, max_length=256)
+    user_id = models.IntegerField(default=0, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

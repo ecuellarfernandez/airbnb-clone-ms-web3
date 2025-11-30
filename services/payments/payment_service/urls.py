@@ -16,11 +16,11 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from payments.views import payments_router
+from payments.views import payments_router, test_views
 from django.urls import include
-
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(payments_router.urls)),
+    path('api/test/send-test-event/', test_views.send_test_event_view)
 ]
