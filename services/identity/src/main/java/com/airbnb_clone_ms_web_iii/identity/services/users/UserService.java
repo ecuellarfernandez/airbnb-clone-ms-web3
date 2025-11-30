@@ -128,7 +128,7 @@ public class UserService implements UserDetailsService {
         if(role.isEmpty()){
             throw new IllegalArgumentException("Role not found");
         }
-        if(user.getRoles().contains(role.get())){
+        if(user.getRoles().stream().anyMatch(r -> r.getId().equals(roleId))){
             throw new IllegalArgumentException("User already has this role");
         }
         user.getRoles().add(role.get());
@@ -141,10 +141,10 @@ public class UserService implements UserDetailsService {
         if(role.isEmpty()){
             throw new IllegalArgumentException("Role not found");
         }
-        if(!user.getRoles().contains(role.get())){
+        if(user.getRoles().stream().noneMatch(r -> r.getId().equals(roleId))){
             throw new IllegalArgumentException("User does not have this role");
         }
-        user.getRoles().remove(role.get());
+        user.getRoles().removeIf(r -> r.getId().equals(roleId));
         return userRepository.save(user);
     }
 
