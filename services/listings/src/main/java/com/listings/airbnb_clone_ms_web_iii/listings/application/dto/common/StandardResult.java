@@ -68,6 +68,13 @@ public class StandardResult<T> {
         return new StandardResult<>(false, message, null, errorCode);
     }
 
+    /**
+     * Crea un resultado de error con mensaje, código de error y datos adicionales.
+     */
+    public static <T> StandardResult<T> error(String message, String errorCode, T data) {
+        return new StandardResult<>(false, message, data, errorCode);
+    }
+
     // Getters y Setters
 
     public boolean isSuccess() {
