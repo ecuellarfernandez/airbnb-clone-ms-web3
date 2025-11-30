@@ -18,8 +18,11 @@ export class AdminUsersPageComponent {
         this.users$ = this.facade.users$;
     }
 
-    toggle(u: User) { this.facade.toggleActive(u.id); }
-    promote(u: User) { this.facade.setRole(u.id, 'host'); }
-    makeAdmin(u: User) { this.facade.setRole(u.id, 'admin'); }
-    makeGuest(u: User) { this.facade.setRole(u.id, 'guest'); }
+    toggleRole(user: User, roleName: string) {
+        this.facade.toggleRole(user, roleName);
+    }
+
+    hasRole(user: User, roleName: string): boolean {
+        return user.roles?.some(r => r.name === roleName.toUpperCase());
+    }
 }
