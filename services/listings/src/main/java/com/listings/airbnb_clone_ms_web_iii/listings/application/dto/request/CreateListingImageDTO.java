@@ -6,9 +6,6 @@ import java.util.UUID;
 
 public class CreateListingImageDTO {
 
-    @NotNull(message = "Media ID is required")
-    private UUID mediaId;
-
     @NotNull(message = "Media URL is required")
     private String mediaUrl;
 
@@ -20,7 +17,6 @@ public class CreateListingImageDTO {
     }
 
     public CreateListingImageDTO(UUID mediaId, String mediaUrl, Boolean isPrimary, Integer displayOrder) {
-        this.mediaId = mediaId;
         this.mediaUrl = mediaUrl;
         this.isPrimary = isPrimary != null ? isPrimary : false;
         this.displayOrder = displayOrder;
@@ -28,14 +24,6 @@ public class CreateListingImageDTO {
 
     public static CreateListingImageDTOBuilder builder() {
         return new CreateListingImageDTOBuilder();
-    }
-
-    public UUID getMediaId() {
-        return mediaId;
-    }
-
-    public void setMediaId(UUID mediaId) {
-        this.mediaId = mediaId;
     }
 
     public String getMediaUrl() {
@@ -60,6 +48,23 @@ public class CreateListingImageDTO {
 
     public void setDisplayOrder(Integer displayOrder) {
         this.displayOrder = displayOrder;
+    }
+
+    // Alias methods for JSON compatibility
+    public String getUrl() {
+        return mediaUrl;
+    }
+
+    public void setUrl(String url) {
+        this.mediaUrl = url;
+    }
+
+    public Boolean getIsCover() {
+        return isPrimary;
+    }
+
+    public void setIsCover(Boolean isCover) {
+        this.isPrimary = isCover;
     }
 
     public static class CreateListingImageDTOBuilder {
