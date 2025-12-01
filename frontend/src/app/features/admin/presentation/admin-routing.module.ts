@@ -13,9 +13,9 @@ const routes: Routes = [
         component: AdminLayoutComponent,
         children: [
             { path: '', redirectTo: 'listings', pathMatch: 'full' },
-            { path: 'dashboard', component: AdminDashboardPageComponent },
-            { path: 'listings', component: AdminListingsPageComponent },
-            { path: 'reservations', component: AdminReservationsPageComponent },
+            // { path: 'dashboard', component: AdminDashboardPageComponent },
+            // { path: 'listings', component: AdminListingsPageComponent },
+            // { path: 'reservations', component: AdminReservationsPageComponent },
             { path: 'claims', component: AdminClaimsPageComponent },
             { path: 'users', component: AdminUsersPageComponent }
         ]

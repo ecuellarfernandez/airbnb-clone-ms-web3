@@ -6,17 +6,18 @@ import { User, Role } from '@features/users/domain/models/user.model';
 import { AdminUsersService } from '../services/admin-user.service';
 import { AdminClaimsService } from '../services/admin-claims.service';
 import { Claim } from '@app/features/users/domain/models/claim.model';
+import { response } from 'express';
 
 @Injectable({ providedIn: 'root' })
 export class AdminFacade {
-  private _users = new BehaviorSubject<User[]>([]);
-  users$ = this._users.asObservable();
-
   private _listings = new BehaviorSubject<Listing[]>([]);
   listings$ = this._listings.asObservable();
 
   private _reservations = new BehaviorSubject<Reservation[]>([]);
   reservations$ = this._reservations.asObservable();
+
+  private _users = new BehaviorSubject<User[]>([]);
+  users$ = this._users.asObservable();
 
   private _claims = new BehaviorSubject<Claim[]>([]);
   claims$ = this._claims.asObservable();
@@ -50,6 +51,21 @@ export class AdminFacade {
     }));
   }
 
+  loadClaims(page = 0, size = 10) {
+    this.claimsService.getClaims(page, size).subscribe((response) => {
+      if (response.success) {
+        this._claims.next(response.content);
+      }
+    });
+  }
+
+  deleteClaim(id: number){
+    this.claimsService.deleteClaim(id).subscribe((response)=> {
+        if (response.success){
+            alert(`Claim  eliminado ${id}`)
+        }
+    })
+  }
   toggleRole(user: User, roleName: string) {
     const role = this.rolesCache.find((r) => r.name === roleName.toUpperCase());
 
@@ -97,15 +113,7 @@ export class AdminFacade {
     this._users.next(next);
   }
 
-  loadClaims(page = 0, size = 10) {
-    this.claimsService.getClaims(page, size).subscribe((response) => {
-      if (response.success) {
-        this._claims.next(response.content);
-      }
-    });
-  }
-
-  create(payload: Partial<Listing>) {
+    create(payload: Partial<Listing>) {
     // TODO: Implement create listing via AdminListingsService
     console.log('Create listing:', payload);
   }

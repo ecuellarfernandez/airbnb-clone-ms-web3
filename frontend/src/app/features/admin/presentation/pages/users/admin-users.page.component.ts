@@ -91,10 +91,10 @@ export class AdminUsersPageComponent implements OnInit {
         }));
     }
 
-    private generateAvatarUrl(user: User): string {
-        const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username;
-        return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&size=128`;
-    }
+        private generateAvatarUrl(user: User): string {
+            const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username;
+            return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&size=128`;
+        }
 
     loadUsers(): void {
         this.performSearch();
