@@ -1,0 +1,46 @@
+<div class="admin-claims-page card">
+    <div class="cardHeader">
+        <h2>Claims (Permisos)</h2>
+    </div>
+
+    <div *ngIf="isLoading" class="loading">Cargando...</div>
+    <div *ngIf="!(claims$ | async)?.length && !isLoading" class="empty">No hay claims.</div>
+
+    <table *ngIf="(claims$ | async) as claims" class="claims-table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Clave</th>
+                <th>Valor</th>
+                <th>Descripción</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let claim of claims; trackBy: trackByClaimId">
+                <td>{{ claim.id }}</td>
+                <td>{{ claim.key || claim.name || claim.claim }}</td>
+                <td>{{ claim.value }}</td>
+                <td>{{ claim.description }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="pagination">
+        <button (click)="prev()" [disabled]="pageNumber === 0">Anterior</button>
+        <span class="page-info">Página {{ pageNumber + 1 }} / {{ totalPages || 1 }}</span>
+        <button (click)="next()" [disabled]="pageNumber + 1 >= (totalPages || 1)">Siguiente</button>
+
+        <label class="page-size">
+            Mostrar
+            <select [value]="pageSize" (change)="onPageSizeChange($any($event.target).value)">
+                <option value="5">5</option>
+                <option value="10">10</option>
+                <option value="25">25</option>
+                <option value="50">50</option>
+            </select>
+            por página
+        </label>
+
+        <div class="total">Total: {{ totalElements }}</div>
+    </div>
+</div>

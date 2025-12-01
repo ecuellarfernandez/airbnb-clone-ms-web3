@@ -23,12 +23,12 @@ export class AdminReservationsPageComponent {
             this.facade.reservations$,
             this.qChanges.pipe(startWith(this.q))
         ]).pipe(
-            map(([list, term]) => {
+            map(([list, term]: [Reservation[], string]) => {
                 const t = (term ?? '').trim().toLowerCase();
-                const items = t ? list.filter(r =>
+                const items = t ? list.filter((r: Reservation) =>
                     r.user.name.toLowerCase().includes(t) || r.listingTitle.toLowerCase().includes(t)
                 ) : list;
-                const total = items.length, paid = items.filter(i => i.paid).length, unpaid = total - paid;
+                const total = items.length, paid = items.filter((i: Reservation) => i.paid).length, unpaid = total - paid;
                 return { items, total, paid, unpaid };
             })
         );

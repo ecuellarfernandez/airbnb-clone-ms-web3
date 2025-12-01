@@ -23,10 +23,10 @@ export class AdminListingsPageComponent implements OnInit {
 
     ngOnInit(): void {
         this.listings$ = combineLatest([this.facade.listings$]).pipe(
-            map(([items]) => {
+            map(([items]: [Listing[]]) => {
                 const term = this.q.trim().toLowerCase();
                 if (!term) return items;
-                return items.filter(l =>
+                return items.filter((l: Listing) =>
                     l.title.toLowerCase().includes(term) ||
                     l.city.toLowerCase().includes(term)
                 );

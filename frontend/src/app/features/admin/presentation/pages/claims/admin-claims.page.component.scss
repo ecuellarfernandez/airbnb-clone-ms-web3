@@ -1,0 +1,47 @@
+.admin-claims-page {
+	padding: 1rem;
+}
+
+.claims-table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 1rem;
+}
+
+.claims-table th,
+.claims-table td {
+	border: 1px solid rgba(0,0,0,0.06);
+	padding: 0.5rem 0.75rem;
+	text-align: left;
+}
+
+.loading {
+	padding: 1rem 0;
+	color: var(--text-muted, #666);
+}
+
+.empty {
+	padding: 1rem 0;
+	color: var(--text-muted, #666);
+}
+
+.pagination {
+	display: flex;
+	align-items: center;
+	gap: 0.75rem;
+	margin-top: 1rem;
+}
+
+.page-info {
+	font-weight: 600;
+}
+
+.page-size select {
+	margin-left: 0.5rem;
+}
+
+.total {
+	margin-left: auto;
+	font-size: 0.9rem;
+	color: var(--text-muted, #666);
+}
