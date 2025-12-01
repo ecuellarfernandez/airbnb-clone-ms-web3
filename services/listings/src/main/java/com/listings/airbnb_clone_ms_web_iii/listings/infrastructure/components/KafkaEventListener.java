@@ -39,8 +39,8 @@ public class KafkaEventListener {
         switch (eventName){
             case "PAYMENT_COMPLETED":
                 String paymentId = eventValue.path("id").asText();
-                String listingId = eventValue.path("reservation_id").asText();
-                log.info("Processing PAYMENT_COMPLETED for paymentId: {}, listingId: {}", paymentId, listingId);
+                String reservationId = eventValue.path("reservation_id").asText();
+                log.info("Processing PAYMENT_COMPLETED for paymentId: {}, reservation: {}", paymentId, reservationId);
                 //AQUI SE LLAMA AL COMMAND PARA CONFIRMAR LA RESERVA
                 break;
             case "PAYMENT_FAILED":

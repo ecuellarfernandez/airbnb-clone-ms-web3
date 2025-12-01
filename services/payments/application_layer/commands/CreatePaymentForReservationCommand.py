@@ -16,7 +16,7 @@ class CreatePaymentForReservationCommand(CommandInterface):
 
     def execute(self) -> Payment:
         payment_obj = Payment(
-            reservation_id=self.payment_data.get("reservation_id", 0),
+            reservation_id=self.payment_data.get("reservation_id", "0000-0000-0000-0000"),
             amount=self.payment_data.get("amount", 0.0),
             receipt_hash=hash((self.payment_data.get("reservation_id", 0), self.payment_data.get("amount", 0.0))),
             user_id=self.payment_data.get("user_id", 0),
