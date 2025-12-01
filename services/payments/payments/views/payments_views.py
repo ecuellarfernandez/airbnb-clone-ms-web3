@@ -1,12 +1,16 @@
-﻿from rest_framework import status
+﻿from rest_framework.decorators import action
+from rest_framework import status
 from rest_framework.viewsets import ViewSet, ModelViewSet
 from rest_framework.response import Response
+from rest_framework.request import Request
 
+from application_layer.commands.CreatePaymentForReservationCommand import CreatePaymentForReservationCommand
 from payments.dtos.paged_response import PagedResponse
 from payments.dtos.standard_response import StandardResponse
 from payments.models import Payment
 from payments.paginators.payment_paginator import PaymentsPagination
 from payments.serializers.payment_serializers import PaymentSerializer
+
 
 
 class PaymentsViewSet(ModelViewSet):
@@ -55,3 +59,45 @@ class PaymentsViewSet(ModelViewSet):
         )
 
         return Response(paged_response.__dict__)
+
+    @action(detail=False, methods=['post'], url_path="payment-reservation")
+    def create_payment_for_reservation(self, request : Request, *args, **kwargs):
+        """
+        Crear payment para una reservation. ESTE ES EL METODO A USAR PARA CREAR PAGOS DE RESERVAS.
+        """
+        payment_data = request.data
+        is_valid, error_message = self._validate_payment_data_for_reservation(payment_data)
+
+        if not is_valid:
+            resp = StandardResponse(
+                success=False,
+                message=f"Invalid payment data: {error_message}",
+                data=None
+            )
+            return Response(resp.__dict__, status=status.HTTP_400_BAD_REQUEST)
+
+        command = CreatePaymentForReservationCommand(payment_data=payment_data, user_id=payment_data.get("user_id", 0))
+        payment_instance = command.execute()
+
+        resp = StandardResponse(
+            success=True,
+            message="Payment for reservation created.",
+            data=self.get_serializer(payment_instance).data
+        )
+        return Response(resp.__dict__, status=status.HTTP_201_CREATED)
+
+
+    def _validate_payment_data_for_reservation(self, payment_data: dict) -> tuple[bool, str]:
+        required_fields = ["reservation_id", "amount", "user_id", "card"]
+        card_required_fields = ["number", "expiry", "cvv"]
+
+        for field in required_fields:
+            if field not in payment_data:
+                return False, f"Missing required field: {field}"
+
+        card_data = payment_data.get("card", {})
+        for field in card_required_fields:
+            if field not in card_data:
+                return False, f"Missing required card field: {field}"
+
+        return True, ""

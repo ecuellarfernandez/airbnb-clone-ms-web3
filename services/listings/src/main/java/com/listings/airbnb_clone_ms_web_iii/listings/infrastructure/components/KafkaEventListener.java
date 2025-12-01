@@ -41,10 +41,12 @@ public class KafkaEventListener {
                 String paymentId = eventValue.path("id").asText();
                 String listingId = eventValue.path("reservation_id").asText();
                 log.info("Processing PAYMENT_COMPLETED for paymentId: {}, listingId: {}", paymentId, listingId);
+                //AQUI SE LLAMA AL COMMAND PARA CONFIRMAR LA RESERVA
                 break;
             case "PAYMENT_FAILED":
                 String failedPaymentId = eventValue.path("id").asText();
                 log.info("Processing PAYMENT_FAILED for paymentId: {}", failedPaymentId);
+                //AQUI SE LLAMA AL COMMAND PARA CANCELAR LA RESERVA
                 break;
             case "TEST_EVENT":
                 log.info("Received TEST_EVENT with data: {}", eventValue.toString());
