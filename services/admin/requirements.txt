@@ -1,6 +1,7 @@
 
 Django==5.2.7
 djangorestframework==3.15.0
+django-cors-headers
 psycopg2-binary
 python-dotenv
 kafka-python

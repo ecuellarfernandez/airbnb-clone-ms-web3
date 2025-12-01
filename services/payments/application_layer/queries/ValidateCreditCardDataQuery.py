@@ -19,6 +19,7 @@ class ValidateCreditCardDataQuery:
 
     def execute(self) -> bool:
         # Placeholder for actual validation logic
+        valid = False
         if len(self.card_number) == 16 and len(self.cvv) == 3:
             if self.card_number in VALID_CREDIT_CARD_NUMBERS:
                 valid = True

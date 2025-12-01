@@ -4,7 +4,7 @@ import time
 from django.core.management import BaseCommand
 
 import sys
-from application_layer.application_layer.threads.kafka_consumer_thread import KafkaConsumerThread
+from application_layer.integration_events.threads.kafka_consumer_thread import KafkaConsumerThread
 
 class Command(BaseCommand):
     help = 'Run the Kafka consumer thread to process incoming messages.'

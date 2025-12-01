@@ -7,6 +7,7 @@ from domain_layer.enums.event_enums import Events
 from domain_layer.enums.topic_enums import Topics
 
 from infrastructure_layer.services.event_producer import ProducerService
+from django.forms.models import model_to_dict
 
 class CreatePaymentForReservationCommand(CommandInterface):
     def __init__(self, payment_data : dict, user_id: int) -> Payment:
@@ -15,9 +16,9 @@ class CreatePaymentForReservationCommand(CommandInterface):
 
     def execute(self) -> Payment:
         payment_obj = Payment(
-            reservation_id=self.payment_data.get("reservation_id", 0),
+            reservation_id=self.payment_data.get("reservation_id", "0000-0000-0000-0000"),
             amount=self.payment_data.get("amount", 0.0),
-            receipt_hash=hash(self.payment_data),
+            receipt_hash=hash((self.payment_data.get("reservation_id", 0), self.payment_data.get("amount", 0.0))),
             user_id=self.payment_data.get("user_id", 0),
         )
 
@@ -28,9 +29,9 @@ class CreatePaymentForReservationCommand(CommandInterface):
         card_data["cvv"] = card_data.get("cvv", "")
 
         is_card_valid = ValidateCreditCardDataQuery(
-            card_data["number"],
+            str(card_data["number"]),
             card_data["expiry"],
-            card_data["cvv"]
+            str(card_data["cvv"])
         ).execute()
 
         if (is_card_valid):
@@ -44,14 +45,14 @@ class CreatePaymentForReservationCommand(CommandInterface):
             event_obj = EventData(
                 topic_name=Topics.PAYMENT_EVENTS.value,
                 event_name=Events.PAYMENT_FAILED.value,
-                event_value=payment_obj.__dict__
+                event_value=model_to_dict(payment_obj)
             )
             # send event
             try:
                 ProducerService.send_message(
                     event_obj.topic_name,
                     "",
-                    event_obj.event_value
+                    event_obj.__dict__
                 )
             except Exception as e:
                 print(f"Failed to send event: {e}")
@@ -59,15 +60,15 @@ class CreatePaymentForReservationCommand(CommandInterface):
         else:
             event_obj = EventData(
                 topic_name=Topics.PAYMENT_EVENTS.value,
-                event_name=Events.PAYMENT_FAILED.value,
-                event_value=payment_obj.__dict__
+                event_name=Events.PAYMENT_COMPLETED.value,
+                event_value=model_to_dict(payment_obj)
             )
             # send event
             try:
                 ProducerService.send_message(
                     event_obj.topic_name,
                     "",
-                    event_obj.event_value
+                    event_obj.__dict__
                 )
             except Exception as e:
                 print(f"Failed to send event: {e}")

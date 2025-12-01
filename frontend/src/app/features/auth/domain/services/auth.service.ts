@@ -69,7 +69,7 @@ export class AuthService {
 
   login(loginData: LoginRequest): Observable<StandardResult<TokenAuth>> {
     return this.http.post<StandardResult<TokenAuth>>(
-      `${"http://localhost:9000/api/identity-service/auth"}/login`,
+      `${this.API_URL}/login`,
       loginData
     ).pipe(
       tap(response => {

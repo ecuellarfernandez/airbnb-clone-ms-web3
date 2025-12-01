@@ -12,7 +12,7 @@ status_options = [
 
 class Payment(models.Model):
     id = models.AutoField(primary_key=True)
-    reservation_id = models.IntegerField(default=0)
+    reservation_id = models.TextField(blank=False)
     amount = models.FloatField()
     status = models.CharField(choices=status_options, default='PENDING', blank=False)
     receipt_hash = models.CharField(blank=False, max_length=256)

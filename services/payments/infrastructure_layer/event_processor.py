@@ -1,7 +1,7 @@
 import json
 
 from infrastructure_layer.services.event_router import EventRouter
-from application_layer.application_layer.global_event_registration import global_event_registration
+from application_layer.integration_events.global_event_registration import global_event_registration
 
 
 class EventProcessor:
