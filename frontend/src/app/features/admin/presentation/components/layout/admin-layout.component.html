@@ -1,38 +1,36 @@
 <div class="admin">
-    <aside class="sidebar">
-        <div class="brand">
-            <a [routerLink]="'/'" class="text-brand-primary flex items-center no-underline space-x-1">
+  <aside class="sidebar">
+    <div class="brand">
+      <a [routerLink]="'/'" class="text-brand-primary flex items-center no-underline space-x-1">
+        <svg class="w-8 h-8 text-brand-primary" app-icon-logo></svg>
 
-                <svg class="w-8 h-8 text-brand-primary" app-icon-logo></svg>
+        <span class="font-display fs-md font-bold hidden sm:block">AirBbcitos</span>
+      </a>
+    </div>
+    <nav>
+      <a routerLink="/admin/users" routerLinkActive="active">
+        <i class="ri-team-line"></i> Usuarios
+      </a>
+      <a routerLink="/admin/listings" routerLinkActive="active">
+        <i class="ri-home-5-line"></i> Roles
+      </a>
+      <a routerLink="/admin/claims" routerLinkActive="active">
+        <i class="ri-calendar-check-line"></i> Permisos
+      </a>
+    </nav>
+  </aside>
 
-                <span class="font-display fs-md font-bold hidden sm:block">AirBbcitos</span>
+  <main class="main">
+    <header class="topbar">
+      <div class="spacer"></div>
+      <div class="user">
+        <img *ngIf="avatarUrl" [src]="avatarUrl" [alt]="user?.username" />
+        <span *ngIf="user">{{ user.username }}</span>
+      </div>
+    </header>
 
-            </a>
-        </div>
-        <nav>
-            <a routerLink="/admin/users" routerLinkActive="active">
-                <i class="ri-team-line"></i> Usuarios
-            </a>
-            <a routerLink="/admin/listings" routerLinkActive="active">
-                <i class="ri-home-5-line"></i> Roles
-            </a>
-            <a routerLink="/admin/claims" routerLinkActive="active">
-                <i class="ri-calendar-check-line"></i> Permisos
-            </a>
-        </nav>
-    </aside>
-
-    <main class="main">
-        <header class="topbar">
-            <div class="spacer"></div>
-            <div class="user">
-                <img src="https://i.pravatar.cc/40?img=2" alt="User" />
-                <span>Andres</span>
-            </div>
-        </header>
-
-        <section class="content">
-            <router-outlet></router-outlet>
-        </section>
-    </main>
+    <section class="content">
+      <router-outlet></router-outlet>
+    </section>
+  </main>
 </div>
