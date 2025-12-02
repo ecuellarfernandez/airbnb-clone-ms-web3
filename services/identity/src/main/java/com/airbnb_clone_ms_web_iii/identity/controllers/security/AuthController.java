@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.function.EntityResponse;
+
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("api/auth")
@@ -26,7 +29,7 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public StandardResult<TokenAuth> login(@RequestBody LoginDTO loginDTO){
+    public ResponseEntity<StandardResult<TokenAuth>> login(@RequestBody LoginDTO loginDTO){
         StandardResult<TokenAuth> result = new StandardResult<>();
         try{
             User theUser = userService.loginUser(loginDTO);
@@ -38,14 +41,14 @@ public class AuthController {
         }catch (Exception ex){
             result.setSuccess(false);
             result.setErrorMessage(ex.getMessage());
-            return result;
         }
 
-        return result;
+        return status(result.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                .body(result);
     }
 
     @PostMapping("/register")
-    public StandardResult<TokenAuth> register(@RequestBody RegisterDTO registerDTO){
+    public ResponseEntity<StandardResult<TokenAuth>> register(@RequestBody RegisterDTO registerDTO){
         StandardResult<TokenAuth> result = new StandardResult<>();
         try{
             User newUser = userService.saveUser(registerDTO);
@@ -57,16 +60,16 @@ public class AuthController {
         }catch (Exception ex){
             result.setSuccess(false);
             result.setErrorMessage(ex.getMessage());
-            return result;
         }
 
-        return result;
+        return status(result.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
+                .body(result);
     }
 
 
     @GetMapping("/me")
-    public ResponseEntity getMe(@RequestHeader("Authorization") String authHeader){
-        StandardResult result = new StandardResult<>();
+    public ResponseEntity<StandardResult<UserDTO>> getMe(@RequestHeader("Authorization") String authHeader){
+        StandardResult<UserDTO> result = new StandardResult<>();
         try{
             String token = authHeader.replace("Bearer ", "");
             String username = jwtService.extractUsername(token);
@@ -79,8 +82,7 @@ public class AuthController {
             result.setErrorMessage(ex.getMessage());
         }
 
-        return ResponseEntity
-                .status(result.isSuccess() ? HttpStatus.OK : HttpStatus.UNAUTHORIZED)
+        return status(result.isSuccess() ? HttpStatus.OK : HttpStatus.BAD_REQUEST)
                 .body(result);
     }
 }
