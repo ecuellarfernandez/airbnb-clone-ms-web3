@@ -9,7 +9,7 @@ public class BookingDetailDTO {
 
     private UUID id;
     private UUID listingId;
-    private UUID guestId;
+    private Integer guestId;
 
     private LocalDate checkIn;
     private LocalDate checkOut;
@@ -27,7 +27,7 @@ public class BookingDetailDTO {
     public BookingDetailDTO() {
     }
 
-    public BookingDetailDTO(UUID id, UUID listingId, UUID guestId,
+    public BookingDetailDTO(UUID id, UUID listingId, Integer guestId,
                             LocalDate checkIn, LocalDate checkOut, Integer nights,
                             BigDecimal pricePerNight, BigDecimal totalPrice, String currency,
                             String status,
@@ -64,11 +64,11 @@ public class BookingDetailDTO {
         this.listingId = listingId;
     }
 
-    public UUID getGuestId() {
+    public Integer getGuestId() {
         return guestId;
     }
 
-    public void setGuestId(UUID guestId) {
+    public void setGuestId(Integer guestId) {
         this.guestId = guestId;
     }
 

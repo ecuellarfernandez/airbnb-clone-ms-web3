@@ -6,7 +6,7 @@ CREATE TABLE booking (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
 
     listing_id UUID NOT NULL,
-    guest_id UUID NOT NULL,
+    guest_id INTEGER NOT NULL,
 
     check_in DATE NOT NULL,
     check_out DATE NOT NULL,

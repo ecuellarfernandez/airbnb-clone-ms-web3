@@ -8,13 +8,13 @@ import java.util.UUID;
 
 public class GetBookingsByGuestQuery implements Command<List<BookingSummaryDTO>>{
 
-    private final UUID guestId;
+    private final Integer guestId;
 
-    public GetBookingsByGuestQuery(UUID guestId) {
+    public GetBookingsByGuestQuery(Integer guestId) {
         this.guestId = guestId;
     }
 
-    public UUID getGuestId() {
+    public Integer getGuestId() {
         return guestId;
     }
 

@@ -32,9 +32,20 @@ public class KafkaEventListener {
             JsonNode root = objectMapper.readTree(rawEventMessage);
 
             String eventName = root.path("event_name").asText(null);
+
+            if (eventName == null) {
+                log.error("[KAFKA] event_name is null in message: {}", rawEventMessage);
+                return;
+            }
+
             JsonNode eventValue = root.path("event_value");
 
+            if (eventValue.isMissingNode() || eventValue.isNull()) {
+                eventValue = root.path("data");
+            }
+
             log.info("➡ Event name: {}", eventName);
+            log.info("➡ Event value: {}", eventValue.toString());
 
             // Example: call domain logic / service
             this.handlePaymentEvent(eventName, eventValue);
@@ -64,11 +75,16 @@ public class KafkaEventListener {
 
     private void handlePaymentCompleted(JsonNode eventValue) {
         String paymentId = eventValue.path("id").asText();
-        String reservationId = eventValue.path("reservation_id").asText();
+        String reservationId = eventValue.path("reservation_id").asText(null);
 
         log.info("Processing PAYMENT_COMPLETED for paymentId={}, reservationId={}", paymentId, reservationId);
 
         try {
+            if (reservationId == null || reservationId.isBlank()) {
+                log.error("Missing reservation_id in PAYMENT_COMPLETED event");
+                return;
+            }
+
             UUID bookingId = UUID.fromString(reservationId);
 
             ConfirmBookingFromPaymentCommand command = new ConfirmBookingFromPaymentCommand(bookingId);
@@ -82,11 +98,17 @@ public class KafkaEventListener {
     }
 
     private void handlePaymentFailed(JsonNode eventValue) {
-        String reservationId = eventValue.path("reservation_id").asText();
+        String paymentId = eventValue.path("id").asText();
+        String reservationId = eventValue.path("reservation_id").asText(null);
 
         log.info("Processing PAYMENT_FAILED / PAYMENT_REJECTED for reservation: {}", reservationId);
 
         try {
+            if (reservationId == null || reservationId.isBlank()) {
+                log.error("Missing reservation_id in PAYMENT_FAILED event");
+                return;
+            }
+
             UUID bookingId = UUID.fromString(reservationId);
 
             RejectBookingFromPaymentCommand command = new RejectBookingFromPaymentCommand(bookingId);

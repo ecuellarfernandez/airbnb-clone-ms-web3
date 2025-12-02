@@ -37,7 +37,7 @@ public class BookingController {
     @PostMapping
     @Operation(summary = "Crear reserva (solicitud de reservar)")
     public ResponseEntity<StandardResult<BookingDetailDTO>> create(
-            @RequestHeader("X-User-Id") UUID guestId,
+            @RequestHeader("X-User-Id") Integer guestId,
             @Valid @RequestBody CreateBookingDTO dto
     ) {
         logger.info("Creating booking for listing " + dto.getListingId() + " by guest " + guestId);
@@ -61,7 +61,7 @@ public class BookingController {
     @GetMapping("/me")
     @Operation(summary = "Obtener reservas del huésped autenticado")
     public ResponseEntity<StandardResult<List<BookingSummaryDTO>>> getMyBookings(
-            @RequestHeader("X-User-Id") UUID guestId
+            @RequestHeader("X-User-Id") Integer guestId
     ) {
         GetBookingsByGuestQuery query = new GetBookingsByGuestQuery(guestId);
         List<BookingSummaryDTO> bookings = pipeline.send(query);
@@ -82,7 +82,7 @@ public class BookingController {
     @Operation(summary = "Cancelar reserva")
     public ResponseEntity<StandardResult<Void>> cancel(
             @PathVariable UUID id,
-            @RequestHeader("X-User-Id") UUID guestId
+            @RequestHeader("X-User-Id") Integer guestId
     ) {
         CancelBookingCommand command = new CancelBookingCommand(id, guestId);
         pipeline.send(command);

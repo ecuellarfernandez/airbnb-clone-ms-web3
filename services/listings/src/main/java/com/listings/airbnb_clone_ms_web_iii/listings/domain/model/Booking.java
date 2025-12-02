@@ -17,7 +17,7 @@ public class Booking {
     private UUID listingId;
 
     @Column(name = "guest_id", nullable = false)
-    private UUID guestId;
+    private Integer guestId;
 
     @Column(name = "check_in", nullable = false)
     private LocalDate checkIn;
@@ -50,7 +50,7 @@ public class Booking {
     public Booking() {
     }
 
-    public Booking(UUID id, UUID listingId, UUID guestId, LocalDate checkIn, LocalDate checkOut,
+    public Booking(UUID id, UUID listingId, Integer guestId, LocalDate checkIn, LocalDate checkOut,
                    Integer nights, BigDecimal pricePerNight, BigDecimal totalPrice,
                    String currency, BookingStatus status,
                    LocalDateTime createdAt, LocalDateTime updatedAt) {
@@ -111,11 +111,11 @@ public class Booking {
         this.listingId = listingId;
     }
 
-    public UUID getGuestId() {
+    public Integer getGuestId() {
         return guestId;
     }
 
-    public void setGuestId(UUID guestId) {
+    public void setGuestId(Integer guestId) {
         this.guestId = guestId;
     }
 
