@@ -8,6 +8,7 @@ import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.repositories.users.UserRepository;
 import com.airbnb_clone_ms_web_iii.identity.services.roles.RoleService;
 import com.airbnb_clone_ms_web_iii.identity.utils.security.SecurityUtils;
+import com.airbnb_clone_ms_web_iii.identity.utils.value_objects.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
+        Email emailVo = Email.of(email);
+        return userRepository.findByEmail(emailVo)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -82,7 +84,7 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Username already exists");
         }
 
-        Optional <User> existingEmail = userRepository.findByEmail(registerDTO.getEmail());
+        Optional <User> existingEmail = userRepository.findByEmail(Email.of(registerDTO.getEmail()));
         if(existingEmail.isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }

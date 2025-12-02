@@ -9,8 +9,11 @@ import com.airbnb_clone_ms_web_iii.identity.dtos.users.UserDTO;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("api/users")
@@ -93,7 +96,7 @@ public class UserController {
     }
 
     @PutMapping("/{id}/add-role/{roleId}")
-    public StandardResult<UserDTO> addRoleToUser(
+    public ResponseEntity<StandardResult<UserDTO>> addRoleToUser(
             @RequestHeader(value = "X-User-Id", required = false) Long requesterId,
             @PathVariable("id") Long id,
             @PathVariable("roleId") Long roleId
@@ -114,7 +117,7 @@ public class UserController {
         }catch (Exception ex){
             result.setSuccess(false);
             result.setErrorMessage(ex.getMessage());
-            return result;
+            return status(result.isSuccess() ? 200 : 400).body(result);
         }
 
         try{
@@ -130,11 +133,11 @@ public class UserController {
             System.out.println("Failed to send ROLE_ADDED_TO_USER event: " + ex.getMessage());
         }
 
-        return result;
+        return status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PutMapping("/{id}/remove-role/{roleId}")
-    public StandardResult<UserDTO> removeRoleFromUser(
+    public ResponseEntity<StandardResult<UserDTO>> removeRoleFromUser(
             @RequestHeader(value = "X-User-Id", required = false) Long requesterId,
             @PathVariable("id") Long id,
             @PathVariable("roleId") Long roleId
@@ -155,7 +158,7 @@ public class UserController {
         }catch (Exception ex){
             result.setSuccess(false);
             result.setErrorMessage(ex.getMessage());
-            return result;
+            return status(result.isSuccess() ? 200 : 400).body(result);
         }
 
         try{
@@ -171,7 +174,7 @@ public class UserController {
             System.out.println("Failed to send ROLE_ADDED_TO_USER event: " + ex.getMessage());
         }
 
-        return result;
+        return status(result.isSuccess() ? 200 : 400).body(result);
     }
 
 }
