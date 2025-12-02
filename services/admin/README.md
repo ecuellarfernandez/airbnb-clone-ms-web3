@@ -16,11 +16,11 @@ docker-compose up -d
 
 3. Crear el entorno virtual (de no haberlo hecho ya)
 ````shell
-python -m venv venv
+python -m .venv .venv
 ````
 Y activarlo (en Windows)
 ````shell
-venv\Scripts\activate
+.venv\Scripts\activate
 ````
 
 4. Ejecutar el comando para instalar las dependencias

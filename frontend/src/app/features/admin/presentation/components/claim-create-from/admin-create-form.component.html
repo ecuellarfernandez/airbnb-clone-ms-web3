@@ -1,0 +1,22 @@
+<div class="modal-backdrop"></div>
+<div class="modal">
+  <h3>Crear nuevo Claim</h3>
+  <form (ngSubmit)="onSubmit()">
+    <label>
+      Nombre:
+      <input type="text" [(ngModel)]="claim.name" name="name" required />
+    </label>
+    <label>
+      Descripción:
+      <textarea [(ngModel)]="claim.description" name="description" required></textarea>
+    </label>
+    <label>
+      Activo:
+      <input type="checkbox" [(ngModel)]="claim.active" name="active" />
+    </label>
+    <div class="modal-actions">
+      <button type="submit" class="btn-save">Guardar</button>
+      <button type="button" class="btn-cancel" (click)="onCancel()">Cancelar</button>
+    </div>
+  </form>
+</div>
