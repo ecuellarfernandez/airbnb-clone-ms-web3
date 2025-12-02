@@ -81,7 +81,7 @@ public class ListingController {
 
     @GetMapping("/host/{hostId}")
     @Operation(summary = "Obtener listings de un anfitrión")
-    public ResponseEntity<StandardResult<List<ListingSummaryDTO>>> getByHost(@PathVariable UUID hostId) {
+    public ResponseEntity<StandardResult<List<ListingSummaryDTO>>> getByHost(@PathVariable Integer hostId) {
         logger.info("Getting listings by host: " + hostId);
 
         GetListingsByHostQuery query = new GetListingsByHostQuery(hostId);
