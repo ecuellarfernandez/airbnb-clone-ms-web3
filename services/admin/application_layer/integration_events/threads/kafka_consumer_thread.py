@@ -48,14 +48,17 @@ class KafkaConsumerThread(threading.Thread):
     def _process_message(self, message):
         topic_name = message.topic
         event_value = message.value
-        event_name = event_value.get('eventType')
+        event_name = event_value.get('eventType') or event_value.get('event_name')
 
         print("-" * 50)
         print(f"[KAFKA] Topic: {topic_name}")
         print(f"[KAFKA] Event Name (Type): {event_name}")
         print(f"[KAFKA] Raw Value: {event_value}")
         print("-" * 50)
-        event_processor.handle_event(topic_name=topic_name, event_name=event_name, event_value=event_value)
+        try:
+            event_processor.handle_event(topic_name=topic_name, event_name=event_name, event_value=event_value)
+        except Exception as e:
+            print(f"[KAFKA] while processing event {event_name}: {e}")
 
     def stop(self):
         """Sets the event flag to signal the thread to stop."""

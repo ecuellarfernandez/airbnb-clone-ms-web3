@@ -1,6 +1,6 @@
 package com.airbnb_clone_ms_web_iii.identity.services.roles;
 
-import com.airbnb_clone_ms_web_iii.identity.dtos.events.roles.ClaimAddedEvent;
+import com.airbnb_clone_ms_web_iii.identity.dtos.integration_events.roles.ClaimAddedIntegrationEvent;
 import com.airbnb_clone_ms_web_iii.identity.models.roles.Claim;
 import com.airbnb_clone_ms_web_iii.identity.models.roles.Role;
 import com.airbnb_clone_ms_web_iii.identity.repositories.roles.ClaimRepository;
@@ -58,7 +58,7 @@ public class RoleService {
 
         //if role has a claim with the same id, do nothing
         if(role.getClaims().stream().anyMatch(c -> c.getId().equals(claim.getId()))){
-            ClaimAddedEvent event = new ClaimAddedEvent(1L, claim, roleId);
+            ClaimAddedIntegrationEvent event = new ClaimAddedIntegrationEvent(1L, claim, roleId);
             kafkaTemplate.send(ROLE_TOPIC, event);
             return role;
         }
@@ -68,7 +68,7 @@ public class RoleService {
 
         try{
             //Fixe user id to 1L for until I implement the JWT and all the auth flow
-            ClaimAddedEvent event = new ClaimAddedEvent(1L, claim, roleId);
+            ClaimAddedIntegrationEvent event = new ClaimAddedIntegrationEvent(1L, claim, roleId);
             kafkaTemplate.send(ROLE_TOPIC, event);
         }catch (Exception ex){
             System.out.println("Failed to send Kafka event: " + ex.getMessage());

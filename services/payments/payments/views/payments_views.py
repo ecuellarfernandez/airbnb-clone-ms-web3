@@ -77,11 +77,27 @@ class PaymentsViewSet(ModelViewSet):
             return Response(resp.__dict__, status=status.HTTP_400_BAD_REQUEST)
 
         command = CreatePaymentForReservationCommand(payment_data=payment_data, user_id=payment_data.get("user_id", 0))
-        payment_instance = command.execute()
+
+        try:
+            payment_instance = command.execute()
+        except ValueError as e:
+            resp = StandardResponse(
+                success=False,
+                message=str(e),
+                data=None
+            )
+            return Response(resp.__dict__, status=status.HTTP_400_BAD_REQUEST)
+
+        acceptance_message = ""
+        success = payment_instance.status == "SUCCESS"
+        if payment_instance.status != "SUCCESS":
+            acceptance_message = "However The payment failed"
+        else:
+            acceptance_message = "The payment was successful"
 
         resp = StandardResponse(
-            success=True,
-            message="Payment for reservation created.",
+            success=success,
+            message=f"Payment for reservation created. {acceptance_message}",
             data=self.get_serializer(payment_instance).data
         )
         return Response(resp.__dict__, status=status.HTTP_201_CREATED)
