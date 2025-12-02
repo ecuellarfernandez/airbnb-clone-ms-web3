@@ -1,10 +1,9 @@
 <div class="admin">
   <aside class="sidebar">
     <div class="brand">
-      <a [routerLink]="'/'" class="text-brand-primary flex items-center no-underline space-x-1">
-        <svg class="w-8 h-8 text-brand-primary" app-icon-logo></svg>
-
-        <span class="font-display fs-md font-bold hidden sm:block">AirBbcitos</span>
+      <a [routerLink]="'/'" class="flex items-center">
+        <svg class="logo-icon" app-icon-logo></svg>
+        <span class="logo-text">AirBbcitos</span>
       </a>
     </div>
     <nav>
@@ -23,9 +22,51 @@
   <main class="main">
     <header class="topbar">
       <div class="spacer"></div>
-      <div class="user">
-        <img *ngIf="avatarUrl" [src]="avatarUrl" [alt]="user?.username" />
-        <span *ngIf="user">{{ user.username }}</span>
+      
+      <!-- Theme Toggle -->
+      <button class="theme-toggle" (click)="themeService.toggleTheme()" 
+              [attr.aria-label]="themeService.theme === 'dark' ? 'Cambiar a tema claro' : 'Cambiar a tema oscuro'"
+              title="Cambiar tema">
+        <!-- Sol para modo oscuro -->
+        <svg *ngIf="themeService.theme === 'dark'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          class="icon theme-icon">
+          <circle cx="24" cy="14" r="8"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="M4.93 4.93l1.41 1.41"></path>
+          <path d="M17.66 17.66l1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="M6.34 17.66l-1.41 1.41"></path>
+          <path d="M19.07 4.93l-1.41 1.41"></path>
+        </svg>
+        <!-- Luna para modo claro -->
+        <svg *ngIf="themeService.theme === 'light'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          class="icon theme-icon">
+          <path d="M21 12.79A9 9 0 0111.21 3 7 7 0 1019 14.79 9.05 9.05 0 0121 12.79z" />
+        </svg>
+      </button>
+      
+      <div class="user-menu">
+        <div class="user" (click)="toggleUserMenu()">
+          <img *ngIf="avatarUrl" [src]="avatarUrl" [alt]="user?.username" />
+          <span *ngIf="user">{{ user.username }}</span>
+          <i class="ri-arrow-down-s-line"></i>
+        </div>
+        
+        <div class="dropdown" *ngIf="showUserMenu">
+          <a routerLink="/users/profile" class="dropdown-item">
+            <i class="ri-user-line"></i>
+            <span>Mi Perfil</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <button (click)="logout()" class="dropdown-item logout">
+            <i class="ri-logout-box-line"></i>
+            <span>Cerrar Sesión</span>
+          </button>
+        </div>
       </div>
     </header>
 

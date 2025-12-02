@@ -137,30 +137,51 @@ export class AdminRolesPageComponent implements OnInit {
         });
     }
 
+
     removeClaimFromRole(claimName: string): void {
         if (!this.selectedRole) {
+            this.errorMessage = 'No se ha seleccionado ningún rol.';
             return;
         }
 
         const claim = this.availableClaims.find(c => c.name === claimName);
         if (!claim) {
-            this.errorMessage = 'Claim no encontrado';
+            this.errorMessage = `El claim "${claimName}" no fue encontrado.`;
+            return;
+        }
+
+        const confirmMessage = `¿Estás seguro de que quieres eliminar el permiso "${claimName}" de este rol?`;
+        if (!confirm(confirmMessage)) {
             return;
         }
 
         this.errorMessage = '';
         this.successMessage = '';
 
-        this.adminRolesService.removeClaimFromRole(this.selectedRole.id, claim.id).pipe(
+        const roleId = this.selectedRole.id;
+
+        this.adminRolesService.removeClaimFromRole(roleId, claim.id).pipe(
             catchError(error => {
-                this.errorMessage = 'Error al remover claim: ' + error.message;
+                this.errorMessage = `Error al remover el claim: ${error.message}`;
                 return of(null);
             })
         ).subscribe(response => {
-            if (response && response.success && response.data) {
-                this.selectedRole = response.data;
-                this.successMessage = 'Claim removido exitosamente';
-                setTimeout(() => this.successMessage = '', 3000);
+            if (response && response.success) {
+                if (response.data) {
+                    this.selectedRole = response.data;
+                    this.successMessage = `Claim "${claimName}" removido exitosamente.`;
+                    setTimeout(() => this.successMessage = '', 3000);
+                } else {
+                    this.adminRolesService.getRoleById(roleId).subscribe(roleResponse => {
+                        if (roleResponse && roleResponse.success && roleResponse.data) {
+                            this.selectedRole = roleResponse.data;
+                        }
+                        this.successMessage = `Claim "${claimName}" removido exitosamente.`;
+                        setTimeout(() => this.successMessage = '', 3000);
+                    });
+                }
+            } else if (response) {
+                this.errorMessage = `No se pudo remover el claim "${claimName}".`;
             }
         });
     }

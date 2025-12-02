@@ -164,9 +164,9 @@
 
                 <!-- Claims List -->
                 <div class="claims-list" *ngIf="selectedRole.claims && selectedRole.claims.length > 0">
-                    <div *ngFor="let claim of selectedRole.claims" class="claim-item">
-                        <div class="claim-name">{{ claim }}</div>
-                        <button (click)="removeClaimFromRole(claim)" 
+                    <div *ngFor="let claimName of selectedRole.claims" class="claim-item">
+                        <div class="claim-name">{{ claimName }}</div>
+                        <button (click)="removeClaimFromRole(claimName)" 
                                 class="btn-remove-claim"
                                 title="Remover permiso">
                             ✕

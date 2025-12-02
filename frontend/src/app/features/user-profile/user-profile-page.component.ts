@@ -1,24 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileSidebarComponent } from '../../shared/ui/sidebar/profile-sidebar.component';
-
-interface User {
-  name: string;
-  bio: string;
-  email: string;
-  phone: string;
-  location: string;
-  memberSince: string;
-  isVerified: boolean;
-  avatar: string | null;
-  stats: {
-    totalReservations: number;
-    reviewsWritten: number;
-    favorites: number;
-  };
-  languages: string[];
-  interests: string[];
-}
+import { AuthService } from '@features/auth/domain/services/auth.service';
+import { User } from '@features/users/domain/models/user.model';
 
 @Component({
   selector: 'app-user-profile-page',
@@ -27,24 +11,44 @@ interface User {
   templateUrl: './user-profile-page.component.html',
   styleUrls: ['./user-profile-page.component.scss']
 })
-export class UserProfilePageComponent {
-  user: User = {
-    name: 'María García',
-    bio: 'Amante de los viajes y exploradora de nuevos destinos. Siempre buscando la próxima aventura.',
-    email: 'maria.garcia@example.com',
-    phone: '+34 612 345 678',
-    location: 'Madrid, España',
-    memberSince: 'Marzo 2023',
-    isVerified: true,
-    avatar: null, // Ruta a la imagen en assets
-    stats: {
-      totalReservations: 12,
-      reviewsWritten: 8,
-      favorites: 24
-    },
-    languages: ['Español', 'Inglés', 'Francés'],
-    interests: ['Viajes', 'Fotografía', 'Gastronomía', 'Naturaleza', 'Arte']
-  };
+export class UserProfilePageComponent implements OnInit {
+  user: User | null = null;
+  avatarUrl: string = '';
+  isLoading: boolean = true;
+  errorMessage: string = '';
 
+  constructor(private authService: AuthService) {}
 
+  ngOnInit(): void {
+    this.loadCurrentUser();
+  }
+
+  loadCurrentUser(): void {
+    this.isLoading = true;
+    this.authService.getCurrentUser().subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          this.user = response.data;
+          this.avatarUrl = this.generateAvatarUrl(this.user);
+        } else {
+          this.errorMessage = response.errorMessage || 'Error al cargar usuario';
+        }
+        this.isLoading = false;
+      },
+      error: (error) => {
+        this.errorMessage = 'Error al cargar información del usuario';
+        this.isLoading = false;
+        console.error('Error loading user:', error);
+      }
+    });
+  }
+
+  private generateAvatarUrl(user: User): string {
+    const name = `${user.firstName || ''} ${user.lastName || ''}`.trim() || user.username;
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=random&size=256`;
+  }
+
+  getRoleNames(): string {
+    return this.user?.roles.map(role => role.name).join(', ') || 'Sin roles';
+  }
 }

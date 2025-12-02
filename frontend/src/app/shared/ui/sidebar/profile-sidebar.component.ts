@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { RouterModule, Router } from '@angular/router';
+import { AuthService } from '@features/auth/domain/services/auth.service';
 
 @Component({
   selector: 'app-profile-sidebar',
@@ -10,8 +11,13 @@ import { RouterModule } from '@angular/router';
   styleUrls: ['./profile-sidebar-component.scss']
 })
 export class ProfileSidebarComponent {
-  // Aquí podrías agregar lógica para cerrar sesión
+  constructor(
+    private authService: AuthService,
+    private router: Router
+  ) {}
+
   logout() {
-    console.log('Cerrando sesión...');
+    this.authService.logout();
+    this.router.navigate(['/auth/login']);
   }
 }
