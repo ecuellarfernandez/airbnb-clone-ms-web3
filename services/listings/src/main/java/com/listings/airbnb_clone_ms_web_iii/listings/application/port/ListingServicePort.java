@@ -37,7 +37,7 @@ public interface ListingServicePort {
     /**
      * Obtiene listings de un anfitrión.
      */
-    List<ListingSummaryDTO> findByHostId(UUID hostId);
+    List<ListingSummaryDTO> findByHostId(Integer hostId);
 
     /**
      * Busca listings con filtros.

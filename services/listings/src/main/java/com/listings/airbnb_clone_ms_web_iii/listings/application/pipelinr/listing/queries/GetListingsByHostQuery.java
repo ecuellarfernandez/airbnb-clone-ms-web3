@@ -8,13 +8,13 @@ import java.util.UUID;
 
 public class GetListingsByHostQuery implements Command<List<ListingSummaryDTO>> {
 
-    private final UUID hostId;
+    private final Integer hostId;
 
-    public GetListingsByHostQuery(UUID hostId) {
+    public GetListingsByHostQuery(Integer hostId) {
         this.hostId = hostId;
     }
 
-    public UUID getHostId() {
+    public Integer getHostId() {
         return hostId;
     }
 }

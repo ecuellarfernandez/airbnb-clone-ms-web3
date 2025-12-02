@@ -155,7 +155,7 @@ public class ListingApplicationService implements ListingServicePort {
      */
     @Override
     @Transactional(readOnly = true)
-    public List<ListingSummaryDTO> findByHostId(UUID hostId) {
+    public List<ListingSummaryDTO> findByHostId(Integer hostId) {
         List<Listing> listings = listingRepository.findByHostId(hostId);
         return listingMapper.toSummaryDTOList(listings);
     }
