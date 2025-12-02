@@ -1,0 +1,187 @@
+<div class="card">
+    <header class="cardHeader">
+        <h2>Roles del Sistema</h2>
+    </header>
+
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+    </div>
+
+    <div *ngIf="isLoading" class="loading">
+        Cargando roles...
+    </div>
+
+    <table *ngIf="!isLoading && roles.length > 0">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Descripción</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr *ngFor="let role of roles">
+                <td>
+                    <span class="role-id">#{{ role.id }}</span>
+                </td>
+
+                <td>
+                    <span class="role-name badge"
+                          [class.admin]="role.name === 'ADMIN'"
+                          [class.host]="role.name === 'HOST'"
+                          [class.client]="role.name === 'CLIENT'">
+                        {{ role.name }}
+                    </span>
+                </td>
+
+                <td class="muted">
+                    {{ role.description || 'Sin descripción' }}
+                </td>
+
+                <td>
+                    <span class="badge status"
+                          [class.active]="role.active"
+                          [class.inactive]="!role.active">
+                        {{ role.active ? 'Activo' : 'Inactivo' }}
+                    </span>
+                </td>
+
+                <td>
+                    <button 
+                        (click)="viewRoleDetail(role.id)"
+                        class="btn-detail"
+                        [disabled]="isLoadingDetail">
+                        Ver detalle
+                    </button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div *ngIf="!isLoading && roles.length === 0" class="empty-state">
+        <p>No se encontraron roles</p>
+    </div>
+
+    <div *ngIf="!isLoading && roles.length > 0" class="pagination">
+        <div class="pagination-info">
+            Mostrando {{ (currentPage * pageSize) + 1 }} - {{ Math.min((currentPage + 1) * pageSize, totalElements) }} de {{ totalElements }} roles
+        </div>
+        
+        <div class="pagination-controls">
+            <button 
+                (click)="previousPage()"
+                [disabled]="currentPage === 0"
+                class="btn-pagination">
+                ← Anterior
+            </button>
+            
+            <span class="page-indicator">
+                Página {{ currentPage + 1 }} de {{ totalPages }}
+            </span>
+            
+            <button 
+                (click)="nextPage()"
+                [disabled]="isLastPage"
+                class="btn-pagination">
+                Siguiente →
+            </button>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="selectedRole" class="modal-overlay" (click)="closeDetail()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+        <header class="modal-header">
+            <h3>Detalle del Rol</h3>
+            <button class="btn-close" (click)="closeDetail()">✕</button>
+        </header>
+
+        <div class="modal-body">
+            <div *ngIf="isLoadingDetail" class="loading">
+                Cargando datos...
+            </div>
+
+            <div *ngIf="errorMessage" class="error-message">
+                {{ errorMessage }}
+            </div>
+            <div *ngIf="successMessage" class="success-message">
+                {{ successMessage }}
+            </div>
+
+            <div class="role-info">
+                <div class="info-row">
+                    <span class="label">ID:</span>
+                    <span class="value">#{{ selectedRole.id }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="label">Nombre:</span>
+                    <span class="badge role-name"
+                          [class.admin]="selectedRole.name === 'ADMIN'"
+                          [class.host]="selectedRole.name === 'HOST'"
+                          [class.client]="selectedRole.name === 'CLIENT'">
+                        {{ selectedRole.name }}
+                    </span>
+                </div>
+
+                <div class="info-row">
+                    <span class="label">Descripción:</span>
+                    <span class="value">{{ selectedRole.description || 'Sin descripción' }}</span>
+                </div>
+
+                <div class="info-row">
+                    <span class="label">Estado:</span>
+                    <span class="badge status"
+                          [class.active]="selectedRole.active"
+                          [class.inactive]="!selectedRole.active">
+                        {{ selectedRole.active ? 'Activo' : 'Inactivo' }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="claims-section">
+                <h4>Claims / Permisos</h4>
+
+                <!-- Add Claim Form -->
+                <div class="add-claim-form">
+                    <select [(ngModel)]="selectedClaimId" 
+                            [disabled]="isAddingClaim || getAvailableClaimsToAdd().length === 0"
+                            class="claim-select">
+                        <option [ngValue]="null">Seleccione un permiso</option>
+                        <option *ngFor="let claim of getAvailableClaimsToAdd()" [ngValue]="claim.id">
+                            {{ claim.name }} - {{ claim.description }}
+                        </option>
+                    </select>
+                    <button (click)="addClaimToRole()" 
+                            [disabled]="!selectedClaimId || isAddingClaim"
+                            class="btn-add-claim">
+                        {{ isAddingClaim ? 'Agregando...' : 'Agregar' }}
+                    </button>
+                </div>
+
+                <!-- Claims List -->
+                <div class="claims-list" *ngIf="selectedRole.claims && selectedRole.claims.length > 0">
+                    <div *ngFor="let claim of selectedRole.claims" class="claim-item">
+                        <div class="claim-name">{{ claim }}</div>
+                        <button (click)="removeClaimFromRole(claim)" 
+                                class="btn-remove-claim"
+                                title="Remover permiso">
+                            ✕
+                        </button>
+                    </div>
+                </div>
+
+                <div class="empty-claims" *ngIf="!selectedRole.claims || selectedRole.claims.length === 0">
+                    <p>Este rol no tiene claims asignados</p>
+                </div>
+            </div>
+        </div>
+
+        <footer class="modal-footer">
+            <button class="btn-secondary" (click)="closeDetail()">Cerrar</button>
+        </footer>
+    </div>
+</div>

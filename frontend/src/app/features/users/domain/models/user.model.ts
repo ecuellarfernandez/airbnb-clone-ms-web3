@@ -1,8 +1,15 @@
+export interface Claim {
+    id: number;
+    name: string;
+    description: string;
+}
+
 export interface Role {
     id: number;
     active: boolean;
     description: string;
     name: string;
+    claims?: string[]; // Array de strings con los nombres de los claims
 }
 
 export interface User {
