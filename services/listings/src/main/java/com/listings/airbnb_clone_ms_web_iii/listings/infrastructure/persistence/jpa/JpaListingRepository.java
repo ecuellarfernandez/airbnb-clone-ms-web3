@@ -17,7 +17,7 @@ import java.util.UUID;
  */
 public interface JpaListingRepository extends JpaRepository<Listing, UUID> {
 
-    List<Listing> findByHostId(UUID hostId);
+    List<Listing> findByHostId(Integer hostId);
 
     List<Listing> findByIsActiveTrue();
 

@@ -51,7 +51,7 @@ public class ListingRepositoryAdapter implements ListingRepository {
     }
 
     @Override
-    public List<Listing> findByHostId(UUID hostId) {
+    public List<Listing> findByHostId(Integer hostId) {
         return jpaRepository.findByHostId(hostId);
     }
 
