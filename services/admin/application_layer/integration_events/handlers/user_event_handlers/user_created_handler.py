@@ -1,8 +1,8 @@
 from audit_logs.models import AuditLog
+from audit_logs.models.audit_log_models import actions
 from domain_layer.events.event_data import EventData
 from domain_layer.events.event_handler import EventHandlerInterface
-
-import json
+from audit_logs.models.actions_constants import CREATE
 
 class UserCreatedHandler(EventHandlerInterface):
 
@@ -12,11 +12,11 @@ class UserCreatedHandler(EventHandlerInterface):
         timestamp = data.get('timestamp')
 
         audit_log = AuditLog(
-            action="CREATE",
+            action=CREATE,
             user_id=user_id,
             description=f"User created with ID: {user_id} at {timestamp}",
             entity_name="Users",
-            new_value=json.dumps(data)
+            new_value=str(data),
         )
 
         audit_log.save()

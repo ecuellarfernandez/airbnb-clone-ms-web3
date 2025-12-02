@@ -70,6 +70,9 @@ KAFKA_CONFIG = {
     'TOPICS_TO_LISTEN' : [
         'user_events',
         'role_events',
+        'payment_events',
+        'booking_events',
+        'listing_events',
     ],
     'CONSUMER_GROUP_ID' : 'admin_service_group',
 }

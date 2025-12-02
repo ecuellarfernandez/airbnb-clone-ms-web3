@@ -15,6 +15,11 @@ class CreatePaymentForReservationCommand(CommandInterface):
         self.user_id = user_id
 
     def execute(self) -> Payment:
+
+        if self._successful_payment_exists():
+            raise ValueError("A successful payment already exists for this reservation and amount.")
+
+
         payment_obj = Payment(
             reservation_id=self.payment_data.get("reservation_id", "0000-0000-0000-0000"),
             amount=self.payment_data.get("amount", 0.0),
@@ -41,11 +46,14 @@ class CreatePaymentForReservationCommand(CommandInterface):
 
         payment_obj.save()
 
+        payment_dict = model_to_dict(payment_obj)
+        payment_dict["created_at"] = str(payment_obj.created_at)
+
         if (payment_obj.status != "SUCCESS"):
             event_obj = EventData(
                 topic_name=Topics.PAYMENT_EVENTS.value,
                 event_name=Events.PAYMENT_FAILED.value,
-                event_value=model_to_dict(payment_obj)
+                event_value=payment_dict
             )
             # send event
             try:
@@ -61,7 +69,7 @@ class CreatePaymentForReservationCommand(CommandInterface):
             event_obj = EventData(
                 topic_name=Topics.PAYMENT_EVENTS.value,
                 event_name=Events.PAYMENT_COMPLETED.value,
-                event_value=model_to_dict(payment_obj)
+                event_value=payment_dict
             )
             # send event
             try:
@@ -76,4 +84,11 @@ class CreatePaymentForReservationCommand(CommandInterface):
         return payment_obj
 
 
+    def _successful_payment_exists(self) -> bool:
+        existing_payment = Payment.objects.filter(
+            reservation_id=self.payment_data.get("reservation_id", ""),
+            amount=self.payment_data.get("amount", 0.0),
+            user_id=self.payment_data.get("user_id", 0)
+        ).first()
 
+        return existing_payment is not None and existing_payment.status == "SUCCESS"

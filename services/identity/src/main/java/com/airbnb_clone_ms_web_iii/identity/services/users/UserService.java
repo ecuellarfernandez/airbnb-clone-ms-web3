@@ -2,7 +2,7 @@ package com.airbnb_clone_ms_web_iii.identity.services.users;
 
 import com.airbnb_clone_ms_web_iii.identity.dtos.auth.LoginDTO;
 import com.airbnb_clone_ms_web_iii.identity.dtos.auth.RegisterDTO;
-import com.airbnb_clone_ms_web_iii.identity.dtos.events.users.UserCreatedEvent;
+import com.airbnb_clone_ms_web_iii.identity.dtos.integration_events.users.UserCreatedIntegrationEvent;
 import com.airbnb_clone_ms_web_iii.identity.models.roles.Role;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.repositories.users.UserRepository;
@@ -101,7 +101,7 @@ public class UserService implements UserDetailsService {
 
         try{
 
-            UserCreatedEvent event = new UserCreatedEvent(newUser);
+            UserCreatedIntegrationEvent event = new UserCreatedIntegrationEvent(newUser);
 
             kafkaTemplate.send(USER_TOPIC, event);
             System.out.println("User created event sent for user: " + newUser.getUsername());
