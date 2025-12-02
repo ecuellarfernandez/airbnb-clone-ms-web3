@@ -115,6 +115,14 @@ export class AuthService {
     );
   }
 
+  getUserRoles(user: User): string[] {
+    return user.roles.map(role => role.name.toUpperCase());
+  }
+
+  hasRole(user: User, roleName: string): boolean {
+    return this.getUserRoles(user).includes(roleName.toUpperCase());
+  }
+
   
 
   logout(): void {
