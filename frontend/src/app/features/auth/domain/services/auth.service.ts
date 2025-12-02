@@ -1,9 +1,10 @@
 import { Injectable, PLATFORM_ID, Inject } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, throwError } from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { API_ENDPOINTS } from '@core/config/api.config';
+import { User } from '@app/features/users/domain/models/user.model';
 
 interface RegisterRequest {
   username: string;
@@ -92,12 +93,29 @@ export class AuthService {
     return this.tokenSubject.value;
   }
 
-  private getTokenFromStorage(): string | null {
+  public getTokenFromStorage(): string | null {
     if (this.isBrowser) {
       return localStorage.getItem(this.TOKEN_KEY);
     }
     return null;
   }
+
+  getCurrentUser(): Observable<StandardResult<User>>{
+    const token = this.getTokenFromStorage();
+
+        if (!token) {
+      return throwError(() => new Error('No authentication token found'));
+    }
+
+    return this.http.get<StandardResult<User>>(
+            `${this.API_URL}/me`,
+            {
+              headers: { Authorization: `Bearer ${token}` }
+            }
+    );
+  }
+
+  
 
   logout(): void {
     if (this.isBrowser) {
