@@ -113,12 +113,25 @@ public class BookingApplicationService implements BookingServicePort {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found with id: " + bookingId));
 
-        // Acá solo el huésped que la creó puede cancelar
-        if (!booking.getGuestId().equals(guestId)) {
+        // Si viene de UI (guestId != null), valido que el usuario sea el dueño
+        if (guestId != null && !booking.getGuestId().equals(guestId)) {
             throw new IllegalStateException("Only booking owner can cancel this booking");
         }
 
         booking.cancel();
+        bookingRepository.save(booking);
+    }
+
+    @Override
+    public  void confirm(UUID bookingId) {
+        Booking booking = bookingRepository.findById(bookingId)
+                .orElseThrow(() -> new IllegalArgumentException("Booking not found with id: " + bookingId));
+
+        if (booking.getStatus() != BookingStatus.PENDING) {
+            throw new IllegalStateException("Only pending bookings can be confirmed");
+        }
+
+        booking.confirm();
         bookingRepository.save(booking);
     }
 

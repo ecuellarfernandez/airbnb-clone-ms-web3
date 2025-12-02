@@ -23,4 +23,6 @@ public interface BookingServicePort {
     // Opcional: list bookings for a listing + date range
     List<BookingSummaryDTO> findByListingAndRange(UUID listingId, LocalDate start, LocalDate end);
 
+    // estoy añadiendo esto recién
+    void confirm(UUID bookingId);
 }
