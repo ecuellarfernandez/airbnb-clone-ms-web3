@@ -22,7 +22,7 @@ public interface ListingRepository {
 
     boolean existsById(UUID id);
 
-    List<Listing> findByHostId(UUID hostId);
+    List<Listing> findByHostId(Integer hostId);
 
     List<Listing> findAllActive();
 
