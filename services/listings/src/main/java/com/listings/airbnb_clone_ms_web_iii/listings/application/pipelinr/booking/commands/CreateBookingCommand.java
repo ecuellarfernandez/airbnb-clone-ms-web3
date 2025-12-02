@@ -8,15 +8,15 @@ import java.util.UUID;
 
 public class CreateBookingCommand implements Command<BookingDetailDTO> {
 
-    private final UUID guestId;
+    private final Integer guestId;
     private final CreateBookingDTO dto;
 
-    public CreateBookingCommand(UUID guestId, CreateBookingDTO dto) {
+    public CreateBookingCommand(Integer guestId, CreateBookingDTO dto) {
         this.guestId = guestId;
         this.dto = dto;
     }
 
-    public UUID getGuestId() {
+    public Integer getGuestId() {
         return guestId;
     }
 

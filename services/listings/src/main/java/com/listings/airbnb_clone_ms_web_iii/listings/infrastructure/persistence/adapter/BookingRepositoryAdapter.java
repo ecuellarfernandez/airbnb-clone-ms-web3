@@ -29,7 +29,7 @@ public class BookingRepositoryAdapter implements BookingRepository {
     }
 
     @Override
-    public List<Booking> findByGuestId(UUID guestId) {
+    public List<Booking> findByGuestId(Integer guestId) {
         return jpaRepository.findByGuestId(guestId);
     }
 

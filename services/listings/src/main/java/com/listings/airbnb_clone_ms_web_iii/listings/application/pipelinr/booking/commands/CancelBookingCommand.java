@@ -8,9 +8,9 @@ import java.util.UUID;
 public class CancelBookingCommand implements Command<Voidy> {
 
     private final UUID bookingId;
-    private final UUID guestId;
+    private final Integer guestId;
 
-    public CancelBookingCommand(UUID bookingId, UUID guestId) {
+    public CancelBookingCommand(UUID bookingId, Integer guestId) {
         this.bookingId = bookingId;
         this.guestId = guestId;
     }
@@ -19,7 +19,7 @@ public class CancelBookingCommand implements Command<Voidy> {
         return bookingId;
     }
 
-    public UUID getGuestId() {
+    public Integer getGuestId() {
         return guestId;
     }
 

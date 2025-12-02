@@ -12,7 +12,7 @@ public interface BookingRepository {
 
     Optional<Booking> findById(UUID id);
 
-    List<Booking> findByGuestId(UUID guestId);
+    List<Booking> findByGuestId(Integer guestId);
 
     List<Booking> findByListingId(UUID listingId);
 

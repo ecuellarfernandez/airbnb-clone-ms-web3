@@ -40,7 +40,7 @@ public class BookingApplicationService implements BookingServicePort {
     }
 
     @Override
-    public BookingDetailDTO create(UUID guestId, CreateBookingDTO dto) {
+    public BookingDetailDTO create(Integer guestId, CreateBookingDTO dto) {
 
 
         Listing listing = listingRepository.findByIdWithRelations(dto.getListingId())
@@ -98,7 +98,7 @@ public class BookingApplicationService implements BookingServicePort {
 
     @Override
     @Transactional(readOnly = true)
-    public List<BookingSummaryDTO> findByGuestId(UUID guestId) {
+    public List<BookingSummaryDTO> findByGuestId(Integer guestId) {
         return bookingMapper.toSummaryDTOList(bookingRepository.findByGuestId(guestId));
     }
 
@@ -109,7 +109,7 @@ public class BookingApplicationService implements BookingServicePort {
     }
 
     @Override
-    public void cancel(UUID bookingId, UUID guestId) {
+    public void cancel(UUID bookingId, Integer guestId) {
         Booking booking = bookingRepository.findById(bookingId)
                 .orElseThrow(() -> new IllegalArgumentException("Booking not found with id: " + bookingId));
 
