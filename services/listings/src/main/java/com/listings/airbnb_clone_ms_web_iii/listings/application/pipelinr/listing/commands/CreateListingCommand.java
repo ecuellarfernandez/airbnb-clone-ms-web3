@@ -8,8 +8,10 @@ import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Listing;
 public class CreateListingCommand implements Command<ListingDetailDTO> {
 
     public CreateListingDTO createListingDTO;
+    public Integer userId = 0;
 
-    public CreateListingCommand(CreateListingDTO createListingDTO) {
+    public CreateListingCommand(CreateListingDTO createListingDTO, Integer userId) {
         this.createListingDTO = createListingDTO;
+        this.userId = userId;
     }
 }

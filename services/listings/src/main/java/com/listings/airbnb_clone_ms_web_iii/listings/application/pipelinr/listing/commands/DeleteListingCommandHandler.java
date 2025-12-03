@@ -28,10 +28,9 @@ public class DeleteListingCommandHandler implements Command.Handler<DeleteListin
         UUID listingId = command.getListingId();
         listingService.delete(listingId);
 
-        String placeholderId = "0";
         BaseIntegrationEvent<UUID> event = new BaseIntegrationEvent<>(
                 listingId,
-                placeholderId,
+                command.userId.toString(),
                 ProducibleEvents.LISTING_DELETED
         );
         kafkaTemplate.send(ProducibleTopics.LISTING_EVENTS, event);

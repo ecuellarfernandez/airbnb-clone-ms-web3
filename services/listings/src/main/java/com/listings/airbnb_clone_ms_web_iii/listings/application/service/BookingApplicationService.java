@@ -10,6 +10,7 @@ import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Booking;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.BookingStatus;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Listing;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.BookingRepository;
+import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingImageRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.presentation.exception.ListingNotFoundException;
 import org.springframework.stereotype.Service;

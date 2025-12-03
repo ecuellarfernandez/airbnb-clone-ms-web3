@@ -46,10 +46,14 @@ public class ListingController {
     // CREATE
     @PostMapping
     @Operation(summary = "Crear listing")
-    public ResponseEntity<StandardResult<ListingDetailDTO>> create(@Valid @RequestBody CreateListingDTO dto) {
+    public ResponseEntity<StandardResult<ListingDetailDTO>> create(
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader,
+            @Valid @RequestBody CreateListingDTO dto
+    ) {
         logger.info("Creating listing: " + dto.getTitle());
 
-        CreateListingCommand command = new CreateListingCommand(dto);
+
+        CreateListingCommand command = new CreateListingCommand(dto, getUserIdFromHeader(userIdHeader));
         ListingDetailDTO created = pipeline.send(command);
 
         return ResponseEntity
@@ -151,10 +155,13 @@ public class ListingController {
 
     @PatchMapping("/{id}/publish")
     @Operation(summary = "Publicar listing")
-    public ResponseEntity<StandardResult<Void>> publish(@PathVariable UUID id) {
+    public ResponseEntity<StandardResult<Void>> publish(
+            @PathVariable UUID id,
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader
+    ) {
         logger.info("Publishing listing: " + id);
 
-        ActivateListingCommand command = new ActivateListingCommand(id);
+        ActivateListingCommand command = new ActivateListingCommand(id, getUserIdFromHeader(userIdHeader));
         pipeline.send(command);
 
         return ResponseEntity.ok(StandardResult.success(null, "Listing published successfully"));
@@ -162,10 +169,14 @@ public class ListingController {
 
     @PatchMapping("/{id}/unpublish")
     @Operation(summary = "Despublicar listing")
-    public ResponseEntity<StandardResult<Void>> unpublish(@PathVariable UUID id) {
+    public ResponseEntity<StandardResult<Void>> unpublish(
+            @PathVariable UUID id,
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader
+    )
+    {
         logger.info("Unpublishing listing: " + id);
 
-        DeactivateListingCommand command = new DeactivateListingCommand(id);
+        DeactivateListingCommand command = new DeactivateListingCommand(id, getUserIdFromHeader(userIdHeader));
         pipeline.send(command);
 
         return ResponseEntity.ok(StandardResult.success(null, "Listing unpublished successfully"));
@@ -175,10 +186,13 @@ public class ListingController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar listing")
-    public ResponseEntity<StandardResult<Void>> delete(@PathVariable UUID id) {
+    public ResponseEntity<StandardResult<Void>> delete(
+            @PathVariable UUID id,
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader
+    ) {
         logger.info("Deleting listing: " + id);
 
-        DeleteListingCommand command = new DeleteListingCommand(id);
+        DeleteListingCommand command = new DeleteListingCommand(id, getUserIdFromHeader(userIdHeader));
         pipeline.send(command);
 
         return ResponseEntity.ok(StandardResult.success(null, "Listing deleted successfully"));
@@ -192,5 +206,16 @@ public class ListingController {
             size = max;
         }
         return size;
+    }
+
+    private Integer getUserIdFromHeader(String userIdHeader) {
+        if (userIdHeader != null) {
+            try {
+                return Integer.parseInt(userIdHeader);
+            } catch (NumberFormatException e) {
+                logger.warning("Invalid X-User-Id header: " + userIdHeader);
+            }
+        }
+        return 0;
     }
 }

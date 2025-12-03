@@ -9,5 +9,6 @@ public interface ListingImageRepository {
     List<ListingImage> saveAll(List<ListingImage> listingImages);
     ListingImage save(ListingImage listingImage);
     void deleteById(UUID id);
+    void deleteAllByListingId(UUID listingId);
     List<ListingImage> findByListingId(UUID listingId);
 }
