@@ -1,6 +1,7 @@
 package com.airbnb_clone_ms_web_iii.identity.models.users;
 
 import com.airbnb_clone_ms_web_iii.identity.models.roles.Role;
+import com.airbnb_clone_ms_web_iii.identity.utils.value_objects.Email;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -37,8 +38,8 @@ public class User implements UserDetails {
 
     @Setter
     @Getter
-    @Column(unique = true, nullable = false)
-    public String email;
+    @Embedded
+    public Email email;
 
     @Setter
     @Getter
@@ -53,7 +54,7 @@ public class User implements UserDetails {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.email = email;
+        this.email = Email.of(email);
         this.passwordHash = passwordHash;
 
         this.createdAt = new Date();

@@ -1,6 +1,8 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.presentation.exception;
 
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.StandardResult;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -56,6 +58,25 @@ public class GlobalExceptionHandler {
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)
                 .body(StandardResult.error("Invalid input data", "VALIDATION_ERROR", errors));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<StandardResult<Map<String, String>>> handleConstraintViolation(
+            ConstraintViolationException ex) {
+        logger.warning("Constraint violation: " + ex.getMessage());
+
+        Map<String, String> errors = new HashMap<>();
+        for (ConstraintViolation<?> violation : ex.getConstraintViolations()) {
+            String propertyPath = violation.getPropertyPath().toString();
+            String message = violation.getMessage();
+            // Extraer solo el nombre del parámetro (después del último punto)
+            String paramName = propertyPath.substring(propertyPath.lastIndexOf('.') + 1);
+            errors.put(paramName, message);
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(StandardResult.error("Invalid request parameters", "VALIDATION_ERROR", errors));
     }
 
     @ExceptionHandler(Exception.class)
