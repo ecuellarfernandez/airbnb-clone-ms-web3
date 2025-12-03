@@ -1,6 +1,8 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.persistence.jpa;
 
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Listing;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -17,9 +19,9 @@ import java.util.UUID;
  */
 public interface JpaListingRepository extends JpaRepository<Listing, UUID> {
 
-    List<Listing> findByHostId(Integer hostId);
+    Page<Listing> findByHostId(Integer hostId, Pageable pageable);
 
-    List<Listing> findByIsActiveTrue();
+    Page<Listing> findByIsActiveTrue(Pageable pageable);
 
     @Query("SELECT l FROM Listing l WHERE LOWER(l.location.city) = LOWER(:city) AND l.isActive = true")
     List<Listing> findActiveByCityIgnoreCase(@Param("city") String city);
@@ -37,14 +39,14 @@ public interface JpaListingRepository extends JpaRepository<Listing, UUID> {
         AND (:maxPrice IS NULL OR l.price.amount <= :maxPrice)
         AND (:minCapacity IS NULL OR l.capacity >= :minCapacity)
         AND (:categoryId IS NULL OR c.id = :categoryId)
-        ORDER BY l.createdAt DESC
     """)
-    List<Listing> findByFilters(
+    Page<Listing> findByFilters(
             @Param("city") String city,
             @Param("minPrice") BigDecimal minPrice,
             @Param("maxPrice") BigDecimal maxPrice,
             @Param("minCapacity") Integer minCapacity,
-            @Param("categoryId") UUID categoryId
+            @Param("categoryId") UUID categoryId,
+            Pageable pageable
     );
 
     @Query("""
