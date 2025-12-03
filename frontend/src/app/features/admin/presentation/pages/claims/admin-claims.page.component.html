@@ -63,3 +63,15 @@
   (submit)="handleEditClaim($event)"
   (cancel)="handleCancelEdit()"
 ></app-admin-create-form>
+
+<!-- Modal de confirmación -->
+<app-confirmation-modal
+  [isOpen]="showConfirmModal"
+  [title]="confirmModalTitle"
+  [message]="confirmModalMessage"
+  confirmText="Eliminar"
+  cancelText="Cancelar"
+  [isDanger]="true"
+  (confirm)="onConfirmDelete()"
+  (cancel)="closeConfirmModal()"
+></app-confirmation-modal>

@@ -6,11 +6,12 @@ import { AdminClaimsService } from '@features/admin/services/admin-claims.servic
 import { Role } from '@features/users/domain/models/user.model';
 import { Claim } from '@features/users/domain/models/claim.model';
 import { catchError, of, forkJoin } from 'rxjs';
+import { ConfirmationModalComponent } from '@shared/ui/confirmation-modal/confirmation-modal.component';
 
 @Component({
     selector: 'app-admin-roles-page',
     standalone: true,
-    imports: [CommonModule, FormsModule],
+    imports: [CommonModule, FormsModule, ConfirmationModalComponent],
     templateUrl: './admin-roles.page.component.html',
     styleUrls: ['./admin-roles.page.component.scss']
 })
@@ -37,6 +38,12 @@ export class AdminRolesPageComponent implements OnInit {
     
     // Para template
     Math = Math;
+
+    // Modal de confirmación
+    showConfirmModal = false;
+    confirmModalTitle = '';
+    confirmModalMessage = '';
+    pendingRemoveClaimName: string | null = null;
 
     constructor(
         private adminRolesService: AdminRolesService,
@@ -150,8 +157,23 @@ export class AdminRolesPageComponent implements OnInit {
             return;
         }
 
-        const confirmMessage = `¿Estás seguro de que quieres eliminar el permiso "${claimName}" de este rol?`;
-        if (!confirm(confirmMessage)) {
+        this.confirmModalTitle = 'Eliminar Permiso';
+        this.confirmModalMessage = `¿Estás seguro de que quieres eliminar el permiso "${claimName}" de este rol?`;
+        this.pendingRemoveClaimName = claimName;
+        this.showConfirmModal = true;
+    }
+
+    onConfirmRemoveClaim(): void {
+        if (!this.pendingRemoveClaimName || !this.selectedRole) {
+            this.closeConfirmModal();
+            return;
+        }
+
+        const claimName = this.pendingRemoveClaimName;
+        const claim = this.availableClaims.find(c => c.name === claimName);
+        
+        if (!claim) {
+            this.closeConfirmModal();
             return;
         }
 
@@ -180,10 +202,17 @@ export class AdminRolesPageComponent implements OnInit {
                         setTimeout(() => this.successMessage = '', 3000);
                     });
                 }
-            } else if (response) {
-                this.errorMessage = `No se pudo remover el claim "${claimName}".`;
+            } else {
+                this.errorMessage = 'No se pudo remover el claim.';
             }
         });
+
+        this.closeConfirmModal();
+    }
+
+    closeConfirmModal(): void {
+        this.showConfirmModal = false;
+        this.pendingRemoveClaimName = null;
     }
 
     // Métodos de paginación
