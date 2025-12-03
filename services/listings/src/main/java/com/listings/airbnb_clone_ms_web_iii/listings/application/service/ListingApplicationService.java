@@ -1,5 +1,6 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.application.service;
 
+import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.PagedResult;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.CreateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.UpdateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingDetailDTO;
@@ -13,6 +14,8 @@ import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingRe
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingImageRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.domain_services.ListingDomainService;
 import com.listings.airbnb_clone_ms_web_iii.listings.presentation.exception.ListingNotFoundException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -119,16 +122,23 @@ public class ListingApplicationService implements ListingServicePort {
     // ========================================
 
     /**
-     * Obtiene todos los listings activos.
+     * Obtiene todos los listings activos con paginación.
      *
-     * @return Lista de listings en formato summary
+     * @param pageable Información de paginación
+     * @return Resultado paginado de listings en formato summary
      */
     @Override
     @Transactional(readOnly = true)
-    public List<ListingSummaryDTO> findAllActive() {
-        List<Listing> listings = listingRepository.findAllActive();
+    public PagedResult<ListingSummaryDTO> findAllActive(Pageable pageable) {
+        Page<Listing> page = listingRepository.findAllActive(pageable);
+        List<ListingSummaryDTO> dtos = listingMapper.toSummaryDTOList(page.getContent());
 
-        return listingMapper.toSummaryDTOList(listings);
+        return new PagedResult<>(
+                dtos,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
     }
 
     /**
@@ -148,43 +158,59 @@ public class ListingApplicationService implements ListingServicePort {
     }
 
     /**
-     * Obtiene todos los listings de un anfitrión específico.
+     * Obtiene todos los listings de un anfitrión específico con paginación.
      *
      * @param hostId ID del anfitrión
-     * @return Lista de listings del anfitrión
+     * @param pageable Información de paginación
+     * @return Resultado paginado de listings del anfitrión
      */
     @Override
     @Transactional(readOnly = true)
-    public List<ListingSummaryDTO> findByHostId(Integer hostId) {
-        List<Listing> listings = listingRepository.findByHostId(hostId);
-        return listingMapper.toSummaryDTOList(listings);
+    public PagedResult<ListingSummaryDTO> findByHostId(Integer hostId, Pageable pageable) {
+        Page<Listing> page = listingRepository.findByHostId(hostId, pageable);
+        List<ListingSummaryDTO> dtos = listingMapper.toSummaryDTOList(page.getContent());
+
+        return new PagedResult<>(
+                dtos,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
     }
 
     /**
-     * Busca listings aplicando filtros múltiples.
+     * Busca listings aplicando filtros múltiples con paginación.
      *
      * @param city Ciudad (opcional)
      * @param minPrice Precio mínimo (opcional)
      * @param maxPrice Precio máximo (opcional)
      * @param minCapacity Capacidad mínima (opcional)
      * @param categoryId ID de categoría (opcional)
-     * @return Lista de listings que cumplen con los filtros
+     * @param pageable Información de paginación
+     * @return Resultado paginado de listings que cumplen con los filtros
      */
     @Override
     @Transactional(readOnly = true)
-    public List<ListingSummaryDTO> findByFilters(
+    public PagedResult<ListingSummaryDTO> findByFilters(
             String city,
             BigDecimal minPrice,
             BigDecimal maxPrice,
             Integer minCapacity,
-            UUID categoryId
+            UUID categoryId,
+            Pageable pageable
     ) {
-
-        List<Listing> listings = listingRepository.findByFilters(
-                city, minPrice, maxPrice, minCapacity, categoryId
+        Page<Listing> page = listingRepository.findByFilters(
+                city, minPrice, maxPrice, minCapacity, categoryId, pageable
         );
 
-        return listingMapper.toSummaryDTOList(listings);
+        List<ListingSummaryDTO> dtos = listingMapper.toSummaryDTOList(page.getContent());
+
+        return new PagedResult<>(
+                dtos,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
     }
 
     // ========================================
