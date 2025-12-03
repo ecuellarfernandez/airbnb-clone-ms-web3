@@ -1,3 +1,11 @@
+from application_layer.integration_events.handlers.listing_event_handlers.listing_activated_handler import \
+    ListingActivatedHandler
+from application_layer.integration_events.handlers.listing_event_handlers.listing_created_handler import \
+    ListingCreatedHandler
+from application_layer.integration_events.handlers.listing_event_handlers.listing_deactivated_handler import \
+    ListingDeactivatedHandler
+from application_layer.integration_events.handlers.listing_event_handlers.listing_deleted_handler import \
+    ListingDeletedHandler
 from application_layer.integration_events.handlers.payment_event_handlers.payment_completed_handler import \
     PaymentCompletedHandler
 from application_layer.integration_events.handlers.payment_event_handlers.payment_failed_handler import \
@@ -61,4 +69,31 @@ def global_event_registration(event_processor):
         Topics.PAYMENT_EVENTS.value,
         Events.PAYMENT_FAILED.value,
         PaymentFailedHandler()
+    )
+
+    """
+        REGISTRO DE EVENTOS DE LISTINGS
+    """
+    event_processor.event_router.register_event(
+        Topics.LISTING_EVENTS.value,
+        Events.LISTING_CREATED.value,
+        ListingCreatedHandler()
+    )
+
+    event_processor.event_router.register_event(
+        Topics.LISTING_EVENTS.value,
+        Events.LISTING_ACTIVATED.value,
+        ListingActivatedHandler()
+    )
+
+    event_processor.event_router.register_event(
+        Topics.LISTING_EVENTS.value,
+        Events.LISTING_DEACTIVATED.value,
+        ListingDeactivatedHandler()
+    )
+
+    event_processor.event_router.register_event(
+        Topics.LISTING_EVENTS.value,
+        Events.LISTING_DELETED.value,
+        ListingDeletedHandler()
     )

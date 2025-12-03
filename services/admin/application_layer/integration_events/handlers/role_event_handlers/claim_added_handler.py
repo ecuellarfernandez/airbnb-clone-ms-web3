@@ -20,6 +20,7 @@ class ClaimAddedHandler(EventHandlerInterface):
             user_id=user_id,
             description=f"Claim added with ID: {claim_id} to Role ID: {role_id}",
             entity_name="Roles",
+            entity_id=role_id,
             new_value=json.dumps(event_value)
         )
 

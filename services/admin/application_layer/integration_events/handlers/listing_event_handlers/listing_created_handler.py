@@ -1,21 +1,23 @@
 ﻿
 from audit_logs.models import AuditLog
 from domain_layer.events.event_handler import EventHandlerInterface
+from audit_logs.models.actions_constants import CREATE
 
-class ListingCreated(EventHandlerInterface):
+class ListingCreatedHandler(EventHandlerInterface):
 
     def execute(self, event_value: dict):
         data = event_value.get("data", {}) or event_value.get("event_value", {})
-        user_id = event_value.get('user_id') or data.get('userId', {})
+        user_id = event_value.get('user_id') or event_value.get('userId', 0)
+        timestamp = event_value.get('timestamp')
 
         listing_id = data.get('id')
+        host_id  = data.get('host_id', "-")
         title = data.get('title')
-        timestamp = data.get('created_at')
 
         audit_log = AuditLog(
-            action="CREATE",
+            action=CREATE,
             user_id=user_id,
-            description=f"Listing created with title '{title}'",
+            description=f"Listing created with title '{title} by host {host_id}'",
             entity_name="Listings",
             entity_id=listing_id,
             new_value=str(data),

@@ -8,9 +8,11 @@ import java.util.UUID;
 public class DeleteListingCommand implements Command<Voidy> {
 
     private final UUID listingId;
+    public Integer userId = 0;
 
-    public DeleteListingCommand(UUID listingId) {
+    public DeleteListingCommand(UUID listingId, Integer userId) {
         this.listingId = listingId;
+        this.userId = userId;
     }
 
     public UUID getListingId() {

@@ -28,10 +28,9 @@ public class DeactivateListingCommandHandler implements Command.Handler<Deactiva
         UUID listingId = command.getListingId();
         listingService.deactivate(listingId);
 
-        String placeholderId = "0";
         BaseIntegrationEvent<UUID> event = new BaseIntegrationEvent<>(
                 listingId,
-                placeholderId,
+                command.userId.toString(),
                 ProducibleEvents.LISTING_DEACTIVATED
         );
         kafkaTemplate.send(ProducibleTopics.LISTING_EVENTS, event);
