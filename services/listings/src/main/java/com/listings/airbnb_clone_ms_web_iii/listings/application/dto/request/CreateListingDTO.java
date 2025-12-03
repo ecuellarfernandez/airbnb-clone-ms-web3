@@ -10,7 +10,7 @@ import java.util.UUID;
 public class CreateListingDTO {
 
     @NotNull(message = "Host ID is required")
-    private UUID hostId;
+    private Integer hostId;
 
     @NotBlank(message = "Title is required")
     @Size(min = 10, max = 100, message = "Title must be between 10 and 100 characters")
@@ -49,7 +49,7 @@ public class CreateListingDTO {
 
     public CreateListingDTO() {}
 
-    public CreateListingDTO(UUID hostId, String title, String description, LocationDTO location, PriceDTO price, Integer capacity, Integer bedrooms, Integer bathrooms, Set<UUID> categoryIds, Set<UUID> amenityIds, List<CreateListingImageDTO> images) {
+    public CreateListingDTO(Integer hostId, String title, String description, LocationDTO location, PriceDTO price, Integer capacity, Integer bedrooms, Integer bathrooms, Set<UUID> categoryIds, Set<UUID> amenityIds, List<CreateListingImageDTO> images) {
         this.hostId = hostId;
         this.title = title;
         this.description = description;
@@ -63,11 +63,11 @@ public class CreateListingDTO {
         this.images = images;
     }
 
-    public UUID getHostId() {
+    public Integer getHostId() {
         return hostId;
     }
 
-    public void setHostId(UUID hostId) {
+    public void setHostId(Integer hostId) {
         this.hostId = hostId;
     }
 
@@ -156,7 +156,7 @@ public class CreateListingDTO {
     };
 
     public static class CreateListingDTOBuilder {
-        private UUID hostId;
+        private Integer hostId;
         private String title;
         private String description;
         private LocationDTO location;
@@ -168,7 +168,7 @@ public class CreateListingDTO {
         private Set<UUID> amenityIds;
         private List<CreateListingImageDTO> images;
 
-        public  CreateListingDTOBuilder hostId(UUID hostId) {
+        public  CreateListingDTOBuilder hostId(Integer hostId) {
             this.hostId = hostId;
             return this;
         }

@@ -8,7 +8,7 @@ CREATE TABLE listing (
     -- Información básica
     title VARCHAR(100) NOT NULL,
     description VARCHAR(1000) NOT NULL,
-    host_id UUID NOT NULL,
+    host_id INTEGER NOT NULL,
 
     -- Ubicación (Value Object: Location)
     city VARCHAR(100),

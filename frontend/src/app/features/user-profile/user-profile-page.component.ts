@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, OnInit, PLATFORM_ID, Inject } from '@angular/core';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
 import { ProfileSidebarComponent } from '../../shared/ui/sidebar/profile-sidebar.component';
 import { AuthService } from '@features/auth/domain/services/auth.service';
 import { User } from '@features/users/domain/models/user.model';
@@ -16,14 +16,27 @@ export class UserProfilePageComponent implements OnInit {
   avatarUrl: string = '';
   isLoading: boolean = true;
   errorMessage: string = '';
+  private isBrowser: boolean;
 
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    @Inject(PLATFORM_ID) platformId: Object
+  ) {
+    this.isBrowser = isPlatformBrowser(platformId);
+  }
 
   ngOnInit(): void {
-    this.loadCurrentUser();
+    // Solo cargar usuario en el navegador, NO en SSR
+    if (this.isBrowser) {
+      this.loadCurrentUser();
+    }
   }
 
   loadCurrentUser(): void {
+    if (!this.isBrowser) {
+      return;
+    }
+
     this.isLoading = true;
     this.authService.getCurrentUser().subscribe({
       next: (response) => {

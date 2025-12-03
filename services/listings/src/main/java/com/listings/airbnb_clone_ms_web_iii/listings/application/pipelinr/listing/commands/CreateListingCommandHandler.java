@@ -27,11 +27,9 @@ public class CreateListingCommandHandler implements Command.Handler<CreateListin
         // Ejecutar lógica de creación
         ListingDetailDTO listing = listingService.create(createListingCommand.createListingDTO);
 
-        // Publicar evento de integración
-        String placeholderId = "0";
         BaseIntegrationEvent<ListingDetailDTO> event = new BaseIntegrationEvent<>(
                 listing,
-                placeholderId,
+                createListingCommand.userId.toString(),
                 ProducibleEvents.LISTING_CREATED
         );
         kafkaTemplate.send(ProducibleTopics.LISTING_EVENTS, event);

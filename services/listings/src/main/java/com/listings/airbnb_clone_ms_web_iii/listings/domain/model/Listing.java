@@ -14,7 +14,7 @@ public class Listing {
     private UUID id;
 
     @Column(name = "host_id", nullable = false)
-    private UUID hostId;
+    private Integer hostId;
 
     @Column(length = 100, nullable = false)
     private String title;
@@ -74,7 +74,7 @@ public class Listing {
     public Listing() {
     }
 
-    public Listing(UUID id, UUID hostId, String title, String description, Location location, Price price, Integer capacity, Integer bedrooms, Integer bathrooms, List<ListingImage> images, Set<Category> categories, Set<Amenity> amenities, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public Listing(UUID id, Integer hostId, String title, String description, Location location, Price price, Integer capacity, Integer bedrooms, Integer bathrooms, List<ListingImage> images, Set<Category> categories, Set<Amenity> amenities, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.hostId = hostId;
         this.title = title;
@@ -173,11 +173,11 @@ public class Listing {
         this.id = id;
     }
 
-    public UUID getHostId() {
+    public Integer getHostId() {
         return hostId;
     }
 
-    public void setHostId(UUID hostId) {
+    public void setHostId(Integer hostId) {
         this.hostId = hostId;
     }
 
@@ -292,7 +292,7 @@ public class Listing {
 
     public static class ListingBuilder {
         private UUID id;
-        private UUID hostId;
+        private Integer hostId;
         private String title;
         private String description;
         private Location location;
@@ -312,7 +312,7 @@ public class Listing {
             return this;
         }
 
-        public ListingBuilder hostId(UUID hostId) {
+        public ListingBuilder hostId(Integer hostId) {
             this.hostId = hostId;
             return this;
         }

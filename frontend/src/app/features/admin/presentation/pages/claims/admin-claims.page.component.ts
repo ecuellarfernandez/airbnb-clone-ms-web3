@@ -5,11 +5,12 @@ import { AdminFacade } from '@features/admin/application/admin.facade';
 import { AdminClaimsService } from '@features/admin/services/admin-claims.service';
 import { Observable } from 'rxjs';
 import { AdminCreateFormComponent } from '../../components/claim-create-from/admin-create-form.component';
+import { ConfirmationModalComponent } from '@shared/ui/confirmation-modal/confirmation-modal.component';
 
 @Component({
   selector: 'app-admin-claims-page',
   standalone: true,
-  imports: [CommonModule, FormsModule, AdminCreateFormComponent],
+  imports: [CommonModule, FormsModule, AdminCreateFormComponent, ConfirmationModalComponent],
   templateUrl: './admin-claims.page.component.html',
   styleUrls: ['./admin-claims.page.component.scss'],
 })
@@ -22,6 +23,12 @@ export class AdminClaimsPageComponent implements OnInit {
   isLoading = false;
   showCreateModel = false;
   editClaim: any = null;
+
+  // Modal de confirmación
+  showConfirmModal = false;
+  confirmModalTitle = '';
+  confirmModalMessage = '';
+  pendingDeleteClaimId: number | null = null;
 
   constructor(private facade: AdminFacade, private claimsService: AdminClaimsService) {
     this.claims$ = this.facade.claims$;
@@ -115,11 +122,22 @@ export class AdminClaimsPageComponent implements OnInit {
 
   confirmDeleteClaim(claim: any): void {
     const claimName = claim.key || claim.name || claim.claim || `ID ${claim.id}`;
-    const confirmMessage = `¿Estás seguro de que quieres eliminar el claim "${claimName}"?\n\nEsta acción no se puede deshacer.`;
-    
-    if (confirm(confirmMessage)) {
-      this.onDeleteClaim(claim.id);
+    this.confirmModalTitle = 'Eliminar Claim';
+    this.confirmModalMessage = `¿Estás seguro de que quieres eliminar el claim "${claimName}"? Esta acción no se puede deshacer.`;
+    this.pendingDeleteClaimId = claim.id;
+    this.showConfirmModal = true;
+  }
+
+  onConfirmDelete(): void {
+    if (this.pendingDeleteClaimId !== null) {
+      this.onDeleteClaim(this.pendingDeleteClaimId);
     }
+    this.closeConfirmModal();
+  }
+
+  closeConfirmModal(): void {
+    this.showConfirmModal = false;
+    this.pendingDeleteClaimId = null;
   }
 
   onDeleteClaim(id: number): void {

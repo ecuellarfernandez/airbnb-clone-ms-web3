@@ -28,10 +28,9 @@ public class ActivateListingCommandHandler implements Command.Handler<ActivateLi
         UUID listingId = command.getListingId();
         listingService.activate(listingId);
 
-        String placeholderId = "0";
         BaseIntegrationEvent<UUID> event = new BaseIntegrationEvent<>(
                 listingId,
-                placeholderId,
+                command.userId.toString(),
                 ProducibleEvents.LISTING_ACTIVATED
         );
         kafkaTemplate.send(ProducibleTopics.LISTING_EVENTS, event);

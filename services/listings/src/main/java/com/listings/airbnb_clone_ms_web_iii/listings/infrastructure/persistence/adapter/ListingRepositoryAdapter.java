@@ -3,6 +3,8 @@ package com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.persistence
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Listing;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.persistence.jpa.JpaListingRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -51,13 +53,13 @@ public class ListingRepositoryAdapter implements ListingRepository {
     }
 
     @Override
-    public List<Listing> findByHostId(UUID hostId) {
-        return jpaRepository.findByHostId(hostId);
+    public Page<Listing> findByHostId(Integer hostId, Pageable pageable) {
+        return jpaRepository.findByHostId(hostId, pageable);
     }
 
     @Override
-    public List<Listing> findAllActive() {
-        return jpaRepository.findByIsActiveTrue();
+    public Page<Listing> findAllActive(Pageable pageable) {
+        return jpaRepository.findByIsActiveTrue(pageable);
     }
 
     @Override
@@ -76,14 +78,14 @@ public class ListingRepositoryAdapter implements ListingRepository {
     }
 
     @Override
-    public List<Listing> findByFilters(
+    public Page<Listing> findByFilters(
             String city,
             BigDecimal minPrice,
             BigDecimal maxPrice,
             Integer minCapacity,
-            UUID categoryId
+            UUID categoryId,
+            Pageable pageable
     ) {
-
-        return jpaRepository.findByFilters(city, minPrice, maxPrice, minCapacity, categoryId);
+        return jpaRepository.findByFilters(city, minPrice, maxPrice, minCapacity, categoryId, pageable);
     }
 }

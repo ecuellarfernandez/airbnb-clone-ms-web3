@@ -185,3 +185,15 @@
         </footer>
     </div>
 </div>
+
+<!-- Modal de confirmación -->
+<app-confirmation-modal
+    [isOpen]="showConfirmModal"
+    [title]="confirmModalTitle"
+    [message]="confirmModalMessage"
+    confirmText="Eliminar"
+    cancelText="Cancelar"
+    [isDanger]="true"
+    (confirm)="onConfirmRemoveClaim()"
+    (cancel)="closeConfirmModal()"
+></app-confirmation-modal>

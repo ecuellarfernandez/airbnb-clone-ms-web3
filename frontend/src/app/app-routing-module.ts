@@ -37,7 +37,7 @@ const routes: Routes = [
   },
   {
     path: 'users',
-    canActivate: [authGuard],
+    canActivateChild: [authGuard],
     children: [
       {
         path: 'profile',
