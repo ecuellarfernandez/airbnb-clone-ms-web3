@@ -7,6 +7,7 @@ import { AdminReservationsPageComponent } from './pages/reservations/admin-reser
 import { AdminClaimsPageComponent } from './pages/claims/admin-claims.page.component';
 import { AdminUsersPageComponent } from './pages/users/admin-users.page.component';
 import { AdminRolesPageComponent } from './pages/roles/admin-roles.page.component';
+import { AuditLogsPageComponent } from './pages/audit-log/admin-auditlog.page';
 
 const routes: Routes = [
     {
@@ -14,12 +15,10 @@ const routes: Routes = [
         component: AdminLayoutComponent,
         children: [
             { path: '', redirectTo: 'listings', pathMatch: 'full' },
-            // { path: 'dashboard', component: AdminDashboardPageComponent },
-            // { path: 'listings', component: AdminListingsPageComponent },
-            // { path: 'reservations', component: AdminReservationsPageComponent },
             { path: 'claims', component: AdminClaimsPageComponent },
             { path: 'users', component: AdminUsersPageComponent },
-            { path: 'roles', component: AdminRolesPageComponent }
+            { path: 'roles', component: AdminRolesPageComponent },
+            { path: 'audit-logs', component: AuditLogsPageComponent}
         ]
     }
 ];

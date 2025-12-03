@@ -1,0 +1,66 @@
+.card {
+    padding: 1.5rem;
+    background: var(--surface);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border);
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+
+    h2 { margin: 0; }
+    
+    .search-wrapper {
+        min-width: 300px;
+    }
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    
+    th {
+        text-align: left;
+        padding: 1rem;
+        color: var(--text-2);
+        font-size: 0.875rem;
+        border-bottom: 1px solid var(--border);
+    }
+    
+    td {
+        padding: 1rem;
+        border-bottom: 1px solid var(--border);
+    }
+}
+
+.badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    background: var(--surface-2);
+    color: var(--text);
+
+    &.create { background: rgba(22, 163, 74, 0.15); color: #16a34a; }
+    &.update { background: rgba(14, 165, 233, 0.15); color: #0ea5e9; }
+    &.delete { background: rgba(239, 68, 68, 0.15); color: #ef4444; }
+}
+
+.description-cell {
+    max-width: 300px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--border);
+}
