@@ -113,6 +113,15 @@ export class AdminClaimsPageComponent implements OnInit {
     this.editClaim = null;
   }
 
+  confirmDeleteClaim(claim: any): void {
+    const claimName = claim.key || claim.name || claim.claim || `ID ${claim.id}`;
+    const confirmMessage = `¿Estás seguro de que quieres eliminar el claim "${claimName}"?\n\nEsta acción no se puede deshacer.`;
+    
+    if (confirm(confirmMessage)) {
+      this.onDeleteClaim(claim.id);
+    }
+  }
+
   onDeleteClaim(id: number): void {
     this.claimsService.deleteClaim(id).subscribe({
       next: (resp) => {
