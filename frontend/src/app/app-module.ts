@@ -22,7 +22,7 @@ import { authInterceptor } from '@core/interceptors/auth.interceptor';
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withInterceptors([authInterceptor])),
     { provide: AccommodationsRepository, useClass: AccommodationsRepositoryImpl },
-    provideClientHydration(withEventReplay())
+    provideClientHydration(withEventReplay()) 
   ],
   bootstrap: [App]
 })
