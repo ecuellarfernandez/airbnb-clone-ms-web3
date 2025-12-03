@@ -44,6 +44,12 @@ export class AuditLogsPageComponent implements OnInit {
     this.searchSubject.next(term);
   }
 
+  clearSearch(): void {
+    this.searchTerm = '';
+    this.currentPage = 1;
+    this.loadLogs();
+  }
+
   loadLogs(): void {
     this.isLoading = true;
     const filters: AuditLogFilters = {
