@@ -45,6 +45,14 @@ security:
 server:
   port: ${LISTINGS_PORT:5003}
 
+# Configuración de paginación
+pagination:
+  default-page-size: 10
+  max-page-size: 20
+  default-page: 0
+  default-sort-by: createdAt
+  default-sort-direction: DESC
+
 management:
   endpoint:
     health:
