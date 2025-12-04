@@ -47,6 +47,8 @@ public class ListingRepositoryAdapter implements ListingRepository {
         jpaRepository.deleteById(id);
     }
 
+
+
     @Override
     public boolean existsById(UUID id) {
         return jpaRepository.existsById(id);
@@ -87,5 +89,10 @@ public class ListingRepositoryAdapter implements ListingRepository {
             Pageable pageable
     ) {
         return jpaRepository.findByFilters(city, minPrice, maxPrice, minCapacity, categoryId, pageable);
+    }
+
+    @Override
+    public Page<Listing> findAllForAdmin(String city, BigDecimal minPrice, BigDecimal maxPrice, Integer minCapacity, UUID categoryId, Pageable pageable) {
+        return jpaRepository.findAllForAdmin(city, minPrice, maxPrice, minCapacity, categoryId, pageable);
     }
 }

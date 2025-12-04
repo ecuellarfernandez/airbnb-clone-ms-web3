@@ -50,6 +50,25 @@ public interface JpaListingRepository extends JpaRepository<Listing, UUID> {
     );
 
     @Query("""
+        SELECT DISTINCT l FROM Listing l 
+        LEFT JOIN l.categories c 
+        LEFT JOIN l.amenities a
+        WHERE (:city IS NULL OR l.location.city ILIKE %:city%)
+        AND (:minPrice IS NULL OR l.price.amount >= :minPrice)
+        AND (:maxPrice IS NULL OR l.price.amount <= :maxPrice)
+        AND (:minCapacity IS NULL OR l.capacity >= :minCapacity)
+        AND (:categoryId IS NULL OR c.id = :categoryId)
+    """)
+    Page<Listing> findAllForAdmin(
+            @Param("city") String city,
+            @Param("minPrice") BigDecimal minPrice,
+            @Param("maxPrice") BigDecimal maxPrice,
+            @Param("minCapacity") Integer minCapacity,
+            @Param("categoryId") UUID categoryId,
+            Pageable pageable
+    );
+
+    @Query("""
         SELECT l FROM Listing l
         LEFT JOIN FETCH l.images
         LEFT JOIN FETCH l.categories c
