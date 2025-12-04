@@ -4,6 +4,11 @@ import { AuthService } from '@features/auth/domain/services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+
+  if(req.url.includes('cloudinary.com')) {
+    return next(req);
+  }
+
   const token = authService.getToken();
 
   // Si existe token y la petición es hacia nuestra API, agregar el header Authorization
