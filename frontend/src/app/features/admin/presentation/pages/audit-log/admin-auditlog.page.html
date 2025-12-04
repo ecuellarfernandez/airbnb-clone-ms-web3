@@ -1,0 +1,87 @@
+<div class="card">
+    <div class="cardHeader">
+        <h2>Logs de Auditoría</h2>
+        
+        <div class="header-actions">
+            <div class="search-box">
+                <input 
+                    type="text" 
+                    [(ngModel)]="searchTerm"
+                    (keydown.enter)="loadLogs()"
+                    placeholder="Buscar en descripción..." 
+                    class="search-input" />
+                <button 
+                    (click)="loadLogs()"
+                    class="search-button"
+                    [disabled]="isLoading">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <path d="m21 21-4.35-4.35"></path>
+                    </svg>
+                </button>
+            </div>
+            
+
+        </div>
+    </div>
+
+    <div *ngIf="isLoading" class="loading-state">
+        Cargando registros...
+    </div>
+
+    <div class="table-container" *ngIf="!isLoading">
+        <table class="w-full">
+            <thead>
+                <tr>
+                    <th>Fecha</th>
+                    <th>Acción</th>
+                    <th>Entidad</th>
+                    <th>Usuario ID</th>
+                    <th>Descripción</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let log of logs">
+                    <td class="text-sm text-muted">
+                        {{ log.action_timestamp | date:'short' }}
+                    </td>
+                    <td>
+                        <span class="badge" 
+                              [class.create]="log.action === 'CREATE'"
+                              [class.update]="log.action === 'UPDATE'"
+                              [class.delete]="log.action === 'DELETE'">
+                            {{ log.action }}
+                        </span>
+                    </td>
+                    <td class="text-sm font-bold">
+                        {{ log.entity_name }} 
+                    </td>
+                    <td class="text-sm">
+                        {{ log.user_id || 'Sistema' }}
+                    </td>
+                    <td class="text-sm text-muted description-cell" [title]="log.description">
+                        {{ log.description }}
+                    </td>
+                </tr>
+                
+                <tr *ngIf="logs.length === 0">
+                    <td colspan="5" class="text-center py-4 text-muted">
+                        No se encontraron resultados.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination" *ngIf="totalItems > 0">
+        <button class="btn btn-sm btn-ghost" (click)="prevPage()" [disabled]="currentPage === 1">
+            Anterior
+        </button>
+        <span class="text-sm">
+            Página {{ currentPage }} de {{ totalPages }}
+        </span>
+        <button class="btn btn-sm btn-ghost" (click)="nextPage()" [disabled]="currentPage >= totalPages">
+            Siguiente
+        </button>
+    </div>
+</div>

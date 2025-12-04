@@ -1,11 +1,7 @@
-
-
-
 export const API_GATEWAY = 'http://localhost:9000';
 
 // Endpoints de microservicios a través del API Gateway
 export const API_ENDPOINTS = {
-
   IDENTITY: {
     BASE: `${API_GATEWAY}/api/identity-service`,
     AUTH: `${API_GATEWAY}/api/identity-service/auth`,
@@ -13,6 +9,7 @@ export const API_ENDPOINTS = {
     ROLES: `${API_GATEWAY}/api/identity-service/roles`,
     CLAIMS: `${API_GATEWAY}/api/identity-service/claims`,
   },
+  ADMIN: {
+    AUDIT_LOGS: `${API_GATEWAY}/api/admin-service/audit-logs`,
+  },
 } as const;
-  
-  
