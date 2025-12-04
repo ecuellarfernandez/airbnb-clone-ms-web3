@@ -51,12 +51,38 @@ export class LoginPageComponent implements OnInit {
     this.authService.login(loginData).subscribe({
       next: (response) => {
         if (response.success && response.data) {
-          // El token ya se guardó automáticamente en el servicio
-          this.router.navigate(['/']);
+          // El token ya se guardó, ahora obtener el usuario actual para redirigir según rol
+          this.authService.getCurrentUser().subscribe({
+            next: (userResponse) => {
+              if (userResponse.success && userResponse.data) {
+                const user = userResponse.data;
+                const roles = this.authService.getUserRoles(user);
+                
+                // Redirigir según el rol
+                if (roles.includes('ADMIN')) {
+                  this.router.navigate(['/admin']);
+                } else if (roles.includes('HOST')) {
+                  this.router.navigate(['/']);
+                } else if (roles.includes('CLIENT')) {
+                  this.router.navigate(['/']);
+                } else {
+                  this.router.navigate(['/']);
+                }
+              } else {
+                this.router.navigate(['/']);
+              }
+              this.isLoading = false;
+            },
+            error: () => {
+              // Si falla obtener el usuario, redirigir a home por defecto
+              this.router.navigate(['/']);
+              this.isLoading = false;
+            }
+          });
         } else {
           this.errorMessage = response.errorMessage || 'Login failed';
+          this.isLoading = false;
         }
-        this.isLoading = false;
       },
       error: (error) => {
         this.errorMessage = error.error?.errorMessage || 'Invalid username or password';

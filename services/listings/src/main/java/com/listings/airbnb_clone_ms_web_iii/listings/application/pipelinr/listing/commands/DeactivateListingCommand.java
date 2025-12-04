@@ -8,9 +8,11 @@ import java.util.UUID;
 public class DeactivateListingCommand implements Command<Voidy> {
 
     private final UUID listingId;
+    public Integer userId = 0;
 
-    public DeactivateListingCommand(UUID listingId) {
+    public DeactivateListingCommand(UUID listingId, Integer userId) {
         this.listingId = listingId;
+        this.userId = userId;
     }
 
     public UUID getListingId() {

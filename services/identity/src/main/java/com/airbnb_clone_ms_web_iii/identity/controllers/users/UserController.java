@@ -1,23 +1,31 @@
 package com.airbnb_clone_ms_web_iii.identity.controllers.users;
 
+import com.airbnb_clone_ms_web_iii.identity.dtos.integration_events.BaseIntegrationEvent;
+import com.airbnb_clone_ms_web_iii.identity.dtos.integration_events.EventTopics;
+import com.airbnb_clone_ms_web_iii.identity.dtos.integration_events.EventTypes;
 import com.airbnb_clone_ms_web_iii.identity.dtos.pojos.PagedResponse;
 import com.airbnb_clone_ms_web_iii.identity.dtos.pojos.StandardResult;
 import com.airbnb_clone_ms_web_iii.identity.dtos.users.UserDTO;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
-import com.airbnb_clone_ms_web_iii.identity.services.roles.RoleService;
 import com.airbnb_clone_ms_web_iii.identity.services.users.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import static org.springframework.http.ResponseEntity.status;
 
 @RestController
 @RequestMapping("api/users")
 public class UserController {
 
     private final UserService userService;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     @Autowired
-    public UserController(UserService userService) {
+    public UserController(UserService userService, KafkaTemplate<String, Object> kafkaTemplate) {
         this.userService = userService;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @GetMapping("/{id}")
@@ -87,10 +95,12 @@ public class UserController {
         return response;
     }
 
-
-
     @PutMapping("/{id}/add-role/{roleId}")
-    public StandardResult<UserDTO> addRoleToUser(@PathVariable("id") Long id, @PathVariable("roleId") Long roleId) {
+    public ResponseEntity<StandardResult<UserDTO>> addRoleToUser(
+            @RequestHeader(value = "X-User-Id", required = false) Long requesterId,
+            @PathVariable("id") Long id,
+            @PathVariable("roleId") Long roleId
+    ) {
         StandardResult<UserDTO> result = new StandardResult<>();
         try{
 
@@ -107,13 +117,31 @@ public class UserController {
         }catch (Exception ex){
             result.setSuccess(false);
             result.setErrorMessage(ex.getMessage());
-            return result;
+            return status(result.isSuccess() ? 200 : 400).body(result);
         }
-        return result;
+
+        try{
+            BaseIntegrationEvent<UserDTO> event = new BaseIntegrationEvent<>(
+                    requesterId != null ? requesterId.toString() : "0",
+                    EventTypes.ROLE_ADDED_TO_USER.toString(),
+                    result.getData()
+            );
+
+            kafkaTemplate.send(EventTopics.user_events.toString(), event);
+
+        }catch (Exception ex){
+            System.out.println("Failed to send ROLE_ADDED_TO_USER event: " + ex.getMessage());
+        }
+
+        return status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @PutMapping("/{id}/remove-role/{roleId}")
-    public StandardResult<UserDTO> removeRoleFromUser(@PathVariable("id") Long id, @PathVariable("roleId") Long roleId) {
+    public ResponseEntity<StandardResult<UserDTO>> removeRoleFromUser(
+            @RequestHeader(value = "X-User-Id", required = false) Long requesterId,
+            @PathVariable("id") Long id,
+            @PathVariable("roleId") Long roleId
+    ) {
         StandardResult<UserDTO> result = new StandardResult<>();
         try{
 
@@ -130,9 +158,23 @@ public class UserController {
         }catch (Exception ex){
             result.setSuccess(false);
             result.setErrorMessage(ex.getMessage());
-            return result;
+            return status(result.isSuccess() ? 200 : 400).body(result);
         }
-        return result;
+
+        try{
+            BaseIntegrationEvent<UserDTO> event = new BaseIntegrationEvent<>(
+                    requesterId != null ? requesterId.toString() : "0",
+                    EventTypes.ROLE_REMOVED_FROM_USER.toString(),
+                    result.getData()
+            );
+
+            kafkaTemplate.send(EventTopics.user_events.toString(), event);
+
+        }catch (Exception ex){
+            System.out.println("Failed to send ROLE_ADDED_TO_USER event: " + ex.getMessage());
+        }
+
+        return status(result.isSuccess() ? 200 : 400).body(result);
     }
 
 }

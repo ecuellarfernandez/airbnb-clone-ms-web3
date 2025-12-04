@@ -2,6 +2,7 @@ from rest_framework import permissions, viewsets, status
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.exceptions import NotFound
+from django.db.models import Q
 
 from ..models import AuditLog
 from ..paginators.audit_log_paginator import AuditLogResponsePaginator
@@ -69,7 +70,10 @@ class AuditLogViewSet(viewsets.ModelViewSet):
         search_term = request.query_params.get('search', None)
         queryset = self.get_queryset()
         if search_term:
-            queryset = queryset.filter(description__icontains=search_term)
+            combined_q = Q(description__icontains=search_term) | Q(action__icontains=search_term) | Q(entity_name__icontains=search_term) | Q(entity_id__icontains=search_term)
+            queryset = queryset.filter(
+                combined_q
+            )
 
         page = self.paginate_queryset(queryset)
 

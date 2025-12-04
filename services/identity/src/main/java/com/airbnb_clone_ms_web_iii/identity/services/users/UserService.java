@@ -2,12 +2,13 @@ package com.airbnb_clone_ms_web_iii.identity.services.users;
 
 import com.airbnb_clone_ms_web_iii.identity.dtos.auth.LoginDTO;
 import com.airbnb_clone_ms_web_iii.identity.dtos.auth.RegisterDTO;
-import com.airbnb_clone_ms_web_iii.identity.dtos.events.users.UserCreatedEvent;
+import com.airbnb_clone_ms_web_iii.identity.dtos.integration_events.users.UserCreatedIntegrationEvent;
 import com.airbnb_clone_ms_web_iii.identity.models.roles.Role;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.repositories.users.UserRepository;
 import com.airbnb_clone_ms_web_iii.identity.services.roles.RoleService;
 import com.airbnb_clone_ms_web_iii.identity.utils.security.SecurityUtils;
+import com.airbnb_clone_ms_web_iii.identity.utils.value_objects.Email;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
@@ -44,7 +45,8 @@ public class UserService implements UserDetailsService {
     }
 
     public User findByEmail(String email) {
-        return userRepository.findByEmail(email)
+        Email emailVo = Email.of(email);
+        return userRepository.findByEmail(emailVo)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
     }
 
@@ -82,7 +84,7 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("Username already exists");
         }
 
-        Optional <User> existingEmail = userRepository.findByEmail(registerDTO.getEmail());
+        Optional <User> existingEmail = userRepository.findByEmail(Email.of(registerDTO.getEmail()));
         if(existingEmail.isPresent()) {
             throw new IllegalArgumentException("Email already exists");
         }
@@ -101,7 +103,7 @@ public class UserService implements UserDetailsService {
 
         try{
 
-            UserCreatedEvent event = new UserCreatedEvent(newUser);
+            UserCreatedIntegrationEvent event = new UserCreatedIntegrationEvent(newUser);
 
             kafkaTemplate.send(USER_TOPIC, event);
             System.out.println("User created event sent for user: " + newUser.getUsername());

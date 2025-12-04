@@ -1,6 +1,7 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.presentation.controller;
 
 import an.awesome.pipelinr.Pipeline;
+import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.PagedResult;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.StandardResult;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.CreateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.UpdateListingDTO;
@@ -8,16 +9,21 @@ import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.Li
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingSummaryDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.listing.commands.*;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.listing.queries.*;
+import com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.config.PaginationConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 import java.util.logging.Logger;
 
@@ -25,22 +31,29 @@ import java.util.logging.Logger;
 @RequestMapping("/api/listings")
 @Tag(name = "Listings", description = "API para gestión de alojamientos")
 @CrossOrigin(origins = "*")
+@Validated
 public class ListingController {
 
     private static final Logger logger = Logger.getLogger(ListingController.class.getName());
     private final Pipeline pipeline;
+    private final PaginationConfig paginationConfig;
 
-    public ListingController(Pipeline pipeline) {
+    public ListingController(Pipeline pipeline, PaginationConfig paginationConfig) {
         this.pipeline = pipeline;
+        this.paginationConfig = paginationConfig;
     }
 
     // CREATE
     @PostMapping
     @Operation(summary = "Crear listing")
-    public ResponseEntity<StandardResult<ListingDetailDTO>> create(@Valid @RequestBody CreateListingDTO dto) {
+    public ResponseEntity<StandardResult<ListingDetailDTO>> create(
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader,
+            @Valid @RequestBody CreateListingDTO dto
+    ) {
         logger.info("Creating listing: " + dto.getTitle());
 
-        CreateListingCommand command = new CreateListingCommand(dto);
+
+        CreateListingCommand command = new CreateListingCommand(dto, getUserIdFromHeader(userIdHeader));
         ListingDetailDTO created = pipeline.send(command);
 
         return ResponseEntity
@@ -63,31 +76,65 @@ public class ListingController {
 
     @GetMapping
     @Operation(summary = "Buscar listings con filtros")
-    public ResponseEntity<StandardResult<List<ListingSummaryDTO>>> search(
+    public ResponseEntity<StandardResult<PagedResult<ListingSummaryDTO>>> search(
             @Parameter(description = "Ciudad") @RequestParam(required = false) String city,
             @Parameter(description = "Precio mínimo") @RequestParam(required = false) BigDecimal minPrice,
             @Parameter(description = "Precio máximo") @RequestParam(required = false) BigDecimal maxPrice,
             @Parameter(description = "Capacidad mínima") @RequestParam(required = false) Integer capacity,
-            @Parameter(description = "ID de categoría") @RequestParam(required = false) UUID categoryId
+            @Parameter(description = "ID de categoría") @RequestParam(required = false) UUID categoryId,
+            @Parameter(description = "Número de página (0-based)")
+            @RequestParam(defaultValue = "0")
+            @Min(value = 0, message = "Page number must be >= 0")
+            int page,
+            @Parameter(description = "Tamaño de página (máximo configurado)")
+            @RequestParam(defaultValue = "10")
+            @Min(value = 1, message = "Page size must be >= 1")
+            int size,
+            @Parameter(description = "Campo de ordenamiento") @RequestParam(defaultValue = "createdAt") String sortBy,
+            @Parameter(description = "Dirección de ordenamiento") @RequestParam(defaultValue = "DESC") String sortDirection
     ) {
-        logger.info("Searching listings - city: " + city);
+        // Aplicar límite max de tamaño de pagina usando config central
+        int validatedSize = clampPageSize(size);
 
-        SearchListingsQuery query = new SearchListingsQuery(city, minPrice, maxPrice, capacity, categoryId);
-        List<ListingSummaryDTO> listings = pipeline.send(query);
+        logger.info("Searching listings - city: " + city + ", page: " + page + ", size: " + validatedSize);
 
-        String message = listings.size() + " listings found";
-        return ResponseEntity.ok(StandardResult.success(listings, message));
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection);
+        Pageable pageable = PageRequest.of(page, validatedSize, Sort.by(direction, sortBy));
+
+        SearchListingsQuery query = new SearchListingsQuery(city, minPrice, maxPrice, capacity, categoryId, pageable);
+        PagedResult<ListingSummaryDTO> result = pipeline.send(query);
+
+        String message = result.getTotalElements() + " listings found";
+        return ResponseEntity.ok(StandardResult.success(result, message));
     }
 
     @GetMapping("/host/{hostId}")
     @Operation(summary = "Obtener listings de un anfitrión")
-    public ResponseEntity<StandardResult<List<ListingSummaryDTO>>> getByHost(@PathVariable UUID hostId) {
-        logger.info("Getting listings by host: " + hostId);
+    public ResponseEntity<StandardResult<PagedResult<ListingSummaryDTO>>> getByHost(
+            @PathVariable Integer hostId,
+            @Parameter(description = "Número de página (0-based)")
+            @RequestParam(defaultValue = "0")
+            @Min(value = 0, message = "Page number must be >= 0")
+            int page,
+            @Parameter(description = "Tamaño de página (máximo configurado)")
+            @RequestParam(defaultValue = "10")
+            @Min(value = 1, message = "Page size must be >= 1")
+            int size,
+            @Parameter(description = "Campo de ordenamiento") @RequestParam(defaultValue = "createdAt") String sortBy,
+            @Parameter(description = "Dirección de ordenamiento") @RequestParam(defaultValue = "DESC") String sortDirection
+    ) {
+        // Aplicar límite máximo de tamaño de página usando config central
+        int validatedSize = clampPageSize(size);
 
-        GetListingsByHostQuery query = new GetListingsByHostQuery(hostId);
-        List<ListingSummaryDTO> listings = pipeline.send(query);
+        logger.info("Getting listings by host: " + hostId + ", page: " + page + ", size: " + validatedSize);
 
-        return ResponseEntity.ok(StandardResult.success(listings));
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection);
+        Pageable pageable = PageRequest.of(page, validatedSize, Sort.by(direction, sortBy));
+
+        GetListingsByHostQuery query = new GetListingsByHostQuery(hostId, pageable);
+        PagedResult<ListingSummaryDTO> result = pipeline.send(query);
+
+        return ResponseEntity.ok(StandardResult.success(result));
     }
 
     // UPDATE
@@ -108,10 +155,13 @@ public class ListingController {
 
     @PatchMapping("/{id}/publish")
     @Operation(summary = "Publicar listing")
-    public ResponseEntity<StandardResult<Void>> publish(@PathVariable UUID id) {
+    public ResponseEntity<StandardResult<Void>> publish(
+            @PathVariable UUID id,
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader
+    ) {
         logger.info("Publishing listing: " + id);
 
-        ActivateListingCommand command = new ActivateListingCommand(id);
+        ActivateListingCommand command = new ActivateListingCommand(id, getUserIdFromHeader(userIdHeader));
         pipeline.send(command);
 
         return ResponseEntity.ok(StandardResult.success(null, "Listing published successfully"));
@@ -119,10 +169,14 @@ public class ListingController {
 
     @PatchMapping("/{id}/unpublish")
     @Operation(summary = "Despublicar listing")
-    public ResponseEntity<StandardResult<Void>> unpublish(@PathVariable UUID id) {
+    public ResponseEntity<StandardResult<Void>> unpublish(
+            @PathVariable UUID id,
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader
+    )
+    {
         logger.info("Unpublishing listing: " + id);
 
-        DeactivateListingCommand command = new DeactivateListingCommand(id);
+        DeactivateListingCommand command = new DeactivateListingCommand(id, getUserIdFromHeader(userIdHeader));
         pipeline.send(command);
 
         return ResponseEntity.ok(StandardResult.success(null, "Listing unpublished successfully"));
@@ -132,12 +186,36 @@ public class ListingController {
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Eliminar listing")
-    public ResponseEntity<StandardResult<Void>> delete(@PathVariable UUID id) {
+    public ResponseEntity<StandardResult<Void>> delete(
+            @PathVariable UUID id,
+            @RequestHeader(name = "X-User-Id", required = false) String userIdHeader
+    ) {
         logger.info("Deleting listing: " + id);
 
-        DeleteListingCommand command = new DeleteListingCommand(id);
+        DeleteListingCommand command = new DeleteListingCommand(id, getUserIdFromHeader(userIdHeader));
         pipeline.send(command);
 
         return ResponseEntity.ok(StandardResult.success(null, "Listing deleted successfully"));
+    }
+
+    private int clampPageSize(int requestedSize) {
+        int max = paginationConfig.getMaxPageSize();
+        int size = Math.max(1, requestedSize);
+        if (size > max) {
+            logger.warning("Page size " + requestedSize + " exceeds maximum, using " + max);
+            size = max;
+        }
+        return size;
+    }
+
+    private Integer getUserIdFromHeader(String userIdHeader) {
+        if (userIdHeader != null) {
+            try {
+                return Integer.parseInt(userIdHeader);
+            } catch (NumberFormatException e) {
+                logger.warning("Invalid X-User-Id header: " + userIdHeader);
+            }
+        }
+        return 0;
     }
 }

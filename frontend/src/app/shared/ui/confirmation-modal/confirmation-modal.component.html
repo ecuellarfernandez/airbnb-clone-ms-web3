@@ -1,0 +1,22 @@
+<div *ngIf="isOpen" class="modal-overlay" (click)="onOverlayClick()">
+  <div class="modal-content" (click)="onContentClick($event)">
+    <header class="modal-header">
+      <h3>{{ title }}</h3>
+    </header>
+
+    <div class="modal-body">
+      <p>{{ message }}</p>
+    </div>
+
+    <footer class="modal-footer">
+      <button class="btn btn-secondary" (click)="onCancel()">
+        {{ cancelText }}
+      </button>
+      <button 
+        [class]="isDanger ? 'btn btn-danger' : 'btn btn-primary'" 
+        (click)="onConfirm()">
+        {{ confirmText }}
+      </button>
+    </footer>
+  </div>
+</div>

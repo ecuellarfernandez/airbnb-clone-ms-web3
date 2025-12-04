@@ -1,34 +1,46 @@
-:root {
-    --brand: #ff385c;
-    --bg: #0b1220;
-    --card: #101827;
-    --muted: #9aa3af;
-    --line: #1f2937;
-}
-
 .admin {
     display: flex;
     min-height: 100vh;
     background: var(--bg);
-    color: #e5e7eb;
+    color: var(--text);
 }
 
 .sidebar {
     width: 240px;
-    background: #0f1626;
-    border-right: 1px solid var(--line);
+    background: var(--surface);
+    border-right: 1px solid var(--border);
     padding: 16px;
 }
 
 .brand {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 6px 8px 16px;
+    padding: 12px 8px 20px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 16px;
+
+    a {
+        display: flex;
+        align-items: center;
+        text-decoration: none;
+        gap: 8px;
+        transition: opacity 0.2s;
+
+        &:hover {
+            opacity: 0.8;
+        }
+    }
 }
 
-.brand img {
-    height: 22px;
+.logo-icon {
+    width: 2rem;
+    height: 2rem;
+    color: var(--brand-primary);
+}
+
+.logo-text {
+    font-family: var(--font-display);
+    font-size: var(--fs-md);
+    font-weight: var(--fw-bold);
+    color: var(--brand-primary);
 }
 
 .sidebar nav {
@@ -43,15 +55,20 @@
     gap: 10px;
     padding: 10px 12px;
     border-radius: 10px;
-    color: #cdd3df;
+    color: var(--text-2);
     text-decoration: none;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: var(--surface-2);
+        color: var(--text);
+    }
 }
 
-.sidebar nav a.active,
-.sidebar nav a:hover {
-    background: #141d2f;
-    color: #fff;
-    box-shadow: 0 0 0 1px #1d2840 inset;
+.sidebar nav a.active {
+    background: var(--surface-2);
+    color: var(--title);
+    box-shadow: 0 0 0 1px var(--border) inset;
 }
 
 .main {
@@ -66,21 +83,123 @@
     align-items: center;
     justify-content: flex-end;
     padding: 0 20px;
-    border-bottom: 1px solid var(--line);
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    gap: 12px;
+}
+
+.theme-toggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 8px;
+    background: transparent;
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    .icon {
+        width: 24px;
+        height: 24px;
+    }
+
+    &:hover {
+        background: var(--surface-2);
+        color: var(--text);
+        border-color: var(--brand-primary);
+    }
+}
+
+.user-menu {
+    position: relative;
 }
 
 .user {
     display: flex;
     align-items: center;
     gap: 8px;
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: background 0.2s;
+    color: var(--text);
+
+    &:hover {
+        background: var(--surface-2);
+    }
+
+    i {
+        font-size: 16px;
+        color: var(--text-3);
+    }
 }
 
 .user img {
-    width: 28px;
-    height: 28px;
+    width: 32px;
+    height: 32px;
     border-radius: 999px;
+    border: 2px solid var(--border);
+}
+
+.dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 200px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    z-index: 100;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    color: var(--text);
+    text-decoration: none;
+    background: transparent;
+    border: none;
+    width: 100%;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
+
+    i {
+        font-size: 18px;
+        color: var(--text-3);
+    }
+
+    &:hover {
+        background: var(--surface-2);
+    }
+
+    &.logout {
+        color: var(--state-error);
+
+        i {
+            color: var(--state-error);
+        }
+
+        &:hover {
+            background: rgba(239, 68, 68, 0.1);
+        }
+    }
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 4px 0;
 }
 
 .content {
     padding: 24px;
+    background: var(--bg);
 }

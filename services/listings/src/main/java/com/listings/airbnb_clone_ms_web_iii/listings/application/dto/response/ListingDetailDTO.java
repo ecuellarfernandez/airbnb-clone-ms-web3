@@ -13,7 +13,7 @@ import java.util.UUID;
 
 public class ListingDetailDTO {
     private UUID id;
-    private UUID hostId;
+    private Integer hostId;
     private String title;
     private String description;
 
@@ -47,7 +47,7 @@ public class ListingDetailDTO {
 
     public ListingDetailDTO() {}
 
-    public ListingDetailDTO(UUID id, UUID hostId, String title, String description, String city, String country, String address, BigDecimal latitude, BigDecimal longitude, BigDecimal priceAmount, String priceCurrency, Integer capacity, Integer bedrooms, Integer bathrooms, List<ListingImageDTO> images, Set<CategoryDTO> categories, Set<AmenityDTO> amenities, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ListingDetailDTO(UUID id, Integer hostId, String title, String description, String city, String country, String address, BigDecimal latitude, BigDecimal longitude, BigDecimal priceAmount, String priceCurrency, Integer capacity, Integer bedrooms, Integer bathrooms, List<ListingImageDTO> images, Set<CategoryDTO> categories, Set<AmenityDTO> amenities, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.hostId = hostId;
         this.title = title;
@@ -78,11 +78,11 @@ public class ListingDetailDTO {
         this.id = id;
     }
 
-    public UUID getHostId() {
+    public Integer getHostId() {
         return hostId;
     }
 
-    public void setHostId(UUID hostId) {
+    public void setHostId(Integer hostId) {
         this.hostId = hostId;
     }
 

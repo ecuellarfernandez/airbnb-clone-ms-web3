@@ -25,7 +25,7 @@
         <td>{{ claim.description }}</td>
         <td>
           <button class="btn-edit" (click)="onEditClaim(claim)">Editar</button>
-          <button class="btn-delete" (click)="onDeleteClaim(claim.id)">Eliminar</button>
+          <button class="btn-delete" (click)="confirmDeleteClaim(claim)">Eliminar</button>
         </td>
       </tr>
     </tbody>
@@ -63,3 +63,15 @@
   (submit)="handleEditClaim($event)"
   (cancel)="handleCancelEdit()"
 ></app-admin-create-form>
+
+<!-- Modal de confirmación -->
+<app-confirmation-modal
+  [isOpen]="showConfirmModal"
+  [title]="confirmModalTitle"
+  [message]="confirmModalMessage"
+  confirmText="Eliminar"
+  cancelText="Cancelar"
+  [isDanger]="true"
+  (confirm)="onConfirmDelete()"
+  (cancel)="closeConfirmModal()"
+></app-confirmation-modal>

@@ -1,12 +1,13 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.application.port;
 
+import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.PagedResult;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.CreateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.UpdateListingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingDetailDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingSummaryDTO;
+import org.springframework.data.domain.Pageable;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.UUID;
 
 /**
@@ -25,9 +26,9 @@ public interface ListingServicePort {
     // ========== READ ==========
 
     /**
-     * Obtiene todos los listings activos.
+     * Obtiene todos los listings activos con paginación.
      */
-    List<ListingSummaryDTO> findAllActive();
+    PagedResult<ListingSummaryDTO> findAllActive(Pageable pageable);
 
     /**
      * Obtiene un listing por ID.
@@ -35,19 +36,20 @@ public interface ListingServicePort {
     ListingDetailDTO findById(UUID id);
 
     /**
-     * Obtiene listings de un anfitrión.
+     * Obtiene listings de un anfitrión con paginación.
      */
-    List<ListingSummaryDTO> findByHostId(UUID hostId);
+    PagedResult<ListingSummaryDTO> findByHostId(Integer hostId, Pageable pageable);
 
     /**
-     * Busca listings con filtros.
+     * Busca listings con filtros y paginación.
      */
-    List<ListingSummaryDTO> findByFilters(
+    PagedResult<ListingSummaryDTO> findByFilters(
             String city,
             BigDecimal minPrice,
             BigDecimal maxPrice,
             Integer minCapacity,
-            UUID categoryId
+            UUID categoryId,
+            Pageable pageable
     );
 
     // ========== UPDATE ==========
