@@ -88,4 +88,9 @@ public class ListingRepositoryAdapter implements ListingRepository {
     ) {
         return jpaRepository.findByFilters(city, minPrice, maxPrice, minCapacity, categoryId, pageable);
     }
+
+    @Override
+    public Page<Listing> findAllForAdmin(String city, BigDecimal minPrice, BigDecimal maxPrice, Integer minCapacity, UUID categoryId, Pageable pageable) {
+        return jpaRepository.findAllForAdmin(city, minPrice, maxPrice, minCapacity, categoryId, pageable);
+    }
 }
