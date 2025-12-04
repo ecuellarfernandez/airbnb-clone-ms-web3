@@ -56,7 +56,7 @@ public class UserController {
         StandardResult<UserDTO> result = new StandardResult<>();
         try{
             String token = authorizationHeader.replace("Bearer ", "");
-            User theUser = userService.makeMeHost(token
+            User theUser = userService.makeMeHost(token);
             UserDTO userDTO = UserDTO.fromEntity(theUser);
 
             result.setData(userDTO);
