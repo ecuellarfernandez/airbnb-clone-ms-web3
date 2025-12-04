@@ -95,16 +95,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openListingForm(): void {
-    this.editingListing = null;
-    this.showListingForm = true;
-  }
-  closeListingForm(): void {
-    this.showListingForm = false;
-  }
-
-  handleListingSubmit(payload: Partial<Listing>): void {
-    console.log('Nuevo alojamiento creado desde header:', payload);
-
-    this.showListingForm = false;
+    this.router.navigate(['/listings/form']);
   }
 }

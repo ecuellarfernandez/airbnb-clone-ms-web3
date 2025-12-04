@@ -1,89 +1,241 @@
-import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { UploadCloudinaryUseCase } from '@app/shared/cloudinary/application/use-cases/upload-cloudinary.usecase';
+import { CloudinaryImage } from '@app/shared/cloudinary/domain/models/cloudinary-image.model';
+import { AuthService } from '@features/auth/domain/services/auth.service';
+import { take } from 'rxjs';
 
 interface Step {
-  id: string;
-  label: string;
-  completed: boolean;
-  current: boolean;
+  id: number;
+  title: string;
+  description: string;
 }
 
 @Component({
   selector: 'app-listing-form-page',
-  standalone: true,
+  standalone: false,
   templateUrl: './listing-form-page.component.html',
-  styleUrls: ['./listing-form-page.component.scss'],
-  imports: [CommonModule]
-  
+  styleUrls: ['./listing-form-page.component.scss']
 })
 export class ListingFormPageComponent implements OnInit {
-  currentStep = 'basics';
   form: FormGroup;
+  uploading = false;
+  uploadedImages: { url: string; publicId: string; isPrimary: boolean }[] = [];
+  currentStep = 0;
 
   steps: Step[] = [
-    { id: 'basics', label: 'Basics', completed: false, current: true },
-    { id: 'details', label: 'Details', completed: false, current: false },
-    { id: 'amenities', label: 'Amenities', completed: false, current: false },
-    { id: 'photos', label: 'Photos', completed: false, current: false },
-    { id: 'pricing', label: 'Pricing & Availability', completed: false, current: false }
+    { id: 0, title: 'Información Básica', description: 'Título y descripción de tu propiedad' },
+    { id: 1, title: 'Ubicación', description: 'Dónde se encuentra tu propiedad' },
+    { id: 2, title: 'Detalles', description: 'Capacidad y características' },
+    { id: 3, title: 'Precio', description: 'Establece tu tarifa por noche' },
+    { id: 4, title: 'Fotos', description: 'Muestra tu propiedad' }
   ];
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private uploadCloudinaryUseCase: UploadCloudinaryUseCase,
+    private authService: AuthService
+  ) {
     this.form = this.fb.group({
+      hostId: ['', [Validators.required]],
       title: ['', [Validators.required, Validators.minLength(10)]],
       description: ['', [Validators.required, Validators.minLength(50)]],
-      location: ['', [Validators.required]]
+      location: this.fb.group({
+        city: ['', Validators.required],
+        country: ['', Validators.required],
+        address: ['', Validators.required],
+        latitude: [0, Validators.required],
+        longitude: [0, Validators.required]
+      }),
+      price: this.fb.group({
+        amount: [0, [Validators.required, Validators.min(0)]],
+        currency: ['USD', Validators.required]
+      }),
+      capacity: [1, [Validators.required, Validators.min(1)]],
+      bedrooms: [1, [Validators.required, Validators.min(0)]],
+      bathrooms: [1, [Validators.required, Validators.min(0)]],
+      categoryIds: this.fb.array([]),
+      amenityIds: this.fb.array([]),
+      images: this.fb.array([], Validators.required)
     });
   }
 
   ngOnInit(): void {
-    this.updateStepStates();
+    this.setHostId();
+    this.addCategoryId('dd45c078-833a-4cf2-9b28-f4d9a584cd53');
+    this.addAmenityId('066c1098-2cbc-497c-a5ec-e9a62823d5e0');
   }
 
-  trackByStepId(index: number, step: Step): string { // Añadir este método
-    return step.id;
+  private setHostId(): void {
+    this.authService.getCurrentUser().pipe(take(1)).subscribe({
+      next: (result) => {
+        if (result.success && result.data) {
+          this.form.patchValue({ hostId: result.data.id });
+        }
+      },
+      error: (err) => console.error('Error fetching user', err)
+    });
   }
 
-  onStepClick(stepId: string): void {
-    this.currentStep = stepId;
-    this.updateStepStates();
+  get imagesArray(): FormArray {
+    return this.form.get('images') as FormArray;
   }
 
-  updateStepStates(): void {
-    this.steps = this.steps.map(step => ({
-      ...step,
-      current: step.id === this.currentStep
-    }));
+  get categoryIdsArray(): FormArray {
+    return this.form.get('categoryIds') as FormArray;
   }
 
-  onInputChange(field: string, value: string): void {
-    this.form.patchValue({ [field]: value });
+  get amenityIdsArray(): FormArray {
+    return this.form.get('amenityIds') as FormArray;
   }
 
-  onSaveDraft(): void {
-    console.log('Saving draft...', this.form.value);
+  addCategoryId(id: string): void {
+    this.categoryIdsArray.push(this.fb.control(id));
   }
 
-  onBack(): void {
-    console.log('Going back...');
+  addAmenityId(id: string): void {
+    this.amenityIdsArray.push(this.fb.control(id));
   }
 
-  onNextStep(): void {
-    if (this.form.valid) {
-      console.log('Next step...', this.form.value);
+  onFileSelected(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files.length > 0) {
+      const file = input.files[0];
+      this.uploading = true;
+
+      this.uploadCloudinaryUseCase.execute(file).subscribe({
+        next: (image: CloudinaryImage) => {
+          this.addImageToForm(image);
+          this.uploading = false;
+        },
+        error: (error) => {
+          console.error('Upload failed', error);
+          this.uploading = false;
+        }
+      });
+    }
+  }
+
+  private addImageToForm(image: CloudinaryImage): void {
+    const isFirst = this.imagesArray.length === 0;
+    const imageGroup = this.fb.group({
+      url: [image.url, Validators.required],
+      publicId: [image.publicId],
+      isPrimary: [isFirst]
+    });
+
+    this.imagesArray.push(imageGroup);
+    this.uploadedImages.push({
+      url: image.url,
+      publicId: image.publicId,
+      isPrimary: isFirst
+    });
+  }
+
+  removeImage(index: number): void {
+    this.imagesArray.removeAt(index);
+    this.uploadedImages.splice(index, 1);
+
+    if (this.uploadedImages.length > 0 && !this.uploadedImages.some(img => img.isPrimary)) {
+      this.setPrimaryImage(0);
+    }
+  }
+
+  setPrimaryImage(index: number): void {
+    this.uploadedImages.forEach((img, i) => {
+      img.isPrimary = i === index;
+      const group = this.imagesArray.at(i) as FormGroup;
+      group.patchValue({ isPrimary: i === index });
+    });
+  }
+
+  // Step Navigation
+  nextStep(): void {
+    if (this.isCurrentStepValid()) {
+      if (this.currentStep < this.steps.length - 1) {
+        this.currentStep++;
+      }
     } else {
-      console.log('Form is invalid');
+      this.markCurrentStepAsTouched();
+    }
+  }
+
+  previousStep(): void {
+    if (this.currentStep > 0) {
+      this.currentStep--;
+    }
+  }
+
+  goToStep(stepIndex: number): void {
+    if (stepIndex >= 0 && stepIndex < this.steps.length) {
+      this.currentStep = stepIndex;
+    }
+  }
+
+  isCurrentStepValid(): boolean | undefined {
+    switch (this.currentStep) {
+      case 0: // Información Básica
+        return this.form.get('title')?.valid && this.form.get('description')?.valid;
+      case 1: // Ubicación
+        return this.form.get('location')?.valid;
+      case 2: // Detalles
+        return this.form.get('capacity')?.valid &&
+          this.form.get('bedrooms')?.valid &&
+          this.form.get('bathrooms')?.valid;
+      case 3: // Precio
+        return this.form.get('price')?.valid;
+      case 4: // Fotos
+        return this.imagesArray.length > 0;
+      default:
+        return false;
+    }
+  }
+
+  private markCurrentStepAsTouched(): void {
+    switch (this.currentStep) {
+      case 0:
+        this.form.get('title')?.markAsTouched();
+        this.form.get('description')?.markAsTouched();
+        break;
+      case 1:
+        Object.keys((this.form.get('location') as FormGroup).controls).forEach(key => {
+          this.form.get('location')?.get(key)?.markAsTouched();
+        });
+        break;
+      case 2:
+        this.form.get('capacity')?.markAsTouched();
+        this.form.get('bedrooms')?.markAsTouched();
+        this.form.get('bathrooms')?.markAsTouched();
+        break;
+      case 3:
+        Object.keys((this.form.get('price') as FormGroup).controls).forEach(key => {
+          this.form.get('price')?.get(key)?.markAsTouched();
+        });
+        break;
+      case 4:
+        this.form.get('images')?.markAsTouched();
+        break;
+    }
+  }
+
+  onSubmit(): void {
+    if (this.form.valid) {
+      const payload = this.form.value;
+      console.log('Form Payload:', payload);
+    } else {
       this.form.markAllAsTouched();
     }
   }
 
-  getFieldError(fieldName: string): string | null {
-    const field = this.form.get(fieldName);
-    if (field && field.errors && field.touched) {
-      if (field.errors['required']) return `${fieldName} is required`;
-      if (field.errors['minlength']) return `${fieldName} is too short`;
-    }
-    return null;
+  get isFirstStep(): boolean {
+    return this.currentStep === 0;
+  }
+
+  get isLastStep(): boolean {
+    return this.currentStep === this.steps.length - 1;
+  }
+
+  get progressPercentage(): number {
+    return ((this.currentStep + 1) / this.steps.length) * 100;
   }
 }
