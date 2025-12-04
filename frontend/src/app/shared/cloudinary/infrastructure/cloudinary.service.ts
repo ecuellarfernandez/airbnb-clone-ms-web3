@@ -4,7 +4,9 @@ import { map, Observable } from "rxjs";
 import { CloudinaryImage } from "../domain/models/cloudinary-image.model";
 import { environment } from "environments/environment.development";
 
-@Injectable()
+@Injectable({
+    providedIn: 'root'
+})
 export class CloudinaryService {
     private readonly cloudName = environment.cloudinary.cloudName;
     private readonly uploadPreset = environment.cloudinary.uploadPreset;
