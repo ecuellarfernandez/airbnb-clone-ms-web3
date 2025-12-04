@@ -1,8 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { UploadCloudinaryUseCase } from '@app/shared/cloudinary/application/use-cases/upload-cloudinary.usecase';
+import { DeleteCloudinaryUseCase } from '@app/shared/cloudinary/application/use-cases/delete-cloudinary.usecase';
 import { CloudinaryImage } from '@app/shared/cloudinary/domain/models/cloudinary-image.model';
 import { AuthService } from '@features/auth/domain/services/auth.service';
+import { ListingFormStateService, ListingFormState } from '@features/listings/application/services/listing-form-state.service';
 import { take } from 'rxjs';
 
 interface Step {
@@ -17,10 +19,10 @@ interface Step {
   templateUrl: './listing-form-page.component.html',
   styleUrls: ['./listing-form-page.component.scss']
 })
-export class ListingFormPageComponent implements OnInit {
+export class ListingFormPageComponent implements OnInit, OnDestroy {
   form: FormGroup;
   uploading = false;
-  uploadedImages: { url: string; publicId: string; isPrimary: boolean }[] = [];
+  uploadedImages: CloudinaryImage[] = [];
   currentStep = 0;
 
   steps: Step[] = [
@@ -34,7 +36,9 @@ export class ListingFormPageComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private uploadCloudinaryUseCase: UploadCloudinaryUseCase,
-    private authService: AuthService
+    private deleteCloudinaryUseCase: DeleteCloudinaryUseCase,
+    private authService: AuthService,
+    private formStateService: ListingFormStateService
   ) {
     this.form = this.fb.group({
       hostId: ['', [Validators.required]],
@@ -64,6 +68,11 @@ export class ListingFormPageComponent implements OnInit {
     this.setHostId();
     this.addCategoryId('dd45c078-833a-4cf2-9b28-f4d9a584cd53');
     this.addAmenityId('066c1098-2cbc-497c-a5ec-e9a62823d5e0');
+    this.loadSavedState();
+  }
+
+  ngOnDestroy(): void {
+    this.saveCurrentState();
   }
 
   private setHostId(): void {
@@ -126,13 +135,33 @@ export class ListingFormPageComponent implements OnInit {
 
     this.imagesArray.push(imageGroup);
     this.uploadedImages.push({
-      url: image.url,
-      publicId: image.publicId,
+      ...image,
       isPrimary: isFirst
     });
   }
 
   removeImage(index: number): void {
+    const imageToRemove = this.uploadedImages[index];
+
+    // Delete from Cloudinary if it's a temporary image
+    if (imageToRemove.isTemporary && imageToRemove.publicId) {
+      this.deleteCloudinaryUseCase.execute(imageToRemove.publicId).subscribe({
+        next: () => {
+          console.log('Image deleted from Cloudinary:', imageToRemove.publicId);
+        },
+        error: (error) => {
+          console.error('Failed to delete image from Cloudinary:', error);
+          // Continue with removal from UI even if Cloudinary deletion fails
+        }
+      });
+    }
+
+    // TODO: If image belongs to existing listing (has listingId), call backend to delete from database
+    // if (imageToRemove.listingId) {
+    //   this.listingService.deleteImage(imageToRemove.listingId, imageToRemove.publicId).subscribe();
+    // }
+
+    // Remove from form and UI
     this.imagesArray.removeAt(index);
     this.uploadedImages.splice(index, 1);
 
@@ -222,6 +251,10 @@ export class ListingFormPageComponent implements OnInit {
     if (this.form.valid) {
       const payload = this.form.value;
       console.log('Form Payload:', payload);
+
+      // TODO: Submit to backend
+      // After successful submission, clear the saved state
+      this.formStateService.clearState();
     } else {
       this.form.markAllAsTouched();
     }
@@ -237,5 +270,54 @@ export class ListingFormPageComponent implements OnInit {
 
   get progressPercentage(): number {
     return ((this.currentStep + 1) / this.steps.length) * 100;
+  }
+
+  /**
+   * Save the current form state to sessionStorage
+   */
+  private saveCurrentState(): void {
+    const state: ListingFormState = {
+      formData: this.form.value,
+      uploadedImages: this.uploadedImages,
+      currentStep: this.currentStep,
+      lastSaved: new Date()
+    };
+    this.formStateService.saveState(state);
+  }
+
+  /**
+   * Load saved state from sessionStorage if available
+   */
+  private loadSavedState(): void {
+    const savedState = this.formStateService.loadState();
+    if (savedState) {
+      // Restore form data
+      if (savedState.formData) {
+        this.form.patchValue(savedState.formData);
+      }
+
+      // Restore uploaded images
+      if (savedState.uploadedImages && savedState.uploadedImages.length > 0) {
+        this.uploadedImages = savedState.uploadedImages;
+
+        // Rebuild images FormArray
+        this.imagesArray.clear();
+        savedState.uploadedImages.forEach(image => {
+          const imageGroup = this.fb.group({
+            url: [image.url, Validators.required],
+            publicId: [image.publicId],
+            isPrimary: [image.isPrimary || false]
+          });
+          this.imagesArray.push(imageGroup);
+        });
+      }
+
+      // Restore current step
+      if (savedState.currentStep !== undefined) {
+        this.currentStep = savedState.currentStep;
+      }
+
+      console.log('Loaded saved form state from:', savedState.lastSaved);
+    }
   }
 }
