@@ -3,6 +3,7 @@ import { Router, NavigationEnd } from '@angular/router';
 import { filter, Subscription } from 'rxjs';
 import { NavTab } from '../../../shared/ui/nav-tabs/nav-tabs.component';
 import { ThemeService, Theme } from '@app/core/services/theme.service';
+import { AuthService } from '@features/auth/domain/services/auth.service';
 import { Listing } from '@features/listings/domain/models/listing.model';
 
 export interface FilterState {
@@ -52,7 +53,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   currentTheme: Theme = 'light';
 
-  constructor(private router: Router, private themeService: ThemeService) { }
+  constructor(
+    private router: Router, 
+    private themeService: ThemeService,
+    private authService: AuthService
+  ) { }
 
   ngOnInit() {
     this.checkRoute();
@@ -106,5 +111,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     console.log('Nuevo alojamiento creado desde header:', payload);
 
     this.showListingForm = false;
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.isUserMenuOpen = false;
+    this.router.navigate(['/auth/login']);
   }
 }

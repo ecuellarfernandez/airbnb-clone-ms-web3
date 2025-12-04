@@ -42,6 +42,13 @@ const routes: Routes = [
       {
         path: 'profile',
         component: UserProfilePageComponent,
+        children: [
+          {
+            path: 'reservations',
+            loadChildren: () =>
+              import('@app/features/reservations/presentation/reservations-module').then(m => m.ReservationsModule),
+          }
+        ]
       },
       {
         path: '',
@@ -49,18 +56,6 @@ const routes: Routes = [
         pathMatch: 'full'
       }
     ]
-  },
-  {
-    path: 'reservations',
-    component: BookingLayoutComponent,
-    canActivate: [authGuard],
-    children: [
-      {
-        path: '',
-        loadChildren: () =>
-          import('@app/features/reservations/presentation/reservations-module').then(m => m.ReservationsModule),
-      }
-    ],
   },
   {
     path: 'auth',
