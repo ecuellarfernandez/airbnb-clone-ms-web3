@@ -97,19 +97,12 @@
     </div>
   </div>
 
-  <div
-  class="host-modal-backdrop"
-  *ngIf="showListingForm"
-  (click)="closeListingForm()"
->
-  <div class="host-modal" (click)="$event.stopPropagation()">
-    <app-listing-form
-      [value]="editingListing"
-      (cancel)="closeListingForm()"
-      (submitForm)="handleListingSubmit($event)"
-    ></app-listing-form>
+  <div class="host-modal-backdrop" *ngIf="showListingForm" (click)="closeListingForm()">
+    <div class="host-modal" (click)="$event.stopPropagation()">
+      <app-listing-form [value]="editingListing" (cancel)="closeListingForm()"
+        (submitForm)="handleListingSubmit($event)"></app-listing-form>
+    </div>
   </div>
-</div>
 
   <!-- Search Filter (Center) -->
   <div class="search-section" *ngIf="variant === 'default'">
