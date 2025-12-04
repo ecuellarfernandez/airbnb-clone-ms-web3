@@ -47,6 +47,8 @@ public class ListingRepositoryAdapter implements ListingRepository {
         jpaRepository.deleteById(id);
     }
 
+
+
     @Override
     public boolean existsById(UUID id) {
         return jpaRepository.existsById(id);

@@ -34,10 +34,7 @@ public class ListingImageRepositoryAdapter implements ListingImageRepository {
 
     @Override
     public void deleteAllByListingId(UUID listingId){
-        List<ListingImage> images = jpaRepository.findByListingId(listingId);
-        for (ListingImage image : images) {
-            jpaRepository.deleteById(image.getId());
-        }
+        jpaRepository.deleteAllByListingId(listingId);
     }
 
     @Override

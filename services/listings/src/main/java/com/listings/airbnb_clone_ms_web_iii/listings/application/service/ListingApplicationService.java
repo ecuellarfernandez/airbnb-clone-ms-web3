@@ -389,13 +389,10 @@ public class ListingApplicationService implements ListingServicePort {
     @Override
     @Transactional
     public void delete(UUID id) {
-
-        if (!listingRepository.existsById(id)) {
-            throw new ListingNotFoundException("Listing not found with id: " + id);
-        }
+        Listing listing = listingRepository.findById(id)
+                .orElseThrow(() -> new ListingNotFoundException("Listing not found with id: " + id));
 
         listingImageRepository.deleteAllByListingId(id);
-
         listingRepository.deleteById(id);
     }
 
