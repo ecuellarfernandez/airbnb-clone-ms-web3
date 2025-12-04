@@ -28,7 +28,7 @@ public class UserController {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9]+}")
     public StandardResult<UserDTO> getUserById(@PathVariable("id") Long id) {
         StandardResult<UserDTO> result = new StandardResult<>();
         try{
@@ -47,6 +47,39 @@ public class UserController {
             return result;
         }
         return result;
+    }
+
+    @PostMapping("/make-me-host")
+    public ResponseEntity<StandardResult<UserDTO>> makeMeHost(
+            @RequestHeader("Authorization") String authorizationHeader
+    ){
+        StandardResult<UserDTO> result = new StandardResult<>();
+        try{
+            String token = authorizationHeader.replace("Bearer ", "");
+            User theUser = userService.makeMeHost(token
+            UserDTO userDTO = UserDTO.fromEntity(theUser);
+
+            result.setData(userDTO);
+            result.setSuccess(true);
+        }catch (Exception ex){
+            result.setSuccess(false);
+            result.setErrorMessage(ex.getMessage());
+        }
+
+        try{
+            BaseIntegrationEvent<UserDTO> event = new BaseIntegrationEvent<>(
+                    result.getData().getId() != null ? result.getData().getId().toString() : "0",
+                    EventTypes.ROLE_ADDED_TO_USER.toString(),
+                    result.getData()
+            );
+
+            kafkaTemplate.send(EventTopics.user_events.toString(), event);
+
+        }catch (Exception ex){
+            System.out.println("Failed to send ROLE_ADDED_TO_USER event: " + ex.getMessage());
+        }
+
+        return status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @GetMapping("/search")
