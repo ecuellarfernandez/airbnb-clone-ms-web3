@@ -27,7 +27,7 @@ export class ReservationsApiService {
 
     createReservation(payload: CreateReservationPayload): Observable<any> {
         return this.http.post<any>(
-            API_ENDPOINTS.LISTINGS.RESERVATIONS,
+            API_ENDPOINTS.LISTINGS.BOOKINGS,
             payload
         );
     }

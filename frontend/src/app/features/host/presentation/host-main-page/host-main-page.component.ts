@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { HostListingsService, ListingSummary } from '@features/host/services/host-listings.service';
 import { AuthService } from '@features/auth/domain/services/auth.service';
+import { MakeMeHostComponent } from '../components/make-me-host/make-me-host.component';
 
 @Component({
   selector: 'app-host-main-page',
@@ -16,6 +17,8 @@ export class HostMainPageComponent implements OnInit {
   totalPages = 0;
   totalElements = 0;
 
+  showMakeMeHostModal = true;
+
   constructor(
     private hostListingsService: HostListingsService,
     private authService: AuthService
@@ -23,6 +26,15 @@ export class HostMainPageComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadListings();
+    this.showMakeMeHostModal = true;
+  }
+  closeMakeMeHostModal() {
+    this.showMakeMeHostModal = false;
+  }
+
+  onBecomeHost() {
+    // Handle become host action here
+    this.showMakeMeHostModal = false;
   }
 
   loadListings(): void {
