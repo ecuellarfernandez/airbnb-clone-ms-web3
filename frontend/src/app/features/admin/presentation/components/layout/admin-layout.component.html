@@ -22,6 +22,9 @@
       <a routerLink="/admin/listing" routerLinkActive="active">
         <i class="ri-calendar-check-line"></i>Administrador de Listings
       </a>
+      <a routerLink="/admin/listing/view" routerLinkActive="active">
+        <i class="ri-calendar-check-line"></i>Ver Listings
+      </a>
     </nav>
   </aside>
 
@@ -70,6 +73,10 @@
           <a routerLink="/host" class="dropdown-item">
             <i class="ri-home-smile-line"></i>
             <span>Ir a host</span>
+          </a>
+          <a routerLink="/home" class="dropdown-item">
+            <i class="ri-earth-line"></i>
+            <span>Ir a home</span>
           </a>
           <div class="dropdown-divider"></div>
           <button (click)="logout()" class="dropdown-item logout">
