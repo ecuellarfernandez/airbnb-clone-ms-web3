@@ -46,6 +46,7 @@
       padding: 1.5rem;
       border: 1px solid var(--border);
       transition: all var(--transition-duration) var(--transition-timing-function);
+      cursor: pointer;
 
       &:hover {
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

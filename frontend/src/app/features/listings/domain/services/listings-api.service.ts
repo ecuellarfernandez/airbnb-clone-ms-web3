@@ -5,6 +5,7 @@ import { API_ENDPOINTS } from '@core/config/api.config';
 import { Listing } from '../models/listing.model';
 import { map, tap } from 'rxjs/operators';
 import { ListingFullDto } from '../dtos/listing_full.dto';
+import { Location } from '@angular/common';
 
 @Injectable({ providedIn: 'root' })
 export class ListingsApiService {
@@ -24,6 +25,12 @@ export class ListingsApiService {
             id: api.id,
             title: api.title,
             city: api.city ?? api.location?.city ?? '',
+            country: api.country ?? api.location?.country ?? '',
+
+            address: api.address ?? api.location?.address ?? '',
+            latitude: api.latitude ?? api.location?.latitude,
+            longitude: api.longitude ?? api.location?.longitude,
+
             description: api.description ?? '',
             price:
                 api.price ??

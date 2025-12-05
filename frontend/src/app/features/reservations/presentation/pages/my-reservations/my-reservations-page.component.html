@@ -22,7 +22,7 @@
 
   <!-- Reservations List -->
   <div *ngIf="!isLoading && !errorMessage && reservations.length > 0" class="reservations-list">
-    <div *ngFor="let reservation of reservations" class="reservation-card">
+    <div *ngFor="let reservation of reservations" class="reservation-card" (click)="goToDetail(reservation)">
       
       <!-- Header: ID y Status -->
       <div class="reservation-header">

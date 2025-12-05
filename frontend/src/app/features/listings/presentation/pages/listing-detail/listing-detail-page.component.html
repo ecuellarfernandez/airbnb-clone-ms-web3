@@ -40,9 +40,16 @@
         <p class="desc">{{ l.description }}</p>
       </div>
     </div>
-
+    
 <app-card-book-detail [price]="l.price" [capacity]="l.capacity" (book)="bookDemo($event)"></app-card-book-detail>
   </div>
+  <app-listing-map
+        [latitude]="l.latitude"
+        [longitude]="l.longitude"
+        [city]="l.city"
+        [country]="l.country"
+        [address]="l.address">
+      </app-listing-map>
 </div>
 
 <div class="loading" *ngIf="loading">

@@ -35,6 +35,10 @@ export class AdminListingsPageComponent implements OnInit {
     confirmModalAction: 'publish' | 'unpublish' | 'delete' | null = null;
     selectedListing: Listing | null = null;
 
+    // Modal de detalle
+    showDetailModal = false;
+    detailListing: Listing | null = null;
+
     constructor(private facade: AdminFacade) { }
 
 ngOnInit(): void {
@@ -136,6 +140,17 @@ toggleStatus(l: Listing) {
         this.showConfirmModal = false;
         this.selectedListing = null;
         this.confirmModalAction = null;
+    }
+
+    // Modal de detalle
+    openDetail(listing: Listing): void {
+        this.detailListing = listing;
+        this.showDetailModal = true;
+    }
+
+    closeDetailModal(): void {
+        this.showDetailModal = false;
+        this.detailListing = null;
     }
 
     new() { this.editing = undefined; this.showForm = true; }
