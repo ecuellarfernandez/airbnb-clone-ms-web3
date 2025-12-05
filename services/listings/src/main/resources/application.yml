@@ -42,6 +42,11 @@ security:
     private-key-pem: ${JWT_PRIVATE_KEY_PEM:}
     public-key-pem: ${JWT_PUBLIC_KEY_PEM:}
 
+cloudinary:
+  cloud-name: ${CLOUDINARY_CLOUD_NAME}
+  api-key: ${CLOUDINARY_API_KEY}
+  api-secret: ${CLOUDINARY_API_SECRET}
+
 server:
   port: ${LISTINGS_PORT:5003}
 

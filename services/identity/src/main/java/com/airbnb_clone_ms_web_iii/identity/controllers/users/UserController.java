@@ -8,10 +8,13 @@ import com.airbnb_clone_ms_web_iii.identity.dtos.pojos.StandardResult;
 import com.airbnb_clone_ms_web_iii.identity.dtos.users.UserDTO;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.services.users.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 import static org.springframework.http.ResponseEntity.status;
 
@@ -28,7 +31,7 @@ public class UserController {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9]+}")
     public StandardResult<UserDTO> getUserById(@PathVariable("id") Long id) {
         StandardResult<UserDTO> result = new StandardResult<>();
         try{
@@ -47,6 +50,39 @@ public class UserController {
             return result;
         }
         return result;
+    }
+
+    @PostMapping("/make-me-host")
+    public ResponseEntity<StandardResult<UserDTO>> makeMeHost(
+            @RequestHeader("Authorization") String authorizationHeader
+    ){
+        StandardResult<UserDTO> result = new StandardResult<>();
+        try{
+            String token = authorizationHeader.replace("Bearer ", "");
+            User theUser = userService.makeMeHost(token);
+            UserDTO userDTO = UserDTO.fromEntity(theUser);
+
+            result.setData(userDTO);
+            result.setSuccess(true);
+        }catch (Exception ex){
+            result.setSuccess(false);
+            result.setErrorMessage(ex.getMessage());
+        }
+
+        try{
+            BaseIntegrationEvent<UserDTO> event = new BaseIntegrationEvent<>(
+                    result.getData().getId() != null ? result.getData().getId().toString() : "0",
+                    EventTypes.ROLE_ADDED_TO_USER.toString(),
+                    result.getData()
+            );
+
+            kafkaTemplate.send(EventTopics.user_events.toString(), event);
+
+        }catch (Exception ex){
+            System.out.println("Failed to send ROLE_ADDED_TO_USER event: " + ex.getMessage());
+        }
+
+        return status(result.isSuccess() ? 200 : 400).body(result);
     }
 
     @GetMapping("/search")
@@ -175,6 +211,31 @@ public class UserController {
         }
 
         return status(result.isSuccess() ? 200 : 400).body(result);
+    }
+
+    @GetMapping("/by-ids")
+    @Operation(summary = "Obtener usuarios por una lista de IDs separados por comas ';'")
+    public StandardResult<List<UserDTO>> getUsersByIds(@RequestParam(value = "ids", required = false) String idsString) {
+
+        if(idsString == null || idsString.isEmpty()){
+            StandardResult<List<UserDTO>> emptyResult = new StandardResult<>();
+            emptyResult.setData(List.of());
+            emptyResult.setErrorMessage("List of IDs separated by ';' is required");
+            emptyResult.setSuccess(true);
+            return emptyResult;
+        }
+
+        StandardResult<List<UserDTO>> result = new StandardResult<>();
+        try {
+            List<User> users = userService.findByIdsString(idsString);
+            List<UserDTO> userDTOs = users.stream().map(UserDTO::fromEntity).toList();
+            result.setData(userDTOs);
+            result.setSuccess(true);
+        } catch (Exception ex) {
+            result.setSuccess(false);
+            result.setErrorMessage(ex.getMessage());
+        }
+        return result;
     }
 
 }

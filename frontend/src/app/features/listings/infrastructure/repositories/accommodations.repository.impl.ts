@@ -3,12 +3,17 @@ import { tap, Observable } from 'rxjs';
 import { AccommodationsRepository, Filters } from '../../domain/repositories/accommodations.repository';
 import { Listing } from '../../domain/models/listing.model';
 import { ListingsApiService } from '../../domain/services/listings-api.service';
+import { CreateListingDto, ListingResponse } from '../../domain/dtos/listing.dto';
+import { HttpClient } from '@angular/common/http';
+import { API_ENDPOINTS } from '@app/core/config/api.config';
 
 @Injectable({ providedIn: 'root' })
 export class AccommodationsRepositoryImpl implements AccommodationsRepository {
   private data: Listing[] = [];
+  private apiUrl: string = API_ENDPOINTS.LISTINGS.BASE
 
-  constructor(private listingsApi: ListingsApiService) { }
+
+  constructor(private listingsApi: ListingsApiService, private http : HttpClient) { }
 
   loadAll(): Observable<Listing[]> {
     return this.listingsApi.getAll().pipe(
@@ -44,5 +49,23 @@ export class AccommodationsRepositoryImpl implements AccommodationsRepository {
 
   getAll(): Listing[] {
     return this.data;
+  }
+
+    create(dto: CreateListingDto): Observable<ListingResponse> {
+    return this.http.post<ListingResponse>(this.apiUrl, dto);
+  }
+
+  activaListing(id: string): Observable<void>{
+    return this.http.patch<void>(
+      `${this.apiUrl}/listings/${id}/publish`,
+      {}
+    );
+  }
+
+  desactivateListing(id: string): Observable<void>{
+    return this.http.patch<void>(
+      `${this.apiUrl}/listings/${id}/unpublish`,
+      {}
+    );
   }
 }
