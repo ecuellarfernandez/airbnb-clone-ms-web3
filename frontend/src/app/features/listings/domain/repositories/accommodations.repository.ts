@@ -1,14 +1,16 @@
 import { Listing } from '../models/listing.model';
+import { Observable } from 'rxjs';
 
 export interface Filters {
   city: string;
-  maxPrice: string | number;
-  minCapacity: string | number;
+  maxPrice?:  number;
+  minCapacity?:  number;
 }
 
 export abstract class AccommodationsRepository {
+  abstract loadAll(): Observable<Listing[]>
   abstract getCities(): string[];
   abstract filter(filters: Filters): Listing[];
-  abstract getById(id: number): Listing | undefined;
+  abstract getById(id: string): Listing | undefined;
   abstract getAll(): Listing[];
 }

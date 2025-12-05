@@ -11,11 +11,11 @@
         class="grid gap-6 grid-cols-2 md:grid-cols-3"
         aria-label="Listings results"
       >
-        <p *ngIf="results.length === 0" style="color: #777; padding: 8px 2px">
+        <p *ngIf="listings.length === 0" style="color: #777; padding: 8px 2px">
           No se encontraron alojamientos con los filtros seleccionados.
         </p>
 
-        <app-listing-card [showDescription]="true" *ngFor="let l of results" [listing]="l" (listingClick)="listingRedirect(l)"></app-listing-card>
+        <app-listing-card [showDescription]="true" *ngFor="let l of listings" [listing]="l" (listingClick)="listingRedirect(l)"></app-listing-card>
       </section>
     </div>
 

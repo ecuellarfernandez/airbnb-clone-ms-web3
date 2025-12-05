@@ -13,6 +13,18 @@ export const API_ENDPOINTS = {
     ROLES: `${API_GATEWAY}/api/identity-service/roles`,
     CLAIMS: `${API_GATEWAY}/api/identity-service/claims`,
   },
+
+  LISTINGS: {
+    BASE:  `${API_GATEWAY}/api/listings-service`,
+    RESERVATIONS: `${API_GATEWAY}/api/listings-service/reservations`,
+  },
+
+  PAYMENTS: {
+    BASE: `${API_GATEWAY}/api/payments-service`,
+    PAYMENT_RESERVATION: `${API_GATEWAY}/api/payments-service/payments/payment-reservation`,
+  },
+
 } as const;
   
+
   

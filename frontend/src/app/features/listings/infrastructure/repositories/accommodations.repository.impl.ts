@@ -1,11 +1,26 @@
 import { Injectable } from '@angular/core';
+import { tap, Observable } from 'rxjs';
 import { AccommodationsRepository, Filters } from '../../domain/repositories/accommodations.repository';
-import { LISTINGS_MOCK } from '../../presentation/data-access/data/listings.mock';
 import { Listing } from '../../domain/models/listing.model';
+import { ListingsApiService } from '../../domain/services/listings-api.service';
 
 @Injectable({ providedIn: 'root' })
 export class AccommodationsRepositoryImpl implements AccommodationsRepository {
-  private data: Listing[] = LISTINGS_MOCK;
+  private data: Listing[] = [];
+
+  constructor(private listingsApi: ListingsApiService) { }
+
+  loadAll(): Observable<Listing[]> {
+    return this.listingsApi.getAll().pipe(
+      tap((listings) => {
+        console.log(
+          '[AccommodationsRepository] Listings recibidos desde API:',
+          listings
+        );
+        this.data = listings;
+      })
+    );
+  }
 
   getCities(): string[] {
     const set = new Set(this.data.map((d) => d.city));
@@ -16,14 +31,14 @@ export class AccommodationsRepositoryImpl implements AccommodationsRepository {
     const { city, maxPrice, minCapacity } = filters;
 
     return this.data.filter((l) => {
-      const okCity = city === 'All' ? true : l.city === city;
-      const okPrice = maxPrice === '' ? true : l.price <= Number(maxPrice);
-      const okCap = minCapacity === '' ? true : l.capacity >= Number(minCapacity);
-      return okCity && okPrice && okCap;
+      const okCity = city === '' ? true : l.city === city;
+      //const okPrice = maxPrice === '' ? true : l.price <= Number(maxPrice);
+      //const okCap = minCapacity === '' ? true : l.capacity >= Number(minCapacity);
+      return okCity;
     });
   }
 
-  getById(id: number): Listing | undefined {
+  getById(id: string): Listing | undefined {
     return this.data.find((l) => l.id === id);
   }
 

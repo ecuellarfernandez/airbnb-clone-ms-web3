@@ -2,7 +2,7 @@ import { Listing } from '@features/listings/domain/models/listing.model';
 
 export const LISTINGS_MOCK: Listing[] = [
   {
-    id: 1,
+    id: "1",
     title: 'Modern apt in Equipetrol',
     city: 'Santa Cruz',
     price: 100,
@@ -17,7 +17,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 4,
+    id: "4",
     title: 'Rustic cabin',
     city: 'Tarija',
     price: 160,
@@ -32,7 +32,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 5,
+    id: "5",
     title: 'Minimalist loft',
     city: 'Santa Cruz',
     price: 110,
@@ -47,7 +47,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 6,
+    id: "6",
     title: 'Budget room',
     city: 'Sucre',
     price: 60,
@@ -61,7 +61,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 7,
+    id: "7",
     title: 'Penthouse with view',
     city: 'La Paz',
     price: 300,
@@ -75,7 +75,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 9,
+    id: "9",
     title: 'Practical studio',
     city: 'Cochabamba',
     price: 85,
@@ -89,7 +89,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 11,
+    id: "11",
     title: 'Eco lodge in the valley',
     city: 'Cochabamba',
     price: 200,
@@ -103,7 +103,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 12,
+    id: "12",
     title: 'Downtown apartment',
     city: 'Santa Cruz',
     price: 130,
@@ -117,7 +117,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 13,
+    id: "13",
     title: 'Mountain view cabin',
     city: 'La Paz',
     price: 250,
@@ -131,7 +131,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 14,
+    id: "14",
     title: 'Artisan hostel',
     city: 'Sucre',
     price: 70,
@@ -145,7 +145,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 15,
+    id: "15",
     title: 'Luxury villa with pool',
     city: 'Santa Cruz',
     price: 450,
@@ -160,7 +160,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 16,
+    id: "16",
     title: 'Tiny house in vineyard',
     city: 'Tarija',
     price: 150,
@@ -174,7 +174,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 17,
+    id: "17",
     title: 'Colonial suite',
     city: 'Sucre',
     price: 95,
@@ -187,7 +187,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 18,
+    id: "18",
     title: 'Modern studio near stadium',
     city: 'Cochabamba',
     price: 105,
@@ -200,7 +200,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 19,
+    id: "19",
     title: 'Hostal Andes',
     city: 'La Paz',
     price: 55,
@@ -213,7 +213,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 20,
+    id: "20",
     title: 'Boutique hotel room',
     city: 'Tarija',
     price: 170,
@@ -229,7 +229,7 @@ export const LISTINGS_MOCK: Listing[] = [
 
   /* --- Nuevos: SANTA CRUZ (total 7) --- */
   {
-    id: 21,
+    id: "21",
     title: 'Executive suite in Las Palmas',
     city: 'Santa Cruz',
     price: 140,
@@ -243,7 +243,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 22,
+    id: "22",
     title: 'Urubó house with pool',
     city: 'Santa Cruz',
     price: 260,
@@ -258,7 +258,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 23,
+    id: "23",
     title: 'Boho loft by Plaza 24 de Septiembre',
     city: 'Santa Cruz',
     price: 120,
@@ -273,7 +273,7 @@ export const LISTINGS_MOCK: Listing[] = [
 
   /* --- Nuevos: TARIJA (total 7) --- */
   {
-    id: 24,
+    id: "24",
     title: 'Suite in Valle de la Concepción',
     city: 'Tarija',
     price: 180,
@@ -282,7 +282,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1534996858221-380b92700493?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 25,
+    id: "25",
     title: 'Cabin by Guadalquivir River',
     city: 'Tarija',
     price: 140,
@@ -291,7 +291,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 26,
+    id: "26",
     title: 'Adobe house in San Lorenzo',
     city: 'Tarija',
     price: 130,
@@ -300,7 +300,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 27,
+    id: "27",
     title: 'Boutique room near main square',
     city: 'Tarija',
     price: 90,
@@ -311,7 +311,7 @@ export const LISTINGS_MOCK: Listing[] = [
 
   /* --- Nuevos: SUCRE (total 7) --- */
   {
-    id: 28,
+    id: "28",
     title: 'Apartment in Historic Center',
     city: 'Sucre',
     price: 110,
@@ -320,7 +320,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 29,
+    id: "29",
     title: 'House with patio in La Recoleta',
     city: 'Sucre',
     price: 150,
@@ -329,7 +329,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 30,
+    id: "30",
     title: 'Studio by Parque Bolívar',
     city: 'Sucre',
     price: 85,
@@ -338,7 +338,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1523217582562-09d0def993a6?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 31,
+    id: "31",
     title: 'Art-hostel in San Sebastián',
     city: 'Sucre',
     price: 70,
@@ -349,7 +349,7 @@ export const LISTINGS_MOCK: Listing[] = [
 
   /* --- Nuevos: LA PAZ (total 7) --- */
   {
-    id: 32,
+    id: "32",
     title: 'Apartment in Sopocachi',
     city: 'La Paz',
     price: 140,
@@ -358,7 +358,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 33,
+    id: "33",
     title: 'Suite in Calacoto / San Miguel',
     city: 'La Paz',
     price: 190,
@@ -367,7 +367,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1501183638710-841dd1904471?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 34,
+    id: "34",
     title: 'Cabin near Valle de la Luna',
     city: 'La Paz',
     price: 170,
@@ -376,7 +376,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 35,
+    id: "35",
     title: 'Backpackers on Sagárnaga Street',
     city: 'La Paz',
     price: 60,
@@ -387,7 +387,7 @@ export const LISTINGS_MOCK: Listing[] = [
 
   /* --- Nuevos: COCHABAMBA (total 7) --- */
   {
-    id: 36,
+    id: "36",
     title: 'Recoleta boulevard apartment',
     city: 'Cochabamba',
     price: 100,
@@ -396,7 +396,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1494526585095-c41746248156?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 37,
+    id: "37",
     title: 'Cala Cala garden house',
     city: 'Cochabamba',
     price: 180,
@@ -405,7 +405,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1505693416388-ac5ce068fe85?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 38,
+    id: "38",
     title: 'Modern studio in Queru Queru',
     city: 'Cochabamba',
     price: 105,
@@ -414,7 +414,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 39,
+    id: "39",
     title: 'Tiquipaya eco-cabin',
     city: 'Cochabamba',
     price: 150,
@@ -423,7 +423,7 @@ export const LISTINGS_MOCK: Listing[] = [
     image: 'https://images.unsplash.com/photo-1505691938895-1758d7feb511?q=80&w=1200&auto=format&fit=crop'
   },
   {
-    id: 40,
+    id: "40",
     title: 'Modern apt in Equipetrol',
     city: 'Santa Cruz',
     price: 100,
@@ -438,7 +438,7 @@ export const LISTINGS_MOCK: Listing[] = [
     ]
   },
   {
-    id: 50,
+    id: "50",
     title: 'Modern apt in Equipetrol',
     city: 'Santa Cruz',
     price: 100,

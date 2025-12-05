@@ -118,12 +118,12 @@ export class AdminFacade {
     console.log('Create listing:', payload);
   }
 
-  update(id: number, payload: Partial<Listing>) {
+  update(id: string, payload: Partial<Listing>) {
     // TODO: Implement update listing via AdminListingsService
     console.log('Update listing:', id, payload);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     // TODO: Implement remove listing via AdminListingsService
     console.log('Remove listing:', id);
   }
