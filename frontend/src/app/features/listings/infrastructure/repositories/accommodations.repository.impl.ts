@@ -6,12 +6,12 @@ import { ListingsApiService } from '../../domain/services/listings-api.service';
 import { CreateListingDto, ListingResponse } from '../../domain/dtos/listing.dto';
 import { HttpClient } from '@angular/common/http';
 import { API_ENDPOINTS } from '@app/core/config/api.config';
+import {environment} from '../../../../../environments/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class AccommodationsRepositoryImpl implements AccommodationsRepository {
   private data: Listing[] = [];
-  private apiUrl: string = API_ENDPOINTS.LISTINGS.BASE
-
+  private apiUrl: string = `${environment.apiUrl}/listings`;
 
   constructor(private listingsApi: ListingsApiService, private http : HttpClient) { }
 

@@ -5,6 +5,7 @@ export interface CategoryOption {
   name: string;
   icon?: IconName;
   description?: string;
+  categoryType: 'Property Type' | 'Space Type';
 }
 
 export interface AmenityOption {
@@ -20,44 +21,51 @@ export const LISTING_CATEGORIES: CategoryOption[] = [
     id: '650e8400-e29b-41d4-a716-446655440001',
     name: 'House',
     icon: 'house',
-    description: 'A standalone house'
+    description: 'A standalone house',
+    categoryType: 'Property Type'
   },
   {
     id: '650e8400-e29b-41d4-a716-446655440002',
     name: 'Apartment',
     icon: 'apartment',
-    description: 'An apartment in a building'
+    description: 'An apartment in a building',
+    categoryType: 'Property Type'
   },
   {
     id: '650e8400-e29b-41d4-a716-446655440003',
     name: 'Villa',
     icon: 'villa',
-    description: 'A luxurious villa'
+    description: 'A luxurious villa',
+    categoryType: 'Property Type'
   },
   {
     id: '650e8400-e29b-41d4-a716-446655440004',
     name: 'Cabin',
     icon: 'cabin',
-    description: 'A cozy cabin'
+    description: 'A cozy cabin',
+    categoryType: 'Property Type'
   },
   // Space Types
   {
     id: '650e8400-e29b-41d4-a716-446655440005',
     name: 'Entire place',
     icon: 'entire',
-    description: 'Guests have the whole place to themselves'
+    description: 'Guests have the whole place to themselves',
+    categoryType: 'Space Type'
   },
   {
     id: '650e8400-e29b-41d4-a716-446655440006',
     name: 'Private room',
     icon: 'private',
-    description: 'Guests have their own private room'
+    description: 'Guests have their own private room',
+    categoryType: 'Space Type'
   },
   {
     id: '650e8400-e29b-41d4-a716-446655440007',
     name: 'Shared room',
     icon: 'shared',
-    description: 'Guests sleep in a shared space'
+    description: 'Guests sleep in a shared space',
+    categoryType: 'Space Type'
   }
 ];
 
@@ -139,5 +147,13 @@ export function getAmenitiesByCategory(category: string): AmenityOption[] {
 export function getAmenityCategories(): string[] {
   const categories = LISTING_AMENITIES.map(a => a.category).filter(Boolean) as string[];
   return [...new Set(categories)];
+}
+
+export function getPropertyTypeCategories(): CategoryOption[] {
+  return LISTING_CATEGORIES.filter(cat => cat.categoryType === 'Property Type');
+}
+
+export function getSpaceTypeCategories(): CategoryOption[] {
+  return LISTING_CATEGORIES.filter(cat => cat.categoryType === 'Space Type');
 }
 
