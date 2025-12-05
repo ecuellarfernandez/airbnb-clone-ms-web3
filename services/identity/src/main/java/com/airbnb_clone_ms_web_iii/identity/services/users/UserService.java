@@ -7,6 +7,7 @@ import com.airbnb_clone_ms_web_iii.identity.models.roles.Role;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.repositories.users.UserRepository;
 import com.airbnb_clone_ms_web_iii.identity.services.roles.RoleService;
+import com.airbnb_clone_ms_web_iii.identity.services.security.JwtService;
 import com.airbnb_clone_ms_web_iii.identity.utils.security.SecurityUtils;
 import com.airbnb_clone_ms_web_iii.identity.utils.value_objects.Email;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,15 +29,21 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final JwtService jwtService;
 
     @Value("${app.default-role}")
     private String DEFAULT_ROLE;
 
     @Autowired
-    public UserService(UserRepository userRepository, RoleService roleService, KafkaTemplate<String, Object> kafkaTemplate) {
+    public UserService(UserRepository userRepository,
+                       RoleService roleService,
+                       KafkaTemplate<String, Object> kafkaTemplate,
+                       JwtService jwtService
+    ) {
         this.userRepository = userRepository;
         this.roleService = roleService;
         this.kafkaTemplate = kafkaTemplate;
+        this.jwtService = jwtService;
     }
 
     public User findByUsername(String username) {
@@ -147,6 +154,24 @@ public class UserService implements UserDetailsService {
             throw new IllegalArgumentException("User does not have this role");
         }
         user.getRoles().removeIf(r -> r.getId().equals(roleId));
+        return userRepository.save(user);
+    }
+
+    public User makeMeHost(String jwtToken){
+        String username = jwtService.extractUsername(jwtToken);
+        if(username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("Invalid token: username not found");
+        }
+
+        User user = findByUsername(username);
+
+        Role hostRole = roleService.findByName("HOST");
+        if(user.getRoles().stream().anyMatch(r -> r.getName() == Role.RoleName.HOST)) {
+            throw new IllegalArgumentException("User is already a host");
+        }
+
+        user.getRoles().add(hostRole);
+
         return userRepository.save(user);
     }
 

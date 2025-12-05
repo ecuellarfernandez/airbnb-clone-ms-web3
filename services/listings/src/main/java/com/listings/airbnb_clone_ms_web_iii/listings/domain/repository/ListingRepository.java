@@ -42,4 +42,13 @@ public interface ListingRepository {
             UUID categoryId,
             Pageable pageable
     );
+
+    Page<Listing> findAllForAdmin(
+            String city,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            Integer minCapacity,
+            UUID categoryId,
+            Pageable pageable
+    );
 }

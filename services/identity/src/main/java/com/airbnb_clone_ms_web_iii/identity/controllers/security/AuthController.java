@@ -68,7 +68,10 @@ public class AuthController {
 
 
     @GetMapping("/me")
-    public ResponseEntity<StandardResult<UserDTO>> getMe(@RequestHeader("Authorization") String authHeader){
+    public ResponseEntity<StandardResult<UserDTO>> getMe(
+            @RequestHeader(value = "Authorization", required = false) String authHeader
+    ){
+
         StandardResult<UserDTO> result = new StandardResult<>();
         try{
             String token = authHeader.replace("Bearer ", "");

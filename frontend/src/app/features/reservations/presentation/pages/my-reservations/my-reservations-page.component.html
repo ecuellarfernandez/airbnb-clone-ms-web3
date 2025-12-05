@@ -1,0 +1,70 @@
+<div class="my-reservations-page">
+  <div class="page-header">
+    <h1>Mis Reservas</h1>
+    <p class="subtitle">Gestiona todas tus reservas de alojamientos</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="loading">
+    <p>Cargando reservas...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="!isLoading && errorMessage" class="error-message">
+    <p>{{ errorMessage }}</p>
+    <button class="btn btn-primary" (click)="loadReservations()">Reintentar</button>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && !errorMessage && reservations.length === 0" class="empty-state">
+    <p>No tienes reservas todavía</p>
+  </div>
+
+  <!-- Reservations List -->
+  <div *ngIf="!isLoading && !errorMessage && reservations.length > 0" class="reservations-list">
+    <div *ngFor="let reservation of reservations" class="reservation-card">
+      
+      <!-- Header: ID y Status -->
+      <div class="reservation-header">
+        <div class="reservation-id">
+          <span class="label">ID:</span>
+          <span class="value">{{ truncateId(reservation.id) }}</span>
+        </div>
+        <div class="status-badge" [ngClass]="getStatusClass(reservation.status)">
+          {{ getStatusLabel(reservation.status) }}
+        </div>
+      </div>
+
+      <!-- Body: Fechas y Detalles -->
+      <div class="reservation-body">
+        <div class="reservation-dates">
+          <div class="date-item">
+            <span class="label">Check-in</span>
+            <span class="value">{{ formatDate(reservation.checkIn) }}</span>
+          </div>
+          <span class="arrow">→</span>
+          <div class="date-item">
+            <span class="label">Check-out</span>
+            <span class="value">{{ formatDate(reservation.checkOut) }}</span>
+          </div>
+        </div>
+
+        <div class="reservation-details">
+          <div class="detail-item">
+            <span class="label">Noches:</span>
+            <span class="value">{{ reservation.nights }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Precio por noche:</span>
+            <span class="value">{{ reservation.pricePerNight }} {{ reservation.currency }}</span>
+          </div>
+          <div class="detail-item">
+            <span class="label">Total:</span>
+            <span class="value price">{{ reservation.totalPrice }} {{ reservation.currency }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
