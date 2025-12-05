@@ -242,4 +242,31 @@
       color: var(--state-error);
     }
   }
+
+  .btn-edit {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    i {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+  }
 }

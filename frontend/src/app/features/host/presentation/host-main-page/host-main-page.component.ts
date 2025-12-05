@@ -82,7 +82,7 @@ export class HostMainPageComponent implements OnInit {
   }
 
   toggleStatus(listing: ListingSummary): void {
-    const action = listing.active 
+    const action = listing.active
       ? this.hostListingsService.unpublishListing(listing.id)
       : this.hostListingsService.publishListing(listing.id);
 
@@ -93,6 +93,26 @@ export class HostMainPageComponent implements OnInit {
       error: (err) => {
         console.error('Error toggling status:', err);
         alert('Error al cambiar el estado del listing');
+      }
+    });
+  }
+
+  editListing(listing: ListingSummary): void {
+    this.hostListingsService.getListingById(listing.id).subscribe({
+      next: (response) => {
+        if (response.success && response.data) {
+          console.log(response.data);
+          this.router.navigate(['/listings/create'], {
+            state: {
+              listing: response.data,
+              editMode: true
+            }
+          });
+        }
+      },
+      error: (err) => {
+        console.error('Error loading listing for edit:', err);
+        alert('Error al cargar el listing para editar');
       }
     });
   }
