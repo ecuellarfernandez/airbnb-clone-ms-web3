@@ -41,7 +41,7 @@
     </div>
 
     <div class="listings-grid">
-      <div *ngFor="let listing of listings" class="listing-card">
+      <div *ngFor="let listing of listings" class="listing-card" (click)="onListingClick(listing)">
         <div class="listing-image">
           <img 
             [src]="listing.primaryImageUrl || 'assets/placeholder.jpg'" 
