@@ -8,7 +8,7 @@ import { User } from '@app/features/users/domain/models/user.model';
 })
 export class HostService {
 
-    private bookingsURL : string = API_ENDPOINTS.LISTINGS.BOOKINGS;
+    private bookingsURL : string = API_ENDPOINTS.LISTINGS.RESERVATION;
     private usersURL : string = API_ENDPOINTS.IDENTITY.USERS;
 
     constructor(private http: HttpClient) {
