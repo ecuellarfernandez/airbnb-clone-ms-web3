@@ -6,6 +6,7 @@ import { AdminRoutingModule } from './admin-routing.module';
 import { AdminLayoutComponent } from './components/layout/admin-layout.component';
 import { AdminDashboardPageComponent } from './pages/dashboard/admin-dashboard.page.component';
 import { AuditLogsPageComponent } from './pages/audit-log/admin-auditlog.page';
+import { SharedModule } from '@shared/shared-module';
 
 @NgModule({
     declarations: [
@@ -17,7 +18,8 @@ import { AuditLogsPageComponent } from './pages/audit-log/admin-auditlog.page';
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        AdminRoutingModule
+        AdminRoutingModule,
+        SharedModule
     ]
 })
 export class AdminModule { }

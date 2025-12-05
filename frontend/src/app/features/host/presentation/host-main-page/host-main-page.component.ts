@@ -20,6 +20,9 @@ export class HostMainPageComponent implements OnInit {
   totalPages = 0;
   totalElements = 0;
 
+  // Modal state
+  showDeleteModal = false;
+  listingToDelete: ListingSummary | null = null;
   showMakeMeHostModal = true;
 
   constructor(
@@ -100,6 +103,34 @@ export class HostMainPageComponent implements OnInit {
 
   getStatusClass(active: boolean): string {
     return active ? 'status-active' : 'status-inactive';
+  }
+
+  confirmDelete(listing: ListingSummary): void {
+    this.listingToDelete = listing;
+    this.showDeleteModal = true;
+  }
+
+  cancelDelete(): void {
+    this.showDeleteModal = false;
+    this.listingToDelete = null;
+  }
+
+  deleteListing(): void {
+    if (!this.listingToDelete) return;
+
+    this.hostListingsService.deleteListing(this.listingToDelete.id).subscribe({
+      next: () => {
+        this.listings = this.listings.filter(l => l.id !== this.listingToDelete!.id);
+        this.totalElements--;
+        this.showDeleteModal = false;
+        this.listingToDelete = null;
+      },
+      error: (err) => {
+        console.error('Error deleting listing:', err);
+        alert('Error al eliminar el listing');
+        this.showDeleteModal = false;
+      }
+    });
   }
 
   _checkIfUserIsHost(roles: Role[]): boolean {

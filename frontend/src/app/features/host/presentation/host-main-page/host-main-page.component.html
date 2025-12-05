@@ -1,3 +1,12 @@
+<div class="host-layout">
+  <app-host-sidebar></app-host-sidebar>
+  
+  <div class="host-content">
+    <div class="host-page">
+      <div class="header">
+        <h1>Mis Alojamientos</h1>
+        <p class="subtitle">Gestiona tus listings publicados</p>
+      </div>
 <app-make-me-host
   [open]="showMakeMeHostModal"
   (closed)="closeMakeMeHostModal()"
@@ -60,9 +69,9 @@
               <i class="ri-user-line"></i> {{ listing.capacity }} huéspedes
             </span>
           </div>
-<!--
+
           <div class="listing-actions">
-            <button 
+            <!-- <button 
               class="btn-toggle"
               [class.active]="listing.active"
               (click)="toggleStatus(listing)"
@@ -70,11 +79,30 @@
             >
               <i [class]="listing.active ? 'ri-eye-off-line' : 'ri-eye-line'"></i>
               {{ listing.active ? 'Desactivar' : 'Activar' }}
+            </button> -->
+            <button 
+              class="btn-delete"
+              (click)="confirmDelete(listing)"
+              title="Eliminar listing"
+            >
+              <i class="ri-delete-bin-line"></i>
+              Eliminar
             </button>
           </div>
-          -->
         </div>
       </div>
     </div>
   </div>
 </div>
+</div>
+
+<app-confirmation-modal
+  [isOpen]="showDeleteModal"
+  [title]="'Eliminar Listing'"
+  [message]="'¿Estás seguro de que deseas eliminar ' + (listingToDelete?.title || '') + '? Esta acción no se puede deshacer.'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'Cancelar'"
+  [isDanger]="true"
+  (confirm)="deleteListing()"
+  (cancel)="cancelDelete()">
+</app-confirmation-modal>

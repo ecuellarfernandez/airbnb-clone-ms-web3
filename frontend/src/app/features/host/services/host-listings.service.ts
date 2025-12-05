@@ -77,4 +77,9 @@ export class HostListingsService {
       {}
     );
   }
+  deleteListing(listingId: string): Observable<StandardResult<void>> {
+    return this.http.delete<StandardResult<void>>(
+      `${API_ENDPOINTS.LISTINGS.BASE}/listings/${listingId}`
+    );
+  }
 }
