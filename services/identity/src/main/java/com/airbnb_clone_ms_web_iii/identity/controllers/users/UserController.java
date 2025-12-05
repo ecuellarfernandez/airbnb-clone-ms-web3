@@ -8,6 +8,7 @@ import com.airbnb_clone_ms_web_iii.identity.dtos.pojos.StandardResult;
 import com.airbnb_clone_ms_web_iii.identity.dtos.users.UserDTO;
 import com.airbnb_clone_ms_web_iii.identity.models.users.User;
 import com.airbnb_clone_ms_web_iii.identity.services.users.UserService;
+import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -213,12 +214,13 @@ public class UserController {
     }
 
     @GetMapping("/by-ids")
+    @Operation(summary = "Obtener usuarios por una lista de IDs separados por comas ';'")
     public StandardResult<List<UserDTO>> getUsersByIds(@RequestParam(value = "ids", required = false) String idsString) {
 
         if(idsString == null || idsString.isEmpty()){
             StandardResult<List<UserDTO>> emptyResult = new StandardResult<>();
             emptyResult.setData(List.of());
-            emptyResult.setErrorMessage("No IDs provided");
+            emptyResult.setErrorMessage("List of IDs separated by ';' is required");
             emptyResult.setSuccess(true);
             return emptyResult;
         }
