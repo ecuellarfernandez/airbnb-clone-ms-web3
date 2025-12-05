@@ -1,3 +1,4 @@
+import { Role } from '@features/users/domain/models/user.model';
 import { Component, OnInit } from '@angular/core';
 import { HostListingsService, ListingSummary } from '@features/host/services/host-listings.service';
 import { AuthService } from '@features/auth/domain/services/auth.service';
@@ -25,8 +26,18 @@ export class HostMainPageComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.loadListings();
+
+    this.authService.getCurrentUser().subscribe(user => {
+      if (user && this._checkIfUserIsHost(user.data.roles)) {
+        this.showMakeMeHostModal = false;
+        this.loadListings();
+        return;
+      }
+      console.log('Current user:', user);
+    });
+
     this.showMakeMeHostModal = true;
+
   }
   closeMakeMeHostModal() {
     this.showMakeMeHostModal = false;
@@ -40,7 +51,6 @@ export class HostMainPageComponent implements OnInit {
   loadListings(): void {
     this.loading = true;
     this.error = null;
-
     this.hostListingsService.getMyListings(this.currentPage, 10).subscribe({
       next: (response) => {
         if (response.success && response.data) {
@@ -80,5 +90,9 @@ export class HostMainPageComponent implements OnInit {
 
   getStatusClass(active: boolean): string {
     return active ? 'status-active' : 'status-inactive';
+  }
+
+  _checkIfUserIsHost(roles: Role[]): boolean {
+    return roles.some(role => role.name.toUpperCase() === 'HOST');
   }
 }
