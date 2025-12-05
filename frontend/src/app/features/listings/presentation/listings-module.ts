@@ -17,7 +17,13 @@ import { SharedModule } from '../../../shared/shared-module';
     CardBookDetailComponent,
     ListingFormPageComponent
   ],
-  imports: [FormsModule, CommonModule, ListingsRoutingModule, SharedModule, ReactiveFormsModule],
+  imports: [
+    FormsModule,
+    CommonModule,
+    ListingsRoutingModule,
+    SharedModule,
+    ReactiveFormsModule
+  ],
   exports: [
     ListingCardComponent
   ]

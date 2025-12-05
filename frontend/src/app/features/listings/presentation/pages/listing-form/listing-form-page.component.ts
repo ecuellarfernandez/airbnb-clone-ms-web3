@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Router } from '@angular/router';
 import { UploadCloudinaryUseCase } from '@app/shared/cloudinary/application/use-cases/upload-cloudinary.usecase';
 import { DeleteCloudinaryUseCase } from '@app/shared/cloudinary/application/use-cases/delete-cloudinary.usecase';
 import { CloudinaryImage } from '@app/shared/cloudinary/domain/models/cloudinary-image.model';
@@ -7,6 +8,14 @@ import { AuthService } from '@features/auth/domain/services/auth.service';
 import { ListingFormStateService, ListingFormState } from '@features/listings/application/services/listing-form-state.service';
 import { take } from 'rxjs';
 import { CreateListingUseCase } from '@app/features/listings/application/use-cases/create-listing.use-case';
+import {
+  LISTING_AMENITIES,
+  CategoryOption,
+  AmenityOption,
+  getAmenityCategories,
+  getPropertyTypeCategories,
+  getSpaceTypeCategories
+} from '@features/listings/domain/constants/listing-options.constants';
 
 interface Step {
   id: number;
@@ -26,16 +35,25 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   uploadedImages: CloudinaryImage[] = [];
   currentStep = 0;
 
+  // Opciones disponibles
+  propertyTypes: CategoryOption[] = getPropertyTypeCategories();
+  spaceTypes: CategoryOption[] = getSpaceTypeCategories();
+  amenities: AmenityOption[] = LISTING_AMENITIES;
+  amenityCategories: string[] = getAmenityCategories();
+
   steps: Step[] = [
     { id: 0, title: 'Información Básica', description: 'Título y descripción de tu propiedad' },
-    { id: 1, title: 'Ubicación', description: 'Dónde se encuentra tu propiedad' },
-    { id: 2, title: 'Detalles', description: 'Capacidad y características' },
-    { id: 3, title: 'Precio', description: 'Establece tu tarifa por noche' },
-    { id: 4, title: 'Fotos', description: 'Muestra tu propiedad' }
+    { id: 1, title: 'Categoría', description: 'Tipo de alojamiento' },
+    { id: 2, title: 'Ubicación', description: 'Dónde se encuentra tu propiedad' },
+    { id: 3, title: 'Detalles', description: 'Capacidad y características' },
+    { id: 4, title: 'Amenidades', description: 'Servicios y comodidades' },
+    { id: 5, title: 'Precio', description: 'Establece tu tarifa por noche' },
+    { id: 6, title: 'Fotos', description: 'Muestra tu propiedad' }
   ];
 
   constructor(
     private fb: FormBuilder,
+    private router: Router,
     private uploadCloudinaryUseCase: UploadCloudinaryUseCase,
     private deleteCloudinaryUseCase: DeleteCloudinaryUseCase,
     private createListingUseCase: CreateListingUseCase,
@@ -50,8 +68,8 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
         city: ['', Validators.required],
         country: ['', Validators.required],
         address: ['', Validators.required],
-        latitude: [0, Validators.required],
-        longitude: [0, Validators.required]
+        latitude: [null, [Validators.min(-90), Validators.max(90)]],
+        longitude: [null, [Validators.min(-180), Validators.max(180)]]
       }),
       price: this.fb.group({
         amount: [0, [Validators.required, Validators.min(0)]],
@@ -68,8 +86,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setHostId();
-    this.addCategoryId('dd45c078-833a-4cf2-9b28-f4d9a584cd53');
-    this.addAmenityId('066c1098-2cbc-497c-a5ec-e9a62823d5e0');
     this.loadSavedState();
   }
 
@@ -101,11 +117,77 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   }
 
   addCategoryId(id: string): void {
-    this.categoryIdsArray.push(this.fb.control(id));
+    if (!this.isCategorySelected(id)) {
+      this.categoryIdsArray.push(this.fb.control(id));
+    }
+  }
+
+  removeCategoryId(id: string): void {
+    const index = this.categoryIdsArray.controls.findIndex(ctrl => ctrl.value === id);
+    if (index > -1) {
+      this.categoryIdsArray.removeAt(index);
+    }
+  }
+
+  toggleCategory(id: string, categoryType: 'Property Type' | 'Space Type'): void {
+    if (this.isCategorySelected(id)) {
+      this.removeCategoryId(id);
+    } else {
+      // Si es Space Type, remover cualquier otra Space Type seleccionada
+      if (categoryType === 'Space Type') {
+        this.clearSpaceTypeCategories();
+      }
+      this.addCategoryId(id);
+    }
+  }
+
+  clearSpaceTypeCategories(): void {
+    const spaceTypeIds = this.spaceTypes.map(st => st.id);
+    const indicesToRemove: number[] = [];
+
+    this.categoryIdsArray.controls.forEach((ctrl, index) => {
+      if (spaceTypeIds.includes(ctrl.value)) {
+        indicesToRemove.push(index);
+      }
+    });
+
+    // Remover en orden inverso para no afectar los índices
+    indicesToRemove.reverse().forEach(index => {
+      this.categoryIdsArray.removeAt(index);
+    });
+  }
+
+  isCategorySelected(id: string): boolean {
+    return this.categoryIdsArray.controls.some(ctrl => ctrl.value === id);
   }
 
   addAmenityId(id: string): void {
-    this.amenityIdsArray.push(this.fb.control(id));
+    if (!this.isAmenitySelected(id)) {
+      this.amenityIdsArray.push(this.fb.control(id));
+    }
+  }
+
+  removeAmenityId(id: string): void {
+    const index = this.amenityIdsArray.controls.findIndex(ctrl => ctrl.value === id);
+    if (index > -1) {
+      this.amenityIdsArray.removeAt(index);
+    }
+  }
+
+  toggleAmenity(id: string): void {
+    if (this.isAmenitySelected(id)) {
+      this.removeAmenityId(id);
+    } else {
+      this.addAmenityId(id);
+    }
+  }
+
+  isAmenitySelected(id: string): boolean {
+    return this.amenityIdsArray.controls.some(ctrl => ctrl.value === id);
+  }
+
+  getAmenitiesByCategory(category: string): AmenityOption[] {
+    return this.amenities.filter(amenity => amenity.category === category);
   }
 
   onFileSelected(event: Event): void {
@@ -212,15 +294,19 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     switch (this.currentStep) {
       case 0: // Información Básica
         return this.form.get('title')?.valid && this.form.get('description')?.valid;
-      case 1: // Ubicación
+      case 1: // Categoría
+        return this.categoryIdsArray.length > 0;
+      case 2: // Ubicación
         return this.form.get('location')?.valid;
-      case 2: // Detalles
+      case 3: // Detalles
         return this.form.get('capacity')?.valid &&
           this.form.get('bedrooms')?.valid &&
           this.form.get('bathrooms')?.valid;
-      case 3: // Precio
+      case 4: // Amenidades
+        return this.amenityIdsArray.length > 0;
+      case 5: // Precio
         return this.form.get('price')?.valid;
-      case 4: // Fotos
+      case 6: // Fotos
         return this.imagesArray.length > 0;
       default:
         return false;
@@ -234,21 +320,27 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
         this.form.get('description')?.markAsTouched();
         break;
       case 1:
+        this.form.get('categoryIds')?.markAsTouched();
+        break;
+      case 2:
         Object.keys((this.form.get('location') as FormGroup).controls).forEach(key => {
           this.form.get('location')?.get(key)?.markAsTouched();
         });
         break;
-      case 2:
+      case 3:
         this.form.get('capacity')?.markAsTouched();
         this.form.get('bedrooms')?.markAsTouched();
         this.form.get('bathrooms')?.markAsTouched();
         break;
-      case 3:
+      case 4:
+        this.form.get('amenityIds')?.markAsTouched();
+        break;
+      case 5:
         Object.keys((this.form.get('price') as FormGroup).controls).forEach(key => {
           this.form.get('price')?.get(key)?.markAsTouched();
         });
         break;
-      case 4:
+      case 6:
         this.form.get('images')?.markAsTouched();
         break;
     }
@@ -256,20 +348,61 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
 
   onSubmit(): void {
     if (this.form.valid) {
-      const payload = this.form.value;
+      const payload = this.normalizePayload(this.form.value);
       console.log('Form Payload:', payload);
 
       this.createListingUseCase.execute(payload).subscribe({
         next: () => {
+          console.log('✅ Listing created successfully!');
           this.formStateService.clearState();
+          // Redirigir a home después de crear exitosamente
+          this.router.navigate(['/']);
         },
         error: (error) => {
-          console.error('Failed to create listing:', error);
+          console.error('❌ Failed to create listing:', error);
         }
       });
 
     } else {
       this.form.markAllAsTouched();
+    }
+  }
+
+  private normalizePayload(payload: any): any {
+    const normalized = { ...payload };
+
+    if (normalized.location) {
+      if (normalized.location.latitude !== null && normalized.location.latitude !== undefined) {
+        normalized.location.latitude = this.normalizeCoordinate(normalized.location.latitude);
+      }
+      if (normalized.location.longitude !== null && normalized.location.longitude !== undefined) {
+        normalized.location.longitude = this.normalizeCoordinate(normalized.location.longitude);
+      }
+    }
+
+    return normalized;
+  }
+
+  private normalizeCoordinate(value: any): number | null {
+    if (value === null || value === undefined || value === '') {
+      return null;
+    }
+
+    // Convertir a string y reemplazar comas por puntos
+    const normalized = String(value).replace(',', '.');
+    const parsed = parseFloat(normalized);
+
+    // Validar que sea un número válido
+    return isNaN(parsed) ? null : parsed;
+  }
+
+  normalizeCoordinateInput(field: 'latitude' | 'longitude'): void {
+    const control = this.form.get(`location.${field}`);
+    if (control && control.value !== null && control.value !== undefined && control.value !== '') {
+      const normalized = this.normalizeCoordinate(control.value);
+      if (normalized !== null) {
+        control.setValue(normalized, { emitEvent: false });
+      }
     }
   }
 
