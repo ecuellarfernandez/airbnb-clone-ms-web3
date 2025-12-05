@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '@core/config/api.config';
 import { Listing } from '../models/listing.model';
 import { map, tap } from 'rxjs/operators';
+import { ListingFullDto } from '../dtos/listing_full.dto';
 
 @Injectable({ providedIn: 'root' })
 export class ListingsApiService {
@@ -64,6 +65,21 @@ export class ListingsApiService {
             map((resp) => {
                 const raw = resp.data ?? resp;
                 return this.mapApiListing(raw);
+            })
+        );
+    }
+
+    getByIdFull(id: string): Observable<ListingFullDto> {
+        const url = `${API_ENDPOINTS.LISTINGS.BASE}/listings/${id}`;
+
+        return this.http.get<any>(url).pipe(
+            tap((resp) => {
+                console.log('[ListingsApiService] Detail URL:', url);
+                console.log('[ListingsApiService] Detail raw response:', resp);
+            }),
+            map((resp) => {
+                const raw = resp.data ?? resp;
+                return raw;
             })
         );
     }

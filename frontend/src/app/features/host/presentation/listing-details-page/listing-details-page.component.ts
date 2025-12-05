@@ -5,6 +5,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Listing } from '@features/listings/domain/models/listing.model';
 import { ReservationsApiService, CreateReservationPayload } from '@features/reservations/domain/models/services/reservations-api.service';
 import { ListingsApiService } from '@features/listings/domain/services/listings-api.service'
+import { ListingFullDto } from "@app/features/listings/domain/dtos/listing_full.dto";
 
 interface BookPayload {
   dateRange: { checkIn: Date | null; checkOut: Date | null };
@@ -19,15 +20,14 @@ interface BookPayload {
 })
 export class ListingDetailsPageComponent implements OnInit {
   loading = true;
-  listing?: Listing;
+  listing?: ListingFullDto;
 
   reservationId: string | null = null;
   amountFromMs: number | null = null;
 
-  allPhotos: string[] = [];
-  visibleThumbs = 3;
   showLigthbox = false;
   currentPhotoIndex = 0;
+  selectedImageIndex = 0;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,13 +47,15 @@ export class ListingDetailsPageComponent implements OnInit {
 
     this.loading = true;
 
-    this.listingsApi.getById(listingId).subscribe({
+    this.listingsApi.getByIdFull(listingId).subscribe({
       next: (result) => {
         this.listing = result;
-
-        const extras = this.listing?.photos ?? [];
-        this.allPhotos = [this.listing?.image ?? '', ...extras];
-
+        // Find primary image index or default to 0
+        if (this.listing?.images?.length) {
+          const primaryIdx = this.listing.images.findIndex(img => img.isPrimary);
+          this.selectedImageIndex = primaryIdx !== -1 ? primaryIdx : 0;
+          this.currentPhotoIndex = this.selectedImageIndex;
+        }
         this.loading = false;
       },
       error: (error) => {
@@ -64,16 +66,10 @@ export class ListingDetailsPageComponent implements OnInit {
   }
 
   get totalPhotos(): number {
-    return this.allPhotos.length;
+    return this.listing?.images?.length ?? 0;
   }
 
-  get showCount(): number {
-    return 1 + Math.min(this.visibleThumbs, (this.listing?.photos?.length ?? 0));
-  }
-
-  get remainingCount(): number {
-    return Math.max(0, this.totalPhotos - this.showCount);
-  }
+  // No longer needed: showCount, remainingCount
 
   back(): void {
     this.location.back();
@@ -99,8 +95,8 @@ export class ListingDetailsPageComponent implements OnInit {
       return;
     }
 
-    const baseAmount = this.listing.price * nights;
-    console.log('Noches:', nights, 'Precio por noche:', this.listing.price, 'Total calculado (amount):', baseAmount);
+    const baseAmount = this.listing.priceAmount * nights;
+    console.log('Noches:', nights, 'Precio por noche:', this.listing.priceAmount, 'Total calculado (amount):', baseAmount);
 
     const totalGuests = guests.adults + guests.children + guests.infants + guests.pets;
     const listingId = String(this.listing.id);

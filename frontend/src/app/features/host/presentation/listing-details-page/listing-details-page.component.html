@@ -7,20 +7,20 @@
 	</button>
 
 	<div class="gallery vertical-gallery">
-		<div class="main-photo" (click)="openLightbox(0)" role="button" tabindex="0" aria-label="Ver fotos">
-			<img [src]="l.image" [alt]="l.title" loading="eager" />
-			<button class="see-all" (click)="openLightbox(0); $event.stopPropagation()">
-				Ver {{ totalPhotos }} fotos
+		<div class="main-photo" (click)="openLightbox(selectedImageIndex)" role="button" tabindex="0" aria-label="Ver fotos">
+			<img [src]="l.images[selectedImageIndex]?.mediaUrl" [alt]="l.title" loading="eager" />
+			<button class="see-all" (click)="openLightbox(selectedImageIndex); $event.stopPropagation()">
+				Ver {{ l.images.length }} fotos
 			</button>
 		</div>
 
-		<div class="thumbnails" *ngIf="l.photos?.length">
-			<img *ngFor="let p of l.photos | slice:0:visibleThumbs; let i = index"
-				[src]="p"
+		<div class="thumbnails" *ngIf="l.images && l.images.length > 1">
+			<img *ngFor="let img of l.images; let i = index"
+				[src]="img.mediaUrl"
 				[alt]="l.title"
 				loading="lazy"
-				(click)="openLightbox(i + 1)"
-				[class.selected-thumb]="showLigthbox && currentPhotoIndex === i + 1"
+				(click)="openLightbox(i)"
+				[class.selected-thumb]="showLigthbox && currentPhotoIndex === i"
 			/>
 		</div>
 	</div>
@@ -60,7 +60,7 @@
 		<button class="close" (click)="closeLightbox($event)" aria-label="Cerrar">×</button>
 		<div class="lightbox-content">
 			<button class="nav prev" (click)="prev($event)" aria-label="Anterior">‹</button>
-			<img [src]="allPhotos[currentPhotoIndex]" [alt]="listing?.title">
+			<img [src]="listing?.images?.[currentPhotoIndex]?.mediaUrl" [alt]="listing?.title">
 			<button class="nav next" (click)="next($event)" aria-label="Siguiente">›</button>
 		</div>
 		<div class="counter">{{ currentPhotoIndex + 1 }} / {{ totalPhotos }}</div>
