@@ -30,7 +30,7 @@ import java.util.UUID;
 import java.util.logging.Logger;
 
 @RestController
-@RequestMapping("/api/bookings")
+@RequestMapping("/api/reservations")
 @Tag(name = "Bookings", description = "API para gestión de reservas")
 @CrossOrigin(origins = "*")
 public class BookingController {

@@ -141,8 +141,11 @@ toggleStatus(l: Listing) {
     new() { this.editing = undefined; this.showForm = true; }
     edit(l: Listing) { this.editing = l; this.showForm = true; }
     save(payload: Partial<Listing>) {
-        if (this.editing) this.facade.update(Number(this.editing.id), payload);
-        else this.facade.create(payload);
+        if (this.editing) {
+            this.facade.update(String(this.editing.id), payload);
+        } else {
+            this.facade.create(payload);
+        }
         this.showForm = false;
     }
 }

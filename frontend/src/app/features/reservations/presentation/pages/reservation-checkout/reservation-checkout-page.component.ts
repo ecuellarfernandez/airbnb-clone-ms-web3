@@ -4,6 +4,12 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Listing } from '@features/listings/domain/models/listing.model';
 import { GetListingByIdUseCase } from '@features/listings/application/use-cases/get-listing-by-id.use-case';
+import {
+    ReservationsApiService,
+    PaymentReservationPayload,
+} from '@features/reservations/domain/models/services/reservations-api.service';
+import { AuthService } from '@features/auth/domain/services/auth.service';
+import { User } from '@app/features/users/domain/models/user.model';
 
 @Component({
     selector: 'app-reservation-checkout-page',
@@ -12,7 +18,6 @@ import { GetListingByIdUseCase } from '@features/listings/application/use-cases/
     styleUrls: ['./reservation-checkout-page.component.scss'],
 })
 export class ReservationCheckoutPageComponent implements OnInit {
-
     listing!: Listing | undefined;
 
     paymentForm!: FormGroup;
@@ -25,20 +30,33 @@ export class ReservationCheckoutPageComponent implements OnInit {
     infants = 0;
     pets = 0;
 
+    reservationId: string | null = null;
+    amount: number | null = null;
+
+    currentUser: User | null = null;
+
     constructor(
         private route: ActivatedRoute,
         private fb: FormBuilder,
         private getListingByIdUseCase: GetListingByIdUseCase,
         private location: Location,
+        private reservationsApi: ReservationsApiService,
+        private authService: AuthService,
     ) { }
 
     ngOnInit(): void {
         this.buildForm();
 
+        this.currentUser = this.authService.getUser();
+
         this.route.queryParamMap.subscribe(params => {
-            const listingId = Number(params.get('listingId'));
+            const listingId = params.get('listingId');
             const checkInParam = params.get('checkIn');
             const checkOutParam = params.get('checkOut');
+
+            this.reservationId = params.get('reservationId');
+            const amountParam = params.get('amount');
+            this.amount = amountParam ? Number(amountParam) : null;
 
             this.adults = Number(params.get('adults') ?? 1);
             this.children = Number(params.get('children') ?? 0);
@@ -49,8 +67,19 @@ export class ReservationCheckoutPageComponent implements OnInit {
             if (checkOutParam) this.checkOut = new Date(checkOutParam);
 
             if (listingId) {
-                this.listing = this.getListingByIdUseCase.execute(listingId);
+                this.listing = this.getListingByIdUseCase.execute(String(listingId));
             }
+
+            console.log('=== CHECKOUT INIT ===');
+            console.log('Query params listingId:', listingId);
+            console.log('Query params reservationId:', this.reservationId);
+            console.log('Query params amount (string):', amountParam);
+            console.log('amount (number):', this.amount);
+            console.log('checkIn:', this.checkIn);
+            console.log('checkOut:', this.checkOut);
+            console.log('adults:', this.adults, 'children:', this.children, 'infants:', this.infants, 'pets:', this.pets);
+            console.log('Listing cargado?', !!this.listing, this.listing);
+            console.log('======================');
         });
     }
 
@@ -59,12 +88,12 @@ export class ReservationCheckoutPageComponent implements OnInit {
             cardNumber: ['', [Validators.required]],
             expiry: ['', [Validators.required]],
             cvv: ['', [Validators.required]],
-            address: ['', [Validators.required]],
+            address: [''],
             apartment: [''],
-            city: ['', [Validators.required]],
-            state: ['', [Validators.required]],
-            postalCode: ['', [Validators.required]],
-            country: ['Bolivia', [Validators.required]],
+            city: [''],
+            state: [''],
+            postalCode: [''],
+            country: ['Bolivia'],
         });
     }
 
@@ -94,7 +123,7 @@ export class ReservationCheckoutPageComponent implements OnInit {
 
     get nights(): number | null {
         if (!this.checkIn || !this.checkOut) return null;
-        const diffMs = this.checkOut.getTime() - this.checkIn.getTime();
+        const diffMs = this.checkOut.getTime() - this.checkIn.getTime(); 
         const diffDays = Math.round(diffMs / (1000 * 60 * 60 * 24));
         return diffDays > 0 ? diffDays : null;
     }
@@ -105,22 +134,102 @@ export class ReservationCheckoutPageComponent implements OnInit {
     }
 
     onSubmit(): void {
-        if (this.paymentForm.invalid || !this.listing) {
+        console.log('=== onSubmit() ===');
+        console.log('paymentForm valid?:', this.paymentForm.valid);
+        console.log('paymentForm value:', this.paymentForm.value);
+        console.log('listing existe?:', !!this.listing);
+        console.log('reservationId:', this.reservationId);
+        console.log('amount:', this.amount);
+        console.log('currentUser:', this.currentUser);
+
+        Object.keys(this.paymentForm.controls).forEach(name => {
+            const control = this.paymentForm.get(name);
+            console.log(
+                `control "${name}" -> value:`,
+                control?.value,
+                '| valid:',
+                control?.valid,
+                '| errors:',
+                control?.errors
+            );
+        });
+
+        if (
+            this.paymentForm.invalid ||
+            !this.reservationId ||
+            this.amount == null
+        ) {
+            console.log('Alguna condición básica falló:');
+            console.log('- paymentForm.invalid:', this.paymentForm.invalid);
+            console.log('- !reservationId:', !this.reservationId);
+            console.log('- amount == null:', this.amount == null);
+
             this.paymentForm.markAllAsTouched();
+            alert('Falta información para procesar el pago.');
             return;
         }
 
-        console.log('Solicitud de reserva', {
-            listing: this.listing,
-            checkIn: this.checkIn,
-            checkOut: this.checkOut,
-            guests: {
-                adults: this.adults,
-                children: this.children,
-                infants: this.infants,
-                pets: this.pets,
+        if (this.currentUser) {
+            this.processPayment();
+            return;
+        }
+
+        if (this.authService.isAuthenticated()) {
+            console.log('No había currentUser, llamando a /me antes de pagar...');
+            this.authService.getCurrentUser().subscribe({
+                next: (res) => {
+                    if (res.success && res.data) {
+                        this.currentUser = res.data;
+                        console.log('Usuario obtenido en onSubmit:', this.currentUser);
+                        this.processPayment();
+                    } else {
+                        console.warn('No se pudo obtener el usuario actual:', res.errorMessage);
+                        alert('No se pudo obtener la información del usuario. Intenta iniciar sesión de nuevo.');
+                    }
+                },
+                error: (err) => {
+                    console.error('Error al obtener el usuario actual:', err);
+                    alert('Error al obtener la información del usuario. Intenta iniciar sesión de nuevo.');
+                },
+            });
+            return;
+        }
+
+        alert('Debes iniciar sesión para poder pagar la reserva.');
+    }
+
+    private processPayment(): void {
+        if (!this.currentUser) {
+            console.error('processPayment llamado sin currentUser');
+            alert('No se pudo procesar el pago. Intenta iniciar sesión nuevamente.');
+            return;
+        }
+
+        const payload: PaymentReservationPayload = {
+            reservation_id: this.reservationId!,
+            amount: this.amount!,
+            user_id: this.currentUser.id,
+            card: {
+                number: this.paymentForm.value.cardNumber,
+                expiry: this.paymentForm.value.expiry,
+                cvv: this.paymentForm.value.cvv,
             },
-            payment: this.paymentForm.value,
+        };
+
+        console.log('Enviando pago de reserva (payload):', payload);
+
+        this.reservationsApi.payReservation(payload).subscribe({
+            next: (resp) => {
+                console.log('Respuesta payments OK:', resp);
+                alert('Pago procesado correctamente (se enviará el evento a Listings).');
+            },
+            error: (err) => {
+                console.error('Error al procesar el pago', err);
+                const msg =
+                    err.error?.message ??
+                    'Ocurrió un error al procesar el pago. Verifica los datos de la tarjeta.';
+                alert(msg);
+            },
         });
     }
 

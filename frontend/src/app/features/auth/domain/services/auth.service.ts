@@ -47,6 +47,11 @@ export class AuthService {
   public user$ = this.userSubject$.asObservable();
   public isAuthenticated$ = this.isAuthenticatedSubject$.asObservable();
 
+  // esto es para obtener el usuario en cualquier parte
+  get currentUser(): User | null {
+    return this.userSubject$.value;
+  }
+
   constructor(
     private http: HttpClient,
     @Inject(PLATFORM_ID) platformId: Object
