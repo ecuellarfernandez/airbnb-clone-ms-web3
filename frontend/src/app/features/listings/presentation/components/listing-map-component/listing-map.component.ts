@@ -1,9 +1,11 @@
+import { CommonModule } from "@angular/common";
 import { Component, Input, OnChanges, SimpleChanges } from "@angular/core";
 import { DomSanitizer, SafeResourceUrl } from "@angular/platform-browser";
 
 @Component({
     selector: 'app-listing-map',
-    standalone: false,
+    standalone: true,
+    imports: [CommonModule],
     templateUrl: './listing-map.component.html',
     styleUrls: ['./listing-map.component.scss']
 })

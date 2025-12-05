@@ -6,6 +6,7 @@ import { Listing } from '@features/listings/domain/models/listing.model';
 import { ReservationsApiService, CreateReservationPayload } from '@features/reservations/domain/models/services/reservations-api.service';
 import { ListingsApiService } from '@features/listings/domain/services/listings-api.service'
 import { ListingFullDto } from "@app/features/listings/domain/dtos/listing_full.dto";
+import { ListingMapComponent } from "@app/features/listings/presentation/components/listing-map-component/listing-map.component";
 
 interface BookPayload {
   dateRange: { checkIn: Date | null; checkOut: Date | null };
@@ -18,7 +19,7 @@ import { CommonModule } from '@angular/common';
 @Component({
   selector: 'app-listing-details-page',
   standalone: true,
-  imports: [CommonModule, ListingBookingsComponent],
+  imports: [CommonModule, ListingBookingsComponent, ListingMapComponent],
   templateUrl: './listing-details-page.component.html',
   styleUrl: './listing-details-page.component.scss',
 })

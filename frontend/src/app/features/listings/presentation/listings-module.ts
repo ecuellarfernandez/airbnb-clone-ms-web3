@@ -16,11 +16,10 @@ import { ListingMapComponent } from '../presentation/components/listing-map-comp
     AccommodationsPageComponent,
     ListingCardComponent,
     ListingDetailPageComponent,
-    ListingMapComponent,
     CardBookDetailComponent,
     ListingFormPageComponent
   ],
-  imports: [FormsModule, CommonModule, ListingsRoutingModule, SharedModule, ReactiveFormsModule],
+  imports: [FormsModule, CommonModule, ListingsRoutingModule, SharedModule, ReactiveFormsModule, ListingMapComponent],
   exports: [
     ListingCardComponent
   ]
