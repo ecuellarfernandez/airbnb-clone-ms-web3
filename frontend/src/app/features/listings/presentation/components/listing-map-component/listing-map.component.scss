@@ -1,0 +1,29 @@
+.map-wrapper {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+    .map-title {
+        font-size: 1.2rem;
+        margin-bottom: 6px;
+    }
+
+    .map-address {
+        font-size: 0.9rem;
+        opacity: 0.8;
+        margin-bottom: 16px;
+    }
+
+    .map-container {
+        width: 100%;
+        height: 320px;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .map-iframe {
+        width: 100%;
+        height: 100%;
+        display: block;
+    }
+}

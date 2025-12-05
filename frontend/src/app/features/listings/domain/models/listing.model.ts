@@ -4,6 +4,11 @@ export interface Listing {
     city: string;
     country?: string;
     priceAmount?: number;
+    //nuevo para el mapa
+    address?: string
+    latitude?: number
+    longitude?: number
+    
     priceCurrency?: string;
     price: number;      
     capacity: number;  
