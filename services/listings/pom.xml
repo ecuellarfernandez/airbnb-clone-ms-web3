@@ -120,6 +120,14 @@
 			<artifactId>pipelinr</artifactId>
 			<version>0.11</version>
 		</dependency>
+
+        <!-- Cloudinary -->
+        <dependency>
+            <groupId>com.cloudinary</groupId>
+            <artifactId>cloudinary-http44</artifactId>
+            <version>1.39.0</version>
+        </dependency>
+
     </dependencies>
 
 	<build>
