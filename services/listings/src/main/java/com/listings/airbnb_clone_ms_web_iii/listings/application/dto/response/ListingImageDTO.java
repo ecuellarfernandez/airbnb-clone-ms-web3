@@ -6,16 +6,18 @@ public class ListingImageDTO {
     private UUID id;
     private UUID mediaId;
     private String mediaUrl;
+    private String publicId;
     private Boolean isPrimary;
     private Integer displayOrder;
 
     public ListingImageDTO() {
     }
 
-    public ListingImageDTO(UUID id, UUID mediaId, String mediaUrl, Boolean isPrimary, Integer displayOrder) {
+    public ListingImageDTO(UUID id, UUID mediaId, String mediaUrl, String publicId, Boolean isPrimary, Integer displayOrder) {
         this.id = id;
         this.mediaId = mediaId;
         this.mediaUrl = mediaUrl;
+        this.publicId = publicId;
         this.isPrimary = isPrimary;
         this.displayOrder = displayOrder;
     }
@@ -42,6 +44,14 @@ public class ListingImageDTO {
 
     public void setMediaUrl(String mediaUrl) {
         this.mediaUrl = mediaUrl;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
     }
 
     public Boolean getIsPrimary() {
