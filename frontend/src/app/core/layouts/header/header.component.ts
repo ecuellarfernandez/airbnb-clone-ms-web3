@@ -33,19 +33,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
     {
       id: 'accommodations',
       label: 'Alojamientos',
-      icon: 'home'
+      icon: 'home',
+      path: '/'
     },
     {
-      id: 'experiences',
-      label: 'Experiencias',
-      icon: 'experience',
-      isNew: true
-    },
-    {
-      id: 'services',
-      label: 'Servicios',
-      icon: 'service',
-      isNew: true
+      id: 'reservations',
+      label: 'Ver Reservas',
+      icon: 'calendar',
+      path: '/users/profile/reservations'
     }
   ];
 
@@ -83,7 +78,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private checkRoute() {
-    this.showNavTabs = !this.router.url.includes('/listings/detail/');
+    //this.showNavTabs = !this.router.url.includes('/listings/detail/');
+    this.showNavTabs = true;
+
+    if (this.router.url.startsWith('/users/profile/reservations')) {
+      this.activeTabId = 'reservations';
+    } else {
+      this.activeTabId = 'accommodations';
+    }
   }
 
   @HostListener('window:scroll', [])
@@ -100,6 +102,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   onTabChange(tabId: string): void {
     this.activeTabId = tabId;
+    const tab = this.navTabs.find(t => t.id === tabId);
+    if (tab?.path) {
+      this.router.navigate([tab.path]);
+    }
+
     console.log('Tab changed to:', tabId);
   }
 

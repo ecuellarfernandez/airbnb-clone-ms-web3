@@ -28,14 +28,25 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     pets: 0
   };
 
+  dateRange =  {
+    checkIn: null as Date | null,
+    checkOut: null as Date | null
+  }
+
+
   private subscription?: Subscription;
 
   constructor(private searchFilterService: SearchFilterService) { }
 
   ngOnInit(): void {
-    this.subscription = this.searchFilterService.filters$.subscribe(
-      filters => this.filters = filters
-    );
+    this.subscription = this.searchFilterService.filters$.subscribe(filters => {
+        this.filters = filters
+
+        this.dateRange = {
+          checkIn: filters.checkIn,
+          checkOut: filters.checkOut
+        };
+    });
   }
 
   ngOnDestroy(): void {
@@ -62,12 +73,12 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     return `${total} huéspedes`;
   }
 
-  get dateRange() {
+  /*get dateRange() {
     return {
       checkIn: this.filters.checkIn,
       checkOut: this.filters.checkOut
     };
-  }
+  }*/
 
   get guestCounts(): GuestCounts {
     return {
@@ -103,7 +114,12 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
   }
 
   onDateRangeChange(dateRange: { checkIn: Date | null; checkOut: Date | null }): void {
+    this.dateRange = dateRange;
     this.searchFilterService.updateDates(dateRange.checkIn, dateRange.checkOut);
+
+    if (dateRange.checkIn && dateRange.checkOut) {
+      this.closeModals();
+    }
   }
 
   onGuestsChange(guests: GuestCounts): void {
@@ -117,7 +133,7 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
 
   onSearch(): void {
     this.searchFilterService.executeSearch();
-    this.closeExpanded();
+    //this.closeExpanded();
   }
 
   closeModals(): void {
@@ -136,4 +152,10 @@ export class SearchFilterComponent implements OnInit, OnDestroy {
     this.isExpanded = false;
     this.showBackdrop = false;
   }
+
+  onClearFilters(): void {
+    this.searchFilterService.clearFilters();
+    this.searchFilterService.executeSearch();
+  }
+
 }

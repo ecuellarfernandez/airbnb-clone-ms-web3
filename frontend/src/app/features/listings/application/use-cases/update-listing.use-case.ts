@@ -3,7 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '@app/core/config/api.config';
 
-export interface CreateListingCommand {
+export interface UpdateListingCommand {
+  id: string;
   hostId: string;
   title: string;
   description: string;
@@ -30,7 +31,7 @@ export interface CreateListingCommand {
   }>;
 }
 
-export interface CreateListingResponse {
+export interface UpdateListingResponse {
   success: boolean;
   data?: any;
   message?: string;
@@ -39,15 +40,15 @@ export interface CreateListingResponse {
 @Injectable({
   providedIn: 'root'
 })
-export class CreateListingUseCase {
+export class UpdateListingUseCase {
 
   constructor(private http: HttpClient) {}
 
-  execute(command: CreateListingCommand): Observable<CreateListingResponse> {
-    console.log('🆕 Executing CreateListingUseCase with command:', command);
+  execute(command: UpdateListingCommand): Observable<UpdateListingResponse> {
+    console.log('🔄 Executing UpdateListingUseCase with command:', command);
 
-    return this.http.post<CreateListingResponse>(
-      `${API_ENDPOINTS.LISTINGS.BASE}/listings`,
+    return this.http.put<UpdateListingResponse>(
+      `${API_ENDPOINTS.LISTINGS.BASE}/listings/${command.id}`,
       command
     );
   }
