@@ -1,4 +1,5 @@
-import { Component, Output, EventEmitter, Input } from '@angular/core';
+import { Component, Output, EventEmitter, Input, OnInit } from '@angular/core';
+import { AccommodationsRepository } from '@app/features/listings/domain/repositories/accommodations.repository';
 
 export interface LocationSuggestion {
   id: string;
@@ -21,8 +22,9 @@ export class LocationSearchComponent {
   @Output() close = new EventEmitter<void>();
 
   searchTerm: string = '';
+  cities: string[] = [];
 
-  suggestions: LocationSuggestion[] = [
+  /*suggestions: LocationSuggestion[] = [
     {
       id: '1',
       name: 'Cochabamba',
@@ -79,9 +81,24 @@ export class LocationSearchComponent {
       description: 'Por su gastronomía',
       icon: 'city'
     }
-  ];
+  ];*/
 
-  get filteredSuggestions(): LocationSuggestion[] {
+  constructor(private repo: AccommodationsRepository) {}
+
+  ngOnInit(): void {
+    this.cities = this.repo.getCities();
+    console.log('[LocationSearch] Ciudades disponibles desde repo:', this.cities);
+  }
+
+  get filteredCities(): string[] {
+    if (!this.searchTerm) {
+      return this.cities;
+    }
+    const term = this.searchTerm.toLowerCase();
+    return this.cities.filter(c => c.toLowerCase().includes(term));
+  }
+
+  /*get filteredSuggestions(): LocationSuggestion[] {
     if (!this.searchTerm) {
       return this.suggestions;
     }
@@ -90,10 +107,10 @@ export class LocationSearchComponent {
       s.name.toLowerCase().includes(term) ||
       s.country.toLowerCase().includes(term)
     );
-  }
+  }*/
 
-  onSelectLocation(location: LocationSuggestion): void {
-    this.locationSelect.emit(`${location.name}, ${location.country}`);
+  onSelectLocation(city: string): void {
+    this.locationSelect.emit(city);
     this.onClose();
   }
 

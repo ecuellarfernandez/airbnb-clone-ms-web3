@@ -1,0 +1,21 @@
+<div class="reservation-success">
+    <h1>¡Reserva exitosa!</h1>
+
+    <p class="message">
+        Tu reserva se ha confirmado correctamente.
+    </p>
+
+    <p class="reservation-id" *ngIf="reservationId">
+        Código de reserva: <strong>{{ reservationId | slice:0:8 }}</strong>
+    </p>
+
+    <div class="actions">
+        <button class="btn btn-primary" (click)="goToMyReservations()">
+            Ver mis reservas
+        </button>
+
+        <button class="btn btn-secondary" (click)="goToListing()">
+            Volver al inicio
+        </button>
+    </div>
+</div>

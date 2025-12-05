@@ -15,7 +15,7 @@
     </div>
 
     <div class="thumbnails" *ngIf="l.photos?.length">
-      <img *ngFor="let p of l.photos | slice:0:visibleThumbs; let i = index" [src]="p" [alt]="l.title" loading="lazy"
+      <img *ngFor="let p of l.photos | slice:1:visibleThumbs; let i = index" [src]="p" [alt]="l.title" loading="lazy"
         (click)="openLightbox(i + 1)" />
     </div>
   </div>

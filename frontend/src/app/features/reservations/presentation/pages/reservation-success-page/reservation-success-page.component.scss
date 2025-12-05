@@ -1,0 +1,70 @@
+.reservation-success {
+    max-width: 600px;
+    margin: 3rem auto;
+    text-align: center;
+
+    background-color: var(--surface-1);
+    color: var(--on-surface-1);
+    padding: 2rem;
+    border-radius: 1.25rem;
+    box-shadow: var(--elevation-2);
+
+    h1 {
+        font-size: 2rem;
+        margin-bottom: 1rem;
+        color: var(--on-surface-1);
+    }
+
+    .message {
+        font-size: 1rem;
+        margin-bottom: 0.5rem;
+        color: var(--on-surface-2);
+    }
+
+    .reservation-id {
+        margin-bottom: 2rem;
+        color: var(--on-surface-3);
+        font-weight: 600;
+    }
+
+    .actions {
+        display: flex;
+        justify-content: center;
+        gap: 1rem;
+        flex-wrap: wrap;
+
+        button {
+            min-width: 180px;
+        }
+    }
+
+    .btn-primary {
+        background-color: var(--primary);
+        color: var(--on-primary);
+        border-radius: 999px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        transition: background-color .2s;
+
+        &:hover {
+            background-color: var(--primary-hover);
+        }
+    }
+
+    .btn-secondary {
+        background-color: var(--surface-2);
+        color: var(--on-surface-1);
+        border: 1px solid var(--outline);
+        border-radius: 999px;
+        padding: 0.75rem 1.5rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: background-color .2s;
+
+        &:hover {
+            background-color: var(--surface-3);
+        }
+    }
+}
