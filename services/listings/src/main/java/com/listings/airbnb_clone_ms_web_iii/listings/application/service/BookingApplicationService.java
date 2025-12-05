@@ -1,5 +1,6 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.application.service;
 
+import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.PagedResult;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.request.CreateBookingDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.BookingDetailDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.BookingSummaryDTO;
@@ -13,6 +14,7 @@ import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.BookingRe
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingImageRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.ListingRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.presentation.exception.ListingNotFoundException;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
@@ -142,6 +144,24 @@ public class BookingApplicationService implements BookingServicePort {
         return bookingMapper.toSummaryDTOList(
                 bookingRepository.findActiveBookingsByListingAndRange(listingId, start, end)
         );
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public PagedResult<BookingSummaryDTO> findByHostId(Integer hostId, Pageable pageable) {
+        var bookingsPage = bookingRepository.findByHostId(hostId, pageable);
+
+        var bookingDTOs = bookingMapper.toSummaryDTOList(bookingsPage.getContent());
+
+        PagedResult<BookingSummaryDTO> pagedResult = new PagedResult<>();
+        pagedResult.setContent(bookingDTOs);
+        pagedResult.setPageNumber(bookingsPage.getNumber());
+        pagedResult.setPageSize(bookingsPage.getSize());
+        pagedResult.setTotalElements(bookingsPage.getTotalElements());
+        pagedResult.setTotalPages(bookingsPage.getTotalPages());
+        pagedResult.setLast(bookingsPage.isLast());
+        return pagedResult;
+
     }
 
 }
