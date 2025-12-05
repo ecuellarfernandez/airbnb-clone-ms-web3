@@ -1,0 +1,62 @@
+<div class="view-listings-page">
+  <div class="header">
+    <h1>Todos los Alojamientos</h1>
+    <p class="subtitle">Lista completa de alojamientos publicados en la plataforma</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading">
+    <p>Cargando alojamientos...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Stats -->
+  <div *ngIf="!loading && !error" class="stats">
+    <p>Mostrando <strong>{{ listings.length }}</strong> de <strong>{{ totalElements }}</strong> alojamientos</p>
+  </div>
+
+  <!-- Listings Grid -->
+  <section 
+    *ngIf="!loading && !error && listings.length > 0"
+    class="listings-grid"
+    aria-label="Lista de alojamientos">
+    <app-listing-card 
+      *ngFor="let listing of listings" 
+      [listing]="listing"
+      [showDescription]="true"
+      (listingClick)="onListingClick(listing)">
+    </app-listing-card>
+  </section>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && listings.length === 0" class="empty">
+    <p>No hay alojamientos disponibles</p>
+  </div>
+
+  <!-- Pagination -->
+  <div *ngIf="!loading && !error && totalPages > 1" class="pagination">
+    <button 
+      class="btn-page" 
+      [disabled]="currentPage === 0"
+      (click)="previousPage()">
+      <i class="ri-arrow-left-s-line"></i>
+      Anterior
+    </button>
+    
+    <span class="page-info">
+      Página {{ currentPage + 1 }} de {{ totalPages }}
+    </span>
+    
+    <button 
+      class="btn-page"
+      [disabled]="currentPage >= totalPages - 1"
+      (click)="nextPage()">
+      Siguiente
+      <i class="ri-arrow-right-s-line"></i>
+    </button>
+  </div>
+</div>
