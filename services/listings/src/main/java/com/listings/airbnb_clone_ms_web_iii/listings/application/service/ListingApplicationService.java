@@ -103,6 +103,7 @@ public class ListingApplicationService implements ListingServicePort {
                         ListingImage img = new ListingImage();
                         img.setListingId(listingId);
                         img.setMediaUrl(imgDto.getMediaUrl());
+                        img.setPublicId(imgDto.getPublicId());
                         img.setDisplayOrder(imgDto.getDisplayOrder() != null ? imgDto.getDisplayOrder() : 0);
                         img.setIsPrimary(imgDto.getIsPrimary() != null ? imgDto.getIsPrimary() : false);
                         img.setCreatedAt(LocalDateTime.now());
@@ -297,6 +298,7 @@ public class ListingApplicationService implements ListingServicePort {
             dto.getImages().forEach(imageDto -> {
                 ListingImage image = ListingImage.builder()
                         .mediaUrl(imageDto.getMediaUrl())
+                        .publicId(imageDto.getPublicId())
                         .isPrimary(imageDto.getIsPrimary())
                         .displayOrder(imageDto.getDisplayOrder())
                         .build();
