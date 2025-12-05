@@ -1,3 +1,14 @@
+.host-layout {
+  display: flex;
+  min-height: 100vh;
+  background: var(--bg);
+}
+
+.host-content {
+  flex: 1;
+  overflow-x: hidden;
+}
+
 .host-page {
   padding: 24px;
   max-width: 1400px;

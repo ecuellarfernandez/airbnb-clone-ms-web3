@@ -1,8 +1,12 @@
-<div class="host-page">
-  <div class="header">
-    <h1>Mis Alojamientos</h1>
-    <p class="subtitle">Gestiona tus listings publicados</p>
-  </div>
+<div class="host-layout">
+  <app-host-sidebar></app-host-sidebar>
+  
+  <div class="host-content">
+    <div class="host-page">
+      <div class="header">
+        <h1>Mis Alojamientos</h1>
+        <p class="subtitle">Gestiona tus listings publicados</p>
+      </div>
 
   <!-- Loading State -->
   <div *ngIf="loading" class="loading">
@@ -78,6 +82,7 @@
       </div>
     </div>
   </div>
+</div>
 </div>
 
 <app-confirmation-modal
