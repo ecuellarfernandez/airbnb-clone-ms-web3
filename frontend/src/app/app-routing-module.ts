@@ -73,6 +73,11 @@ const routes: Routes = [
     loadChildren: () => import('@features/admin/presentation/admin.module').then(m => m.AdminModule)
   },
   {
+    path: 'host',
+    canActivate: [authGuard],
+    loadChildren: () => import('@features/host/presentation/host.module').then(m => m.HostModule)
+  },
+  {
     path: '**',
     component: PageNotFoundComponent
   }
