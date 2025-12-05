@@ -1,130 +1,201 @@
-<div class="listing-form-page">
-  <!-- Sidebar -->
-  <aside class="listing-form-page__sidebar">
-    <div class="listing-form-page__brand">
-      <h1 class="listing-form-page__brand-title">AirBbcitos</h1>
-      <p class="listing-form-page__brand-subtitle">Host Panel</p>
-    </div>
-    
-    <!-- Step Indicator -->
-    <nav class="listing-form-page__steps">
-      <div 
-        *ngFor="let step of steps; trackBy: trackByStepId"
-        class="listing-form-page__step"
-        [class.listing-form-page__step--current]="step.current"
-        [class.listing-form-page__step--completed]="step.completed"
-        (click)="onStepClick(step.id)"
-      >
-        <div class="listing-form-page__step-indicator">
-          <span class="listing-form-page__step-number">{{ steps.indexOf(step) + 1 }}</span>
+<div class="listing-form-wizard">
+  <!-- Progress Bar -->
+  <div class="wizard-progress">
+    <div class="wizard-progress-bar" [style.width.%]="progressPercentage"></div>
+  </div>
+
+  <!-- Stepper Header -->
+  <div class="wizard-header">
+    <div class="wizard-steps">
+      <div *ngFor="let step of steps; let i = index" class="wizard-step" [class.wizard-step--active]="currentStep === i"
+        [class.wizard-step--completed]="currentStep > i" (click)="goToStep(i)">
+        <div class="wizard-step-circle">
+          <span *ngIf="currentStep <= i">{{ i + 1 }}</span>
+          <svg *ngIf="currentStep > i" class="wizard-step-check" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd"
+              d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
+              clip-rule="evenodd" />
+          </svg>
         </div>
-        <span class="listing-form-page__step-label">{{ step.label }}</span>
+        <div class="wizard-step-content">
+          <div class="wizard-step-title">{{ step.title }}</div>
+          <div class="wizard-step-description">{{ step.description }}</div>
+        </div>
       </div>
-    </nav>
-  </aside>
-
-  <main class="listing-form-page__main">
-    <div class="listing-form-page__container">
-      <header class="listing-form-page__header">
-        <h2 class="listing-form-page__title">Basics</h2>
-        <p class="listing-form-page__subtitle">
-          Let's get started by adding the basic information about your space
-        </p>
-      </header>
-
-      <form  class="listing-form-page__form">
-        <div class="listing-form-page__field">
-          <label for="title" class="listing-form-page__label">
-            Listing Title
-          </label>
-          <input
-            id="title"
-            type="text"
-            class="listing-form-page__input"
-            [class.listing-form-page__input--error]="getFieldError('title')"
-            placeholder="e.g. Cozy Studio near the University Library"
-            formControlName="title"
-          />
-          <div *ngIf="getFieldError('title')" class="listing-form-page__error">
-            {{ getFieldError('title') }}
-          </div>
-        </div>
-
-        <div class="listing-form-page__field">
-          <label for="description" class="listing-form-page__label">
-            Description
-          </label>
-          <textarea
-            id="description"
-            class="listing-form-page__textarea"
-            [class.listing-form-page__textarea--error]="getFieldError('description')"
-            placeholder="Tell guests what makes your place special. Mention nearby academic facilities, study-friendly features, and house rules."
-            formControlName="description"
-            rows="5"
-          ></textarea>
-          <div *ngIf="getFieldError('description')" class="listing-form-page__error">
-            {{ getFieldError('description') }}
-          </div>
-        </div>
-
-        <div class="listing-form-page__field">
-          <label for="location" class="listing-form-page__label">
-            Location
-          </label>
-          <div class="listing-form-page__input-wrapper">
-            <svg class="listing-form-page__input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0z"></path>
-            </svg>
-            <input
-              id="location"
-              type="text"
-              class="listing-form-page__input listing-form-page__input--with-icon"
-              [class.listing-form-page__input--error]="getFieldError('location')"
-              placeholder="Enter address"
-              formControlName="location"
-            />
-          </div>
-          <div *ngIf="getFieldError('location')" class="listing-form-page__error">
-            {{ getFieldError('location') }}
-          </div>
-          
-          <div class="listing-form-page__map">
-            <div class="listing-form-page__map-content">
-              <svg class="listing-form-page__map-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
-              </svg>
-              <p>Map will be displayed here</p>
-            </div>
-          </div>
-        </div>
-      </form>
-
-      <footer class="listing-form-page__footer">
-        <button
-          type="button"
-          class="listing-form-page__button listing-form-page__button--secondary"
-          (click)="onSaveDraft()"
-        >
-          Save Draft
-        </button>
-        <div class="listing-form-page__button-group">
-          <button
-            type="button"
-            class="listing-form-page__button listing-form-page__button--secondary"
-            (click)="onBack()"
-          >
-            Back
-          </button>
-          <button
-            type="button"
-            class="listing-form-page__button listing-form-page__button--primary"
-            (click)="onNextStep()"
-          >
-            Next Step
-          </button>
-        </div>
-      </footer>
     </div>
-  </main>
+  </div>
+
+  <!-- Form Content -->
+  <form [formGroup]="form" (ngSubmit)="onSubmit()" class="wizard-form">
+
+    <!-- Step 0: Información Básica -->
+    <div class="wizard-content" *ngIf="currentStep === 0">
+      <h2 class="wizard-content-title">Información Básica</h2>
+      <p class="wizard-content-subtitle">Cuéntanos sobre tu propiedad</p>
+
+      <div class="form-group">
+        <label class="form-label">Título *</label>
+        <input type="text" formControlName="title" class="form-input" placeholder="ej. Hermosa casa en la playa">
+        <p *ngIf="form.get('title')?.touched && form.get('title')?.errors?.['required']" class="form-error">El título es
+          requerido</p>
+        <p *ngIf="form.get('title')?.touched && form.get('title')?.errors?.['minlength']" class="form-error">El título
+          debe tener al menos 10 caracteres</p>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Descripción *</label>
+        <textarea formControlName="description" rows="6" class="form-input"
+          placeholder="Describe tu propiedad, sus características especiales y lo que la hace única..."></textarea>
+        <p *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['required']" class="form-error">
+          La descripción es requerida</p>
+        <p *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['minlength']"
+          class="form-error">La descripción debe tener al menos 50 caracteres</p>
+      </div>
+    </div>
+
+    <!-- Step 1: Ubicación -->
+    <div class="wizard-content" *ngIf="currentStep === 1" formGroupName="location">
+      <h2 class="wizard-content-title">Ubicación</h2>
+      <p class="wizard-content-subtitle">¿Dónde se encuentra tu propiedad?</p>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Ciudad *</label>
+          <input type="text" formControlName="city" class="form-input" placeholder="ej. Malibu">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">País *</label>
+          <input type="text" formControlName="country" class="form-input" placeholder="ej. Estados Unidos">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label class="form-label">Dirección *</label>
+        <input type="text" formControlName="address" class="form-input" placeholder="ej. 123 Pacific Coast Highway">
+      </div>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Latitud *</label>
+          <input type="number" formControlName="latitude" step="any" class="form-input" placeholder="34.0259">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Longitud *</label>
+          <input type="number" formControlName="longitude" step="any" class="form-input" placeholder="-118.7798">
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Detalles -->
+    <div class="wizard-content" *ngIf="currentStep === 2">
+      <h2 class="wizard-content-title">Detalles de la Propiedad</h2>
+      <p class="wizard-content-subtitle">Especifica la capacidad y características</p>
+
+      <div class="form-grid form-grid--3">
+        <div class="form-group">
+          <label class="form-label">Capacidad (Huéspedes) *</label>
+          <input type="number" formControlName="capacity" min="1" class="form-input" placeholder="6">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Habitaciones *</label>
+          <input type="number" formControlName="bedrooms" min="0" class="form-input" placeholder="3">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Baños *</label>
+          <input type="number" formControlName="bathrooms" min="0" class="form-input" placeholder="2">
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Precio -->
+    <div class="wizard-content" *ngIf="currentStep === 3" formGroupName="price">
+      <h2 class="wizard-content-title">Precio</h2>
+      <p class="wizard-content-subtitle">Establece tu tarifa por noche</p>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label class="form-label">Precio por noche *</label>
+          <input type="number" formControlName="amount" min="0" step="0.01" class="form-input" placeholder="350.00">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Moneda *</label>
+          <select formControlName="currency" class="form-input">
+            <option value="USD">USD - Dólar Estadounidense</option>
+            <option value="EUR">EUR - Euro</option>
+            <option value="GBP">GBP - Libra Esterlina</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Fotos -->
+    <div class="wizard-content" *ngIf="currentStep === 4">
+      <h2 class="wizard-content-title">Fotos</h2>
+      <p class="wizard-content-subtitle">Muestra tu propiedad con imágenes atractivas</p>
+
+      <div class="upload-area">
+        <label class="upload-label">
+          <input type="file" (change)="onFileSelected($event)" accept="image/*" class="upload-input">
+          <div class="upload-content">
+            <svg class="upload-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+            </svg>
+            <span *ngIf="!uploading" class="upload-text">Haz clic para subir una imagen</span>
+            <span *ngIf="uploading" class="upload-text upload-text--loading">Subiendo...</span>
+          </div>
+        </label>
+      </div>
+
+      <div class="image-grid" *ngIf="uploadedImages.length > 0">
+        <div *ngFor="let img of uploadedImages; let i = index" class="image-item">
+          <img [src]="img.url" [alt]="'Imagen ' + (i + 1)" class="image-preview">
+
+          <div class="image-overlay">
+            <button type="button" (click)="setPrimaryImage(i)" class="image-button"
+              [class.image-button--primary]="img.isPrimary" title="Establecer como principal">
+              <svg class="image-icon" fill="currentColor" viewBox="0 0 20 20">
+                <path
+                  d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+              </svg>
+            </button>
+            <button type="button" (click)="removeImage(i)" class="image-button image-button--delete" title="Eliminar">
+              <svg class="image-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+            </button>
+          </div>
+
+          <div *ngIf="img.isPrimary" class="image-badge">Principal</div>
+        </div>
+      </div>
+
+      <p *ngIf="form.get('images')?.touched && form.get('images')?.errors?.['required']" class="form-error">Debes subir
+        al menos una foto</p>
+    </div>
+
+    <!-- Navigation Buttons -->
+    <div class="wizard-actions">
+      <button type="button" *ngIf="!isFirstStep" (click)="previousStep()"
+        class="wizard-button wizard-button--secondary">
+        Anterior
+      </button>
+
+      <button type="button" *ngIf="!isLastStep" (click)="nextStep()" class="wizard-button wizard-button--primary">
+        Siguiente
+      </button>
+
+      <button type="submit" *ngIf="isLastStep" [disabled]="form.invalid || uploading"
+        class="wizard-button wizard-button--primary">
+        Crear Listing
+      </button>
+    </div>
+
+  </form>
 </div>

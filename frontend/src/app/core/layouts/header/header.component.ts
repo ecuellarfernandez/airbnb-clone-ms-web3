@@ -54,7 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentTheme: Theme = 'light';
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private themeService: ThemeService,
     private authService: AuthService
   ) { }
@@ -100,17 +100,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   openListingForm(): void {
-    this.editingListing = null;
-    this.showListingForm = true;
-  }
-  closeListingForm(): void {
-    this.showListingForm = false;
-  }
-
-  handleListingSubmit(payload: Partial<Listing>): void {
-    console.log('Nuevo alojamiento creado desde header:', payload);
-
-    this.showListingForm = false;
+    this.router.navigate(['/listings/form']);
   }
 
   logout(): void {

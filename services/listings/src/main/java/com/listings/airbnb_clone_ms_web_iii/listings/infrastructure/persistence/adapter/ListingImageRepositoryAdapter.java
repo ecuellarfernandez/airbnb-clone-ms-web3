@@ -6,6 +6,7 @@ import com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.persistence.
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Component
@@ -40,6 +41,16 @@ public class ListingImageRepositoryAdapter implements ListingImageRepository {
     @Override
     public List<ListingImage> findByListingId(UUID listingId) {
         return jpaRepository.findByListingId(listingId);
+    }
+
+    @Override
+    public Optional<ListingImage> findByPublicId(String publicId) {
+        return jpaRepository.findByPublicId(publicId);
+    }
+
+    @Override
+    public void deleteByPublicId(String publicId) {
+        jpaRepository.deleteByPublicId(publicId);
     }
 }
 

@@ -1,11 +1,18 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 import { AccommodationsRepository, Filters } from '../../domain/repositories/accommodations.repository';
-import { LISTINGS_MOCK } from '../../presentation/data-access/data/listings.mock';
 import { Listing } from '../../domain/models/listing.model';
+import { CreateListingDto, ListingResponse } from '../../domain/dtos/listing.dto';
+import { LISTINGS_MOCK } from '../../presentation/data-access/data/listings.mock';
+import { environment } from 'environments/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class AccommodationsRepositoryImpl implements AccommodationsRepository {
   private data: Listing[] = LISTINGS_MOCK;
+  private readonly apiUrl = `${environment.apiUrl}/listings`;
+
+  constructor(private http: HttpClient) { }
 
   getCities(): string[] {
     const set = new Set(this.data.map((d) => d.city));
@@ -29,5 +36,9 @@ export class AccommodationsRepositoryImpl implements AccommodationsRepository {
 
   getAll(): Listing[] {
     return this.data;
+  }
+
+  create(dto: CreateListingDto): Observable<ListingResponse> {
+    return this.http.post<ListingResponse>(this.apiUrl, dto);
   }
 }
