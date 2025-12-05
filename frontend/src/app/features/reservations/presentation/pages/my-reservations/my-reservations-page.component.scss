@@ -16,6 +16,33 @@
       color: var(--text-secondary);
       font-size: var(--fs-md);
     }
+
+    .back-button {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+
+      background: var(--surface);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+
+      padding: 0.4rem 0.75rem;
+      font-size: var(--fs-sm);
+      cursor: pointer;
+
+      transition: background 0.2s ease, border-color 0.2s ease;
+
+      .icon {
+        font-size: var(--fs-lg);
+        line-height: 1;
+      }
+
+      &:hover {
+        background: var(--surface-2);
+        border-color: var(--border-hover);
+      }
+    }
   }
 
   .loading,

@@ -1,13 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Listing } from '@features/listings/domain/models/listing.model';
 import { GetListingByIdUseCase } from '@features/listings/application/use-cases/get-listing-by-id.use-case';
-import {
-    ReservationsApiService,
-    PaymentReservationPayload,
-} from '@features/reservations/domain/models/services/reservations-api.service';
+import { ReservationsApiService, PaymentReservationPayload } from '@features/reservations/domain/models/services/reservations-api.service';
 import { AuthService } from '@features/auth/domain/services/auth.service';
 import { User } from '@app/features/users/domain/models/user.model';
 
@@ -42,6 +39,7 @@ export class ReservationCheckoutPageComponent implements OnInit {
         private location: Location,
         private reservationsApi: ReservationsApiService,
         private authService: AuthService,
+        private router: Router,
     ) { }
 
     ngOnInit(): void {
@@ -221,7 +219,8 @@ export class ReservationCheckoutPageComponent implements OnInit {
         this.reservationsApi.payReservation(payload).subscribe({
             next: (resp) => {
                 console.log('Respuesta payments OK:', resp);
-                alert('Pago procesado correctamente (se enviará el evento a Listings).');
+                console.log('Pago procesado correctamente (se enviará el evento a Listings).');
+                this.router.navigate(['/reservations/success', this.reservationId]);
             },
             error: (err) => {
                 console.error('Error al procesar el pago', err);
