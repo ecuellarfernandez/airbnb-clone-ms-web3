@@ -10,10 +10,10 @@ CREATE TABLE category_type (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insertar tipos por defecto
-INSERT INTO category_type (name, description) VALUES
-    ('Property Type', 'Type of accommodation'),
-    ('Space Type', 'Type of space available');
+-- Insertar tipos por defecto con UUIDs fijos
+INSERT INTO category_type (id, name, description) VALUES
+    ('550e8400-e29b-41d4-a716-446655440001', 'Property Type', 'Type of accommodation'),
+    ('550e8400-e29b-41d4-a716-446655440002', 'Space Type', 'Type of space available');
 
 -- Tabla de categorías
 CREATE TABLE category (
@@ -35,21 +35,15 @@ CREATE TABLE category (
 -- Índice
 CREATE INDEX idx_category_type ON category(category_type_id);
 
--- Insertar categorías por defecto
-INSERT INTO category (name, category_type_id, icon)
-SELECT 'House', id, 'house' FROM category_type WHERE name = 'Property Type'
-UNION ALL
-SELECT 'Apartment', id, 'apartment' FROM category_type WHERE name = 'Property Type'
-UNION ALL
-SELECT 'Villa', id, 'villa' FROM category_type WHERE name = 'Property Type'
-UNION ALL
-SELECT 'Cabin', id, 'cabin' FROM category_type WHERE name = 'Property Type'
-UNION ALL
-SELECT 'Entire place', id, 'entire' FROM category_type WHERE name = 'Space Type'
-UNION ALL
-SELECT 'Private room', id, 'private' FROM category_type WHERE name = 'Space Type'
-UNION ALL
-SELECT 'Shared room', id, 'shared' FROM category_type WHERE name = 'Space Type';
+-- Insertar categorías por defecto con UUIDs fijos
+INSERT INTO category (id, name, category_type_id, icon) VALUES
+    ('650e8400-e29b-41d4-a716-446655440001', 'House', '550e8400-e29b-41d4-a716-446655440001', 'house'),
+    ('650e8400-e29b-41d4-a716-446655440002', 'Apartment', '550e8400-e29b-41d4-a716-446655440001', 'apartment'),
+    ('650e8400-e29b-41d4-a716-446655440003', 'Villa', '550e8400-e29b-41d4-a716-446655440001', 'villa'),
+    ('650e8400-e29b-41d4-a716-446655440004', 'Cabin', '550e8400-e29b-41d4-a716-446655440001', 'cabin'),
+    ('650e8400-e29b-41d4-a716-446655440005', 'Entire place', '550e8400-e29b-41d4-a716-446655440002', 'entire'),
+    ('650e8400-e29b-41d4-a716-446655440006', 'Private room', '550e8400-e29b-41d4-a716-446655440002', 'private'),
+    ('650e8400-e29b-41d4-a716-446655440007', 'Shared room', '550e8400-e29b-41d4-a716-446655440002', 'shared');
 
 -- Tabla de comodidades (amenities)
 CREATE TABLE amenity (
@@ -60,23 +54,23 @@ CREATE TABLE amenity (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Insertar amenities por defecto
-INSERT INTO amenity (title, icon, description) VALUES
-    ('WiFi', 'wifi', 'Wireless internet connection'),
-    ('Pool', 'pool', 'Swimming pool'),
-    ('Kitchen', 'kitchen', 'Full kitchen'),
-    ('Free Parking', 'parking', 'Free parking on premises'),
-    ('Air Conditioning', 'ac', 'Air conditioning'),
-    ('Heating', 'heating', 'Central heating'),
-    ('TV', 'tv', 'Television'),
-    ('Washer', 'washer', 'Washing machine'),
-    ('Dryer', 'dryer', 'Clothes dryer'),
-    ('Gym', 'gym', 'Fitness center'),
-    ('Hot Tub', 'hot-tub', 'Hot tub or jacuzzi'),
-    ('Pet Friendly', 'pet', 'Pets allowed'),
-    ('Smoke Alarm', 'alarm', 'Smoke alarm'),
-    ('First Aid Kit', 'first-aid', 'First aid kit'),
-    ('Fire Extinguisher', 'fire-ext', 'Fire extinguisher');
+-- Insertar amenities por defecto con UUIDs fijos
+INSERT INTO amenity (id, title, icon, description) VALUES
+    ('750e8400-e29b-41d4-a716-446655440001', 'WiFi', 'wifi', 'Wireless internet connection'),
+    ('750e8400-e29b-41d4-a716-446655440002', 'Pool', 'pool', 'Swimming pool'),
+    ('750e8400-e29b-41d4-a716-446655440003', 'Kitchen', 'kitchen', 'Full kitchen'),
+    ('750e8400-e29b-41d4-a716-446655440004', 'Free Parking', 'parking', 'Free parking on premises'),
+    ('750e8400-e29b-41d4-a716-446655440005', 'Air Conditioning', 'ac', 'Air conditioning'),
+    ('750e8400-e29b-41d4-a716-446655440006', 'Heating', 'heating', 'Central heating'),
+    ('750e8400-e29b-41d4-a716-446655440007', 'TV', 'tv', 'Television'),
+    ('750e8400-e29b-41d4-a716-446655440008', 'Washer', 'washer', 'Washing machine'),
+    ('750e8400-e29b-41d4-a716-446655440009', 'Dryer', 'dryer', 'Clothes dryer'),
+    ('750e8400-e29b-41d4-a716-446655440010', 'Gym', 'gym', 'Fitness center'),
+    ('750e8400-e29b-41d4-a716-446655440011', 'Hot Tub', 'hot-tub', 'Hot tub or jacuzzi'),
+    ('750e8400-e29b-41d4-a716-446655440012', 'Pet Friendly', 'pet', 'Pets allowed'),
+    ('750e8400-e29b-41d4-a716-446655440013', 'Smoke Alarm', 'alarm', 'Smoke alarm'),
+    ('750e8400-e29b-41d4-a716-446655440014', 'First Aid Kit', 'first-aid', 'First aid kit'),
+    ('750e8400-e29b-41d4-a716-446655440015', 'Fire Extinguisher', 'fire-ext', 'Fire extinguisher');
 
 -- Comentarios
 COMMENT ON TABLE category_type IS 'Tipos de categorías para clasificar listings';

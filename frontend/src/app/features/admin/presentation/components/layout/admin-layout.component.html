@@ -19,6 +19,9 @@
       <a routerLink="/admin/audit-logs" routerLinkActive="active">
         <i class="ri-calendar-check-line"></i>Logs
       </a>
+      <a routerLink="/admin/listing" routerLinkActive="active">
+        <i class="ri-calendar-check-line"></i>Administrador de Listings
+      </a>
     </nav>
   </aside>
 
@@ -63,6 +66,10 @@
           <a routerLink="/users/profile" class="dropdown-item">
             <i class="ri-user-line"></i>
             <span>Mi Perfil</span>
+          </a>
+          <a routerLink="/host" class="dropdown-item">
+            <i class="ri-home-smile-line"></i>
+            <span>Ir a host</span>
           </a>
           <div class="dropdown-divider"></div>
           <button (click)="logout()" class="dropdown-item logout">

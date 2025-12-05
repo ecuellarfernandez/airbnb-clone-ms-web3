@@ -9,11 +9,24 @@ export const API_ENDPOINTS = {
     ROLES: `${API_GATEWAY}/api/identity-service/roles`,
     CLAIMS: `${API_GATEWAY}/api/identity-service/claims`,
   },
+
+  LISTINGS: {
+    BASE: `${API_GATEWAY}/api/listings-service`,
+    BOOKINGS: `${API_GATEWAY}/api/listings-service/bookings`,
+    ADMIN: `${API_GATEWAY}/api/listings-service/listings/admin`
+  },
+  
+  PAYMENTS: {
+    BASE: `${API_GATEWAY}/api/payments-service`,
+    PAYMENT_RESERVATION: `${API_GATEWAY}/api/payments-service/payments/payment-reservation`,
+  },
+
   ADMIN: {
     AUDIT_LOGS: `${API_GATEWAY}/api/admin-service/audit-logs`,
   },
-  LISTINGS: {
-    BASE: `${API_GATEWAY}/api/listings`,
-    BOOKINGS: `${API_GATEWAY}/api/listings-service/bookings`,
-  },
+  
+
 } as const;
+  
+
+  
