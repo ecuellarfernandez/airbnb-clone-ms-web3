@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
 import { AccommodationsRepository, Filters } from '../../domain/repositories/accommodations.repository';
 import { Listing } from '../../domain/models/listing.model';
+import { HttpClient } from '@angular/common/http';
+import { environment } from 'environments/environment.development';
+import { Observable } from 'rxjs';
 import { CreateListingDto, ListingResponse } from '../../domain/dtos/listing.dto';
 import { LISTINGS_MOCK } from '../../presentation/data-access/data/listings.mock';
-import { environment } from 'environments/environment.development';
 
 @Injectable({ providedIn: 'root' })
 export class AccommodationsRepositoryImpl implements AccommodationsRepository {
@@ -30,15 +30,29 @@ export class AccommodationsRepositoryImpl implements AccommodationsRepository {
     });
   }
 
-  getById(id: number): Listing | undefined {
-    return this.data.find((l) => l.id === id);
+  getById(id: string | number): Listing | undefined {
+    return this.data.find((l) => String(l.id) === String(id));
   }
 
   getAll(): Listing[] {
     return this.data;
   }
 
-  create(dto: CreateListingDto): Observable<ListingResponse> {
+    create(dto: CreateListingDto): Observable<ListingResponse> {
     return this.http.post<ListingResponse>(this.apiUrl, dto);
+  }
+
+  activaListing(id: string): Observable<void>{
+    return this.http.patch<void>(
+      `${this.apiUrl}/listings/${id}/publish`,
+      {}
+    );
+  }
+
+  desactivateListing(id: string): Observable<void>{
+    return this.http.patch<void>(
+      `${this.apiUrl}/listings/${id}/unpublish`,
+      {}
+    );
   }
 }

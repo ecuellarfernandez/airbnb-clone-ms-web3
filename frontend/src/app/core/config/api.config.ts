@@ -15,5 +15,7 @@ export const API_ENDPOINTS = {
   LISTINGS: {
     BASE: `${API_GATEWAY}/api/listings`,
     BOOKINGS: `${API_GATEWAY}/api/listings-service/bookings`,
+    ADMIN: `${API_GATEWAY}/api/listings-service/listings/admin`
   },
+  
 } as const;

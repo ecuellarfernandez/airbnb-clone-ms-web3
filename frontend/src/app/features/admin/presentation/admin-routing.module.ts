@@ -18,7 +18,8 @@ const routes: Routes = [
             { path: 'claims', component: AdminClaimsPageComponent },
             { path: 'users', component: AdminUsersPageComponent },
             { path: 'roles', component: AdminRolesPageComponent },
-            { path: 'audit-logs', component: AuditLogsPageComponent}
+            { path: 'audit-logs', component: AuditLogsPageComponent},
+            { path: 'listing', component: AdminListingsPageComponent}
         ]
     }
 ];
