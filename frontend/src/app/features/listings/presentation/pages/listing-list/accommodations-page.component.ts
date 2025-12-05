@@ -1,7 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { GetCitiesUseCase } from '@features/listings/application/use-cases/get-cities.use-case';
-import { FilterListingsUseCase } from '@features/listings/application/use-cases/filter-listings.use-case';
-import { Filters } from '@features/listings/domain/repositories/accommodations.repository';
+import { AccommodationsRepository, Filters } from '@features/listings/domain/repositories/accommodations.repository';
 import { Listing } from '@features/listings/domain/models/listing.model';
 import { Router } from '@angular/router';
 
@@ -12,37 +10,44 @@ import { Router } from '@angular/router';
   styleUrls: ['./accommodations-page.component.scss'],
 })
 export class AccommodationsPageComponent implements OnInit {
+  listings: Listing[] = [];
   cities: string[] = [];
-  cityInput = 'All';
-  maxPriceInput = '';
-  minCapacityInput = '';
-  results: Listing[] = [];
+  loading = false;
+
+  filters: Filters = {
+    city: ''
+  }
 
   constructor(
-    private getCitiesUseCase: GetCitiesUseCase,
-    private filterListingsUseCase: FilterListingsUseCase,
-    private router: Router
+    private router: Router,
+    private repo: AccommodationsRepository
   ) { }
 
   ngOnInit(): void {
-    this.cities = this.getCitiesUseCase.execute();
-    this.apply();
+    this.loading = true;
+
+    this.repo.loadAll().subscribe({
+      next: () => {
+        this.cities = this.repo.getCities();
+        this.applyFilters();
+        this.loading = false
+      },
+      error: (error) => {
+        console.error('Error cargando listings desde el microservicio', error);
+      },
+    });
   }
 
-  apply(): void {
-    const filters: Filters = {
-      city: this.cityInput.trim(),
-      maxPrice: this.maxPriceInput,
-      minCapacity: this.minCapacityInput,
-    };
-    this.results = this.filterListingsUseCase.execute(filters);
+  applyFilters(): void {
+    this.listings = this.repo.filter(this.filters);
   }
 
   clear(): void {
-    this.cityInput = 'All';
-    this.maxPriceInput = '';
-    this.minCapacityInput = '';
-    this.apply();
+    this.filters = {
+      city: ''
+    }
+
+    this.applyFilters();
   }
 
   protected listingRedirect(l: Listing) {

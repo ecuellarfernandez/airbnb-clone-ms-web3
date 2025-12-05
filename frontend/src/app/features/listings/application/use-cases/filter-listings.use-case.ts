@@ -7,6 +7,8 @@ export class FilterListingsUseCase {
     constructor(private repository: AccommodationsRepository) { }
 
     execute(filters: Filters): Listing[] {
-        return this.repository.filter(filters);
+        const hola =  this.repository.filter(filters);
+        console.log(hola)
+        return hola;
     }
 }

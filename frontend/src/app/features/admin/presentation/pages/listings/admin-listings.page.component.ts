@@ -121,10 +121,18 @@ toggleStatus(l: Listing) {
 
     new() { this.editing = undefined; this.showForm = true; }
     edit(l: Listing) { this.editing = l; this.showForm = true; }
-    remove(l: Listing) { if (confirm(`¿Eliminar "${l.title}"?`)) this.facade.remove(Number(l.id)); }
+    remove(l: Listing) { 
+        if (confirm(`¿Eliminar "${l.title}"?`)) {
+            this.facade.remove(String(l.id));
+        }
+    }
+
     save(payload: Partial<Listing>) {
-        if (this.editing) this.facade.update(Number(this.editing.id), payload);
-        else this.facade.create(payload);
+        if (this.editing) {
+            this.facade.update(String(this.editing.id), payload);
+        } else {
+            this.facade.create(payload);
+        }
         this.showForm = false;
     }
 }

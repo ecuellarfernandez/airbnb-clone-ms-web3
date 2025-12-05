@@ -6,7 +6,7 @@ import { Listing } from '@features/listings/domain/models/listing.model';
 export class GetListingByIdUseCase {
     constructor(private repository: AccommodationsRepository) { }
 
-    execute(id: number): Listing | undefined {
+    execute(id: string): Listing | undefined {
         return this.repository.getById(id);
     }
 }
