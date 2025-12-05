@@ -10,17 +10,21 @@ import { DatePickerComponent } from './ui/date-picker/date-picker.component';
 import { GuestSelectorComponent } from './ui/guest-selector/guest-selector.component';
 import { LocationSearchComponent } from './ui/location-search/location-search.component';
 import { ListingFormComponent } from './ui/listing-form/listing-form.component';
+import { IconComponent } from './ui/icon/icon.component';
+import { IconShowcaseComponent } from './ui/icon/icon-showcase.component';
 
 @NgModule({
   declarations: [
     CardComponent,
     CardSliderComponent,
     IconLogoComponent,
+    IconComponent,
+    IconShowcaseComponent,
     NavTabsComponent,
     SearchFilterComponent,
     DatePickerComponent,
     GuestSelectorComponent,
-    LocationSearchComponent, 
+    LocationSearchComponent,
     ListingFormComponent,
   ],
   imports: [
@@ -34,6 +38,8 @@ import { ListingFormComponent } from './ui/listing-form/listing-form.component';
     CardComponent,
     CardSliderComponent,
     IconLogoComponent,
+    IconComponent,
+    IconShowcaseComponent,
     NavTabsComponent,
     SearchFilterComponent,
     DatePickerComponent,
