@@ -54,7 +54,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   currentTheme: Theme = 'light';
 
   constructor(
-    private router: Router, 
+    private router: Router,
     private themeService: ThemeService,
     private authService: AuthService
   ) { }
