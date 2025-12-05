@@ -8,11 +8,13 @@ import { AccommodationsRepository } from '@features/listings/domain/repositories
 import { AccommodationsRepositoryImpl } from '@features/listings/infrastructure/repositories/accommodations.repository.impl';
 import { authInterceptor } from '@core/interceptors/auth.interceptor';
 import { HostMainPageComponent } from './features/host/presentation/host-main-page/host-main-page.component';
+import { MakeMeHostComponent } from './features/host/presentation/components/make-me-host/make-me-host.component';
 
 @NgModule({
   declarations: [
     App,
     HostMainPageComponent,
+    MakeMeHostComponent,
   ],
   imports: [
     BrowserModule,
