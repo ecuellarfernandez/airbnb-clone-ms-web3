@@ -24,7 +24,14 @@ export class CloudinaryService {
             map(res => ({
                 publicId: res.public_id,
                 url: res.secure_url,
+                uploadedAt: new Date(),
+                isTemporary: true
             }))
         );
+    }
+
+    delete(publicId: string): Observable<void> {
+        const deleteUrl = `${environment.apiUrl}/cloudinary/delete`;
+        return this.http.post<void>(deleteUrl, { publicId });
     }
 }

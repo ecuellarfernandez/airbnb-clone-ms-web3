@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { ReservationsRoutingModule } from './reservations-routing-module';
 import { ReservationCheckoutPageComponent } from './pages/reservation-checkout/reservation-checkout-page.component';
+import { MyReservationsPageComponent } from './pages/my-reservations/my-reservations-page.component';
 import { SharedModule } from '../../../shared/shared-module';
 
 @NgModule({
@@ -13,6 +14,7 @@ import { SharedModule } from '../../../shared/shared-module';
     ReactiveFormsModule,
     SharedModule,
     ReservationsRoutingModule,
+    MyReservationsPageComponent, // Standalone component
   ]
 })
 export class ReservationsModule {}
