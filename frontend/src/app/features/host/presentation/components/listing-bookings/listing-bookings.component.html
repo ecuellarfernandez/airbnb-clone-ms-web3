@@ -1,0 +1,16 @@
+<div *ngIf="loading">Cargando reservas...</div>
+<div *ngIf="error">{{ error }}</div>
+<div *ngIf="!loading && !error">
+	<h4>Reservas</h4>
+	<ul *ngIf="reservations.length > 0; else noReservations">
+		<li *ngFor="let r of reservations">
+			<div>
+				<span> | {{ r.checkIn }} - {{ r.checkOut }}</span>
+				<span *ngIf="r.status"> | Estado: {{ r.status }}</span>
+			</div>
+		</li>
+	</ul>
+	<ng-template #noReservations>
+		<p>No hay reservas para este alojamiento.</p>
+	</ng-template>
+</div>

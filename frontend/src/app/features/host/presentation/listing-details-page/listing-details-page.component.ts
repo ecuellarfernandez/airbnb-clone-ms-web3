@@ -12,9 +12,13 @@ interface BookPayload {
   guests: { adults: number; children: number; infants: number; pets: number };
 }
 
+import { ListingBookingsComponent } from '../components/listing-bookings/listing-bookings.component';
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-listing-details-page',
-  standalone: false,
+  standalone: true,
+  imports: [CommonModule, ListingBookingsComponent],
   templateUrl: './listing-details-page.component.html',
   styleUrl: './listing-details-page.component.scss',
 })

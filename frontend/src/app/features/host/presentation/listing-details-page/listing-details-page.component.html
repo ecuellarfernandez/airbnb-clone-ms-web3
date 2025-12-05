@@ -48,6 +48,8 @@
 			</div>
 		</div>
 	</div>
+	<!-- Bookings for this listing -->
+	<app-listing-bookings *ngIf="l.id" [listingId]="l.id"></app-listing-bookings>
 </div>
 
 <div class="loading" *ngIf="loading">
