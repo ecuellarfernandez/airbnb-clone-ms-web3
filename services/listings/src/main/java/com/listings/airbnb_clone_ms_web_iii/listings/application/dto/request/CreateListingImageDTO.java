@@ -9,6 +9,8 @@ public class CreateListingImageDTO {
     @NotNull(message = "Media URL is required")
     private String mediaUrl;
 
+    private String publicId;
+
     private Boolean isPrimary = false;
 
     private Integer displayOrder;
@@ -16,8 +18,9 @@ public class CreateListingImageDTO {
     public CreateListingImageDTO() {
     }
 
-    public CreateListingImageDTO(UUID mediaId, String mediaUrl, Boolean isPrimary, Integer displayOrder) {
+    public CreateListingImageDTO(UUID mediaId, String mediaUrl, String publicId, Boolean isPrimary, Integer displayOrder) {
         this.mediaUrl = mediaUrl;
+        this.publicId = publicId;
         this.isPrimary = isPrimary != null ? isPrimary : false;
         this.displayOrder = displayOrder;
     }
@@ -32,6 +35,14 @@ public class CreateListingImageDTO {
 
     public void setMediaUrl(String mediaUrl) {
         this.mediaUrl = mediaUrl;
+    }
+
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
     }
 
     public Boolean getIsPrimary() {
@@ -70,6 +81,7 @@ public class CreateListingImageDTO {
     public static class CreateListingImageDTOBuilder {
         private UUID mediaId;
         private String mediaUrl;
+        private String publicId;
         private Boolean isPrimary = false;
         private Integer displayOrder;
 
@@ -80,6 +92,11 @@ public class CreateListingImageDTO {
 
         public CreateListingImageDTOBuilder mediaUrl(String mediaUrl) {
             this.mediaUrl = mediaUrl;
+            return this;
+        }
+
+        public CreateListingImageDTOBuilder publicId(String publicId) {
+            this.publicId = publicId;
             return this;
         }
 
@@ -94,7 +111,7 @@ public class CreateListingImageDTO {
         }
 
         public CreateListingImageDTO build() {
-            return new CreateListingImageDTO(mediaId, mediaUrl, isPrimary, displayOrder);
+            return new CreateListingImageDTO(mediaId, mediaUrl, publicId, isPrimary, displayOrder);
         }
     }
 }

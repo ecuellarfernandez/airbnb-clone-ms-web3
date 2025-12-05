@@ -49,6 +49,7 @@ public interface ListingMapper {
     ListingDetailDTO toDetailDTO(Listing listing);
 
     // ==== entidades anidadas
+    @Mapping(target = "mediaId", ignore = true)
     ListingImageDTO toImageDTO(ListingImage image);
     List<ListingImageDTO> toImageDTOList(List<ListingImage> images);
 
