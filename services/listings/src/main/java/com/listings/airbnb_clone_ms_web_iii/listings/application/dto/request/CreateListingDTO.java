@@ -5,7 +5,6 @@ import jakarta.validation.constraints.*;
 
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class CreateListingDTO {
 
@@ -40,16 +39,16 @@ public class CreateListingDTO {
     private Integer bathrooms = 0;
 
     @NotEmpty(message = "At least one category is required")
-    private Set<UUID> categoryIds;
+    private Set<String> categoryIds;
 
-    private Set<UUID> amenityIds;
+    private Set<String> amenityIds;
 
     @NotEmpty(message = "At least one image is required")
     private List<CreateListingImageDTO> images;
 
     public CreateListingDTO() {}
 
-    public CreateListingDTO(Integer hostId, String title, String description, LocationDTO location, PriceDTO price, Integer capacity, Integer bedrooms, Integer bathrooms, Set<UUID> categoryIds, Set<UUID> amenityIds, List<CreateListingImageDTO> images) {
+    public CreateListingDTO(Integer hostId, String title, String description, LocationDTO location, PriceDTO price, Integer capacity, Integer bedrooms, Integer bathrooms, Set<String> categoryIds, Set<String> amenityIds, List<CreateListingImageDTO> images) {
         this.hostId = hostId;
         this.title = title;
         this.description = description;
@@ -127,19 +126,19 @@ public class CreateListingDTO {
         this.bathrooms = bathrooms;
     }
 
-    public Set<UUID> getCategoryIds() {
+    public Set<String> getCategoryIds() {
         return categoryIds;
     }
 
-    public void setCategoryIds(Set<UUID> categoryIds) {
+    public void setCategoryIds(Set<String> categoryIds) {
         this.categoryIds = categoryIds;
     }
 
-    public Set<UUID> getAmenityIds() {
+    public Set<String> getAmenityIds() {
         return amenityIds;
     }
 
-    public void setAmenityIds(Set<UUID> amenityIds) {
+    public void setAmenityIds(Set<String> amenityIds) {
         this.amenityIds = amenityIds;
     }
 
@@ -164,8 +163,8 @@ public class CreateListingDTO {
         private Integer capacity;
         private Integer bedrooms;
         private Integer bathrooms;
-        private Set<UUID> categoryIds;
-        private Set<UUID> amenityIds;
+        private Set<String> categoryIds;
+        private Set<String> amenityIds;
         private List<CreateListingImageDTO> images;
 
         public  CreateListingDTOBuilder hostId(Integer hostId) {
@@ -208,12 +207,12 @@ public class CreateListingDTO {
             return this;
         }
 
-        public  CreateListingDTOBuilder categoryIds(Set<UUID> categoryIds) {
+        public  CreateListingDTOBuilder categoryIds(Set<String> categoryIds) {
             this.categoryIds = categoryIds;
             return this;
         }
 
-        public  CreateListingDTOBuilder amenityIds(Set<UUID> amenityIds) {
+        public  CreateListingDTOBuilder amenityIds(Set<String> amenityIds) {
             this.amenityIds = amenityIds;
             return this;
         }

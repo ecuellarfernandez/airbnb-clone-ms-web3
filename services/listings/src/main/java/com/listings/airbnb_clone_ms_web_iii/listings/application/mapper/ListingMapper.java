@@ -12,9 +12,28 @@ import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 
 import java.util.List;
+import java.util.UUID;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.WARN)
 public interface ListingMapper {
+
+    // Helper method para convertir UUID a String
+    default String map(UUID value) {
+        return value == null ? null : value.toString();
+    }
+
+    // Helper method para convertir String a UUID
+    default UUID map(String value) {
+        if (value == null || value.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return UUID.fromString(value);
+        } catch (IllegalArgumentException e) {
+            // Si el String no es un UUID válido, retorna null o genera nuevo UUID
+            return null;
+        }
+    }
 
     // ==== To entity
     @Mapping(target = "id", ignore = true)

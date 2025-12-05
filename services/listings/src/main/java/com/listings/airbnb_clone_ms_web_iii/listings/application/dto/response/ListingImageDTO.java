@@ -1,10 +1,8 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response;
 
-import java.util.UUID;
-
 public class ListingImageDTO {
-    private UUID id;
-    private UUID mediaId;
+    private String id;
+    private String mediaId;
     private String mediaUrl;
     private String publicId;
     private Boolean isPrimary;
@@ -13,7 +11,7 @@ public class ListingImageDTO {
     public ListingImageDTO() {
     }
 
-    public ListingImageDTO(UUID id, UUID mediaId, String mediaUrl, String publicId, Boolean isPrimary, Integer displayOrder) {
+    public ListingImageDTO(String id, String mediaId, String mediaUrl, String publicId, Boolean isPrimary, Integer displayOrder) {
         this.id = id;
         this.mediaId = mediaId;
         this.mediaUrl = mediaUrl;
@@ -22,19 +20,19 @@ public class ListingImageDTO {
         this.displayOrder = displayOrder;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public UUID getMediaId() {
+    public String getMediaId() {
         return mediaId;
     }
 
-    public void setMediaId(UUID mediaId) {
+    public void setMediaId(String mediaId) {
         this.mediaId = mediaId;
     }
 

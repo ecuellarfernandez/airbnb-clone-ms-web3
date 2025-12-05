@@ -5,10 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.UUID;
-
 public class CategoryDTO {
-    private UUID id;
+    private String id;
     private String name;
     private String icon;
     private String categoryTypeName;
@@ -16,18 +14,18 @@ public class CategoryDTO {
     public CategoryDTO() {
     }
 
-    public CategoryDTO(UUID id, String name, String icon, String categoryTypeName) {
+    public CategoryDTO(String id, String name, String icon, String categoryTypeName) {
         this.id = id;
         this.name = name;
         this.icon = icon;
         this.categoryTypeName = categoryTypeName;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

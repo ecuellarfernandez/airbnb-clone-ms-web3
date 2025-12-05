@@ -9,10 +9,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class ListingDetailDTO {
-    private UUID id;
+    private String id;
     private Integer hostId;
     private String title;
     private String description;
@@ -47,7 +46,7 @@ public class ListingDetailDTO {
 
     public ListingDetailDTO() {}
 
-    public ListingDetailDTO(UUID id, Integer hostId, String title, String description, String city, String country, String address, BigDecimal latitude, BigDecimal longitude, BigDecimal priceAmount, String priceCurrency, Integer capacity, Integer bedrooms, Integer bathrooms, List<ListingImageDTO> images, Set<CategoryDTO> categories, Set<AmenityDTO> amenities, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
+    public ListingDetailDTO(String id, Integer hostId, String title, String description, String city, String country, String address, BigDecimal latitude, BigDecimal longitude, BigDecimal priceAmount, String priceCurrency, Integer capacity, Integer bedrooms, Integer bathrooms, List<ListingImageDTO> images, Set<CategoryDTO> categories, Set<AmenityDTO> amenities, Boolean isActive, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this.id = id;
         this.hostId = hostId;
         this.title = title;
@@ -70,11 +69,11 @@ public class ListingDetailDTO {
         this.updatedAt = updatedAt;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

@@ -1,10 +1,9 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response;
 
 import java.math.BigDecimal;
-import java.util.UUID;
 
 public class ListingSummaryDTO {
-    private UUID id;
+    private String id;
     private String title;
     private String city;
     private String country;
@@ -17,7 +16,7 @@ public class ListingSummaryDTO {
     public ListingSummaryDTO() {
     }
 
-    public ListingSummaryDTO(UUID id, String title, String city, String country, BigDecimal priceAmount, String priceCurrency, Integer capacity, String primaryImageUrl, Boolean isActive) {
+    public ListingSummaryDTO(String id, String title, String city, String country, BigDecimal priceAmount, String priceCurrency, Integer capacity, String primaryImageUrl, Boolean isActive) {
         this.id = id;
         this.title = title;
         this.city = city;
@@ -29,11 +28,11 @@ public class ListingSummaryDTO {
         this.isActive = isActive;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

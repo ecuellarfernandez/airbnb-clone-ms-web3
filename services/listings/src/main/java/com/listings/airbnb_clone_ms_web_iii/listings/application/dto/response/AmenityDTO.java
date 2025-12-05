@@ -1,9 +1,7 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response;
 
-import java.util.UUID;
-
 public class AmenityDTO {
-    private UUID id;
+    private String id;
     private String title;
     private String description;
     private String icon;
@@ -11,18 +9,18 @@ public class AmenityDTO {
     public AmenityDTO() {
     }
 
-    public AmenityDTO(UUID id, String title, String description, String icon) {
+    public AmenityDTO(String id, String title, String description, String icon) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.icon = icon;
     }
 
-    public UUID getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    public void setId(String id) {
         this.id = id;
     }
 

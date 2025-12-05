@@ -74,7 +74,17 @@ public class ListingApplicationService implements ListingServicePort {
 
         // Cargar y asignar categorías
         if (dto.getCategoryIds() != null && !dto.getCategoryIds().isEmpty()) {
-            Set<Category> categories = categoryRepository.findAllByIds(dto.getCategoryIds());
+            // Convertir String a UUID
+            Set<UUID> categoryUUIDs = dto.getCategoryIds().stream()
+                    .map(this::parseUUID)
+                    .filter(uuid -> uuid != null)
+                    .collect(Collectors.toSet());
+
+            if (categoryUUIDs.isEmpty()) {
+                throw new IllegalArgumentException("Invalid category IDs provided");
+            }
+
+            Set<Category> categories = categoryRepository.findAllByIds(categoryUUIDs);
             if (categories.isEmpty()) {
                 throw new IllegalArgumentException("Invalid category IDs provided");
             }
@@ -88,8 +98,16 @@ public class ListingApplicationService implements ListingServicePort {
 
         // Cargar y asignar amenities
         if (dto.getAmenityIds() != null && !dto.getAmenityIds().isEmpty()) {
-            Set<Amenity> amenities = amenityRepository.findAllByIds(dto.getAmenityIds());
-            amenities.forEach(listing::addAmenity);
+            // Convertir String a UUID
+            Set<UUID> amenityUUIDs = dto.getAmenityIds().stream()
+                    .map(this::parseUUID)
+                    .filter(uuid -> uuid != null)
+                    .collect(Collectors.toSet());
+
+            if (!amenityUUIDs.isEmpty()) {
+                Set<Amenity> amenities = amenityRepository.findAllByIds(amenityUUIDs);
+                amenities.forEach(listing::addAmenity);
+            }
         }
 
         // Guardar listing
@@ -304,7 +322,17 @@ public class ListingApplicationService implements ListingServicePort {
         if (dto.getCategoryIds() != null && !dto.getCategoryIds().isEmpty()) {
             listing.getCategories().clear();
 
-            Set<Category> categories = categoryRepository.findAllByIds(dto.getCategoryIds());
+            // Convertir String a UUID
+            Set<UUID> categoryUUIDs = dto.getCategoryIds().stream()
+                    .map(this::parseUUID)
+                    .filter(uuid -> uuid != null)
+                    .collect(Collectors.toSet());
+
+            if (categoryUUIDs.isEmpty()) {
+                throw new IllegalArgumentException("Invalid category IDs provided");
+            }
+
+            Set<Category> categories = categoryRepository.findAllByIds(categoryUUIDs);
             if (categories.isEmpty()) {
                 throw new IllegalArgumentException("Invalid category IDs provided");
             }
@@ -320,8 +348,16 @@ public class ListingApplicationService implements ListingServicePort {
             listing.getAmenities().clear();
 
             if (!dto.getAmenityIds().isEmpty()) {
-                Set<Amenity> amenities = amenityRepository.findAllByIds(dto.getAmenityIds());
-                amenities.forEach(listing::addAmenity);
+                // Convertir String a UUID
+                Set<UUID> amenityUUIDs = dto.getAmenityIds().stream()
+                        .map(this::parseUUID)
+                        .filter(uuid -> uuid != null)
+                        .collect(Collectors.toSet());
+
+                if (!amenityUUIDs.isEmpty()) {
+                    Set<Amenity> amenities = amenityRepository.findAllByIds(amenityUUIDs);
+                    amenities.forEach(listing::addAmenity);
+                }
             }
         }
 
@@ -438,6 +474,29 @@ public class ListingApplicationService implements ListingServicePort {
         listing.deactivate();
 
         listingRepository.save(listing);
+    }
+
+    // ========================================
+    // HELPER METHODS
+    // ========================================
+
+    /**
+     * Convierte un String a UUID de forma segura.
+     * Si el String no es un UUID válido, retorna null.
+     *
+     * @param id String que representa un UUID
+     * @return UUID o null si no es válido
+     */
+    private UUID parseUUID(String id) {
+        if (id == null || id.trim().isEmpty()) {
+            return null;
+        }
+        try {
+            return UUID.fromString(id);
+        } catch (IllegalArgumentException e) {
+            // Log warning si es necesario
+            return null;
+        }
     }
 
 }
