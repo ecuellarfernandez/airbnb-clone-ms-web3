@@ -12,4 +12,8 @@ export const API_ENDPOINTS = {
   ADMIN: {
     AUDIT_LOGS: `${API_GATEWAY}/api/admin-service/audit-logs`,
   },
+  LISTINGS: {
+    BASE: `${API_GATEWAY}/api/listings-service/listings`,
+    ADMIN: `${API_GATEWAY}/api/listings-service/listings/admin`,
+  },
 } as const;

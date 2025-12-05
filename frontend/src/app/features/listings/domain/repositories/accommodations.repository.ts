@@ -10,5 +10,5 @@ export abstract class AccommodationsRepository {
   abstract getCities(): string[];
   abstract filter(filters: Filters): Listing[];
   abstract getById(id: number): Listing | undefined;
-  abstract getAll(): Listing[];
+  abstract getAll(): Listing[]; 
 }
