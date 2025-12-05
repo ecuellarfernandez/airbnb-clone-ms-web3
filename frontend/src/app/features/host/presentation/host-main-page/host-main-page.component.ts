@@ -4,6 +4,7 @@ import { HostListingsService, ListingSummary } from '@features/host/services/hos
 import { AuthService } from '@features/auth/domain/services/auth.service';
 import { MakeMeHostComponent } from '../components/make-me-host/make-me-host.component';
 import { HostService } from '../../services/host-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-host-main-page',
@@ -24,7 +25,8 @@ export class HostMainPageComponent implements OnInit {
   constructor(
     private hostListingsService: HostListingsService,
     private hostService : HostService,
-    private authService: AuthService
+    private authService: AuthService,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
@@ -42,6 +44,7 @@ export class HostMainPageComponent implements OnInit {
   }
   closeMakeMeHostModal() {
     this.showMakeMeHostModal = false;
+    this.router.navigate(['/']);
   }
 
   onBecomeHost() {
