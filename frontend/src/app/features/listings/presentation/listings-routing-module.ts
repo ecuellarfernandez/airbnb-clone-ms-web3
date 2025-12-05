@@ -1,30 +1,26 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { ListingFormPageComponent } from './pages/listing-form/listing-form-page.component';
 import { AccommodationsPageComponent } from './pages/listing-list/accommodations-page.component';
 import { ListingDetailPageComponent } from './pages/listing-detail/listing-detail-page.component';
-import { ListingFormPageComponent } from './pages/listing-form/listing-form-page.component';
-import { hostGuard } from '@core/guards/host.guard';
 
 const routes: Routes = [
-
   {
     path: '',
-    pathMatch: 'full',
-    component: AccommodationsPageComponent,
+    component: AccommodationsPageComponent
   },
   {
-    path: 'form',
-    component: ListingFormPageComponent,
-    canActivate: [hostGuard]
+    path: 'create',
+    component: ListingFormPageComponent
   },
   {
     path: 'detail/:id',
-    component: ListingDetailPageComponent,
-  },
+    component: ListingDetailPageComponent
+  }
 ];
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule],
+  exports: [RouterModule]
 })
 export class ListingsRoutingModule { }

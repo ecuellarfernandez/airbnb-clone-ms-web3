@@ -7,7 +7,8 @@ import { CloudinaryImage } from '@app/shared/cloudinary/domain/models/cloudinary
 import { AuthService } from '@features/auth/domain/services/auth.service';
 import { ListingFormStateService, ListingFormState } from '@features/listings/application/services/listing-form-state.service';
 import { take } from 'rxjs';
-import { CreateListingUseCase } from '@app/features/listings/application/use-cases/create-listing.use-case';
+import { CreateListingUseCase, CreateListingCommand } from '@app/features/listings/application/use-cases/create-listing.use-case';
+import { UpdateListingUseCase, UpdateListingCommand } from '@app/features/listings/application/use-cases/update-listing.use-case';
 import {
   LISTING_AMENITIES,
   CategoryOption,
@@ -60,6 +61,7 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     private uploadCloudinaryUseCase: UploadCloudinaryUseCase,
     private deleteCloudinaryUseCase: DeleteCloudinaryUseCase,
     private createListingUseCase: CreateListingUseCase,
+    private updateListingUseCase: UpdateListingUseCase,
     private authService: AuthService,
     private formStateService: ListingFormStateService
   ) {
@@ -89,54 +91,235 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.setHostId();
-    this.loadSavedState();
+    // Verificar modo edición ANTES de cargar estado guardado
     this.checkForEditMode();
+
+    // Solo cargar estado guardado si NO estamos en modo edición
+    if (!this.isEditMode) {
+      this.loadSavedState();
+    }
   }
 
   ngOnDestroy(): void {
-    this.saveCurrentState();
+    // Solo guardar estado si NO estamos en modo edición
+    if (!this.isEditMode) {
+      this.saveCurrentState();
+    }
   }
 
   private checkForEditMode(): void {
+    console.log('🔍 Checking for edit mode...');
+
+    // Primero verificar si hay estado en la navegación
     const navigation = this.router.getCurrentNavigation();
+    console.log('📍 Navigation state:', navigation?.extras?.state);
+
     if (navigation?.extras?.state) {
       const state = navigation.extras.state;
       if (state['listing'] && state['editMode']) {
+        console.log('✅ Edit mode detected via navigation!');
+        console.log('📋 Listing data to populate:', state['listing']);
+
         this.isEditMode = true;
         this.listingId = state['listing'].id;
         this.populateFormForEdit(state['listing']);
+        return;
       }
     }
+
+    // También verificar en el localStorage como fallback
+    try {
+      const editData = localStorage.getItem('listing-edit-data');
+      if (editData) {
+        console.log('🔄 Found edit data in localStorage');
+        const parsedData = JSON.parse(editData);
+        if (parsedData.listing && parsedData.editMode) {
+          console.log('✅ Edit mode detected via localStorage!');
+          this.isEditMode = true;
+          this.listingId = parsedData.listing.id;
+          this.populateFormForEdit(parsedData.listing);
+          // Limpiar el localStorage después de usar
+          localStorage.removeItem('listing-edit-data');
+          return;
+        }
+      }
+    } catch (error) {
+      console.error('Error reading edit data from localStorage:', error);
+    }
+
+    console.log('ℹ️ No edit mode detected - normal creation flow');
   }
 
   private populateFormForEdit(listing: any): void {
-    this.form.patchValue({
-      title: listing.title,
-      description: listing.description,
-      location: listing.location,
-      price: listing.price,
-      capacity: listing.capacity,
-      bedrooms: listing.bedrooms,
-      bathrooms: listing.bathrooms
+    console.log('🔄 Populating form for edit mode...');
+    console.log('📋 Raw listing data received:', listing);
+
+    // Limpiar estado previo completamente
+    this.clearFormState();
+
+    // Validar y normalizar datos antes de poblar
+    const normalizedListing = this.normalizeListingData(listing);
+    console.log('✨ Normalized listing data:', normalizedListing);
+
+    // Log específico de cada sección
+    console.log('📝 Form population details:');
+    console.log('- ID:', normalizedListing.id);
+    console.log('- Title:', normalizedListing.title);
+    console.log('- Description length:', normalizedListing.description?.length || 0);
+    console.log('- Location:', normalizedListing.location);
+    console.log('- Price:', normalizedListing.price);
+    console.log('- Capacity/Bedrooms/Bathrooms:', {
+      capacity: normalizedListing.capacity,
+      bedrooms: normalizedListing.bedrooms,
+      bathrooms: normalizedListing.bathrooms
     });
 
-    if (listing.categoryIds) {
-      listing.categoryIds.forEach((id: string) => {
+    // Poblar campos básicos
+    this.form.patchValue({
+      title: normalizedListing.title || '',
+      description: normalizedListing.description || '',
+      location: {
+        city: normalizedListing.location?.city || '',
+        country: normalizedListing.location?.country || '',
+        address: normalizedListing.location?.address || '',
+        latitude: normalizedListing.location?.latitude || null,
+        longitude: normalizedListing.location?.longitude || null
+      },
+      price: {
+        amount: normalizedListing.price?.amount || 0,
+        currency: normalizedListing.price?.currency || 'USD'
+      },
+      capacity: normalizedListing.capacity || 1,
+      bedrooms: normalizedListing.bedrooms || 1,
+      bathrooms: normalizedListing.bathrooms || 1
+    });
+
+    // Poblar categorías
+    this.categoryIdsArray.clear();
+    if (normalizedListing.categoryIds && Array.isArray(normalizedListing.categoryIds)) {
+      console.log(`📂 Adding ${normalizedListing.categoryIds.length} categories:`, normalizedListing.categoryIds);
+      normalizedListing.categoryIds.forEach((id: string) => {
         this.categoryIdsArray.push(this.fb.control(id));
       });
+    } else {
+      console.warn('⚠️ No categories found or invalid format');
     }
 
-    if (listing.amenityIds) {
-      listing.amenityIds.forEach((id: string) => {
+    // Poblar amenidades
+    this.amenityIdsArray.clear();
+    if (normalizedListing.amenityIds && Array.isArray(normalizedListing.amenityIds)) {
+      console.log(`🎯 Adding ${normalizedListing.amenityIds.length} amenities:`, normalizedListing.amenityIds);
+      normalizedListing.amenityIds.forEach((id: string) => {
         this.amenityIdsArray.push(this.fb.control(id));
       });
+    } else {
+      console.warn('⚠️ No amenities found or invalid format');
     }
 
-    if (listing.images) {
-      listing.images.forEach((image: any) => {
-        this.addImageToForm(image);
+    // Poblar imágenes
+    this.imagesArray.clear();
+    this.uploadedImages = [];
+    if (normalizedListing.images && Array.isArray(normalizedListing.images) && normalizedListing.images.length > 0) {
+      console.log(`🖼️ Adding ${normalizedListing.images.length} images:`);
+
+      // Log detallado de cada imagen
+      normalizedListing.images.forEach((img: any, index: number) => {
+        console.log(`  - Image ${index + 1}:`, {
+          url: img.url,
+          publicId: img.publicId,
+          isPrimary: img.isPrimary
+        });
       });
+
+      // Encontrar imagen primaria o usar la primera como primaria
+      let hasPrimary = normalizedListing.images.some((img: any) => img.isPrimary);
+      console.log(`🌟 Has primary image: ${hasPrimary}`);
+
+      normalizedListing.images.forEach((image: any, index: number) => {
+        const isPrimary = hasPrimary ? (image.isPrimary || false) : (index === 0);
+        this.addImageToFormForEdit(image, isPrimary);
+      });
+    } else {
+      console.warn('⚠️ No images found in listing data');
     }
+
+    // Log final del estado
+    console.log('✅ Form populated successfully with summary:', {
+      listingId: normalizedListing.id,
+      title: normalizedListing.title,
+      imagesCount: this.uploadedImages.length,
+      categoriesCount: this.categoryIdsArray.length,
+      amenitiesCount: this.amenityIdsArray.length,
+      formValid: this.form.valid,
+      formErrors: this.getFormErrors()
+    });
+  }
+
+  private normalizeListingData(listing: any): any {
+    // Normalizar diferentes formatos de datos que pueden venir del backend
+    return {
+      id: listing.id,
+      title: listing.title,
+      description: listing.description,
+      location: {
+        city: listing.location?.city || listing.city,
+        country: listing.location?.country || listing.country,
+        address: listing.location?.address || listing.address,
+        latitude: listing.location?.latitude || listing.latitude,
+        longitude: listing.location?.longitude || listing.longitude
+      },
+      price: {
+        amount: listing.price?.amount || listing.priceAmount || 0,
+        currency: listing.price?.currency || listing.priceCurrency || 'USD'
+      },
+      capacity: listing.capacity || 1,
+      bedrooms: listing.bedrooms || 1,
+      bathrooms: listing.bathrooms || 1,
+      categoryIds: Array.isArray(listing.categoryIds) ? listing.categoryIds :
+                   Array.isArray(listing.categories) ? listing.categories.map((c: any) => c.id || c) : [],
+      amenityIds: Array.isArray(listing.amenityIds) ? listing.amenityIds :
+                  Array.isArray(listing.amenities) ? listing.amenities.map((a: any) => a.id || a) : [],
+      images: Array.isArray(listing.images) ? listing.images.map((img: any) => ({
+        url: img.url || img.mediaUrl || img.src,
+        publicId: img.publicId,
+        isPrimary: img.isPrimary || false
+      })) : []
+    };
+  }
+
+  private clearFormState(): void {
+    console.log('🧹 Clearing form state...');
+
+    // Limpiar arrays de formulario
+    this.categoryIdsArray.clear();
+    this.amenityIdsArray.clear();
+    this.imagesArray.clear();
+
+    // Limpiar estado de imágenes
+    this.uploadedImages = [];
+    this.uploading = false;
+
+    // Resetear paso actual y validaciones
+    this.currentStep = 0;
+    this.showValidationErrors = false;
+    this.isSubmitting = false;
+
+    console.log('✅ Form state cleared');
+  }
+
+  private addImageToFormForEdit(image: any, isPrimary: boolean = false): void {
+    const imageGroup = this.fb.group({
+      url: [image.url, Validators.required],
+      publicId: [image.publicId],
+      isPrimary: [isPrimary]
+    });
+
+    this.imagesArray.push(imageGroup);
+    this.uploadedImages.push({
+      url: image.url,
+      publicId: image.publicId,
+      isPrimary: isPrimary
+    });
   }
 
   isFieldInvalid(fieldPath: string): boolean {
@@ -443,27 +626,116 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       this.isSubmitting = true;
       const payload = this.normalizePayload(this.form.value);
 
+      // Log detallado del payload para debug del backend
+      console.log('📝 PAYLOAD COMPLETO PARA ENVIAR:');
+      console.log('- Título:', payload.title);
+      console.log('- Descripción:', payload.description);
+      console.log('- Ubicación:', payload.location);
+      console.log('- Precio:', payload.price);
+      console.log('- Capacidad:', payload.capacity);
+      console.log('- Dormitorios:', payload.bedrooms);
+      console.log('- Baños:', payload.bathrooms);
+      console.log('- Host ID:', payload.hostId);
+      console.log('- Category IDs:', payload.categoryIds);
+      console.log('- Amenity IDs:', payload.amenityIds);
+      console.log('- Imágenes (count):', payload.images?.length || 0);
+
+      if (payload.images && payload.images.length > 0) {
+        console.log('🖼️ DETALLE DE IMÁGENES:');
+        payload.images.forEach((img: CloudinaryImage, index: number) => {
+          console.log(`  - Imagen ${index + 1}:`, {
+            url: img.url,
+            publicId: img.publicId,
+            isPrimary: img.isPrimary
+          });
+        });
+      }
+
+      console.log('📦 PAYLOAD JSON COMPLETO:', JSON.stringify(payload, null, 2));
+
       if (this.isEditMode && this.listingId) {
-        console.log('Actualizando listing:', this.listingId);
-        this.isSubmitting = false;
-        this.router.navigate(['/host']);
-      } else {
-        this.createListingUseCase.execute(payload).subscribe({
-          next: () => {
-            console.log('✅ Listing created successfully!');
-            this.formStateService.clearState();
-            this.isSubmitting = false;
-            this.router.navigate(['/host']);
+        const updateCommand: UpdateListingCommand = {
+          id: this.listingId,
+          ...payload
+        };
+
+        console.log('🔄 ACTUALIZANDO LISTING:', this.listingId);
+        console.log('📤 Update Command:', JSON.stringify(updateCommand, null, 2));
+
+        this.updateListingUseCase.execute(updateCommand).subscribe({
+          next: (response) => {
+            console.log('📥 Update response:', response);
+            if (response.success) {
+              console.log('✅ Listing updated successfully!');
+              this.isSubmitting = false;
+              this.router.navigate(['/host']);
+            } else {
+              console.error('❌ Failed to update listing:', response.message);
+              this.isSubmitting = false;
+              alert(`Error al actualizar: ${response.message || 'Error desconocido'}`);
+            }
           },
           error: (error) => {
-            console.error('❌ Failed to create listing:', error);
+            console.error('❌ Error updating listing:', error);
+            console.error('📋 Error details:', {
+              status: error.status,
+              statusText: error.statusText,
+              message: error.error?.message,
+              fullError: error
+            });
             this.isSubmitting = false;
+            const errorMessage = error.error?.message || error.message || 'Error de conexión';
+            alert(`Error al actualizar el listing: ${errorMessage}`);
+          }
+        });
+      } else {
+        const createCommand: CreateListingCommand = payload;
+
+        console.log('🆕 CREANDO NUEVO LISTING');
+        console.log('📤 Create Command:', JSON.stringify(createCommand, null, 2));
+
+        this.createListingUseCase.execute(createCommand).subscribe({
+          next: (response) => {
+            console.log('📥 Create response:', response);
+            if (response.success) {
+              console.log('✅ Listing created successfully!');
+              console.log('🆔 Created listing ID:', response.data?.id);
+              this.formStateService.clearState();
+              this.isSubmitting = false;
+              this.router.navigate(['/host']);
+            } else {
+              console.error('Failed to create listing:', response.message);
+              this.isSubmitting = false;
+              alert(`Error al crear: ${response.message || 'Error desconocido'}`);
+            }
+          },
+          error: (error) => {
+            console.error('Error creating listing:', error);
+            console.error('Error details:', {
+              status: error.status,
+              statusText: error.statusText,
+              message: error.error?.message,
+              fullError: error
+            });
+            this.isSubmitting = false;
+            const errorMessage = error.error?.message || error.message || 'Error de conexión';
+
+            // Si es el error específico del listing_id nulo
+            if (error.error?.message?.includes('listing_id') && error.error?.message?.includes('nulo')) {
+              console.error('PROBLEMA ESPECÍFICO: listing_id está siendo nulo al crear las imágenes');
+              console.error('Esto sugiere que el listing no se está creando antes que las imágenes');
+              console.error('Verificar el orden de creación en el backend');
+            }
+
+            alert(`Error al crear el listing: ${errorMessage}`);
           }
         });
       }
     } else {
       this.form.markAllAsTouched();
       this.scrollToFirstError();
+      console.warn('⚠Form is invalid, cannot submit');
+      console.log('Form errors:', this.getFormErrors());
     }
   }
 
@@ -537,6 +809,67 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       if (savedState.currentStep !== undefined) {
         this.currentStep = savedState.currentStep;
       }
+    }
+  }
+
+  // Método para debugging del estado del formulario
+  debugFormState(): void {
+    console.log('🔍 FORM DEBUG STATE:', {
+      isEditMode: this.isEditMode,
+      listingId: this.listingId,
+      currentStep: this.currentStep,
+      formValid: this.form.valid,
+      formValue: this.form.value,
+      uploadedImages: this.uploadedImages,
+      categoriesLength: this.categoryIdsArray.length,
+      amenitiesLength: this.amenityIdsArray.length,
+      imagesLength: this.imagesArray.length,
+      formErrors: this.getFormErrors()
+    });
+  }
+
+  // Método para probar validaciones
+  testFormValidation(): void {
+    console.log('🧪 TESTING FORM VALIDATION...');
+
+    // Marcar todos los campos como touched para mostrar errores
+    this.form.markAllAsTouched();
+    this.showValidationErrors = true;
+
+    // Mostrar errores específicos por paso
+    this.steps.forEach((step, index) => {
+      console.log(`Step ${index} (${step.title}) - Valid:`, this.isStepValid(index));
+    });
+
+    // Mostrar detalles de validación
+    this.debugFormState();
+  }
+
+  // Helper para obtener errores del formulario
+  private getFormErrors(): any {
+    const formErrors: any = {};
+
+    Object.keys(this.form.controls).forEach(key => {
+      const controlErrors = this.form.get(key)?.errors;
+      if (controlErrors) {
+        formErrors[key] = controlErrors;
+      }
+    });
+
+    return formErrors;
+  }
+
+  // Helper para validar un paso específico
+  private isStepValid(stepIndex: number): boolean {
+    switch (stepIndex) {
+      case 0: return !!(this.form.get('title')?.valid && this.form.get('description')?.valid);
+      case 1: return this.categoryIdsArray.length > 0;
+      case 2: return !!this.form.get('location')?.valid;
+      case 3: return !!(this.form.get('capacity')?.valid && this.form.get('bedrooms')?.valid && this.form.get('bathrooms')?.valid);
+      case 4: return this.amenityIdsArray.length > 0;
+      case 5: return !!this.form.get('price')?.valid;
+      case 6: return this.imagesArray.length > 0;
+      default: return false;
     }
   }
 }

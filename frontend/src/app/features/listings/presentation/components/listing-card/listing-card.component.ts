@@ -6,16 +6,14 @@ import { Listing } from '@features/listings/domain/models/listing.model';
   standalone: false,
   templateUrl: './listing-card.component.html',
 })
-export class ListingCardComponent {
+export class ListingCardComponent implements OnInit {
 
-  
   @Input({ required: true }) listing!: Listing;
   @Input() showDescription: boolean = false;
   @Output() listingClick = new EventEmitter<MouseEvent>();
   clickableListing = true;
 
   ngOnInit(): void {
-    console.log("XD");
-    console.log(this.listing);
+    // Component initialized successfully
   }
 }

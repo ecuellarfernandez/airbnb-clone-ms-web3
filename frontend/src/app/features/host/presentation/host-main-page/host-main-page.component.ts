@@ -98,21 +98,57 @@ export class HostMainPageComponent implements OnInit {
   }
 
   editListing(listing: ListingSummary): void {
+    console.log('🔄 Loading listing for edit:', listing.id);
+
     this.hostListingsService.getListingById(listing.id).subscribe({
       next: (response) => {
+        console.log('📥 Listing data received:', response);
+
         if (response.success && response.data) {
-          console.log(response.data);
+          console.log('✅ Navigating to edit form with data:', {
+            id: response.data.id,
+            title: response.data.title,
+            hasImages: response.data.images?.length || 0,
+            hasCategories: response.data.categoryIds?.length || 0,
+            hasAmenities: response.data.amenityIds?.length || 0
+          });
+
+          // Guardar en localStorage como backup
+          try {
+            localStorage.setItem('listing-edit-data', JSON.stringify({
+              listing: response.data,
+              editMode: true
+            }));
+          } catch (error) {
+            console.warn('Could not save to localStorage:', error);
+          }
+
+          // Navegar con estado
           this.router.navigate(['/listings/create'], {
             state: {
               listing: response.data,
               editMode: true
             }
           });
+        } else {
+          console.error('❌ Invalid response structure:', response);
+          alert('Error: Respuesta del servidor inválida');
         }
       },
       error: (err) => {
-        console.error('Error loading listing for edit:', err);
-        alert('Error al cargar el listing para editar');
+        console.error('❌ Error loading listing for edit:', err);
+
+        // Intentar diagnóstico del error
+        if (err.status === 0) {
+          alert('Error de conexión: No se puede conectar al servidor. Verifica que el backend esté funcionando.');
+        } else if (err.status === 404) {
+          alert('Error 404: El listing no fue encontrado. Puede que haya sido eliminado.');
+        } else if (err.status === 403) {
+          alert('Error 403: No tienes permisos para editar este listing.');
+        } else {
+          const errorMessage = err.error?.message || err.message || 'Error desconocido';
+          alert(`Error al cargar el listing para editar: ${errorMessage}`);
+        }
       }
     });
   }
