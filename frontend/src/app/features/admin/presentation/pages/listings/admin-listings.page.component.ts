@@ -32,7 +32,7 @@ export class AdminListingsPageComponent implements OnInit {
     showConfirmModal = false;
     confirmModalTitle = '';
     confirmModalMessage = '';
-    confirmModalAction: 'publish' | 'unpublish' | null = null;
+    confirmModalAction: 'publish' | 'unpublish' | 'delete' | null = null;
     selectedListing: Listing | null = null;
 
     constructor(private facade: AdminFacade) { }
@@ -85,6 +85,14 @@ toggleStatus(l: Listing) {
         this.showConfirmModal = true;
     }
 
+    remove(l: Listing) {
+        this.selectedListing = l;
+        this.confirmModalTitle = 'Eliminar Alojamiento';
+        this.confirmModalMessage = `¿Estás seguro de que deseas eliminar "${l.title}"? Esta acción no se puede deshacer.`;
+        this.confirmModalAction = 'delete';
+        this.showConfirmModal = true;
+    }
+
     onConfirmStatusChange(): void {
         if (!this.selectedListing || !this.confirmModalAction) return;
 
@@ -99,7 +107,7 @@ toggleStatus(l: Listing) {
                     this.closeConfirmModal();
                 }
             });
-        } else {
+        } else if (this.confirmModalAction === 'publish') {
             this.facade.publishListing(this.selectedListing.id).subscribe({
                 next: () => {
                     this.facade.loadListings(this.currentPage, this.pageSize);
@@ -107,6 +115,17 @@ toggleStatus(l: Listing) {
                 },
                 error: (err) => {
                     console.error('Error al activar', err);
+                    this.closeConfirmModal();
+                }
+            });
+        } else if (this.confirmModalAction === 'delete') {
+            this.facade.deleteListing(this.selectedListing.id).subscribe({
+                next: () => {
+                    this.facade.loadListings(this.currentPage, this.pageSize);
+                    this.closeConfirmModal();
+                },
+                error: (err) => {
+                    console.error('Error al eliminar', err);
                     this.closeConfirmModal();
                 }
             });
@@ -121,7 +140,6 @@ toggleStatus(l: Listing) {
 
     new() { this.editing = undefined; this.showForm = true; }
     edit(l: Listing) { this.editing = l; this.showForm = true; }
-    remove(l: Listing) { if (confirm(`¿Eliminar "${l.title}"?`)) this.facade.remove(Number(l.id)); }
     save(payload: Partial<Listing>) {
         if (this.editing) this.facade.update(Number(this.editing.id), payload);
         else this.facade.create(payload);

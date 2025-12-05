@@ -94,9 +94,9 @@
   [isOpen]="showConfirmModal"
   [title]="confirmModalTitle"
   [message]="confirmModalMessage"
-  [confirmText]="confirmModalAction === 'unpublish' ? 'Desactivar' : 'Publicar'"
+  [confirmText]="confirmModalAction === 'delete' ? 'Eliminar' : (confirmModalAction === 'unpublish' ? 'Desactivar' : 'Publicar')"
   cancelText="Cancelar"
-  [isDanger]="confirmModalAction === 'unpublish'"
+  [isDanger]="confirmModalAction === 'unpublish' || confirmModalAction === 'delete'"
   (confirm)="onConfirmStatusChange()"
   (cancel)="closeConfirmModal()"
 ></app-confirmation-modal>
