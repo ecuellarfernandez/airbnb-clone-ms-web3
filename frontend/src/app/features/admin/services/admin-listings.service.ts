@@ -48,4 +48,9 @@ export class AdminListingsService {
   unpublishListing(id: string): Observable<void> {
     return this.http.patch<void>(`${this.listingsBaseUrl}/${id}/unpublish`, {});
   }
+
+  // DELETE /api/listings-service/listings/{id}
+  deleteListing(id: string): Observable<void> {
+    return this.http.delete<void>(`${this.listingsBaseUrl}/${id}`);
+  }
 }
