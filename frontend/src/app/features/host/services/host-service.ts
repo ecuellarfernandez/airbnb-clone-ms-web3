@@ -22,6 +22,10 @@ export class HostService {
         let headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
         return this.http.post<User>(this.usersURL + "/make-me-host", {}, { headers });
     }
+
+    getListingById(listingId: string){
+        return this.http.get(`${API_ENDPOINTS.LISTINGS.BASE}/${listingId}`);
+    }
     
 
 }
