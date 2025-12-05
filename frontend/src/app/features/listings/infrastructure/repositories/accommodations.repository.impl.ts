@@ -29,17 +29,17 @@ export class AccommodationsRepositoryImpl implements AccommodationsRepository {
 
   getCities(): string[] {
     const set = new Set(this.data.map((d) => d.city));
-    return ['All', ...Array.from(set)];
+    return Array.from(set);
   }
 
   filter(filters: Filters): Listing[] {
-    const { city, maxPrice, minCapacity } = filters;
+    const { city, minCapacity } = filters;
 
     return this.data.filter((l) => {
-      const okCity = city === '' ? true : l.city === city;
+      const okCity = !city || l.city.toLowerCase() === city.toLowerCase();
       //const okPrice = maxPrice === '' ? true : l.price <= Number(maxPrice);
-      //const okCap = minCapacity === '' ? true : l.capacity >= Number(minCapacity);
-      return okCity;
+      const okCap = !minCapacity || l.capacity >= minCapacity;
+      return okCity && okCap;
     });
   }
 

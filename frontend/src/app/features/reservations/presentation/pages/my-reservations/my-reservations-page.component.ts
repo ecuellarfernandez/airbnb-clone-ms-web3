@@ -76,4 +76,9 @@ export class MyReservationsPageComponent implements OnInit {
   goToDetail(reservation: BookingSummary): void {
     this.router.navigate(['/users/profile/reservations', reservation.id]);
   }
+
+  goBack(): void {
+    this.router.navigate(['/']); 
+  }
+
 }
