@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import static org.springframework.http.ResponseEntity.status;
 
 @RestController
@@ -208,6 +210,30 @@ public class UserController {
         }
 
         return status(result.isSuccess() ? 200 : 400).body(result);
+    }
+
+    @GetMapping("/by-ids")
+    public StandardResult<List<UserDTO>> getUsersByIds(@RequestParam(value = "ids", required = false) String idsString) {
+
+        if(idsString == null || idsString.isEmpty()){
+            StandardResult<List<UserDTO>> emptyResult = new StandardResult<>();
+            emptyResult.setData(List.of());
+            emptyResult.setErrorMessage("No IDs provided");
+            emptyResult.setSuccess(true);
+            return emptyResult;
+        }
+
+        StandardResult<List<UserDTO>> result = new StandardResult<>();
+        try {
+            List<User> users = userService.findByIdsString(idsString);
+            List<UserDTO> userDTOs = users.stream().map(UserDTO::fromEntity).toList();
+            result.setData(userDTOs);
+            result.setSuccess(true);
+        } catch (Exception ex) {
+            result.setSuccess(false);
+            result.setErrorMessage(ex.getMessage());
+        }
+        return result;
     }
 
 }
