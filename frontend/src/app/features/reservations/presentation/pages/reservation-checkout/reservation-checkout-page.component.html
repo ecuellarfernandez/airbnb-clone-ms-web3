@@ -160,3 +160,16 @@
 
     </div>
 </main>
+
+<!-- Confirmation Modal -->
+<app-confirmation-modal
+    [isOpen]="modalOpen"
+    [title]="modalTitle"
+    [message]="modalMessage"
+    [confirmText]="modalConfirmText"
+    [cancelText]="modalCancelText"
+    [isDanger]="modalIsDanger"
+    [showCancelButton]="modalShowCancel"
+    (confirm)="onModalConfirm()"
+    (cancel)="onModalCancel()">
+</app-confirmation-modal>

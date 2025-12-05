@@ -9,7 +9,7 @@
     </div>
 
     <footer class="modal-footer">
-      <button  (click)="onCancel()">
+      <button *ngIf="showCancelButton" (click)="onCancel()">
         {{ cancelText }}
       </button>
       <button 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Location } from '@angular/common';
 import { Listing } from '@features/listings/domain/models/listing.model';
@@ -35,8 +35,19 @@ export class ReservationCheckoutPageComponent implements OnInit {
 
     currentUser: User | null = null;
 
+    // Modal properties
+    modalOpen = false;
+    modalTitle = '';
+    modalMessage = '';
+    modalConfirmText = 'Aceptar';
+    modalCancelText = 'Cancelar';
+    modalIsDanger = false;
+    modalShowCancel = true;
+    private modalCallback: (() => void) | null = null;
+
     constructor(
         private route: ActivatedRoute,
+        private router: Router,
         private fb: FormBuilder,
         private getListingByIdUseCase: GetListingByIdUseCase,
         private location: Location,
@@ -165,7 +176,7 @@ export class ReservationCheckoutPageComponent implements OnInit {
             console.log('- amount == null:', this.amount == null);
 
             this.paymentForm.markAllAsTouched();
-            alert('Falta información para procesar el pago.');
+            this.showModal('Datos incompletos', 'Falta información para procesar el pago. Por favor completa todos los campos requeridos.', { isDanger: true });
             return;
         }
 
@@ -184,24 +195,24 @@ export class ReservationCheckoutPageComponent implements OnInit {
                         this.processPayment();
                     } else {
                         console.warn('No se pudo obtener el usuario actual:', res.errorMessage);
-                        alert('No se pudo obtener la información del usuario. Intenta iniciar sesión de nuevo.');
+                        this.showModal('Error', 'No se pudo obtener la información del usuario. Intenta iniciar sesión de nuevo.', { isDanger: true });
                     }
                 },
                 error: (err) => {
                     console.error('Error al obtener el usuario actual:', err);
-                    alert('Error al obtener la información del usuario. Intenta iniciar sesión de nuevo.');
+                    this.showModal('Error', 'Error al obtener la información del usuario. Intenta iniciar sesión de nuevo.', { isDanger: true });
                 },
             });
             return;
         }
 
-        alert('Debes iniciar sesión para poder pagar la reserva.');
+        this.showModal('Inicio de sesión requerido', 'Debes iniciar sesión para poder pagar la reserva.', { isDanger: true });
     }
 
     private processPayment(): void {
         if (!this.currentUser) {
             console.error('processPayment llamado sin currentUser');
-            alert('No se pudo procesar el pago. Intenta iniciar sesión nuevamente.');
+            this.showModal('Error', 'No se pudo procesar el pago. Intenta iniciar sesión nuevamente.', { isDanger: true });
             return;
         }
 
@@ -221,19 +232,56 @@ export class ReservationCheckoutPageComponent implements OnInit {
         this.reservationsApi.payReservation(payload).subscribe({
             next: (resp) => {
                 console.log('Respuesta payments OK:', resp);
-                alert('Pago procesado correctamente (se enviará el evento a Listings).');
+                this.showModal('¡Pago exitoso!', 'Tu reserva ha sido procesada correctamente.', {
+                    confirmText: 'Ir al inicio',
+                    onConfirm: () => this.router.navigate(['/home'])
+                });
             },
             error: (err) => {
                 console.error('Error al procesar el pago', err);
                 const msg =
                     err.error?.message ??
                     'Ocurrió un error al procesar el pago. Verifica los datos de la tarjeta.';
-                alert(msg);
+                this.showModal('Error en el pago', msg, { isDanger: true });
             },
         });
     }
 
     goBack(): void {
         this.location.back();
+    }
+
+    // Modal methods
+    showModal(
+        title: string,
+        message: string,
+        options: {
+            confirmText?: string;
+            cancelText?: string;
+            isDanger?: boolean;
+            showCancel?: boolean;
+            onConfirm?: () => void;
+        } = {}
+    ): void {
+        this.modalTitle = title;
+        this.modalMessage = message;
+        this.modalConfirmText = options.confirmText ?? 'Aceptar';
+        this.modalCancelText = options.cancelText ?? 'Cancelar';
+        this.modalIsDanger = options.isDanger ?? false;
+        this.modalShowCancel = options.showCancel ?? false;
+        this.modalCallback = options.onConfirm ?? null;
+        this.modalOpen = true;
+    }
+
+    onModalConfirm(): void {
+        this.modalOpen = false;
+        if (this.modalCallback) {
+            this.modalCallback();
+        }
+    }
+
+    onModalCancel(): void {
+        this.modalOpen = false;
+        this.modalCallback = null;
     }
 }

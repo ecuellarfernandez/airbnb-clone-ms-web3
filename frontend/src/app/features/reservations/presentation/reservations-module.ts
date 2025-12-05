@@ -6,6 +6,7 @@ import { ReservationsRoutingModule } from './reservations-routing-module';
 import { ReservationCheckoutPageComponent } from './pages/reservation-checkout/reservation-checkout-page.component';
 import { MyReservationsPageComponent } from './pages/my-reservations/my-reservations-page.component';
 import { SharedModule } from '../../../shared/shared-module';
+import { ConfirmationModalComponent } from '../../../shared/ui/confirmation-modal/confirmation-modal.component';
 
 @NgModule({
   declarations: [ReservationCheckoutPageComponent],
@@ -15,6 +16,7 @@ import { SharedModule } from '../../../shared/shared-module';
     SharedModule,
     ReservationsRoutingModule,
     MyReservationsPageComponent, // Standalone component
+    ConfirmationModalComponent, // Standalone component
   ]
 })
 export class ReservationsModule {}
