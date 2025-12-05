@@ -16,7 +16,7 @@ import { ConfirmationModalComponent } from '../../../shared/ui/confirmation-moda
     SharedModule,
     ReservationsRoutingModule,
     MyReservationsPageComponent, // Standalone component
-    ConfirmationModalComponent, // Standalone component
+    ReservationSuccessPageComponent,
   ]
 })
 export class ReservationsModule {}

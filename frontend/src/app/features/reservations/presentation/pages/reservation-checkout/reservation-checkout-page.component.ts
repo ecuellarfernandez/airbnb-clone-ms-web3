@@ -230,15 +230,8 @@ export class ReservationCheckoutPageComponent implements OnInit {
         this.reservationsApi.payReservation(payload).subscribe({
             next: (resp) => {
                 console.log('Respuesta payments OK:', resp);
-<<<<<<< HEAD
                 console.log('Pago procesado correctamente (se enviará el evento a Listings).');
                 this.router.navigate(['/reservations/success', this.reservationId]);
-=======
-                this.showModal('¡Pago exitoso!', 'Tu reserva ha sido procesada correctamente.', {
-                    confirmText: 'Ir al inicio',
-                    onConfirm: () => this.router.navigate(['/home'])
-                });
->>>>>>> merge/managePublic-Dev
             },
             error: (err) => {
                 console.error('Error al procesar el pago', err);
