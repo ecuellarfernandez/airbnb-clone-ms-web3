@@ -26,7 +26,7 @@ export interface AdminListingsResponse {
 @Injectable({ providedIn: 'root' })
 export class AdminListingsService {
   private adminListingsUrl = API_ENDPOINTS.LISTINGS.ADMIN;
-  private listingsUrl = API_ENDPOINTS.LISTINGS.BASE;
+  private listingsBaseUrl = `${API_ENDPOINTS.LISTINGS.ADMIN.replace('/admin', '')}`;
 
   constructor(private http: HttpClient) {}
 
@@ -41,11 +41,11 @@ export class AdminListingsService {
 
   // PATCH /api/listings-service/listings/{id}/publish
   publishListing(id: string): Observable<void> {
-    return this.http.patch<void>(`${this.listingsUrl}/${id}/publish`, {});
+    return this.http.patch<void>(`${this.listingsBaseUrl}/${id}/publish`, {});
   }
 
   // PATCH /api/listings-service/listings/{id}/unpublish
   unpublishListing(id: string): Observable<void> {
-    return this.http.patch<void>(`${this.listingsUrl}/${id}/unpublish`, {});
+    return this.http.patch<void>(`${this.listingsBaseUrl}/${id}/unpublish`, {});
   }
 }

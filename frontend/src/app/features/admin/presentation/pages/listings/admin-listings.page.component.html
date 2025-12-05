@@ -2,8 +2,7 @@
   <header class="cardHeader">
     <h2>Alojamientos</h2>
 
-    <div class="header-actions">
-    </div>
+    <div class="header-actions"></div>
   </header>
 
   <table>
@@ -14,7 +13,7 @@
         <th>País</th>
         <th>Precio</th>
         <th>Estado</th>
-        <th style="width: 200px;">Acciones</th>
+        <th style="width: 200px">Acciones</th>
       </tr>
     </thead>
     <tbody>
@@ -24,25 +23,20 @@
         </td>
         <td class="muted">{{ listing.city }}</td>
         <td class="muted">{{ listing.country }}</td>
-        <td>{{ listing.priceAmount | currency:listing.priceCurrency }}</td>
+        <td>{{ listing.priceAmount | currency : listing.priceCurrency }}</td>
         <td>
           <span class="badge" [class.active]="listing.active" [class.inactive]="!listing.active">
             {{ listing.active ? 'Activo' : 'Inactivo' }}
           </span>
         </td>
         <td class="row-actions">
-          <button
-            *ngIf="listing.active"
-            (click)="toggleStatus(listing)"
-            class="small danger">
+          <button *ngIf="listing.active" (click)="toggleStatus(listing)" class="small danger">
             Desactivar
           </button>
-          <button
-            *ngIf="!listing.active"
-            (click)="toggleStatus(listing)"
-            class="small success">
+          <button *ngIf="!listing.active" (click)="toggleStatus(listing)" class="small success">
             Publicar
           </button>
+          <button (click)="remove(listing)" class="small danger">Eliminar</button>
         </td>
       </tr>
     </tbody>
@@ -56,25 +50,19 @@
   <!-- Paginación -->
   <div *ngIf="(listings$ | async)?.length" class="pagination">
     <div class="pagination-info">
-      Mostrando {{ (currentPage * pageSize) + 1 }} - {{ Math.min((currentPage + 1) * pageSize, totalElements) }} de {{ totalElements }} alojamientos
+      Mostrando {{ currentPage * pageSize + 1 }} -
+      {{ Math.min((currentPage + 1) * pageSize, totalElements) }} de
+      {{ totalElements }} alojamientos
     </div>
-    
+
     <div class="pagination-controls">
-      <button 
-        (click)="previousPage()"
-        [disabled]="currentPage === 0"
-        class="btn-pagination">
+      <button (click)="previousPage()" [disabled]="currentPage === 0" class="btn-pagination">
         ← Anterior
       </button>
-      
-      <span class="page-indicator">
-        Página {{ currentPage + 1 }} de {{ totalPages }}
-      </span>
-      
-      <button 
-        (click)="nextPage()"
-        [disabled]="isLastPage"
-        class="btn-pagination">
+
+      <span class="page-indicator"> Página {{ currentPage + 1 }} de {{ totalPages }} </span>
+
+      <button (click)="nextPage()" [disabled]="isLastPage" class="btn-pagination">
         Siguiente →
       </button>
     </div>
