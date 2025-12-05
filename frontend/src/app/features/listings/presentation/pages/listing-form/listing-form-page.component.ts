@@ -145,30 +145,36 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   removeImage(index: number): void {
     const imageToRemove = this.uploadedImages[index];
 
-    // Delete from Cloudinary if it's a temporary image
-    if (imageToRemove.isTemporary && imageToRemove.publicId) {
+    if (imageToRemove.publicId) {
       this.deleteCloudinaryUseCase.execute(imageToRemove.publicId).subscribe({
         next: () => {
-          console.log('Image deleted from Cloudinary:', imageToRemove.publicId);
+          console.log('Image deleted successfully:', imageToRemove.publicId);
+          // Remove from form and UI after successful deletion
+          this.imagesArray.removeAt(index);
+          this.uploadedImages.splice(index, 1);
+
+          if (this.uploadedImages.length > 0 && !this.uploadedImages.some(img => img.isPrimary)) {
+            this.setPrimaryImage(0);
+          }
         },
         error: (error) => {
-          console.error('Failed to delete image from Cloudinary:', error);
-          // Continue with removal from UI even if Cloudinary deletion fails
+          console.error('Failed to delete image:', error);
+          this.imagesArray.removeAt(index);
+          this.uploadedImages.splice(index, 1);
+
+          if (this.uploadedImages.length > 0 && !this.uploadedImages.some(img => img.isPrimary)) {
+            this.setPrimaryImage(0);
+          }
         }
       });
-    }
+    } else {
+      console.warn('Image has no publicId, removing from UI only');
+      this.imagesArray.removeAt(index);
+      this.uploadedImages.splice(index, 1);
 
-    // TODO: If image belongs to existing listing (has listingId), call backend to delete from database
-    // if (imageToRemove.listingId) {
-    //   this.listingService.deleteImage(imageToRemove.listingId, imageToRemove.publicId).subscribe();
-    // }
-
-    // Remove from form and UI
-    this.imagesArray.removeAt(index);
-    this.uploadedImages.splice(index, 1);
-
-    if (this.uploadedImages.length > 0 && !this.uploadedImages.some(img => img.isPrimary)) {
-      this.setPrimaryImage(0);
+      if (this.uploadedImages.length > 0 && !this.uploadedImages.some(img => img.isPrimary)) {
+        this.setPrimaryImage(0);
+      }
     }
   }
 
@@ -180,7 +186,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  // Step Navigation
   nextStep(): void {
     if (this.isCurrentStepValid()) {
       if (this.currentStep < this.steps.length - 1) {
@@ -280,9 +285,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     return ((this.currentStep + 1) / this.steps.length) * 100;
   }
 
-  /**
-   * Save the current form state to sessionStorage
-   */
   private saveCurrentState(): void {
     const state: ListingFormState = {
       formData: this.form.value,
@@ -293,22 +295,16 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     this.formStateService.saveState(state);
   }
 
-  /**
-   * Load saved state from sessionStorage if available
-   */
   private loadSavedState(): void {
     const savedState = this.formStateService.loadState();
     if (savedState) {
-      // Restore form data
       if (savedState.formData) {
         this.form.patchValue(savedState.formData);
       }
 
-      // Restore uploaded images
       if (savedState.uploadedImages && savedState.uploadedImages.length > 0) {
         this.uploadedImages = savedState.uploadedImages;
 
-        // Rebuild images FormArray
         this.imagesArray.clear();
         savedState.uploadedImages.forEach(image => {
           const imageGroup = this.fb.group({
@@ -320,7 +316,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
         });
       }
 
-      // Restore current step
       if (savedState.currentStep !== undefined) {
         this.currentStep = savedState.currentStep;
       }
