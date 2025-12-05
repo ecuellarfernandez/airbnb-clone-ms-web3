@@ -3,7 +3,7 @@
   display: grid;
   grid-template-columns: 260px 1fr;
   min-height: 100vh;
-  background-color: var(--bg, #11181f);
+  background-color: var(--bg);
 }
 
 // Loading & Error States
@@ -13,18 +13,18 @@
   align-items: center;
   justify-content: center;
   min-height: 50vh;
-  color: var(--text-muted, #9ca3af);
+  color: var(--text-2);
   font-size: 1rem;
 }
 
 .error-message {
-  color: var(--state-error, #ef4444);
+  color: var(--state-error);
   font-weight: 500;
 }
 
 .layout-sidebar {
-  background-color: var(--surface-dark, #1f2937);
-  border-right: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+  background-color: var(--surface);
+  border-right: 1px solid var(--border);
   position: sticky;
   top: 0;
   height: 100vh;

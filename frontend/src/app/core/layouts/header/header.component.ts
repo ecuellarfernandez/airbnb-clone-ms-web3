@@ -52,6 +52,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
   isScrolled = false;
 
   currentTheme: Theme = 'light';
+  isAuthenticated = false;
 
   constructor(
     private router: Router,
@@ -68,6 +69,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
 
     this.currentTheme = this.themeService.theme;
+    this.checkAuthentication();
+  }
+
+  private checkAuthentication(): void {
+    this.isAuthenticated = this.authService.isAuthenticated();
   }
 
   ngOnDestroy() {
@@ -87,6 +93,9 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleUserMenu(): void {
     this.isUserMenuOpen = !this.isUserMenuOpen;
+    if (this.isUserMenuOpen) {
+      this.checkAuthentication();
+    }
   }
 
   onTabChange(tabId: string): void {
@@ -101,6 +110,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   openListingForm(): void {
     this.router.navigate(['/listings/form']);
+  }
+
+  login(): void {
+    this.isUserMenuOpen = false;
+    this.router.navigate(['/auth/login']);
   }
 
   logout(): void {
