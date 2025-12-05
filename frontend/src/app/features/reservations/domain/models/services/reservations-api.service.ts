@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '@core/config/api.config';
+import { StandardResult } from '@app/core/model/api-response.model';
 
 export interface CreateReservationPayload {
     listingId: string;
@@ -38,4 +39,6 @@ export class ReservationsApiService {
             payload
         );
     }
+
+    
 }

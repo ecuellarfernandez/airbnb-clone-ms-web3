@@ -8,12 +8,15 @@ import { AccommodationsPageComponent } from './pages/listing-list/accommodations
 import { ListingCardComponent } from './components/listing-card/listing-card.component';
 import { ListingFormPageComponent } from './pages/listing-form/listing-form-page.component';
 import { SharedModule } from '../../../shared/shared-module';
+import { ListingMapComponent } from '../presentation/components/listing-map-component/listing-map.component';
+
 
 @NgModule({
   declarations: [
     AccommodationsPageComponent,
     ListingCardComponent,
     ListingDetailPageComponent,
+    ListingMapComponent,
     CardBookDetailComponent,
     ListingFormPageComponent
   ],
