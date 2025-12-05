@@ -6,6 +6,7 @@ import { CloudinaryImage } from '@app/shared/cloudinary/domain/models/cloudinary
 import { AuthService } from '@features/auth/domain/services/auth.service';
 import { ListingFormStateService, ListingFormState } from '@features/listings/application/services/listing-form-state.service';
 import { take } from 'rxjs';
+import { CreateListingUseCase } from '@app/features/listings/application/use-cases/create-listing.use-case';
 
 interface Step {
   id: number;
@@ -37,6 +38,7 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     private fb: FormBuilder,
     private uploadCloudinaryUseCase: UploadCloudinaryUseCase,
     private deleteCloudinaryUseCase: DeleteCloudinaryUseCase,
+    private createListingUseCase: CreateListingUseCase,
     private authService: AuthService,
     private formStateService: ListingFormStateService
   ) {
@@ -252,9 +254,15 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       const payload = this.form.value;
       console.log('Form Payload:', payload);
 
-      // TODO: Submit to backend
-      // After successful submission, clear the saved state
-      this.formStateService.clearState();
+      this.createListingUseCase.execute(payload).subscribe({
+        next: () => {
+          this.formStateService.clearState();
+        },
+        error: (error) => {
+          console.error('Failed to create listing:', error);
+        }
+      });
+
     } else {
       this.form.markAllAsTouched();
     }
