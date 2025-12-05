@@ -15,8 +15,7 @@ interface StandardResult<T> {
   providedIn: 'root'
 })
 export class ReservationsService {
-  private readonly API_URL = API_ENDPOINTS.LISTINGS.BOOKINGS;
-  private readonly RESERVATION_URL = API_ENDPOINTS.LISTINGS.RESERVATION;
+  private readonly API_URL = API_ENDPOINTS.LISTINGS.RESERVATION;
 
   constructor(private http: HttpClient) {}
 
@@ -25,6 +24,6 @@ export class ReservationsService {
   }
 
   getBookingById(id: string): Observable<StandardResult<BookingDetail>> {
-    return this.http.get<StandardResult<BookingDetail>>(`${this.RESERVATION_URL}/${id}`);
+    return this.http.get<StandardResult<BookingDetail>>(`${this.API_URL}/${id}`);
   }
 }

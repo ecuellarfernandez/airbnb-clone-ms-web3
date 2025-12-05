@@ -1,6 +1,10 @@
+import { Role } from '@features/users/domain/models/user.model';
 import { Component, OnInit } from '@angular/core';
 import { HostListingsService, ListingSummary } from '@features/host/services/host-listings.service';
 import { AuthService } from '@features/auth/domain/services/auth.service';
+import { MakeMeHostComponent } from '../components/make-me-host/make-me-host.component';
+import { HostService } from '../../services/host-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-host-main-page',
@@ -16,19 +20,47 @@ export class HostMainPageComponent implements OnInit {
   totalPages = 0;
   totalElements = 0;
 
+  showMakeMeHostModal = true;
+
   constructor(
     private hostListingsService: HostListingsService,
-    private authService: AuthService
+    private hostService : HostService,
+    private authService: AuthService,
+    private router : Router
   ) {}
 
   ngOnInit(): void {
-    this.loadListings();
+
+    this.authService.getCurrentUser().subscribe(user => {
+      if (user && this._checkIfUserIsHost(user.data.roles)) {
+        this.showMakeMeHostModal = false;
+        this.loadListings();
+        return;
+      }
+    });
+
+    this.showMakeMeHostModal = true;
+
+  }
+  closeMakeMeHostModal() {
+    this.showMakeMeHostModal = false;
+    this.router.navigate(['/']);
+  }
+
+  onBecomeHost() {
+    // Handle become host action here
+    this.showMakeMeHostModal = false;
+    const token = this.authService.getToken() || '';
+    this.hostService.makeMeHost(token).subscribe({
+      next: () => {
+        this.loadListings();
+      }
+    });
   }
 
   loadListings(): void {
     this.loading = true;
     this.error = null;
-
     this.hostListingsService.getMyListings(this.currentPage, 10).subscribe({
       next: (response) => {
         if (response.success && response.data) {
@@ -68,5 +100,9 @@ export class HostMainPageComponent implements OnInit {
 
   getStatusClass(active: boolean): string {
     return active ? 'status-active' : 'status-inactive';
+  }
+
+  _checkIfUserIsHost(roles: Role[]): boolean {
+    return roles.some(role => role.name.toUpperCase() === 'HOST');
   }
 }
