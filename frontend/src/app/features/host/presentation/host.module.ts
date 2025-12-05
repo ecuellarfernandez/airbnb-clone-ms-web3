@@ -5,11 +5,15 @@ import { HostMainPageComponent } from './host-main-page/host-main-page.component
 import { HostSidebarComponent } from './components/host-sidebar/host-sidebar.component';
 import { SharedModule } from '@app/shared/shared-module';
 import { ConfirmationModalComponent } from '@app/shared/ui/confirmation-modal/confirmation-modal.component';
+import { MakeMeHostComponent } from './components/make-me-host/make-me-host.component';
+import { ListingDetailsPageComponent } from './listing-details-page/listing-details-page.component';
 
 @NgModule({
   declarations: [
     HostMainPageComponent,
-    HostSidebarComponent
+    HostSidebarComponent,
+    MakeMeHostComponent,
+    ListingDetailsPageComponent
   ],
   imports: [
     CommonModule,

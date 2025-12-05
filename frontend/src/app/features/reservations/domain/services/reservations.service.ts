@@ -15,7 +15,7 @@ interface StandardResult<T> {
   providedIn: 'root'
 })
 export class ReservationsService {
-  private readonly API_URL = API_ENDPOINTS.LISTINGS.BOOKINGS;
+  private readonly API_URL = API_ENDPOINTS.LISTINGS.RESERVATION;
 
   constructor(private http: HttpClient) {}
 

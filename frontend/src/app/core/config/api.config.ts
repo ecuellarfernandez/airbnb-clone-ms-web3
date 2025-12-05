@@ -12,7 +12,6 @@ export const API_ENDPOINTS = {
 
   LISTINGS: {
     BASE: `${API_GATEWAY}/api/listings-service`,
-    BOOKINGS: `${API_GATEWAY}/api/listings-service/bookings`,
     RESERVATION: `${API_GATEWAY}/api/listings-service/reservations`,
     ADMIN: `${API_GATEWAY}/api/listings-service/listings/admin`
   },

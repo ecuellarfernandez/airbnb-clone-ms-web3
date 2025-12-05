@@ -7,6 +7,7 @@ import { UserProfilePageComponent } from '@features/user-profile/user-profile-pa
 import { BookingLayoutComponent } from '@core/layouts/booking-layout/booking-layout.component';
 import { authGuard } from '@core/guards/auth.guard';
 import { adminGuard } from '@core/guards/admin.guard';
+import { MyReservationsPageComponent } from './features/reservations/presentation/pages/my-reservations/my-reservations-page.component';
 
 
 const routes: Routes = [
@@ -43,11 +44,10 @@ const routes: Routes = [
         path: 'profile',
         component: UserProfilePageComponent,
         children: [
-          {
-            path: 'reservations',
-            loadChildren: () =>
-              import('@app/features/reservations/presentation/reservations-module').then(m => m.ReservationsModule),
-          }
+            {
+                path: 'reservations',
+                component: MyReservationsPageComponent 
+            }
         ]
       },
       {
@@ -56,6 +56,10 @@ const routes: Routes = [
         pathMatch: 'full'
       }
     ]
+  },
+  {
+    path: 'reservations',
+    loadChildren: () => import('@app/features/reservations/presentation/reservations-module').then(m => m.ReservationsModule)
   },
   {
     path: 'auth',

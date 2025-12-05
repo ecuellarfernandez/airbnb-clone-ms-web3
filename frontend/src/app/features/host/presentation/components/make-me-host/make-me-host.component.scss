@@ -1,0 +1,69 @@
+
+.modal-backdrop {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100vw;
+	height: 100vh;
+	background: rgba(0, 0, 0, 0.45);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	z-index: 1000;
+}
+
+.modal {
+	background: var(--surface, #fff);
+	border-radius: 16px;
+	box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+	padding: 32px 28px 24px 28px;
+	min-width: 320px;
+	max-width: 90vw;
+	text-align: center;
+	position: relative;
+	animation: modalFadeIn 0.25s ease;
+}
+
+@keyframes modalFadeIn {
+	from { opacity: 0; transform: translateY(40px); }
+	to { opacity: 1; transform: translateY(0); }
+}
+
+.modal h2 {
+	font-size: 2rem;
+	font-weight: 700;
+	margin-bottom: 12px;
+	color: var(--title, #222);
+}
+
+.modal p {
+	font-size: 1.1rem;
+	color: var(--text-2, #555);
+	margin-bottom: 24px;
+}
+
+.modal button {
+	display: inline-block;
+	margin: 0 8px;
+	padding: 12px 28px;
+	font-size: 1rem;
+	font-weight: 600;
+	border-radius: 8px;
+	border: none;
+	background: var(--brand-primary, #ff385c);
+	color: #fff;
+	cursor: pointer;
+	transition: background 0.2s;
+}
+
+.modal button.close-btn {
+	background: var(--border, #e0e0e0);
+	color: var(--text-2, #555);
+}
+
+.modal button:not(.close-btn):hover {
+	background: #e11d48;
+}
+.modal button.close-btn:hover {
+	background: #c7c7c7;
+}

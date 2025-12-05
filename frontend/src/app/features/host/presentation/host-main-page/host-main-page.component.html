@@ -7,6 +7,17 @@
         <h1>Mis Alojamientos</h1>
         <p class="subtitle">Gestiona tus listings publicados</p>
       </div>
+<app-make-me-host
+  [open]="showMakeMeHostModal"
+  (closed)="closeMakeMeHostModal()"
+  (becomeHost)="onBecomeHost()"
+></app-make-me-host>
+
+<div class="host-page">
+  <div class="header">
+    <h1>Mis Alojamientos</h1>
+    <p class="subtitle">Gestiona tus listings publicados</p>
+  </div>
 
   <!-- Loading State -->
   <div *ngIf="loading" class="loading">
