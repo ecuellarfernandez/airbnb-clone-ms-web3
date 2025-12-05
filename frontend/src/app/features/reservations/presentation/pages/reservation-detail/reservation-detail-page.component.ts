@@ -36,10 +36,14 @@ export class ReservationDetailPageComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
+    console.log('Loading booking with ID:', id);
+
     this.reservationsService.getBookingById(id).subscribe({
       next: (response) => {
+        console.log('API Response:', response);
         if (response.success && response.data) {
           this.booking = response.data;
+          console.log('Booking loaded:', this.booking);
         } else {
           this.error = response.message || 'Error al cargar la reserva';
         }
@@ -54,7 +58,7 @@ export class ReservationDetailPageComponent implements OnInit {
   }
 
   goBack(): void {
-    this.router.navigate(['/reservations']);
+    this.router.navigate(['/users/profile/reservations']);
   }
 
   getStatusClass(status: string): string {

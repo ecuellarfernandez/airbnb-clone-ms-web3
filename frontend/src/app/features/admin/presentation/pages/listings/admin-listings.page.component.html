@@ -42,17 +42,6 @@
     </tbody>
   </table>
 
-        <div class="row" *ngFor="let l of listings$ | async">
-            <div><img [src]="l.primaryImageUrl" [alt]="l.title"></div>
-            <div class="title">{{ l.title }}</div>
-            <div>{{ l.city }}</div>
-            <div>{{ l.capacity }}</div>
-            <div>${{ l.price }}</div>
-            <div class="row-actions">
-                <button class="small" (click)="edit(l)">Editar</button>
-                <button class="small danger" (click)="remove(l)">Eliminar</button>
-            </div>
-        </div>
   <!-- Empty state -->
   <div *ngIf="(listings$ | async)?.length === 0" class="empty-state">
     <p>No se encontraron alojamientos</p>
@@ -105,9 +94,9 @@
   [isOpen]="showConfirmModal"
   [title]="confirmModalTitle"
   [message]="confirmModalMessage"
-  [confirmText]="confirmModalAction === 'delete' ? 'Eliminar' : (confirmModalAction === 'unpublish' ? 'Desactivar' : 'Publicar')"
+  [confirmText]="confirmModalAction === 'unpublish' ? 'Desactivar' : 'Publicar'"
   cancelText="Cancelar"
-  [isDanger]="confirmModalAction === 'unpublish' || confirmModalAction === 'delete'"
+  [isDanger]="confirmModalAction === 'unpublish'"
   (confirm)="onConfirmStatusChange()"
   (cancel)="closeConfirmModal()"
 ></app-confirmation-modal>

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { ReservationsService } from '../../../domain/services/reservations.service';
 import { BookingSummary, BookingStatus } from '../../../domain/models/reservation.model';
 
@@ -15,7 +16,10 @@ export class MyReservationsPageComponent implements OnInit {
   isLoading = true;
   errorMessage: string | null = null;
 
-  constructor(private reservationsService: ReservationsService) {}
+  constructor(
+    private reservationsService: ReservationsService,
+    private router: Router
+  ) {}
 
   ngOnInit(): void {
     this.loadReservations();
@@ -67,5 +71,9 @@ export class MyReservationsPageComponent implements OnInit {
 
   truncateId(id: string): string {
     return id.substring(0, 8);
+  }
+
+  goToDetail(reservation: BookingSummary): void {
+    this.router.navigate(['/users/profile/reservations', reservation.id]);
   }
 }

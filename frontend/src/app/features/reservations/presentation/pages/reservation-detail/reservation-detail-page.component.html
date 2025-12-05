@@ -42,12 +42,12 @@
           <div class="dates-grid">
             <div class="date-item">
               <span class="label">Check-in</span>
-              <span class="value">{{ booking.checkIn | date:'fullDate':'':'es' }}</span>
+              <span class="value">{{ booking.checkIn | date:'longDate' }}</span>
             </div>
             <div class="arrow">→</div>
             <div class="date-item">
               <span class="label">Check-out</span>
-              <span class="value">{{ booking.checkOut | date:'fullDate':'':'es' }}</span>
+              <span class="value">{{ booking.checkOut | date:'longDate' }}</span>
             </div>
           </div>
           <div class="nights-info">
@@ -89,24 +89,19 @@
             </div>
             <div class="info-item">
               <span class="label">Fecha de Creación</span>
-              <span class="value">{{ booking.createdAt | date:'medium':'':'es' }}</span>
+              <span class="value">{{ booking.createdAt | date:'medium' }}</span>
             </div>
             <div class="info-item">
               <span class="label">Última Actualización</span>
-              <span class="value">{{ booking.updatedAt | date:'medium':'':'es' }}</span>
+              <span class="value">{{ booking.updatedAt | date:'medium' }}</span>
             </div>
           </div>
         </div>
       </div>
 
       <div class="booking-actions">
-        @if (booking.status === 'PENDING') {
-          <button class="btn btn-primary">Pagar Reserva</button>
-          <button class="btn btn-danger">Cancelar Reserva</button>
-        }
-        @if (booking.status === 'CONFIRMED') {
-          <button class="btn btn-danger">Cancelar Reserva</button>
-        }
+
+
         <button class="btn btn-secondary" (click)="goBack()">Volver</button>
       </div>
     </div>
