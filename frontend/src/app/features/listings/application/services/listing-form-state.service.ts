@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Inject, Injectable, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { CloudinaryImage } from '@app/shared/cloudinary/domain/models/cloudinary-image.model';
 
 export interface ListingFormData {
@@ -36,10 +37,16 @@ export interface ListingFormState {
 })
 export class ListingFormStateService {
     private readonly STORAGE_KEY = 'listing_form_state';
+    private isBrowser: boolean;
 
-    constructor() { }
+    constructor(@Inject(PLATFORM_ID) platformId: object) {
+        this.isBrowser = isPlatformBrowser(platformId);
+    }
 
     saveState(state: ListingFormState): void {
+        if (!this.isBrowser) {
+            return;
+        }
         try {
             const stateToSave = {
                 ...state,
@@ -52,6 +59,9 @@ export class ListingFormStateService {
     }
 
     loadState(): ListingFormState | null {
+        if (!this.isBrowser) {
+            return null;
+        }
         try {
             const savedState = sessionStorage.getItem(this.STORAGE_KEY);
             if (!savedState) {
@@ -79,6 +89,9 @@ export class ListingFormStateService {
     }
 
     clearState(): void {
+        if (!this.isBrowser) {
+            return;
+        }
         try {
             sessionStorage.removeItem(this.STORAGE_KEY);
         } catch (error) {
@@ -87,6 +100,9 @@ export class ListingFormStateService {
     }
 
     hasSavedState(): boolean {
+        if (!this.isBrowser) {
+            return false;
+        }
         return sessionStorage.getItem(this.STORAGE_KEY) !== null;
     }
 
