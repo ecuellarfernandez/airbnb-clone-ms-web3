@@ -328,3 +328,175 @@ tbody tr {
         }
     }
 }
+
+// Filas clickeables
+.clickable-row {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+        background-color: var(--surface-2, rgba(0, 0, 0, 0.02));
+    }
+}
+
+// Modal de detalle
+.detail-modal {
+    .modal-content {
+        background: var(--surface);
+        border-radius: var(--radius-lg, 1rem);
+        max-width: 600px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    }
+
+    .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+
+        h2 {
+            margin: 0;
+            font-size: var(--fs-lg, 1.125rem);
+            font-weight: var(--fw-semibold, 600);
+            color: var(--text);
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--text-3);
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: var(--radius-sm, 0.25rem);
+            transition: all 0.2s ease;
+
+            &:hover {
+                background: var(--surface-2);
+                color: var(--text);
+            }
+        }
+    }
+
+    .modal-body {
+        padding: 1.5rem;
+    }
+
+    .detail-image {
+        width: 100%;
+        height: 200px;
+        border-radius: var(--radius-md, 0.5rem);
+        overflow: hidden;
+        margin-bottom: 1.5rem;
+
+        img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+    }
+
+    .detail-info {
+        .detail-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+
+            h3 {
+                margin: 0;
+                font-size: var(--fs-h3, 1.25rem);
+                font-weight: var(--fw-semibold, 600);
+                color: var(--text);
+            }
+        }
+
+        .detail-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .detail-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .label {
+                font-size: var(--fs-xs, 0.75rem);
+                color: var(--text-3);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .value {
+                font-size: var(--fs-sm, 0.875rem);
+                color: var(--text);
+                font-weight: var(--fw-medium, 500);
+
+                &.id-value {
+                    font-family: monospace;
+                    font-size: var(--fs-xs, 0.75rem);
+                    word-break: break-all;
+                }
+
+                &.price {
+                    color: var(--brand-primary);
+                    font-weight: var(--fw-bold, 700);
+                    font-size: var(--fs-md, 1rem);
+                }
+            }
+        }
+
+        .detail-description {
+            .label {
+                display: block;
+                font-size: var(--fs-xs, 0.75rem);
+                color: var(--text-3);
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+                margin-bottom: 0.5rem;
+            }
+
+            p {
+                margin: 0;
+                font-size: var(--fs-sm, 0.875rem);
+                color: var(--text-2);
+                line-height: 1.6;
+            }
+        }
+    }
+
+    .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--border);
+        background: var(--surface-2, rgba(0, 0, 0, 0.02));
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: var(--radius-md, 0.5rem);
+            font-size: var(--fs-sm, 0.875rem);
+            font-weight: var(--fw-medium, 500);
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-secondary {
+            background: var(--surface);
+            color: var(--text);
+            border: 1px solid var(--border);
+
+            &:hover {
+                background: var(--surface-2);
+            }
+        }
+    }
+}

@@ -17,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let listing of listings$ | async">
+      <tr *ngFor="let listing of listings$ | async" class="clickable-row" (click)="openDetail(listing)">
         <td>
           <strong>{{ listing.title }}</strong>
         </td>
@@ -29,7 +29,7 @@
             {{ listing.active ? 'Activo' : 'Inactivo' }}
           </span>
         </td>
-        <td class="row-actions">
+        <td class="row-actions" (click)="$event.stopPropagation()">
           <button *ngIf="listing.active" (click)="toggleStatus(listing)" class="small danger">
             Desactivar
           </button>
@@ -100,3 +100,61 @@
   (confirm)="onConfirmStatusChange()"
   (cancel)="closeConfirmModal()"
 ></app-confirmation-modal>
+
+<!-- Modal de detalle del listing -->
+<div class="modal detail-modal" *ngIf="showDetailModal" (click)="closeDetailModal()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h2>Detalle del Alojamiento</h2>
+      <button class="close-btn" (click)="closeDetailModal()">×</button>
+    </div>
+    
+    <div class="modal-body" *ngIf="detailListing">
+      <!-- Imagen principal -->
+      <div class="detail-image" *ngIf="detailListing.primaryImageUrl || detailListing.image">
+        <img [src]="detailListing.primaryImageUrl || detailListing.image" [alt]="detailListing.title">
+      </div>
+      
+      <!-- Información principal -->
+      <div class="detail-info">
+        <div class="detail-header">
+          <h3>{{ detailListing.title }}</h3>
+          <span class="badge" [class.active]="detailListing.active" [class.inactive]="!detailListing.active">
+            {{ detailListing.active ? 'Activo' : 'Inactivo' }}
+          </span>
+        </div>
+        
+        <div class="detail-grid">
+          <div class="detail-item">
+            <span class="label">ID</span>
+            <span class="value id-value">{{ detailListing.id }}</span>
+          </div>
+          
+          <div class="detail-item">
+            <span class="label">Ubicación</span>
+            <span class="value">{{ detailListing.city }}<span *ngIf="detailListing.country">, {{ detailListing.country }}</span></span>
+          </div>
+          
+          <div class="detail-item">
+            <span class="label">Precio por noche</span>
+            <span class="value price">{{ detailListing.priceAmount || detailListing.price | currency : (detailListing.priceCurrency || 'USD') }}</span>
+          </div>
+          
+          <div class="detail-item">
+            <span class="label">Capacidad</span>
+            <span class="value">{{ detailListing.capacity }} {{ detailListing.capacity === 1 ? 'huésped' : 'huéspedes' }}</span>
+          </div>
+        </div>
+        
+        <div class="detail-description" *ngIf="detailListing.description">
+          <span class="label">Descripción</span>
+          <p>{{ detailListing.description }}</p>
+        </div>
+      </div>
+    </div>
+    
+    <div class="modal-footer">
+      <button class="btn btn-secondary" (click)="closeDetailModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
