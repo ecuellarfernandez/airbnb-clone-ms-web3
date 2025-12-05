@@ -169,4 +169,8 @@ export class AdminFacade {
   public unpublishListing(listingId: string){
     return this.listingsService.unpublishListing(listingId);
   }
+
+  public deleteListing(listingId: string){
+    return this.listingsService.deleteListing(listingId);
+  }
 }
