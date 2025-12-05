@@ -204,4 +204,31 @@
       }
     }
   }
+
+  .btn-delete {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text-2);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    i {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: var(--state-error);
+      color: var(--state-error);
+    }
+  }
 }
