@@ -20,6 +20,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -180,6 +182,18 @@ public class UserService implements UserDetailsService {
             throws UsernameNotFoundException {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
+    }
+
+    public List<User> findByIdsString(String idsString) {
+        if (idsString == null || idsString.isBlank()) {
+            return List.of();
+        }
+        List<Long> ids = Arrays.stream(idsString.split(";"))
+                .map(String::trim)
+                .filter(s -> !s.isEmpty())
+                .map(Long::parseLong)
+                .toList();
+        return userRepository.findAllById(ids);
     }
 
 }
