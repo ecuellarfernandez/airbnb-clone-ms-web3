@@ -108,12 +108,47 @@ public class ListingController {
         return ResponseEntity.ok(StandardResult.success(result, message));
     }
 
+    @GetMapping("/admin")
+    @Operation(summary = "Buscar listings con filtros (Admin)")
+    public ResponseEntity<StandardResult<PagedResult<ListingSummaryDTO>>> searchForAdmin(
+            @Parameter(description = "Ciudad") @RequestParam(required = false) String city,
+            @Parameter(description = "Precio mínimo") @RequestParam(required = false) BigDecimal minPrice,
+            @Parameter(description = "Precio máximo") @RequestParam(required = false) BigDecimal maxPrice,
+            @Parameter(description = "Capacidad mínima") @RequestParam(required = false) Integer capacity,
+            @Parameter(description = "ID de categoría") @RequestParam(required = false) UUID categoryId,
+            @Parameter(description = "Número de página (0-based)")
+            @RequestParam(defaultValue = "0")
+            @Min(value = 0, message = "Page number must be >= 0")
+            int page,
+            @Parameter(description = "Tamaño de página (máximo configurado)")
+            @RequestParam(defaultValue = "10")
+            @Min(value = 1, message = "Page size must be >= 1")
+            int size,
+            @Parameter(description = "Campo de ordenamiento") @RequestParam(defaultValue = "createdAt") String sortBy,
+            @Parameter(description = "Dirección de ordenamiento") @RequestParam(defaultValue = "DESC") String sortDirection
+    ){
+        // Aplicar límite max de tamaño de pagina usando config central
+        int validatedSize = clampPageSize(size);
+
+        logger.info("Searching listings - city: " + city + ", page: " + page + ", size: " + validatedSize);
+
+        Sort.Direction direction = Sort.Direction.fromString(sortDirection);
+        Pageable pageable = PageRequest.of(page, validatedSize, Sort.by(direction, sortBy));
+
+        SearchListingsForAdminQuery query = new SearchListingsForAdminQuery(city, minPrice, maxPrice, capacity, categoryId, pageable);
+        PagedResult<ListingSummaryDTO> result = pipeline.send(query);
+
+        String message = result.getTotalElements() + " listings found";
+        return ResponseEntity.ok(StandardResult.success(result, message));
+    }
+
     @GetMapping("/host/{hostId}")
     @Operation(summary = "Obtener listings de un anfitrión")
     public ResponseEntity<StandardResult<PagedResult<ListingSummaryDTO>>> getByHost(
             @PathVariable Integer hostId,
             @Parameter(description = "Número de página (0-based)")
             @RequestParam(defaultValue = "0")
+            @Min(value = 0, message = "Page number must be >= 0")
             @Min(value = 0, message = "Page number must be >= 0")
             int page,
             @Parameter(description = "Tamaño de página (máximo configurado)")

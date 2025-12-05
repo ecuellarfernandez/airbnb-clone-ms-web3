@@ -1,0 +1,57 @@
+package com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.listing.queries;
+
+import an.awesome.pipelinr.Command;
+import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.common.PagedResult;
+import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingSummaryDTO;
+import org.springframework.data.domain.Pageable;
+
+import java.math.BigDecimal;
+import java.util.UUID;
+
+public class SearchListingsForAdminQuery implements Command<PagedResult<ListingSummaryDTO>> {
+
+    private final String city;
+    private final BigDecimal minPrice;
+    private final BigDecimal maxPrice;
+    private final Integer capacity;
+    private final UUID categoryId;
+    private final Pageable pageable;
+
+    public SearchListingsForAdminQuery(String city, BigDecimal minPrice, BigDecimal maxPrice, Integer capacity, UUID categoryId, Pageable pageable) {
+        this.city = city;
+        this.minPrice = minPrice;
+        this.maxPrice = maxPrice;
+        this.capacity = capacity;
+        this.categoryId = categoryId;
+        this.pageable = pageable;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public BigDecimal getMinPrice() {
+        return minPrice;
+    }
+
+    public BigDecimal getMaxPrice() {
+        return maxPrice;
+    }
+
+    public Integer getCapacity() {
+        return capacity;
+    }
+
+    public UUID getCategoryId() {
+        return categoryId;
+    }
+
+    public Pageable getPageable() {
+        return pageable;
+    }
+
+    public boolean hasFilters() {
+        return city != null || minPrice != null || maxPrice != null || capacity != null || categoryId != null;
+    }
+
+}

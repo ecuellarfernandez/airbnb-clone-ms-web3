@@ -7,10 +7,12 @@ import { CoreModule } from '@core/core.module';
 import { AccommodationsRepository } from '@features/listings/domain/repositories/accommodations.repository';
 import { AccommodationsRepositoryImpl } from '@features/listings/infrastructure/repositories/accommodations.repository.impl';
 import { authInterceptor } from '@core/interceptors/auth.interceptor';
+import { HostMainPageComponent } from './features/host/presentation/host-main-page/host-main-page.component';
 
 @NgModule({
   declarations: [
     App,
+    HostMainPageComponent,
   ],
   imports: [
     BrowserModule,

@@ -18,6 +18,7 @@ public class PagedResult<T> {
     private boolean first;
     private boolean last;
     private boolean empty;
+    private String message = "";
 
     public PagedResult() {
     }
@@ -109,6 +110,14 @@ public class PagedResult<T> {
 
     public void setEmpty(boolean empty) {
         this.empty = empty;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 }
 

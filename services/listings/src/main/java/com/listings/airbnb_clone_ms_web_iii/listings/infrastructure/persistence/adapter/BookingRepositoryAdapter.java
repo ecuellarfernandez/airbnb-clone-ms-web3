@@ -3,6 +3,8 @@ package com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.persistence
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Booking;
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.repository.BookingRepository;
 import com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.persistence.jpa.JpaBookingRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import java.time.LocalDate;
 import java.util.List;
@@ -42,4 +44,11 @@ public class BookingRepositoryAdapter implements BookingRepository {
     public List<Booking> findActiveBookingsByListingAndRange(UUID listingId, LocalDate startDate, LocalDate endDate) {
         return jpaRepository.findActiveBookingsByListingAndRange(listingId, startDate, endDate);
     }
+
+    @Override
+    public Page<Booking> findByHostId(Integer hostId, Pageable pageable) {
+        return jpaRepository.findByHostId(hostId, pageable);
+    }
+
+
 }

@@ -52,6 +52,15 @@ public interface ListingServicePort {
             Pageable pageable
     );
 
+    PagedResult<ListingSummaryDTO> findAllForAdmin(
+            String city,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            Integer minCapacity,
+            UUID categoryId,
+            Pageable pageable
+    );
+
     // ========== UPDATE ==========
 
     /**

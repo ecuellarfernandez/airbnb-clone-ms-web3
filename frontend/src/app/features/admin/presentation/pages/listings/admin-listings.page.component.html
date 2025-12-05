@@ -1,22 +1,46 @@
 <div class="card">
-    <header class="card-header">
-        <h2>Alojamientos</h2>
+  <header class="cardHeader">
+    <h2>Alojamientos</h2>
 
-        <div class="actions">
-            <input class="input" [(ngModel)]="q" placeholder="Buscar por título o ciudad..." />
-            <button class="btn" (click)="new()">+ Nuevo Alojamiento</button>
-        </div>
-    </header>
+    <div class="header-actions"></div>
+  </header>
 
-    <div class="table">
-        <div class="thead">
-            <div>Foto</div>
-            <div>Título</div>
-            <div>Ciudad</div>
-            <div>Cap</div>
-            <div>Precio</div>
-            <div>Acciones</div>
-        </div>
+  <table>
+    <thead>
+      <tr>
+        <th>Título</th>
+        <th>Ciudad</th>
+        <th>País</th>
+        <th>Precio</th>
+        <th>Estado</th>
+        <th style="width: 200px">Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let listing of listings$ | async">
+        <td>
+          <strong>{{ listing.title }}</strong>
+        </td>
+        <td class="muted">{{ listing.city }}</td>
+        <td class="muted">{{ listing.country }}</td>
+        <td>{{ listing.priceAmount | currency : listing.priceCurrency }}</td>
+        <td>
+          <span class="badge" [class.active]="listing.active" [class.inactive]="!listing.active">
+            {{ listing.active ? 'Activo' : 'Inactivo' }}
+          </span>
+        </td>
+        <td class="row-actions">
+          <button *ngIf="listing.active" (click)="toggleStatus(listing)" class="small danger">
+            Desactivar
+          </button>
+          <button *ngIf="!listing.active" (click)="toggleStatus(listing)" class="small success">
+            Publicar
+          </button>
+          <button (click)="remove(listing)" class="small danger">Eliminar</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 
         <div class="row" *ngFor="let l of listings$ | async">
             <div><img [src]="l.primaryImageUrl" [alt]="l.title"></div>
@@ -29,12 +53,61 @@
                 <button class="small danger" (click)="remove(l)">Eliminar</button>
             </div>
         </div>
+  <!-- Empty state -->
+  <div *ngIf="(listings$ | async)?.length === 0" class="empty-state">
+    <p>No se encontraron alojamientos</p>
+  </div>
+
+  <!-- Paginación -->
+  <div *ngIf="(listings$ | async)?.length" class="pagination">
+    <div class="pagination-info">
+      Mostrando {{ currentPage * pageSize + 1 }} -
+      {{ Math.min((currentPage + 1) * pageSize, totalElements) }} de
+      {{ totalElements }} alojamientos
     </div>
+
+    <div class="pagination-controls">
+      <button (click)="previousPage()" [disabled]="currentPage === 0" class="btn-pagination">
+        ← Anterior
+      </button>
+
+      <span class="page-indicator"> Página {{ currentPage + 1 }} de {{ totalPages }} </span>
+
+      <button (click)="nextPage()" [disabled]="isLastPage" class="btn-pagination">
+        Siguiente →
+      </button>
+    </div>
+
+    <div class="page-size-selector">
+      <label>
+        Mostrar
+        <select [value]="pageSize" (change)="onPageSizeChange($any($event.target).value)">
+          <option value="5">5</option>
+          <option value="10">10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+        </select>
+        por página
+      </label>
+    </div>
+  </div>
 </div>
 
-<div class="modal" *ngIf="showForm" (click)="showForm=false">
-    <div class="modal-body" (click)="$event.stopPropagation()">
-        <app-listing-form [value]="editing" (cancel)="showForm=false" (submitForm)="save($event)">
-        </app-listing-form>
-    </div>
+<div class="modal" *ngIf="showForm" (click)="showForm = false">
+  <div class="modal-body" (click)="$event.stopPropagation()">
+    <app-listing-form [value]="editing" (cancel)="showForm = false" (submitForm)="save($event)">
+    </app-listing-form>
+  </div>
 </div>
+
+<!-- Modal de confirmación de cambio de estado -->
+<app-confirmation-modal
+  [isOpen]="showConfirmModal"
+  [title]="confirmModalTitle"
+  [message]="confirmModalMessage"
+  [confirmText]="confirmModalAction === 'unpublish' ? 'Desactivar' : 'Publicar'"
+  cancelText="Cancelar"
+  [isDanger]="confirmModalAction === 'unpublish'"
+  (confirm)="onConfirmStatusChange()"
+  (cancel)="closeConfirmModal()"
+></app-confirmation-modal>

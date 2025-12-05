@@ -103,6 +103,7 @@ public class ListingApplicationService implements ListingServicePort {
                         ListingImage img = new ListingImage();
                         img.setListingId(listingId);
                         img.setMediaUrl(imgDto.getMediaUrl());
+                        img.setPublicId(imgDto.getPublicId());
                         img.setDisplayOrder(imgDto.getDisplayOrder() != null ? imgDto.getDisplayOrder() : 0);
                         img.setIsPrimary(imgDto.getIsPrimary() != null ? imgDto.getIsPrimary() : false);
                         img.setCreatedAt(LocalDateTime.now());
@@ -212,6 +213,39 @@ public class ListingApplicationService implements ListingServicePort {
                 page.getTotalElements()
         );
     }
+    /**
+     * Busca listings aplicando filtros múltiples con paginación e incluyendo los listings inactivos para
+     * el modo admin.
+     *
+     * @param city Ciudad (opcional)
+     * @param minPrice Precio mínimo (opcional)
+     * @param maxPrice Precio máximo (opcional)
+     * @param minCapacity Capacidad mínima (opcional)
+     * @param categoryId ID de categoría (opcional)
+     * @param pageable Información de paginación
+     * @return Resultado paginado de listings que cumplen con los filtros
+     */
+    @Override
+    @Transactional(readOnly = true)
+    public PagedResult<ListingSummaryDTO> findAllForAdmin(
+            String city,
+            BigDecimal minPrice,
+            BigDecimal maxPrice,
+            Integer minCapacity,
+            UUID categoryId,
+            Pageable pageable
+    ) {
+        Page<Listing> page = listingRepository.findAllForAdmin(
+                city, minPrice, maxPrice, minCapacity, categoryId, pageable
+        );
+        List<ListingSummaryDTO> dtos = listingMapper.toSummaryDTOList(page.getContent());
+        return new PagedResult<>(
+                dtos,
+                page.getNumber(),
+                page.getSize(),
+                page.getTotalElements()
+        );
+    }
 
     // ========================================
     // UPDATE
@@ -297,6 +331,7 @@ public class ListingApplicationService implements ListingServicePort {
             dto.getImages().forEach(imageDto -> {
                 ListingImage image = ListingImage.builder()
                         .mediaUrl(imageDto.getMediaUrl())
+                        .publicId(imageDto.getPublicId())
                         .isPrimary(imageDto.getIsPrimary())
                         .displayOrder(imageDto.getDisplayOrder())
                         .build();
@@ -356,13 +391,10 @@ public class ListingApplicationService implements ListingServicePort {
     @Override
     @Transactional
     public void delete(UUID id) {
-
-        if (!listingRepository.existsById(id)) {
-            throw new ListingNotFoundException("Listing not found with id: " + id);
-        }
+        Listing listing = listingRepository.findById(id)
+                .orElseThrow(() -> new ListingNotFoundException("Listing not found with id: " + id));
 
         listingImageRepository.deleteAllByListingId(id);
-
         listingRepository.deleteById(id);
     }
 

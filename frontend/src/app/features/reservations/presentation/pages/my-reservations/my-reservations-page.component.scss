@@ -1,0 +1,197 @@
+.my-reservations-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  .page-header {
+    margin-bottom: 2rem;
+
+    h1 {
+      font-size: var(--fs-h1);
+      font-weight: var(--fw-bold);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      color: var(--text-secondary);
+      font-size: var(--fs-md);
+    }
+  }
+
+  .loading,
+  .error-message,
+  .empty-state {
+    text-align: center;
+    padding: 3rem;
+    background-color: var(--surface);
+    border-radius: var(--radius-md);
+
+    p {
+      margin-bottom: 1rem;
+    }
+  }
+
+  .error-message {
+    color: var(--state-error);
+    border: 1px solid var(--state-error);
+  }
+
+  .reservations-list {
+    display: grid;
+    gap: 1.5rem;
+
+    .reservation-card {
+      background-color: var(--surface);
+      border-radius: var(--radius-md);
+      padding: 1.5rem;
+      border: 1px solid var(--border);
+      transition: all var(--transition-duration) var(--transition-timing-function);
+
+      &:hover {
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        transform: translateY(-2px);
+      }
+
+      .reservation-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+        padding-bottom: 1rem;
+        border-bottom: 1px solid var(--border);
+
+        .reservation-id {
+          .label {
+            color: var(--text-secondary);
+            font-size: var(--fs-sm);
+            margin-right: 0.5rem;
+          }
+
+          .value {
+            font-family: monospace;
+            font-size: var(--fs-sm);
+            color: var(--text);
+          }
+        }
+
+        .status-badge {
+          padding: 0.5rem 1rem;
+          border-radius: var(--radius-pill);
+          font-size: var(--fs-sm);
+          font-weight: var(--fw-medium);
+
+          &.status-pending {
+            background-color: #fef3c7;
+            color: #92400e;
+          }
+
+          &.status-confirmed {
+            background-color: #d1fae5;
+            color: #065f46;
+          }
+
+          &.status-cancelled {
+            background-color: #fee2e2;
+            color: #991b1b;
+          }
+
+          &.status-completed {
+            background-color: #e0e7ff;
+            color: #3730a3;
+          }
+        }
+      }
+
+      .reservation-body {
+        margin-bottom: 1.5rem;
+
+        .reservation-dates {
+          display: flex;
+          align-items: center;
+          gap: 1.5rem;
+          margin-bottom: 1rem;
+
+          .date-item {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+
+            .label {
+              font-size: var(--fs-xs);
+              color: var(--text-secondary);
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            }
+
+            .value {
+              font-size: var(--fs-md);
+              font-weight: var(--fw-medium);
+              color: var(--text);
+            }
+          }
+
+          .arrow {
+            color: var(--text-secondary);
+            font-size: var(--fs-lg);
+          }
+        }
+
+        .reservation-details {
+          display: flex;
+          gap: 2rem;
+
+          .detail-item {
+            display: flex;
+            gap: 0.5rem;
+
+            .label {
+              color: var(--text-secondary);
+              font-size: var(--fs-sm);
+            }
+
+            .value {
+              font-weight: var(--fw-medium);
+              font-size: var(--fs-sm);
+
+              &.price {
+                color: var(--brand-primary);
+                font-size: var(--fs-md);
+                font-weight: var(--fw-bold);
+              }
+            }
+          }
+        }
+      }
+
+      .reservation-footer {
+        display: flex;
+        gap: 1rem;
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 1rem;
+
+    .reservations-list .reservation-card {
+      .reservation-body .reservation-dates {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+
+        .arrow {
+          transform: rotate(90deg);
+        }
+      }
+
+      .reservation-footer {
+        flex-direction: column;
+
+        button {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
