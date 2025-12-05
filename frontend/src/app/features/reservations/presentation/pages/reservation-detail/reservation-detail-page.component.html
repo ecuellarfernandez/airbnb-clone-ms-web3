@@ -1,0 +1,114 @@
+<div class="reservation-detail-page">
+  <div class="page-header">
+    <button class="btn-back" (click)="goBack()">
+      <span class="arrow">←</span>
+      Volver a mis reservas
+    </button>
+    <h1>Detalle de la Reserva</h1>
+  </div>
+
+  <!-- Loading State -->
+  @if (loading) {
+    <div class="loading">
+      <p>Cargando detalles de la reserva...</p>
+    </div>
+  }
+
+  <!-- Error State -->
+  @if (error && !loading) {
+    <div class="error-message">
+      <p>{{ error }}</p>
+      <button class="btn btn-primary" (click)="goBack()">Volver</button>
+    </div>
+  }
+
+  <!-- Booking Detail -->
+  @if (booking && !loading && !error) {
+    <div class="booking-detail-card">
+      <div class="booking-header">
+        <div class="booking-id">
+          <span class="label">ID de Reserva:</span>
+          <span class="value">{{ booking.id }}</span>
+        </div>
+        <span class="status-badge" [ngClass]="getStatusClass(booking.status)">
+          {{ getStatusLabel(booking.status) }}
+        </span>
+      </div>
+
+      <div class="booking-content">
+        <!-- Dates Section -->
+        <div class="section dates-section">
+          <h3>Fechas de la Estancia</h3>
+          <div class="dates-grid">
+            <div class="date-item">
+              <span class="label">Check-in</span>
+              <span class="value">{{ booking.checkIn | date:'fullDate':'':'es' }}</span>
+            </div>
+            <div class="arrow">→</div>
+            <div class="date-item">
+              <span class="label">Check-out</span>
+              <span class="value">{{ booking.checkOut | date:'fullDate':'':'es' }}</span>
+            </div>
+          </div>
+          <div class="nights-info">
+            <span class="nights-count">{{ booking.nights }}</span>
+            <span class="nights-label">{{ booking.nights === 1 ? 'noche' : 'noches' }}</span>
+          </div>
+        </div>
+
+        <!-- Price Section -->
+        <div class="section price-section">
+          <h3>Desglose del Precio</h3>
+          <div class="price-breakdown">
+            <div class="price-row">
+              <span class="label">Precio por noche</span>
+              <span class="value">{{ booking.pricePerNight | currency:booking.currency:'symbol':'1.2-2' }}</span>
+            </div>
+            <div class="price-row">
+              <span class="label">Noches</span>
+              <span class="value">× {{ booking.nights }}</span>
+            </div>
+            <div class="price-row total">
+              <span class="label">Total</span>
+              <span class="value">{{ booking.totalPrice | currency:booking.currency:'symbol':'1.2-2' }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Additional Info Section -->
+        <div class="section info-section">
+          <h3>Información Adicional</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <span class="label">ID del Listing</span>
+              <span class="value">{{ booking.listingId }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">ID del Huésped</span>
+              <span class="value">{{ booking.guestId }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Fecha de Creación</span>
+              <span class="value">{{ booking.createdAt | date:'medium':'':'es' }}</span>
+            </div>
+            <div class="info-item">
+              <span class="label">Última Actualización</span>
+              <span class="value">{{ booking.updatedAt | date:'medium':'':'es' }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="booking-actions">
+        @if (booking.status === 'PENDING') {
+          <button class="btn btn-primary">Pagar Reserva</button>
+          <button class="btn btn-danger">Cancelar Reserva</button>
+        }
+        @if (booking.status === 'CONFIRMED') {
+          <button class="btn btn-danger">Cancelar Reserva</button>
+        }
+        <button class="btn btn-secondary" (click)="goBack()">Volver</button>
+      </div>
+    </div>
+  }
+</div>
