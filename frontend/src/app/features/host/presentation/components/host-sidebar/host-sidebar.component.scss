@@ -18,15 +18,14 @@
   border-bottom: 1px solid var(--border);
 
   &__logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: var(--brand-primary);
+    fill: var(--brand-primary);
   }
 
   &__text {
     font-size: 20px;
     font-weight: 700;
-    color: var(--title);
+    color: var(--brand-primary);
     font-family: var(--font-display);
   }
 }

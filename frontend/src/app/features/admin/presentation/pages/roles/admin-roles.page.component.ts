@@ -234,4 +234,10 @@ export class AdminRolesPageComponent implements OnInit {
             this.goToPage(this.currentPage - 1);
         }
     }
+
+    onPageSizeChange(size: string): void {
+        this.pageSize = parseInt(size, 10);
+        this.currentPage = 0;
+        this.loadRoles();
+    }
 }
