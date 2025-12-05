@@ -18,6 +18,9 @@ public class ListingImage {
     @Column(name = "media_url", length = 500)
     private String mediaUrl;
 
+    @Column(name = "public_id", length = 255)
+    private String publicId;
+
     @Column(name = "is_primary", nullable = false)
     private Boolean isPrimary = false;
 
@@ -30,10 +33,11 @@ public class ListingImage {
     public ListingImage() {
     }
 
-    public ListingImage(UUID id, UUID listingId, String mediaUrl, Boolean isPrimary, Integer displayOrder, LocalDateTime createdAt) {
+    public ListingImage(UUID id, UUID listingId, String mediaUrl, String publicId, Boolean isPrimary, Integer displayOrder, LocalDateTime createdAt) {
         this.id = id;
         this.listingId = listingId;
         this.mediaUrl = mediaUrl;
+        this.publicId = publicId;
         this.isPrimary = isPrimary != null ? isPrimary : false;
         this.displayOrder = displayOrder;
         this.createdAt = createdAt;
@@ -72,6 +76,14 @@ public class ListingImage {
         this.mediaUrl = mediaUrl;
     }
 
+    public String getPublicId() {
+        return publicId;
+    }
+
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
+    }
+
     public Boolean getIsPrimary() {
         return isPrimary;
     }
@@ -100,6 +112,7 @@ public class ListingImage {
         private UUID id;
         private UUID listingId;
         private String mediaUrl;
+        private String publicId;
         private Boolean isPrimary = false;
         private Integer displayOrder;
         private LocalDateTime createdAt;
@@ -119,6 +132,11 @@ public class ListingImage {
             return this;
         }
 
+        public ListingImageBuilder publicId(String publicId) {
+            this.publicId = publicId;
+            return this;
+        }
+
         public ListingImageBuilder isPrimary(Boolean isPrimary) {
             this.isPrimary = isPrimary;
             return this;
@@ -135,7 +153,7 @@ public class ListingImage {
         }
 
         public ListingImage build() {
-            return new ListingImage(id, listingId, mediaUrl, isPrimary, displayOrder, createdAt);
+            return new ListingImage(id, listingId, mediaUrl, publicId, isPrimary, displayOrder, createdAt);
         }
     }
 }
