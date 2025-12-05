@@ -44,7 +44,6 @@ export class ReservationCheckoutPageComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
-        private router: Router,
         private fb: FormBuilder,
         private getListingByIdUseCase: GetListingByIdUseCase,
         private location: Location,
