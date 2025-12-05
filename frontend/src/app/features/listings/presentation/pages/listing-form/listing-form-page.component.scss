@@ -27,12 +27,34 @@
 }
 
 .wizard-steps {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
-  gap: 1rem;
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding-bottom: 0.5rem;
+  scroll-behavior: smooth;
+
+  /* Scrollbar personalizado */
+  &::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: var(--surface-2, #f3f4f6);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--border, #e5e7eb);
+    border-radius: 3px;
+
+    &:hover {
+      background: var(--text-3, #9ca3af);
+    }
+  }
 
   @media (max-width: 768px) {
-    grid-template-columns: 1fr;
+    gap: 0.5rem;
   }
 }
 
@@ -40,11 +62,18 @@
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  padding: 1rem;
+  padding: 0.75rem 1rem;
   border-radius: var(--radius-lg, 12px);
   cursor: pointer;
   transition: all 0.2s ease;
   border: 2px solid transparent;
+  min-width: 180px;
+  flex-shrink: 0;
+
+  @media (max-width: 768px) {
+    min-width: 160px;
+    padding: 0.625rem 0.875rem;
+  }
 
   &:hover {
     background-color: var(--surface-hover, #f9fafb);
@@ -1259,5 +1288,3 @@ textarea.form-input {
     height: 0.875rem;
   }
 }
-
-
