@@ -34,8 +34,11 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   uploading = false;
   uploadedImages: CloudinaryImage[] = [];
   currentStep = 0;
+  isSubmitting = false;
+  showValidationErrors = false;
+  isEditMode = false;
+  listingId?: string;
 
-  // Opciones disponibles
   propertyTypes: CategoryOption[] = getPropertyTypeCategories();
   spaceTypes: CategoryOption[] = getSpaceTypeCategories();
   amenities: AmenityOption[] = LISTING_AMENITIES;
@@ -87,10 +90,90 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.setHostId();
     this.loadSavedState();
+    this.checkForEditMode();
   }
 
   ngOnDestroy(): void {
     this.saveCurrentState();
+  }
+
+  private checkForEditMode(): void {
+    const navigation = this.router.getCurrentNavigation();
+    if (navigation?.extras?.state) {
+      const state = navigation.extras.state;
+      if (state['listing'] && state['editMode']) {
+        this.isEditMode = true;
+        this.listingId = state['listing'].id;
+        this.populateFormForEdit(state['listing']);
+      }
+    }
+  }
+
+  private populateFormForEdit(listing: any): void {
+    this.form.patchValue({
+      title: listing.title,
+      description: listing.description,
+      location: listing.location,
+      price: listing.price,
+      capacity: listing.capacity,
+      bedrooms: listing.bedrooms,
+      bathrooms: listing.bathrooms
+    });
+
+    if (listing.categoryIds) {
+      listing.categoryIds.forEach((id: string) => {
+        this.categoryIdsArray.push(this.fb.control(id));
+      });
+    }
+
+    if (listing.amenityIds) {
+      listing.amenityIds.forEach((id: string) => {
+        this.amenityIdsArray.push(this.fb.control(id));
+      });
+    }
+
+    if (listing.images) {
+      listing.images.forEach((image: any) => {
+        this.addImageToForm(image);
+      });
+    }
+  }
+
+  isFieldInvalid(fieldPath: string): boolean {
+    const field = this.form.get(fieldPath);
+    return !!(field && field.invalid && (field.dirty || field.touched || this.showValidationErrors));
+  }
+
+  getFieldError(fieldPath: string): string {
+    const field = this.form.get(fieldPath);
+    if (field?.errors) {
+      if (field.errors['required']) return 'Este campo es requerido';
+      if (field.errors['minlength']) return `Debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
+      if (field.errors['min']) return `Debe ser mayor a ${field.errors['min'].min}`;
+      if (field.errors['max']) return `Debe ser menor a ${field.errors['max'].max}`;
+    }
+    return '';
+  }
+
+  canProceedToNextStep(): boolean {
+    const isValid = this.isCurrentStepValid();
+    return isValid === true;
+  }
+
+  canSubmitForm(): boolean {
+    return this.form.valid && !this.isSubmitting;
+  }
+
+  get progressPercentage(): number {
+    return ((this.currentStep + 1) / this.steps.length) * 100;
+  }
+
+  get isFirstStep(): boolean {
+    return this.currentStep === 0;
+  }
+
+  get isLastStep(): boolean {
+    return this.currentStep === this.steps.length - 1;
   }
 
   private setHostId(): void {
@@ -133,7 +216,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     if (this.isCategorySelected(id)) {
       this.removeCategoryId(id);
     } else {
-      // Si es Space Type, remover cualquier otra Space Type seleccionada
       if (categoryType === 'Space Type') {
         this.clearSpaceTypeCategories();
       }
@@ -151,7 +233,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       }
     });
 
-    // Remover en orden inverso para no afectar los índices
     indicesToRemove.reverse().forEach(index => {
       this.categoryIdsArray.removeAt(index);
     });
@@ -230,8 +311,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     if (imageToRemove.publicId) {
       this.deleteCloudinaryUseCase.execute(imageToRemove.publicId).subscribe({
         next: () => {
-          console.log('Image deleted successfully:', imageToRemove.publicId);
-          // Remove from form and UI after successful deletion
           this.imagesArray.removeAt(index);
           this.uploadedImages.splice(index, 1);
 
@@ -239,8 +318,7 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
             this.setPrimaryImage(0);
           }
         },
-        error: (error) => {
-          console.error('Failed to delete image:', error);
+        error: () => {
           this.imagesArray.removeAt(index);
           this.uploadedImages.splice(index, 1);
 
@@ -250,7 +328,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
         }
       });
     } else {
-      console.warn('Image has no publicId, removing from UI only');
       this.imagesArray.removeAt(index);
       this.uploadedImages.splice(index, 1);
 
@@ -269,13 +346,26 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   }
 
   nextStep(): void {
+    this.showValidationErrors = true;
+
     if (this.isCurrentStepValid()) {
       if (this.currentStep < this.steps.length - 1) {
         this.currentStep++;
+        this.showValidationErrors = false;
       }
     } else {
       this.markCurrentStepAsTouched();
+      this.scrollToFirstError();
     }
+  }
+
+  private scrollToFirstError(): void {
+    setTimeout(() => {
+      const firstErrorElement = document.querySelector('.form-error, .validation-error');
+      if (firstErrorElement) {
+        firstErrorElement.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 100);
   }
 
   previousStep(): void {
@@ -292,21 +382,21 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
 
   isCurrentStepValid(): boolean | undefined {
     switch (this.currentStep) {
-      case 0: // Información Básica
+      case 0:
         return this.form.get('title')?.valid && this.form.get('description')?.valid;
-      case 1: // Categoría
+      case 1:
         return this.categoryIdsArray.length > 0;
-      case 2: // Ubicación
+      case 2:
         return this.form.get('location')?.valid;
-      case 3: // Detalles
+      case 3:
         return this.form.get('capacity')?.valid &&
           this.form.get('bedrooms')?.valid &&
           this.form.get('bathrooms')?.valid;
-      case 4: // Amenidades
+      case 4:
         return this.amenityIdsArray.length > 0;
-      case 5: // Precio
+      case 5:
         return this.form.get('price')?.valid;
-      case 6: // Fotos
+      case 6:
         return this.imagesArray.length > 0;
       default:
         return false;
@@ -347,24 +437,33 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   }
 
   onSubmit(): void {
+    this.showValidationErrors = true;
+
     if (this.form.valid) {
+      this.isSubmitting = true;
       const payload = this.normalizePayload(this.form.value);
-      console.log('Form Payload:', payload);
 
-      this.createListingUseCase.execute(payload).subscribe({
-        next: () => {
-          console.log('✅ Listing created successfully!');
-          this.formStateService.clearState();
-          // Redirigir a home después de crear exitosamente
-          this.router.navigate(['/']);
-        },
-        error: (error) => {
-          console.error('❌ Failed to create listing:', error);
-        }
-      });
-
+      if (this.isEditMode && this.listingId) {
+        console.log('Actualizando listing:', this.listingId);
+        this.isSubmitting = false;
+        this.router.navigate(['/host']);
+      } else {
+        this.createListingUseCase.execute(payload).subscribe({
+          next: () => {
+            console.log('✅ Listing created successfully!');
+            this.formStateService.clearState();
+            this.isSubmitting = false;
+            this.router.navigate(['/host']);
+          },
+          error: (error) => {
+            console.error('❌ Failed to create listing:', error);
+            this.isSubmitting = false;
+          }
+        });
+      }
     } else {
       this.form.markAllAsTouched();
+      this.scrollToFirstError();
     }
   }
 
@@ -388,11 +487,9 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       return null;
     }
 
-    // Convertir a string y reemplazar comas por puntos
     const normalized = String(value).replace(',', '.');
     const parsed = parseFloat(normalized);
 
-    // Validar que sea un número válido
     return isNaN(parsed) ? null : parsed;
   }
 
@@ -404,18 +501,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
         control.setValue(normalized, { emitEvent: false });
       }
     }
-  }
-
-  get isFirstStep(): boolean {
-    return this.currentStep === 0;
-  }
-
-  get isLastStep(): boolean {
-    return this.currentStep === this.steps.length - 1;
-  }
-
-  get progressPercentage(): number {
-    return ((this.currentStep + 1) / this.steps.length) * 100;
   }
 
   private saveCurrentState(): void {
@@ -452,8 +537,6 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       if (savedState.currentStep !== undefined) {
         this.currentStep = savedState.currentStep;
       }
-
-      console.log('Loaded saved form state from:', savedState.lastSaved);
     }
   }
 }

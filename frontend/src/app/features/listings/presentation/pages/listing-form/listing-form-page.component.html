@@ -35,21 +35,45 @@
 
       <div class="form-group">
         <label class="form-label">Título *</label>
-        <input type="text" formControlName="title" class="form-input" placeholder="ej. Hermosa casa en la playa">
-        <p *ngIf="form.get('title')?.touched && form.get('title')?.errors?.['required']" class="form-error">El título es
-          requerido</p>
-        <p *ngIf="form.get('title')?.touched && form.get('title')?.errors?.['minlength']" class="form-error">El título
-          debe tener al menos 10 caracteres</p>
+        <input type="text"
+               formControlName="title"
+               class="form-input"
+               [class.form-input--error]="isFieldInvalid('title')"
+               placeholder="ej. Hermosa casa en la playa">
+        <div *ngIf="isFieldInvalid('title')" class="form-error">
+          {{ getFieldError('title') }}
+        </div>
+        <div *ngIf="!form.get('title')?.errors && form.get('title')?.value" class="form-success">
+          ✓ Título válido
+        </div>
       </div>
 
       <div class="form-group">
         <label class="form-label">Descripción *</label>
-        <textarea formControlName="description" rows="6" class="form-input"
-          placeholder="Describe tu propiedad, sus características especiales y lo que la hace única..."></textarea>
-        <p *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['required']" class="form-error">
-          La descripción es requerida</p>
-        <p *ngIf="form.get('description')?.touched && form.get('description')?.errors?.['minlength']"
-          class="form-error">La descripción debe tener al menos 50 caracteres</p>
+        <textarea formControlName="description"
+                  rows="6"
+                  class="form-input"
+                  [class.form-input--error]="isFieldInvalid('description')"
+                  placeholder="Describe tu propiedad, sus características especiales y lo que la hace única..."></textarea>
+        <div class="form-character-count">
+          {{ form.get('description')?.value?.length || 0 }}/50 caracteres mínimos
+        </div>
+        <div *ngIf="isFieldInvalid('description')" class="form-error">
+          {{ getFieldError('description') }}
+        </div>
+        <div *ngIf="!form.get('description')?.errors && form.get('description')?.value?.length >= 50" class="form-success">
+          ✓ Descripción válida
+        </div>
+      </div>
+
+      <!-- Resumen de validación del paso -->
+      <div *ngIf="showValidationErrors && !isCurrentStepValid()" class="step-validation-summary">
+        <div class="validation-error">
+          <svg class="validation-error-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          Por favor, completa todos los campos requeridos antes de continuar.
+        </div>
       </div>
     </div>
 
@@ -102,9 +126,14 @@
         </div>
       </div>
 
-      <p *ngIf="form.get('categoryIds')?.touched && categoryIdsArray.length === 0" class="form-error">
-        Debes seleccionar al menos un tipo de espacio
-      </p>
+      <div *ngIf="showValidationErrors && categoryIdsArray.length === 0" class="step-validation-summary">
+        <div class="validation-error">
+          <svg class="validation-error-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          Debes seleccionar al menos un tipo de espacio para continuar.
+        </div>
+      </div>
     </div>
 
     <!-- Step 2: Ubicación -->
@@ -115,49 +144,88 @@
       <div class="form-grid">
         <div class="form-group">
           <label class="form-label">Ciudad *</label>
-          <input type="text" formControlName="city" class="form-input" placeholder="ej. Malibu">
+          <input type="text"
+                 formControlName="city"
+                 class="form-input"
+                 [class.form-input--error]="isFieldInvalid('location.city')"
+                 placeholder="ej. Malibu">
+          <div *ngIf="isFieldInvalid('location.city')" class="form-error">
+            {{ getFieldError('location.city') }}
+          </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">País *</label>
-          <input type="text" formControlName="country" class="form-input" placeholder="ej. Estados Unidos">
+          <input type="text"
+                 formControlName="country"
+                 class="form-input"
+                 [class.form-input--error]="isFieldInvalid('location.country')"
+                 placeholder="ej. Estados Unidos">
+          <div *ngIf="isFieldInvalid('location.country')" class="form-error">
+            {{ getFieldError('location.country') }}
+          </div>
         </div>
       </div>
 
       <div class="form-group">
         <label class="form-label">Dirección *</label>
-        <input type="text" formControlName="address" class="form-input" placeholder="ej. 123 Pacific Coast Highway">
+        <input type="text"
+               formControlName="address"
+               class="form-input"
+               [class.form-input--error]="isFieldInvalid('location.address')"
+               placeholder="ej. 123 Pacific Coast Highway">
+        <div *ngIf="isFieldInvalid('location.address')" class="form-error">
+          {{ getFieldError('location.address') }}
+        </div>
       </div>
 
       <div class="form-grid">
         <div class="form-group">
           <label class="form-label">Latitud (opcional)</label>
-          <input type="number" formControlName="latitude" step="0.00000001" class="form-input"
-                 placeholder="ej. 34.0259" min="-90" max="90" lang="en"
+          <input type="number"
+                 formControlName="latitude"
+                 step="0.00000001"
+                 class="form-input"
+                 [class.form-input--error]="isFieldInvalid('location.latitude')"
+                 placeholder="ej. 34.0259"
+                 min="-90"
+                 max="90"
+                 lang="en"
                  (blur)="normalizeCoordinateInput('latitude')">
-          <p *ngIf="form.get('location.latitude')?.touched && form.get('location.latitude')?.errors?.['min']" class="form-error">
-            La latitud debe estar entre -90 y 90
-          </p>
-          <p *ngIf="form.get('location.latitude')?.touched && form.get('location.latitude')?.errors?.['max']" class="form-error">
-            La latitud debe estar entre -90 y 90
-          </p>
+          <div *ngIf="isFieldInvalid('location.latitude')" class="form-error">
+            {{ getFieldError('location.latitude') }}
+          </div>
           <p class="form-hint-small">Usa punto (.) como separador decimal: ej. 40.4167</p>
         </div>
 
         <div class="form-group">
           <label class="form-label">Longitud (opcional)</label>
-          <input type="number" formControlName="longitude" step="0.00000001" class="form-input"
-                 placeholder="ej. -118.7798" min="-180" max="180" lang="en"
+          <input type="number"
+                 formControlName="longitude"
+                 step="0.00000001"
+                 class="form-input"
+                 [class.form-input--error]="isFieldInvalid('location.longitude')"
+                 placeholder="ej. -118.7798"
+                 min="-180"
+                 max="180"
+                 lang="en"
                  (blur)="normalizeCoordinateInput('longitude')">
-          <p *ngIf="form.get('location.longitude')?.touched && form.get('location.longitude')?.errors?.['min']" class="form-error">
-            La longitud debe estar entre -180 y 180
-          </p>
-          <p *ngIf="form.get('location.longitude')?.touched && form.get('location.longitude')?.errors?.['max']" class="form-error">
-            La longitud debe estar entre -180 y 180
-          </p>
+          <div *ngIf="isFieldInvalid('location.longitude')" class="form-error">
+            {{ getFieldError('location.longitude') }}
+          </div>
           <p class="form-hint-small">Usa punto (.) como separador decimal: ej. -3.7037</p>
         </div>
       </div>
+
+      <div *ngIf="showValidationErrors && !isCurrentStepValid()" class="step-validation-summary">
+        <div class="validation-error">
+          <svg class="validation-error-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          Por favor, completa la información de ubicación requerida.
+        </div>
+      </div>
+
       <p class="form-hint">Las coordenadas son opcionales. Se utilizan para ubicar tu propiedad en el mapa.</p>
     </div>
 
@@ -209,12 +277,16 @@
         </div>
       </div>
 
-      <p *ngIf="form.get('amenityIds')?.touched && amenityIdsArray.length === 0" class="form-error">
-        Debes seleccionar al menos una amenidad
-      </p>
+      <div *ngIf="showValidationErrors && amenityIdsArray.length === 0" class="step-validation-summary">
+        <div class="validation-error">
+          <svg class="validation-error-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          Selecciona al menos una amenidad para ofrecer a tus huéspedes.
+        </div>
+      </div>
     </div>
 
-    <!-- Step 5: Precio -->
     <div class="wizard-content" *ngIf="currentStep === 5" formGroupName="price">
       <h2 class="wizard-content-title">Precio</h2>
       <p class="wizard-content-subtitle">Establece tu tarifa por noche</p>
@@ -222,16 +294,39 @@
       <div class="form-grid">
         <div class="form-group">
           <label class="form-label">Precio por noche *</label>
-          <input type="number" formControlName="amount" min="0" step="0.01" class="form-input" placeholder="350.00">
+          <input type="number"
+                 formControlName="amount"
+                 min="0"
+                 step="0.01"
+                 class="form-input"
+                 [class.form-input--error]="isFieldInvalid('price.amount')"
+                 placeholder="350.00">
+          <div *ngIf="isFieldInvalid('price.amount')" class="form-error">
+            {{ getFieldError('price.amount') }}
+          </div>
         </div>
 
         <div class="form-group">
           <label class="form-label">Moneda *</label>
-          <select formControlName="currency" class="form-input">
+          <select formControlName="currency"
+                  class="form-input"
+                  [class.form-input--error]="isFieldInvalid('price.currency')">
             <option value="USD">USD - Dólar Estadounidense</option>
             <option value="EUR">EUR - Euro</option>
             <option value="GBP">GBP - Libra Esterlina</option>
           </select>
+          <div *ngIf="isFieldInvalid('price.currency')" class="form-error">
+            {{ getFieldError('price.currency') }}
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="showValidationErrors && !isCurrentStepValid()" class="step-validation-summary">
+        <div class="validation-error">
+          <svg class="validation-error-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          Por favor, establece un precio válido para tu propiedad.
         </div>
       </div>
     </div>
@@ -279,25 +374,77 @@
         </div>
       </div>
 
-      <p *ngIf="form.get('images')?.touched && form.get('images')?.errors?.['required']" class="form-error">Debes subir
-        al menos una foto</p>
+      <div *ngIf="showValidationErrors && imagesArray.length === 0" class="step-validation-summary">
+        <div class="validation-error">
+          <svg class="validation-error-icon" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+          </svg>
+          Debes subir al menos una foto para mostrar tu propiedad.
+        </div>
+      </div>
+
+      <div *ngIf="uploadedImages.length > 0" class="upload-success">
+        <svg class="upload-success-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/>
+        </svg>
+        ¡Perfecto! Has subido {{ uploadedImages.length }} imagen{{ uploadedImages.length > 1 ? 's' : '' }}.
+      </div>
     </div>
 
-    <!-- Navigation Buttons -->
     <div class="wizard-actions">
-      <button type="button" *ngIf="!isFirstStep" (click)="previousStep()"
-        class="wizard-button wizard-button--secondary">
+      <button type="button"
+              *ngIf="!isFirstStep"
+              (click)="previousStep()"
+              class="wizard-button wizard-button--secondary">
+        <svg class="button-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"/>
+        </svg>
         Anterior
       </button>
 
-      <button type="button" *ngIf="!isLastStep" (click)="nextStep()" class="wizard-button wizard-button--primary">
+      <div class="wizard-button-spacer"></div>
+
+      <button type="button"
+              *ngIf="!isLastStep"
+              (click)="nextStep()"
+              [disabled]="!canProceedToNextStep()"
+              [class.wizard-button--disabled]="!canProceedToNextStep()"
+              class="wizard-button wizard-button--primary">
         Siguiente
+        <svg class="button-icon" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+        </svg>
       </button>
 
-      <button type="submit" *ngIf="isLastStep" [disabled]="form.invalid || uploading"
-        class="wizard-button wizard-button--primary">
-        Crear Listing
+      <button type="submit"
+              *ngIf="isLastStep"
+              [disabled]="!canSubmitForm()"
+              [class.wizard-button--disabled]="!canSubmitForm()"
+              [class.wizard-button--loading]="isSubmitting"
+              class="wizard-button wizard-button--primary">
+        <span *ngIf="!isSubmitting">
+          {{ isEditMode ? 'Actualizar Listing' : 'Crear Listing' }}
+        </span>
+        <span *ngIf="isSubmitting" class="loading-content">
+          <svg class="loading-spinner" viewBox="0 0 24 24">
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" opacity="0.3"/>
+            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none" stroke-dasharray="31.416" stroke-dashoffset="31.416" transform="rotate(-90 12 12)"/>
+          </svg>
+          {{ isEditMode ? 'Actualizando...' : 'Creando...' }}
+        </span>
       </button>
+    </div>
+
+    <div *ngIf="showValidationErrors && !isCurrentStepValid()" class="form-validation-summary">
+      <div class="validation-error-card">
+        <svg class="validation-error-icon" fill="currentColor" viewBox="0 0 20 20">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/>
+        </svg>
+        <div class="validation-error-content">
+          <h4>Por favor, completa los campos requeridos</h4>
+          <p>Revisa y corrige los errores destacados antes de continuar.</p>
+        </div>
+      </div>
     </div>
 
   </form>
