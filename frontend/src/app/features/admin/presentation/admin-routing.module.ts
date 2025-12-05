@@ -8,6 +8,7 @@ import { AdminClaimsPageComponent } from './pages/claims/admin-claims.page.compo
 import { AdminUsersPageComponent } from './pages/users/admin-users.page.component';
 import { AdminRolesPageComponent } from './pages/roles/admin-roles.page.component';
 import { AuditLogsPageComponent } from './pages/audit-log/admin-auditlog.page';
+import { AdminViewListingsPageComponent } from './pages/view-listings/admin-view-listings.page.component';
 
 const routes: Routes = [
     {
@@ -18,7 +19,9 @@ const routes: Routes = [
             { path: 'claims', component: AdminClaimsPageComponent },
             { path: 'users', component: AdminUsersPageComponent },
             { path: 'roles', component: AdminRolesPageComponent },
-            { path: 'audit-logs', component: AuditLogsPageComponent}
+            { path: 'audit-logs', component: AuditLogsPageComponent},
+            { path: 'listing', component: AdminListingsPageComponent},
+            { path: 'listing/view', component: AdminViewListingsPageComponent}
         ]
     }
 ];

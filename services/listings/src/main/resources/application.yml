@@ -48,7 +48,7 @@ cloudinary:
   api-secret: ${CLOUDINARY_API_SECRET}
 
 server:
-  port: ${LISTINGS_PORT:9000}
+  port: ${LISTINGS_PORT:5003}
 
 # Configuración de paginación
 pagination:

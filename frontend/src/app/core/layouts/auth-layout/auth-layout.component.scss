@@ -1,0 +1,20 @@
+.auth-main {
+  height: calc(100vh - 80px);
+  min-height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.auth-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @media (max-width: 640px) {
+    padding: 0 0.75rem;
+  }
+}
+

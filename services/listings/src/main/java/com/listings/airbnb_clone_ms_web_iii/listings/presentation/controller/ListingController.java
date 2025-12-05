@@ -149,6 +149,7 @@ public class ListingController {
             @Parameter(description = "Número de página (0-based)")
             @RequestParam(defaultValue = "0")
             @Min(value = 0, message = "Page number must be >= 0")
+            @Min(value = 0, message = "Page number must be >= 0")
             int page,
             @Parameter(description = "Tamaño de página (máximo configurado)")
             @RequestParam(defaultValue = "10")

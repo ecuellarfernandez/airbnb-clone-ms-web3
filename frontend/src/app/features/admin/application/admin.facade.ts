@@ -5,13 +5,22 @@ import { Reservation } from '@features/reservations/domain/models/reservation.mo
 import { User, Role } from '@features/users/domain/models/user.model';
 import { AdminUsersService } from '../services/admin-user.service';
 import { AdminClaimsService } from '../services/admin-claims.service';
+import { AdminListingsService } from '../services/admin-listings.service';
 import { Claim } from '@app/features/users/domain/models/claim.model';
-import { response } from 'express';
-
 @Injectable({ providedIn: 'root' })
 export class AdminFacade {
   private _listings = new BehaviorSubject<Listing[]>([]);
   listings$ = this._listings.asObservable();
+
+  // Paginación de listings
+  private _listingsPageInfo = new BehaviorSubject<{
+    pageNumber: number;
+    pageSize: number;
+    totalElements: number;
+    totalPages: number;
+    isLast: boolean;
+  }>({ pageNumber: 0, pageSize: 10, totalElements: 0, totalPages: 0, isLast: true });
+  listingsPageInfo$ = this._listingsPageInfo.asObservable();
 
   private _reservations = new BehaviorSubject<Reservation[]>([]);
   reservations$ = this._reservations.asObservable();
@@ -24,7 +33,11 @@ export class AdminFacade {
 
   private rolesCache: Role[] = [];
 
-  constructor(private adminService: AdminUsersService, private claimsService: AdminClaimsService) {
+  constructor(
+    private adminService: AdminUsersService, 
+    private claimsService: AdminClaimsService, 
+    private listingsService: AdminListingsService
+  ) {
     this.loadInitialData();
   }
 
@@ -39,6 +52,27 @@ export class AdminFacade {
       if (rolesResp.success) {
         this.rolesCache = rolesResp.content;
       }
+    });
+
+    // Cargar listings para admin
+    this.loadListings();
+  }
+
+  loadListings(page = 0, size = 10) {
+    this.listingsService.getAdminListings(page, size).subscribe({
+      next: (response) => {
+        if (response.success) {
+          this._listings.next(response.data.content);
+          this._listingsPageInfo.next({
+            pageNumber: response.data.pageNumber,
+            pageSize: response.data.pageSize,
+            totalElements: response.data.totalElements,
+            totalPages: response.data.totalPages,
+            isLast: response.data.last
+          });
+        }
+      },
+      error: (err) => console.error('Error al cargar listings:', err)
     });
   }
 
@@ -59,12 +93,12 @@ export class AdminFacade {
     });
   }
 
-  deleteClaim(id: number){
-    this.claimsService.deleteClaim(id).subscribe((response)=> {
-        if (response.success){
-            alert(`Claim  eliminado ${id}`)
-        }
-    })
+  deleteClaim(id: number) {
+    this.claimsService.deleteClaim(id).subscribe((response) => {
+      if (response.success) {
+        alert(`Claim  eliminado ${id}`);
+      }
+    });
   }
   toggleRole(user: User, roleName: string) {
     const role = this.rolesCache.find((r) => r.name === roleName.toUpperCase());
@@ -113,18 +147,30 @@ export class AdminFacade {
     this._users.next(next);
   }
 
-    create(payload: Partial<Listing>) {
+  create(payload: Partial<Listing>) {
     // TODO: Implement create listing via AdminListingsService
     console.log('Create listing:', payload);
   }
 
-  update(id: number, payload: Partial<Listing>) {
+  update(id: string, payload: Partial<Listing>) {
     // TODO: Implement update listing via AdminListingsService
     console.log('Update listing:', id, payload);
   }
 
-  remove(id: number) {
+  remove(id: string) {
     // TODO: Implement remove listing via AdminListingsService
     console.log('Remove listing:', id);
+  }
+
+  public publishListing(listingId: string){
+    return this.listingsService.publishListing(listingId);
+  }
+
+  public unpublishListing(listingId: string){
+    return this.listingsService.unpublishListing(listingId);
+  }
+
+  public deleteListing(listingId: string){
+    return this.listingsService.deleteListing(listingId);
   }
 }

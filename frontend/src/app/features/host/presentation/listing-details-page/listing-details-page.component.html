@@ -1,0 +1,65 @@
+<div class="detail" *ngIf="!loading && listing as l">
+	<button class="back" (click)="back()">
+		<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2.5" stroke="currentColor">
+			<path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5L8.25 12l7.5-7.5" />
+		</svg>
+		<span>Volver</span>
+	</button>
+
+	<div class="gallery vertical-gallery">
+		<div class="main-photo" (click)="openLightbox(selectedImageIndex)" role="button" tabindex="0" aria-label="Ver fotos">
+			<img [src]="l.images[selectedImageIndex]?.mediaUrl" [alt]="l.title" loading="eager" />
+			<button class="see-all" (click)="openLightbox(selectedImageIndex); $event.stopPropagation()">
+				Ver {{ l.images.length }} fotos
+			</button>
+		</div>
+
+		<div class="thumbnails" *ngIf="l.images && l.images.length > 1">
+			<img *ngFor="let img of l.images; let i = index"
+				[src]="img.mediaUrl"
+				[alt]="l.title"
+				loading="lazy"
+				(click)="openLightbox(i)"
+				[class.selected-thumb]="showLigthbox && currentPhotoIndex === i"
+			/>
+		</div>
+	</div>
+
+	<div class="content-wrapper">
+		<div class="main-content">
+			<div class="title-section">
+				<h3>{{ l.title }}</h3>
+				<div>
+                    <app-listing-map [longitude]="l.longitude" [latitude]="l.latitude" />
+                </div>
+                <p class="text-center">
+                    					{{ l.city }}
+                </p>
+			</div>
+
+			<div class="description-section">
+				<h2>Acerca de este alojamiento</h2>
+				<p class="desc">{{ l.description }}</p>
+			</div>
+		</div>
+	</div>
+	<!-- Bookings for this listing -->
+	<app-listing-bookings *ngIf="l.id" [listingId]="l.id"></app-listing-bookings>
+</div>
+
+<div class="loading" *ngIf="loading">
+	<div class="spinner"></div>
+	<p>Cargando...</p>
+</div>
+
+<div class="lightbox" *ngIf="showLigthbox" (click)="closeLightbox($event)" aria-modal="true" role="dialog">
+	<div class="lightbox-inner horizontal-lightbox" (click)="$event.stopPropagation()">
+		<button class="close" (click)="closeLightbox($event)" aria-label="Cerrar">×</button>
+		<div class="lightbox-content">
+			<button class="nav prev" (click)="prev($event)" aria-label="Anterior">‹</button>
+			<img [src]="listing?.images?.[currentPhotoIndex]?.mediaUrl" [alt]="listing?.title">
+			<button class="nav next" (click)="next($event)" aria-label="Siguiente">›</button>
+		</div>
+		<div class="counter">{{ currentPhotoIndex + 1 }} / {{ totalPhotos }}</div>
+	</div>
+</div>

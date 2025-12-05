@@ -1,0 +1,108 @@
+<div class="host-layout">
+  <app-host-sidebar></app-host-sidebar>
+  
+  <div class="host-content">
+    <div class="host-page">
+      <div class="header">
+        <h1>Mis Alojamientos</h1>
+        <p class="subtitle">Gestiona tus listings publicados</p>
+      </div>
+<app-make-me-host
+  [open]="showMakeMeHostModal"
+  (closed)="closeMakeMeHostModal()"
+  (becomeHost)="onBecomeHost()"
+></app-make-me-host>
+
+<div class="host-page">
+  <div class="header">
+    <h1>Mis Alojamientos</h1>
+    <p class="subtitle">Gestiona tus listings publicados</p>
+  </div>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading">
+    <p>Cargando listings...</p>
+  </div>
+
+  <!-- Error State -->
+  <div *ngIf="error" class="error">
+    <p>{{ error }}</p>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && !error && listings.length === 0" class="empty">
+    <p>No tienes listings creados aún</p>
+  </div>
+
+  <!-- Listings List -->
+  <div *ngIf="!loading && !error && listings.length > 0" class="listings-container">
+    <div class="listings-stats">
+      <p>Total: <strong>{{ totalElements }}</strong> listings</p>
+    </div>
+
+    <div class="listings-grid">
+      <div *ngFor="let listing of listings" class="listing-card" (click)="onListingClick(listing)">
+        <div class="listing-image">
+          <img 
+            [src]="listing.primaryImageUrl || 'assets/placeholder.jpg'" 
+            [alt]="listing.title"
+            (error)="$any($event.target).src='assets/placeholder.jpg'"
+          />
+          <span class="status-badge" [ngClass]="getStatusClass(listing.active)">
+            {{ getStatusText(listing.active) }}
+          </span>
+        </div>
+
+        <div class="listing-content">
+          <h3 class="listing-title">{{ listing.title }}</h3>
+          <p class="listing-location">
+            <i class="ri-map-pin-line"></i>
+            {{ listing.city }}<span *ngIf="listing.country">, {{ listing.country }}</span>
+          </p>
+          
+          <div class="listing-details">
+            <span class="price">
+              {{ listing.priceAmount | currency: listing.priceCurrency || 'USD' }}
+              <small>/noche</small>
+            </span>
+            <span class="capacity">
+              <i class="ri-user-line"></i> {{ listing.capacity }} huéspedes
+            </span>
+          </div>
+
+          <div class="listing-actions">
+            <!-- <button 
+              class="btn-toggle"
+              [class.active]="listing.active"
+              (click)="toggleStatus(listing)"
+              [title]="listing.active ? 'Desactivar listing' : 'Activar listing'"
+            >
+              <i [class]="listing.active ? 'ri-eye-off-line' : 'ri-eye-line'"></i>
+              {{ listing.active ? 'Desactivar' : 'Activar' }}
+            </button> -->
+            <button 
+              class="btn-delete"
+              (click)="confirmDelete(listing)"
+              title="Eliminar listing"
+            >
+              <i class="ri-delete-bin-line"></i>
+              Eliminar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<app-confirmation-modal
+  [isOpen]="showDeleteModal"
+  [title]="'Eliminar Listing'"
+  [message]="'¿Estás seguro de que deseas eliminar ' + (listingToDelete?.title || '') + '? Esta acción no se puede deshacer.'"
+  [confirmText]="'Eliminar'"
+  [cancelText]="'Cancelar'"
+  [isDanger]="true"
+  (confirm)="deleteListing()"
+  (cancel)="cancelDelete()">
+</app-confirmation-modal>

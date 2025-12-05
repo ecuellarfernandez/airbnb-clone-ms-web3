@@ -1,7 +1,7 @@
 export interface Reservation {
-    id: number;
+    id: string;
     user: { id: number; name: string; avatar: string };
-    listingId: number;
+    listingId: string;
     listingTitle: string;
     checkIn: string;
     checkOut: string;
@@ -12,6 +12,22 @@ export interface Reservation {
 
 // Modelo para la respuesta del backend GET /api/bookings/me
 export interface BookingSummary {
+    id: string;
+    listingId: string;
+    guestId: number;
+    checkIn: string;
+    checkOut: string;
+    nights: number;
+    pricePerNight: number;
+    totalPrice: number;
+    currency: string;
+    status: BookingStatus;
+    createdAt: string;
+    updatedAt: string;
+}
+
+// Modelo para la respuesta del backend GET /api/reservations/{id}
+export interface BookingDetail {
     id: string;
     listingId: string;
     guestId: number;

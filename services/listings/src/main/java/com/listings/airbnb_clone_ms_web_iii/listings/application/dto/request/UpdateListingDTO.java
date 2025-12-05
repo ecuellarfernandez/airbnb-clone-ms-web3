@@ -6,7 +6,6 @@ import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Set;
-import java.util.UUID;
 
 public class UpdateListingDTO {
 
@@ -34,9 +33,9 @@ public class UpdateListingDTO {
     @Min(value = 0)
     private Integer bathrooms;
 
-    private Set<UUID> categoryIds;
+    private Set<String> categoryIds;
 
-    private Set<UUID> amenityIds;
+    private Set<String> amenityIds;
 
     private List<CreateListingImageDTO> images;
 
@@ -106,19 +105,19 @@ public class UpdateListingDTO {
         this.bathrooms = bathrooms;
     }
 
-    public Set<UUID> getCategoryIds() {
+    public Set<String> getCategoryIds() {
         return categoryIds;
     }
 
-    public void setCategoryIds(Set<UUID> categoryIds) {
+    public void setCategoryIds(Set<String> categoryIds) {
         this.categoryIds = categoryIds;
     }
 
-    public Set<UUID> getAmenityIds() {
+    public Set<String> getAmenityIds() {
         return amenityIds;
     }
 
-    public void setAmenityIds(Set<UUID> amenityIds) {
+    public void setAmenityIds(Set<String> amenityIds) {
         this.amenityIds = amenityIds;
     }
 

@@ -53,8 +53,62 @@
       </div>
     </div>
 
-    <!-- Step 1: Ubicación -->
-    <div class="wizard-content" *ngIf="currentStep === 1" formGroupName="location">
+    <!-- Step 1: Categoría -->
+    <div class="wizard-content" *ngIf="currentStep === 1">
+      <h2 class="wizard-content-title">Tipo de Alojamiento</h2>
+      <p class="wizard-content-subtitle">Selecciona el tipo de propiedad y espacio</p>
+
+      <!-- Property Types (Multiple Selection) -->
+      <div class="category-section">
+        <h3 class="category-section-title">Tipo de Propiedad <span class="badge-optional">(Puedes seleccionar varios)</span></h3>
+        <div class="category-grid">
+          <div *ngFor="let category of propertyTypes"
+               class="category-card"
+               [class.category-card--selected]="isCategorySelected(category.id)"
+               (click)="toggleCategory(category.id, 'Property Type')">
+            <div class="category-icon">
+              <app-icon *ngIf="category.icon" [name]="category.icon" [size]="32"></app-icon>
+            </div>
+            <div class="category-name">{{ category.name }}</div>
+            <div class="category-description">{{ category.description }}</div>
+            <div class="category-check" *ngIf="isCategorySelected(category.id)">
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Space Types (Single Selection) -->
+      <div class="category-section">
+        <h3 class="category-section-title">Tipo de Espacio <span class="badge-required">*</span> <span class="badge-info">(Solo uno)</span></h3>
+        <div class="category-grid">
+          <div *ngFor="let category of spaceTypes"
+               class="category-card"
+               [class.category-card--selected]="isCategorySelected(category.id)"
+               (click)="toggleCategory(category.id, 'Space Type')">
+            <div class="category-icon">
+              <app-icon *ngIf="category.icon" [name]="category.icon" [size]="32"></app-icon>
+            </div>
+            <div class="category-name">{{ category.name }}</div>
+            <div class="category-description">{{ category.description }}</div>
+            <div class="category-check" *ngIf="isCategorySelected(category.id)">
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p *ngIf="form.get('categoryIds')?.touched && categoryIdsArray.length === 0" class="form-error">
+        Debes seleccionar al menos un tipo de espacio
+      </p>
+    </div>
+
+    <!-- Step 2: Ubicación -->
+    <div class="wizard-content" *ngIf="currentStep === 2" formGroupName="location">
       <h2 class="wizard-content-title">Ubicación</h2>
       <p class="wizard-content-subtitle">¿Dónde se encuentra tu propiedad?</p>
 
@@ -77,19 +131,38 @@
 
       <div class="form-grid">
         <div class="form-group">
-          <label class="form-label">Latitud *</label>
-          <input type="number" formControlName="latitude" step="any" class="form-input" placeholder="34.0259">
+          <label class="form-label">Latitud (opcional)</label>
+          <input type="number" formControlName="latitude" step="0.00000001" class="form-input"
+                 placeholder="ej. 34.0259" min="-90" max="90" lang="en"
+                 (blur)="normalizeCoordinateInput('latitude')">
+          <p *ngIf="form.get('location.latitude')?.touched && form.get('location.latitude')?.errors?.['min']" class="form-error">
+            La latitud debe estar entre -90 y 90
+          </p>
+          <p *ngIf="form.get('location.latitude')?.touched && form.get('location.latitude')?.errors?.['max']" class="form-error">
+            La latitud debe estar entre -90 y 90
+          </p>
+          <p class="form-hint-small">Usa punto (.) como separador decimal: ej. 40.4167</p>
         </div>
 
         <div class="form-group">
-          <label class="form-label">Longitud *</label>
-          <input type="number" formControlName="longitude" step="any" class="form-input" placeholder="-118.7798">
+          <label class="form-label">Longitud (opcional)</label>
+          <input type="number" formControlName="longitude" step="0.00000001" class="form-input"
+                 placeholder="ej. -118.7798" min="-180" max="180" lang="en"
+                 (blur)="normalizeCoordinateInput('longitude')">
+          <p *ngIf="form.get('location.longitude')?.touched && form.get('location.longitude')?.errors?.['min']" class="form-error">
+            La longitud debe estar entre -180 y 180
+          </p>
+          <p *ngIf="form.get('location.longitude')?.touched && form.get('location.longitude')?.errors?.['max']" class="form-error">
+            La longitud debe estar entre -180 y 180
+          </p>
+          <p class="form-hint-small">Usa punto (.) como separador decimal: ej. -3.7037</p>
         </div>
       </div>
+      <p class="form-hint">Las coordenadas son opcionales. Se utilizan para ubicar tu propiedad en el mapa.</p>
     </div>
 
-    <!-- Step 2: Detalles -->
-    <div class="wizard-content" *ngIf="currentStep === 2">
+    <!-- Step 3: Detalles -->
+    <div class="wizard-content" *ngIf="currentStep === 3">
       <h2 class="wizard-content-title">Detalles de la Propiedad</h2>
       <p class="wizard-content-subtitle">Especifica la capacidad y características</p>
 
@@ -111,8 +184,38 @@
       </div>
     </div>
 
-    <!-- Step 3: Precio -->
-    <div class="wizard-content" *ngIf="currentStep === 3" formGroupName="price">
+    <!-- Step 4: Amenidades -->
+    <div class="wizard-content" *ngIf="currentStep === 4">
+      <h2 class="wizard-content-title">Amenidades y Servicios</h2>
+      <p class="wizard-content-subtitle">¿Qué ofreces a tus huéspedes?</p>
+
+      <div *ngFor="let amenityCategory of amenityCategories" class="amenity-category">
+        <h3 class="amenity-category-title">{{ amenityCategory }}</h3>
+        <div class="amenity-grid">
+          <div *ngFor="let amenity of getAmenitiesByCategory(amenityCategory)"
+               class="amenity-item"
+               [class.amenity-item--selected]="isAmenitySelected(amenity.id)"
+               (click)="toggleAmenity(amenity.id)">
+            <div class="amenity-icon">
+              <app-icon *ngIf="amenity.icon" [name]="amenity.icon" [size]="24"></app-icon>
+            </div>
+            <div class="amenity-name">{{ amenity.name }}</div>
+            <div class="amenity-check" *ngIf="isAmenitySelected(amenity.id)">
+              <svg fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p *ngIf="form.get('amenityIds')?.touched && amenityIdsArray.length === 0" class="form-error">
+        Debes seleccionar al menos una amenidad
+      </p>
+    </div>
+
+    <!-- Step 5: Precio -->
+    <div class="wizard-content" *ngIf="currentStep === 5" formGroupName="price">
       <h2 class="wizard-content-title">Precio</h2>
       <p class="wizard-content-subtitle">Establece tu tarifa por noche</p>
 
@@ -133,8 +236,8 @@
       </div>
     </div>
 
-    <!-- Step 4: Fotos -->
-    <div class="wizard-content" *ngIf="currentStep === 4">
+    <!-- Step 6: Fotos -->
+    <div class="wizard-content" *ngIf="currentStep === 6">
       <h2 class="wizard-content-title">Fotos</h2>
       <p class="wizard-content-subtitle">Muestra tu propiedad con imágenes atractivas</p>
 

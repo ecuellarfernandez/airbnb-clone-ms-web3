@@ -1,6 +1,8 @@
 package com.listings.airbnb_clone_ms_web_iii.listings.domain.repository;
 
 import com.listings.airbnb_clone_ms_web_iii.listings.domain.model.Booking;
+import org.springframework.data.domain.Page;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -22,5 +24,7 @@ public interface BookingRepository {
             LocalDate startDate,
             LocalDate endDate
     );
+
+    Page<Booking> findByHostId(Integer hostId , org.springframework.data.domain.Pageable pageable);
 
 }
