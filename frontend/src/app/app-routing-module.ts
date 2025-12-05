@@ -8,6 +8,7 @@ import { BookingLayoutComponent } from '@core/layouts/booking-layout/booking-lay
 import { authGuard } from '@core/guards/auth.guard';
 import { adminGuard } from '@core/guards/admin.guard';
 import { MyReservationsPageComponent } from './features/reservations/presentation/pages/my-reservations/my-reservations-page.component';
+import { ReservationDetailPageComponent } from './features/reservations/presentation/pages/reservation-detail/reservation-detail-page.component';
 
 
 const routes: Routes = [
@@ -47,6 +48,10 @@ const routes: Routes = [
             {
                 path: 'reservations',
                 component: MyReservationsPageComponent 
+            },
+            {
+                path: 'reservations/:id',
+                component: ReservationDetailPageComponent
             }
         ]
       },

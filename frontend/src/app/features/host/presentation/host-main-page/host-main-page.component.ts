@@ -133,6 +133,10 @@ export class HostMainPageComponent implements OnInit {
     });
   }
 
+  onListingClick(listing: ListingSummary): void {
+    this.router.navigate(['/host/listing-details', listing.id]);
+  }
+
   _checkIfUserIsHost(roles: Role[]): boolean {
     return roles.some(role => role.name.toUpperCase() === 'HOST');
   }

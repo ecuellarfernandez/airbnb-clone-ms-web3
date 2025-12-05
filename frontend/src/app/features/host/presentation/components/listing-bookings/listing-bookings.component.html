@@ -1,0 +1,32 @@
+<div class="bookings-container">
+	<div *ngIf="loading" class="bookings-loading">
+		<div class="spinner"></div>
+		<span>Cargando reservas...</span>
+	</div>
+	<div *ngIf="error" class="bookings-error">{{ error }}</div>
+	<div *ngIf="!loading && !error">
+		<h3 class="bookings-title">
+			<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="24" height="24">
+				<path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h7.5m-7.5 4.5h7.5m-7.5 4.5h4.5" />
+			</svg>
+			Reservas
+		</h3>
+		<ul *ngIf="reservations.length > 0; else noReservations" class="bookings-list">
+			<li *ngFor="let r of reservations" class="booking-card">
+				<div class="booking-dates">
+					<span class="date-range">
+						<strong>{{ r.checkIn | date:'dd MMM yyyy' }}</strong> - <strong>{{ r.checkOut | date:'dd MMM yyyy' }}</strong>
+					</span>
+				</div>
+				<div class="booking-details">
+					<span *ngIf="r.status" class="status">
+						Estado: {{ r.status | titlecase }}
+					</span>
+				</div>
+			</li>
+		</ul>
+		<ng-template #noReservations>
+			<p class="no-reservations">No hay reservas para este alojamiento.</p>
+		</ng-template>
+	</div>
+</div>

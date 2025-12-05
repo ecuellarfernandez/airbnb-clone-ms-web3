@@ -1,0 +1,12 @@
+<div *ngIf="mapUrl" class="map-wrapper">
+    <h2 class="map-title">Dónde vas a estar</h2>
+
+    <p class="map-address" *ngIf="fullAddress">
+        {{ fullAddress }}
+    </p>
+
+    <div class="map-container">
+        <iframe class="map-iframe" [src]="mapUrl" style="border: 0" loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </div>
+</div>

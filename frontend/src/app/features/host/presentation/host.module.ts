@@ -12,8 +12,7 @@ import { ListingDetailsPageComponent } from './listing-details-page/listing-deta
   declarations: [
     HostMainPageComponent,
     HostSidebarComponent,
-    MakeMeHostComponent,
-    ListingDetailsPageComponent
+    MakeMeHostComponent
   ],
   imports: [
     CommonModule,

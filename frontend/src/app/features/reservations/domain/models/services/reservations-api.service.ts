@@ -1,7 +1,10 @@
+
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { API_ENDPOINTS } from '@core/config/api.config';
+import { Reservation } from '../reservation.model';
+import { StandardResult } from '@app/core/model/api-response.model';
 
 export interface CreateReservationPayload {
     listingId: string;
@@ -38,4 +41,11 @@ export class ReservationsApiService {
             payload
         );
     }
+
+    getByListingId(listingId: string): Observable<any> {
+        return this.http.get<Reservation>(
+            `${API_ENDPOINTS.LISTINGS.RESERVATION}/listing/${listingId}`
+        );
+    }
 }
+    
