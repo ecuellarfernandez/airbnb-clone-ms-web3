@@ -5,17 +5,60 @@
     color: var(--text);
 }
 
+// Overlay para móvil
+.sidebar-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+
+    &.active {
+        opacity: 1;
+    }
+}
+
 .sidebar {
     width: 240px;
     background: var(--surface);
     border-right: 1px solid var(--border);
     padding: 16px;
+    transition: transform 0.3s ease;
+    z-index: 999;
+}
+
+.sidebar-close {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: var(--text-2);
+    cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s;
+
+    i {
+        font-size: 20px;
+    }
+
+    &:hover {
+        background: var(--surface-2);
+        color: var(--text);
+    }
 }
 
 .brand {
     padding: 12px 8px 20px;
     border-bottom: 1px solid var(--border);
     margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 
     a {
         display: flex;
@@ -75,6 +118,7 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    min-width: 0; // Previene overflow en flex
 }
 
 .topbar {
@@ -86,6 +130,32 @@
     border-bottom: 1px solid var(--border);
     background: var(--surface);
     gap: 12px;
+}
+
+.menu-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background 0.2s;
+
+    i {
+        font-size: 24px;
+    }
+
+    &:hover {
+        background: var(--surface-2);
+    }
+}
+
+.spacer {
+    flex: 1;
 }
 
 .theme-toggle {
@@ -202,4 +272,117 @@
 .content {
     padding: 24px;
     background: var(--bg);
+    overflow-x: auto;
+}
+
+// ========================================
+// RESPONSIVE STYLES
+// ========================================
+
+// Tablet (768px - 1024px)
+@media (max-width: 1024px) {
+    .sidebar {
+        width: 200px;
+    }
+
+    .sidebar nav a {
+        padding: 8px 10px;
+        font-size: 14px;
+    }
+
+    .content {
+        padding: 16px;
+    }
+}
+
+// Mobile (< 768px)
+@media (max-width: 768px) {
+    .sidebar-overlay {
+        display: block;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100vh;
+        width: 280px;
+        transform: translateX(-100%);
+        box-shadow: 4px 0 20px rgba(0, 0, 0, 0.15);
+
+        &.open {
+            transform: translateX(0);
+        }
+    }
+
+    .sidebar-close {
+        display: flex;
+    }
+
+    .menu-toggle {
+        display: flex;
+    }
+
+    .topbar {
+        padding: 0 12px;
+        height: 56px;
+    }
+
+    .theme-toggle {
+        width: 40px;
+        height: 40px;
+
+        .icon {
+            width: 22px;
+            height: 22px;
+        }
+    }
+
+    .user {
+        padding: 6px 8px;
+    }
+
+    .user-name {
+        display: none;
+    }
+
+    .user img {
+        width: 28px;
+        height: 28px;
+    }
+
+    .content {
+        padding: 12px;
+    }
+
+    .dropdown {
+        right: -8px;
+        min-width: 180px;
+    }
+}
+
+// Small mobile (< 480px)
+@media (max-width: 480px) {
+    .sidebar {
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .topbar {
+        gap: 8px;
+    }
+
+    .theme-toggle {
+        width: 36px;
+        height: 36px;
+
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+    }
+
+    .content {
+        padding: 8px;
+    }
 }

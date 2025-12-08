@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ListingsRoutingModule } from './listings-routing-module';
 import { SharedModule } from '../../../shared/shared-module';
+import { ConfirmationModalComponent } from '../../../shared/ui/confirmation-modal/confirmation-modal.component';
 
 // Pages
 import { ListingFormPageComponent } from './pages/listing-form/listing-form-page.component';
@@ -38,7 +39,8 @@ import { ListingFormStateService } from '../application/services/listing-form-st
     ReactiveFormsModule,
     ListingsRoutingModule,
     SharedModule,
-    ListingMapComponent // Import standalone component
+    ListingMapComponent, // Import standalone component
+    ConfirmationModalComponent // Standalone modal component
   ],
   providers: [
     CreateListingUseCase,
