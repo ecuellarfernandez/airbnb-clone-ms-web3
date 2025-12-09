@@ -44,9 +44,9 @@
       <div *ngFor="let listing of listings" class="listing-card" (click)="onListingClick(listing)">
         <div class="listing-image">
           <img
-            [src]="listing.primaryImageUrl || 'assets/placeholder.jpg'"
+            [src]="listing.primaryImageUrl"
             [alt]="listing.title"
-            (error)="$any($event.target).src='assets/placeholder.jpg'"
+            (error)="$any($event.target).src=''"
           />
           <span class="status-badge" [ngClass]="getStatusClass(listing.active)">
             {{ getStatusText(listing.active) }}
