@@ -191,7 +191,7 @@ public class ListingController {
     }
 
     @PatchMapping("/{id}/publish")
-    @NeedsRoles({"ADMIN"})
+    @NeedsRoles({"ADMIN", "HOST"})
     @Operation(summary = "Publicar listing")
     public ResponseEntity<StandardResult<Void>> publish(
             @PathVariable UUID id,
@@ -205,7 +205,7 @@ public class ListingController {
         return ResponseEntity.ok(StandardResult.success(null, "Listing published successfully"));
     }
 
-    @NeedsRoles({"ADMIN"})
+    @NeedsRoles({"ADMIN", "HOST"})
     @PatchMapping("/{id}/unpublish")
     @Operation(summary = "Despublicar listing")
     public ResponseEntity<StandardResult<Void>> unpublish(
