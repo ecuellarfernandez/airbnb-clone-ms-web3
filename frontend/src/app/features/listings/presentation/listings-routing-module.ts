@@ -14,6 +14,10 @@ const routes: Routes = [
     component: ListingFormPageComponent
   },
   {
+    path: 'form',
+    component: ListingFormPageComponent
+  },
+  {
     path: 'detail/:id',
     component: ListingDetailPageComponent
   }
