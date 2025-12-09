@@ -23,6 +23,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -322,7 +323,6 @@ public class ListingApplicationService implements ListingServicePort {
         if (dto.getCategoryIds() != null && !dto.getCategoryIds().isEmpty()) {
             listing.getCategories().clear();
 
-            // Convertir String a UUID
             Set<UUID> categoryUUIDs = dto.getCategoryIds().stream()
                     .map(this::parseUUID)
                     .filter(uuid -> uuid != null)
@@ -361,18 +361,46 @@ public class ListingApplicationService implements ListingServicePort {
             }
         }
 
-        if (dto.getImages() != null && !dto.getImages().isEmpty()) {
-            listing.getImages().clear();
+        if (dto.getImages() != null) {
+            var incomingImages = dto.getImages();
+            
+            // 1. Identificar imagenes a borrar (están en DB pero no en payload)
+            // Usamos publicId como clave única natural
+            Set<String> incomingPublicIds = incomingImages.stream()
+                    .map(img -> img.getPublicId())
+                    .filter(pid -> pid != null && !pid.isEmpty())
+                    .collect(Collectors.toSet());
 
-            dto.getImages().forEach(imageDto -> {
-                ListingImage image = ListingImage.builder()
-                        .mediaUrl(imageDto.getMediaUrl())
-                        .publicId(imageDto.getPublicId())
-                        .isPrimary(imageDto.getIsPrimary())
-                        .displayOrder(imageDto.getDisplayOrder())
-                        .build();
-                listing.addImage(image);
-            });
+            // Remover las que no están en el payload (Hibernate hará el delete por orphanRemoval)
+            listing.getImages().removeIf(img -> 
+                img.getPublicId() != null && !incomingPublicIds.contains(img.getPublicId())
+            );
+
+            // 2. Actualizar existentes y agregar nuevas
+            for (var imgDto : incomingImages) {
+                Optional<ListingImage> existingImg = listing.getImages().stream()
+                        .filter(img -> img.getPublicId() != null && img.getPublicId().equals(imgDto.getPublicId()))
+                        .findFirst();
+
+                if (existingImg.isPresent()) {
+                    // Actualizar existente
+                    ListingImage img = existingImg.get();
+                    img.setIsPrimary(imgDto.getIsPrimary());
+                    img.setDisplayOrder(imgDto.getDisplayOrder());
+                    // mediaUrl podría cambiar si se regeneró URL firmada, aunque publicId sea el mismo
+                    img.setMediaUrl(imgDto.getMediaUrl()); 
+                } else {
+                    // Crear nueva
+                    ListingImage newImg = ListingImage.builder()
+                            .listingId(id)
+                            .mediaUrl(imgDto.getMediaUrl())
+                            .publicId(imgDto.getPublicId())
+                            .isPrimary(imgDto.getIsPrimary())
+                            .displayOrder(imgDto.getDisplayOrder())
+                            .build();
+                    listing.addImage(newImg);
+                }
+            }
         }
 
         if (dto.getIsActive() != null) {
