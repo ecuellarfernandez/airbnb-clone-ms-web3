@@ -24,11 +24,11 @@
 
         <tbody>
             <tr *ngFor="let role of roles">
-                <td>
+                <td data-label="ID">
                     <span class="role-id">#{{ role.id }}</span>
                 </td>
 
-                <td>
+                <td data-label="Nombre">
                     <span class="role-name badge"
                           [class.admin]="role.name === 'ADMIN'"
                           [class.host]="role.name === 'HOST'"
@@ -37,11 +37,11 @@
                     </span>
                 </td>
 
-                <td class="muted">
+                <td data-label="Descripción" class="muted">
                     {{ role.description || 'Sin descripción' }}
                 </td>
 
-                <td>
+                <td data-label="Estado">
                     <span class="badge status"
                           [class.active]="role.active"
                           [class.inactive]="!role.active">
@@ -49,7 +49,7 @@
                     </span>
                 </td>
 
-                <td>
+                <td data-label="">
                     <button 
                         (click)="viewRoleDetail(role.id)"
                         class="btn-detail"

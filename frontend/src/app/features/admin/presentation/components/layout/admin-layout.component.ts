@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
 import { User } from '../../../../users/domain/models/user.model';
 import { AuthService } from '@app/features/auth/domain/services/auth.service';
@@ -14,6 +14,7 @@ export class AdminLayoutComponent implements OnInit {
   user?: User;
   avatarUrl: string = '';
   showUserMenu: boolean = false;
+  sidebarOpen: boolean = false;
 
   constructor(
     private authService: AuthService,
@@ -48,6 +49,22 @@ export class AdminLayoutComponent implements OnInit {
 
   toggleUserMenu(): void {
     this.showUserMenu = !this.showUserMenu;
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.sidebarOpen = false;
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.user-menu')) {
+      this.showUserMenu = false;
+    }
   }
 
   logout(): void {
