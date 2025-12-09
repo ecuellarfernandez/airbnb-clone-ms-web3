@@ -101,6 +101,17 @@
   (cancel)="closeConfirmModal()"
 ></app-confirmation-modal>
 
+<app-confirmation-modal
+    [isOpen]="errorModalVisible"
+    [title]="'Error al intentar ejecutar la accion'"
+    [message]="errorMessage"
+    [confirmText]="'aceptar'"
+    [isDanger]="true"
+    (confirm)="errorModalVisible = false"
+    (cancel)="errorModalVisible = false"
+>
+</app-confirmation-modal>
+
 <!-- Modal de detalle del listing -->
 <div class="modal detail-modal" *ngIf="showDetailModal" (click)="closeDetailModal()">
   <div class="modal-content" (click)="$event.stopPropagation()">
