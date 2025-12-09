@@ -21,6 +21,7 @@ export class UserProfilePageComponent implements OnInit {
   errorMessage: string = '';
   showProfileContent: boolean = true;
   totalReservations: number = 0;
+  isSidebarOpen: boolean = false;
   private isBrowser: boolean;
 
   constructor(
@@ -96,5 +97,13 @@ export class UserProfilePageComponent implements OnInit {
 
   getRoleNames(): string {
     return this.user?.roles.map(role => role.name).join(', ') || 'Sin roles';
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarOpen = !this.isSidebarOpen;
+  }
+
+  closeSidebar(): void {
+    this.isSidebarOpen = false;
   }
 }
