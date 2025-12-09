@@ -1,35 +1,37 @@
-<div class="admin-claims-page card">
+<div class="admin-claims-page card responsive-card">
   <div class="cardHeader">
     <h2>Claims (Permisos)</h2>
-<button class="btn-add" (click)="onAddClaim()">Agregar nuevo claim</button>
+    <button class="btn-add" (click)="onAddClaim()">Agregar nuevo claim</button>
   </div>
 
   <div *ngIf="isLoading" class="loading">Cargando...</div>
   <div *ngIf="!(claims$ | async)?.length && !isLoading" class="empty">No hay claims.</div>
 
-  <table *ngIf="claims$ | async as claims" class="claims-table">
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Nombre</th>
-        <th>Valor</th>
-        <th>Descripción</th>
-        <th>Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let claim of claims; trackBy: trackByClaimId">
-        <td>{{ claim.id }}</td>
-        <td>{{ claim.key || claim.name || claim.claim }}</td>
-        <td>{{ claim.active }}</td>
-        <td>{{ claim.description }}</td>
-        <td>
-          <button class="btn-edit" (click)="onEditClaim(claim)">Editar</button>
-          <button class="btn-delete" (click)="confirmDeleteClaim(claim)">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="responsive-table-wrapper">
+    <table *ngIf="claims$ | async as claims" class="claims-table responsive-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Valor</th>
+          <th>Descripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let claim of claims; trackBy: trackByClaimId">
+          <td>{{ claim.id }}</td>
+          <td>{{ claim.key || claim.name || claim.claim }}</td>
+          <td>{{ claim.active }}</td>
+          <td>{{ claim.description }}</td>
+          <td>
+            <button class="btn-edit" (click)="onEditClaim(claim)">Editar</button>
+            <button class="btn-delete" (click)="confirmDeleteClaim(claim)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <div class="pagination">
     <button (click)="prev()" [disabled]="pageNumber === 0">Anterior</button>
@@ -50,6 +52,13 @@
     <div class="total">Total: {{ totalElements }}</div>
   </div>
 </div>
+
+<!--
+  CSS SUGGESTION:
+  .responsive-table-wrapper { overflow-x: auto; }
+  .responsive-table { min-width: 600px; width: 100%; }
+  @media (max-width: 900px) { .responsive-card { width: 100%; } }
+-->
 
 <app-admin-create-form
   *ngIf="showCreateModel"

@@ -53,4 +53,6 @@ export interface ListingResponse {
     }[];
     createdAt: Date;
     updatedAt: Date;
+
+    // comentario xd
 }

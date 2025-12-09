@@ -3,7 +3,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export interface NavTab {
   id: string;
   label: string;
-  icon: 'home' | 'experience' | 'service';
+  icon: 'home' | 'experience' | 'service' | 'calendar';
   isNew?: boolean;
   path?: string;
 }

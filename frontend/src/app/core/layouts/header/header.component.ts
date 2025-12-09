@@ -33,25 +33,21 @@ export class HeaderComponent implements OnInit, OnDestroy {
     {
       id: 'accommodations',
       label: 'Alojamientos',
-      icon: 'home'
+      icon: 'home',
+      path: '/'
     },
     {
-      id: 'experiences',
-      label: 'Experiencias',
-      icon: 'experience',
-      isNew: true
-    },
-    {
-      id: 'services',
-      label: 'Servicios',
-      icon: 'service',
-      isNew: true
+      id: 'reservations',
+      label: 'Ver Reservas',
+      icon: 'calendar',
+      path: '/users/profile/reservations'
     }
   ];
 
   isScrolled = false;
 
   currentTheme: Theme = 'light';
+  isAuthenticated = false;
 
   constructor(
     private router: Router,
@@ -68,6 +64,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
     });
 
     this.currentTheme = this.themeService.theme;
+    this.checkAuthentication();
+  }
+
+  private checkAuthentication(): void {
+    this.isAuthenticated = this.authService.isAuthenticated();
   }
 
   ngOnDestroy() {
@@ -77,7 +78,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   private checkRoute() {
-    this.showNavTabs = !this.router.url.includes('/listings/detail/');
+    //this.showNavTabs = !this.router.url.includes('/listings/detail/');
+    this.showNavTabs = true;
+
+    if (this.router.url.startsWith('/users/profile/reservations')) {
+      this.activeTabId = 'reservations';
+    } else {
+      this.activeTabId = 'accommodations';
+    }
   }
 
   @HostListener('window:scroll', [])
@@ -87,10 +95,18 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   toggleUserMenu(): void {
     this.isUserMenuOpen = !this.isUserMenuOpen;
+    if (this.isUserMenuOpen) {
+      this.checkAuthentication();
+    }
   }
 
   onTabChange(tabId: string): void {
     this.activeTabId = tabId;
+    const tab = this.navTabs.find(t => t.id === tabId);
+    if (tab?.path) {
+      this.router.navigate([tab.path]);
+    }
+
     console.log('Tab changed to:', tabId);
   }
 
@@ -101,6 +117,11 @@ export class HeaderComponent implements OnInit, OnDestroy {
 
   openListingForm(): void {
     this.router.navigate(['/listings/form']);
+  }
+
+  login(): void {
+    this.isUserMenuOpen = false;
+    this.router.navigate(['/auth/login']);
   }
 
   logout(): void {

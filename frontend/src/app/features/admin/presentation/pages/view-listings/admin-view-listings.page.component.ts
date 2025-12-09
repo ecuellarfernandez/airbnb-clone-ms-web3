@@ -50,7 +50,7 @@ export class AdminViewListingsPageComponent implements OnInit {
   }
 
   onListingClick(listing: Listing): void {
-    this.router.navigate(['/listings', listing.id]);
+    this.router.navigate(['/listings/detail', listing.id]);
   }
 
   previousPage(): void {

@@ -28,6 +28,15 @@ export class ListingDetailPageComponent implements OnInit {
     showLigthbox = false;
     currentPhotoIndex = 0;
 
+    // Modal properties
+    modalOpen = false;
+    modalTitle = '';
+    modalMessage = '';
+    modalConfirmText = 'Aceptar';
+    modalIsDanger = false;
+    modalShowCancel = false;
+    private modalCallback: (() => void) | null = null;
+
     constructor(
         private route: ActivatedRoute,
         private router: Router,
@@ -84,7 +93,7 @@ export class ListingDetailPageComponent implements OnInit {
         const { dateRange, guests } = payload;
 
         if (!dateRange.checkIn || !dateRange.checkOut) {
-            alert('Por favor selecciona la fecha de llegada y de salida');
+            this.showModal('Fechas requeridas', 'Por favor selecciona la fecha de llegada y de salida');
             return;
         }
 
@@ -94,7 +103,7 @@ export class ListingDetailPageComponent implements OnInit {
         const nights = Math.round(diffMs / (1000 * 60 * 60 * 24));
 
         if (nights <= 0) {
-            alert('Las fechas seleccionadas no son válidas.');
+            this.showModal('Fechas inválidas', 'Las fechas seleccionadas no son válidas.', true);
             return;
         }
 
@@ -127,7 +136,7 @@ export class ListingDetailPageComponent implements OnInit {
                 console.log('Amount desde MS:', backendAmount, 'Amount final que se enviará al checkout:', amount);
 
                 if (!reservationId) {
-                    alert('La reserva se creó pero no llegó el id en la respuesta. Revisa el backend.');
+                    this.showModal('Error', 'La reserva se creó pero no llegó el id en la respuesta. Revisa el backend.', true);
                     return;
                 }
 
@@ -148,7 +157,21 @@ export class ListingDetailPageComponent implements OnInit {
             error: (err) => {
                 console.error('Error al crear la reserva', err);
                 console.error('Detalle del error del backend:', err.error);
-                alert(err.error?.message ?? 'Ocurrió un error al crear la reserva.');
+                
+                const errorMessage = err.error?.message ?? 'Ocurrió un error al crear la reserva.';
+                
+                // Si es error de autenticación, redirigir al login
+                if (errorMessage.includes('unexpected error') || err.status === 401 || err.status === 403) {
+                    this.showModal(
+                        'Sesión requerida', 
+                        'Debes iniciar sesión para realizar una reserva.', 
+                        true,
+                        'Ir al login',
+                        () => this.router.navigate(['/auth/login'])
+                    );
+                } else {
+                    this.showModal('Error al crear reserva', errorMessage, true);
+                }
             },
         });
     }
@@ -182,4 +205,34 @@ export class ListingDetailPageComponent implements OnInit {
     @HostListener('document:keydown.escape') onEsc() {
         if (this.showLigthbox) this.showLigthbox = false;
     }
+
+    // Modal methods
+    showModal(
+        title: string, 
+        message: string, 
+        isDanger = false, 
+        confirmText = 'Aceptar',
+        onConfirm?: () => void
+    ): void {
+        this.modalTitle = title;
+        this.modalMessage = message;
+        this.modalIsDanger = isDanger;
+        this.modalConfirmText = confirmText;
+        this.modalCallback = onConfirm ?? null;
+        this.modalOpen = true;
+    }
+
+    onModalConfirm(): void {
+        this.modalOpen = false;
+        if (this.modalCallback) {
+            this.modalCallback();
+        }
+    }
+
+    onModalCancel(): void {
+        this.modalOpen = false;
+        this.modalCallback = null;
+    }
+
+
 }

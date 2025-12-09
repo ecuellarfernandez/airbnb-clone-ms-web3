@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 
 export interface SearchFilters {
     location: string;
@@ -27,6 +27,10 @@ const DEFAULT_FILTERS: SearchFilters = {
 export class SearchFilterService {
     private filtersSubject = new BehaviorSubject<SearchFilters>(DEFAULT_FILTERS);
     public filters$: Observable<SearchFilters> = this.filtersSubject.asObservable();
+
+    // este es el evento cuando el usuario le da a buscar
+    private searchSubject = new Subject<SearchFilters>();
+    public search$: Observable<SearchFilters> = this.searchSubject.asObservable();
 
     constructor() { }
 
@@ -71,6 +75,6 @@ export class SearchFilterService {
     executeSearch(): void {
         const filters = this.filtersSubject.value;
         console.log('Ejecutando búsqueda con filtros:', filters);
-        // Aquí se implementaría la lógica de búsqueda real
+        this.searchSubject.next(filters);
     }
 }

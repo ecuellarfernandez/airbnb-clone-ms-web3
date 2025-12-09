@@ -242,4 +242,159 @@
       color: var(--state-error);
     }
   }
+
+  .btn-edit {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    padding: 10px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: transparent;
+    color: var(--text);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    i {
+      font-size: 18px;
+    }
+
+    &:hover {
+      background: rgba(59, 130, 246, 0.1);
+      border-color: var(--brand-primary);
+      color: var(--brand-primary);
+    }
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .host-page {
+    padding: 20px;
+  }
+
+  .listings-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+
+  .header {
+    h1 {
+      font-size: 24px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .host-layout {
+    flex-direction: column;
+  }
+
+  .host-page {
+    padding: 16px;
+  }
+
+  .header {
+    margin-bottom: 24px;
+
+    h1 {
+      font-size: 22px;
+    }
+
+    .subtitle {
+      font-size: 13px;
+    }
+  }
+
+  .listings-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .listing-card {
+    .listing-actions {
+      flex-direction: column;
+
+      .btn-edit,
+      .btn-toggle,
+      .btn-delete {
+        width: 100%;
+      }
+    }
+  }
+
+  .listings-stats {
+    padding: 10px 14px;
+
+    p {
+      font-size: 13px;
+    }
+  }
+}
+
+@media (max-width: 480px) {
+  .host-page {
+    padding: 12px;
+  }
+
+  .header {
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 20px;
+    }
+
+    .subtitle {
+      font-size: 12px;
+    }
+  }
+
+  .listing-image {
+    height: 180px;
+  }
+
+  .listing-content {
+    padding: 12px;
+  }
+
+  .listing-title {
+    font-size: 15px;
+  }
+
+  .listing-location {
+    font-size: 13px;
+  }
+
+  .listing-details {
+    .price {
+      font-size: 16px;
+
+      small {
+        font-size: 13px;
+      }
+    }
+
+    .capacity {
+      font-size: 13px;
+    }
+  }
+
+  .listing-actions {
+    gap: 6px;
+
+    .btn-edit,
+    .btn-toggle,
+    .btn-delete {
+      padding: 8px 12px;
+      font-size: 13px;
+
+      i {
+        font-size: 16px;
+      }
+    }
+  }
 }

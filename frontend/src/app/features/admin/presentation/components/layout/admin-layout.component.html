@@ -1,28 +1,35 @@
 <div class="admin">
-  <aside class="sidebar">
+  <!-- Overlay para cerrar sidebar en móvil -->
+  <div class="sidebar-overlay" [class.active]="sidebarOpen" (click)="closeSidebar()"></div>
+  
+  <aside class="sidebar" [class.open]="sidebarOpen">
     <div class="brand">
       <a [routerLink]="'/'" class="flex items-center">
         <svg class="logo-icon" app-icon-logo></svg>
         <span class="logo-text">AirBbcitos</span>
       </a>
+      <!-- Botón cerrar sidebar en móvil -->
+      <button class="sidebar-close" (click)="closeSidebar()">
+        <i class="ri-close-line"></i>
+      </button>
     </div>
     <nav>
-      <a routerLink="/admin/users" routerLinkActive="active">
+      <a routerLink="/admin/users" routerLinkActive="active" (click)="closeSidebar()">
         <i class="ri-team-line"></i> Usuarios
       </a>
-      <a routerLink="/admin/roles" routerLinkActive="active">
+      <a routerLink="/admin/roles" routerLinkActive="active" (click)="closeSidebar()">
         <i class="ri-home-5-line"></i> Roles
       </a>
-      <a routerLink="/admin/claims" routerLinkActive="active">
+      <a routerLink="/admin/claims" routerLinkActive="active" (click)="closeSidebar()">
         <i class="ri-calendar-check-line"></i> Permisos
       </a>
-      <a routerLink="/admin/audit-logs" routerLinkActive="active">
+      <a routerLink="/admin/audit-logs" routerLinkActive="active" (click)="closeSidebar()">
         <i class="ri-calendar-check-line"></i>Logs
       </a>
-      <a routerLink="/admin/listing" routerLinkActive="active">
+      <a routerLink="/admin/listing" routerLinkActive="active" (click)="closeSidebar()">
         <i class="ri-calendar-check-line"></i>Administrador de Listings
       </a>
-      <a routerLink="/admin/listing/view" routerLinkActive="active">
+      <a routerLink="/admin/listing/view" routerLinkActive="active" (click)="closeSidebar()">
         <i class="ri-calendar-check-line"></i>Ver Listings
       </a>
     </nav>
@@ -30,6 +37,11 @@
 
   <main class="main">
     <header class="topbar">
+      <!-- Botón hamburguesa para móvil -->
+      <button class="menu-toggle" (click)="toggleSidebar()">
+        <i class="ri-menu-line"></i>
+      </button>
+      
       <div class="spacer"></div>
       
       <!-- Theme Toggle -->
@@ -38,30 +50,30 @@
               title="Cambiar tema">
         <!-- Sol para modo oscuro -->
         <svg *ngIf="themeService.theme === 'dark'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="icon theme-icon">
-          <circle cx="24" cy="14" r="8"></circle>
-          <path d="M12 2v2"></path>
-          <path d="M12 20v2"></path>
-          <path d="M4.93 4.93l1.41 1.41"></path>
-          <path d="M17.66 17.66l1.41 1.41"></path>
-          <path d="M2 12h2"></path>
-          <path d="M20 12h2"></path>
-          <path d="M6.34 17.66l-1.41 1.41"></path>
-          <path d="M19.07 4.93l-1.41 1.41"></path>
+          <circle cx="12" cy="12" r="5"></circle>
+          <line x1="12" y1="1" x2="12" y2="3"></line>
+          <line x1="12" y1="21" x2="12" y2="23"></line>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+          <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+          <line x1="1" y1="12" x2="3" y2="12"></line>
+          <line x1="21" y1="12" x2="23" y2="12"></line>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+          <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
         </svg>
         <!-- Luna para modo claro -->
         <svg *ngIf="themeService.theme === 'light'" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
-          stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"
+          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
           class="icon theme-icon">
-          <path d="M21 12.79A9 9 0 0111.21 3 7 7 0 1019 14.79 9.05 9.05 0 0121 12.79z" />
+          <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
         </svg>
       </button>
       
       <div class="user-menu">
         <div class="user" (click)="toggleUserMenu()">
           <img *ngIf="avatarUrl" [src]="avatarUrl" [alt]="user?.username" />
-          <span *ngIf="user">{{ user.username }}</span>
+          <span *ngIf="user" class="user-name">{{ user.username }}</span>
           <i class="ri-arrow-down-s-line"></i>
         </div>
         

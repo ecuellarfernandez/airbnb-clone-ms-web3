@@ -45,11 +45,11 @@ export class HostListingsService {
 
   getMyListings(page: number = 0, size: number = 10): Observable<StandardResult<PagedResult<ListingSummary>>> {
     const user = this.authService.getUser();
-    
+
     if (!user || !user.id) {
       throw new Error('Usuario no autenticado');
     }
-    
+
     const hostId = user.id;
 
     const params = new HttpParams()
@@ -66,19 +66,25 @@ export class HostListingsService {
 
   publishListing(listingId: string): Observable<StandardResult<void>> {
     return this.http.patch<StandardResult<void>>(
-      `${API_ENDPOINTS.LISTINGS.BASE}/${listingId}/publish`,
+      `${API_ENDPOINTS.LISTINGS.BASE}/listings/${listingId}/publish`,
       {}
     );
   }
 
   unpublishListing(listingId: string): Observable<StandardResult<void>> {
     return this.http.patch<StandardResult<void>>(
-      `${API_ENDPOINTS.LISTINGS.BASE}/${listingId}/unpublish`,
+      `${API_ENDPOINTS.LISTINGS.BASE}/listings/${listingId}/unpublish`,
       {}
     );
   }
   deleteListing(listingId: string): Observable<StandardResult<void>> {
     return this.http.delete<StandardResult<void>>(
+      `${API_ENDPOINTS.LISTINGS.BASE}/listings/${listingId}`
+    );
+  }
+
+  getListingById(listingId: string): Observable<StandardResult<any>> {
+    return this.http.get<StandardResult<any>>(
       `${API_ENDPOINTS.LISTINGS.BASE}/listings/${listingId}`
     );
   }

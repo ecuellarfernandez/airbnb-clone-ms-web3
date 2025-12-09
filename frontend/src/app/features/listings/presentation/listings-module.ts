@@ -1,33 +1,55 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ListingsRoutingModule } from './listings-routing-module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { ListingDetailPageComponent } from './pages/listing-detail/listing-detail-page.component';
-import { CardBookDetailComponent } from './components/card-book-detail/card-book-detail.component';
-import { AccommodationsPageComponent } from './pages/listing-list/accommodations-page.component';
-import { ListingCardComponent } from './components/listing-card/listing-card.component';
-import { ListingFormPageComponent } from './pages/listing-form/listing-form-page.component';
+import { ListingsRoutingModule } from './listings-routing-module';
 import { SharedModule } from '../../../shared/shared-module';
-import { ListingMapComponent } from '../presentation/components/listing-map-component/listing-map.component';
+import { ConfirmationModalComponent } from '../../../shared/ui/confirmation-modal/confirmation-modal.component';
 
+// Pages
+import { ListingFormPageComponent } from './pages/listing-form/listing-form-page.component';
+import { AccommodationsPageComponent } from './pages/listing-list/accommodations-page.component';
+import { ListingDetailPageComponent } from './pages/listing-detail/listing-detail-page.component';
+
+// Components
+import { ListingCardComponent } from './components/listing-card/listing-card.component';
+import { CardBookDetailComponent } from './components/card-book-detail/card-book-detail.component';
+import { ListingMapComponent } from './components/listing-map-component/listing-map.component';
+
+// Use Cases
+import { CreateListingUseCase } from '../application/use-cases/create-listing.use-case';
+import { UpdateListingUseCase } from '../application/use-cases/update-listing.use-case';
+
+// Services
+import { ListingFormStateService } from '../application/services/listing-form-state.service';
 
 @NgModule({
   declarations: [
+    // Pages
+    ListingFormPageComponent,
     AccommodationsPageComponent,
-    ListingCardComponent,
     ListingDetailPageComponent,
-    CardBookDetailComponent,
-    ListingFormPageComponent
+
+    // Components
+    ListingCardComponent,
+    CardBookDetailComponent
   ],
   imports: [
-    FormsModule,
     CommonModule,
+    FormsModule,
+    ReactiveFormsModule,
     ListingsRoutingModule,
     SharedModule,
-    ReactiveFormsModule,
-    ListingMapComponent],
+    ListingMapComponent, // Import standalone component
+    ConfirmationModalComponent // Standalone modal component
+  ],
+  providers: [
+    CreateListingUseCase,
+    UpdateListingUseCase,
+    ListingFormStateService
+  ],
   exports: [
-    ListingCardComponent
+    ListingCardComponent, // Export para usar en otros módulos
+    ListingFormPageComponent
   ]
 })
 export class ListingsModule { }

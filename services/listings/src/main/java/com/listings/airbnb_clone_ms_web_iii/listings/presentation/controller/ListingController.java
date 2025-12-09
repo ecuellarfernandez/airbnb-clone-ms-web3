@@ -9,6 +9,7 @@ import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.Li
 import com.listings.airbnb_clone_ms_web_iii.listings.application.dto.response.ListingSummaryDTO;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.listing.commands.*;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.listing.queries.*;
+import com.listings.airbnb_clone_ms_web_iii.listings.domain.annotations.NeedsRoles;
 import com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.config.PaginationConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -108,6 +109,7 @@ public class ListingController {
         return ResponseEntity.ok(StandardResult.success(result, message));
     }
 
+    @NeedsRoles("ADMIN")
     @GetMapping("/admin")
     @Operation(summary = "Buscar listings con filtros (Admin)")
     public ResponseEntity<StandardResult<PagedResult<ListingSummaryDTO>>> searchForAdmin(
@@ -189,6 +191,7 @@ public class ListingController {
     }
 
     @PatchMapping("/{id}/publish")
+    @NeedsRoles({"ADMIN"})
     @Operation(summary = "Publicar listing")
     public ResponseEntity<StandardResult<Void>> publish(
             @PathVariable UUID id,
@@ -202,6 +205,7 @@ public class ListingController {
         return ResponseEntity.ok(StandardResult.success(null, "Listing published successfully"));
     }
 
+    @NeedsRoles({"ADMIN"})
     @PatchMapping("/{id}/unpublish")
     @Operation(summary = "Despublicar listing")
     public ResponseEntity<StandardResult<Void>> unpublish(
@@ -220,6 +224,7 @@ public class ListingController {
     // DELETE
 
     @DeleteMapping("/{id}")
+    @NeedsRoles({"ADMIN", "HOST"})
     @Operation(summary = "Eliminar listing")
     public ResponseEntity<StandardResult<Void>> delete(
             @PathVariable UUID id,

@@ -12,6 +12,7 @@ import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.bookin
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.booking.queries.GetBookingsByGuestQuery;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.booking.queries.GetBookingsByHostQuery;
 import com.listings.airbnb_clone_ms_web_iii.listings.application.pipelinr.booking.queries.GetBookingsByListingQuery;
+import com.listings.airbnb_clone_ms_web_iii.listings.domain.annotations.NeedsRoles;
 import com.listings.airbnb_clone_ms_web_iii.listings.infrastructure.config.PaginationConfig;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -47,6 +48,7 @@ public class BookingController {
 
     @PostMapping
     @Operation(summary = "Crear reserva (solicitud de reservar)")
+    @NeedsRoles({"CLIENT"})
     public ResponseEntity<StandardResult<BookingDetailDTO>> create(
             @RequestHeader("X-User-Id") Integer guestId,
             @Valid @RequestBody CreateBookingDTO dto

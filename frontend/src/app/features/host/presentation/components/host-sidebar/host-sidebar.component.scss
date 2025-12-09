@@ -18,15 +18,14 @@
   border-bottom: 1px solid var(--border);
 
   &__logo {
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: var(--brand-primary);
+    fill: var(--brand-primary);
   }
 
   &__text {
     font-size: 20px;
     font-weight: 700;
-    color: var(--title);
+    color: var(--brand-primary);
     font-family: var(--font-display);
   }
 }
@@ -148,5 +147,107 @@
 
   &:hover {
     background: var(--text-3);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+  .sidebar-container {
+    width: 250px;
+  }
+
+  .sidebar-brand {
+    padding: 20px 16px;
+
+    &__text {
+      font-size: 18px;
+    }
+  }
+
+  .sidebar-nav {
+    padding: 0 10px;
+
+    a {
+      padding: 10px 14px;
+      font-size: 14px;
+    }
+  }
+}
+
+@media (max-width: 768px) {
+  .sidebar-container {
+    width: 100%;
+    height: auto;
+    position: relative;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .sidebar-brand {
+    padding: 16px;
+  }
+
+  .sidebar-header {
+    padding: 16px 16px 8px;
+  }
+
+  .sidebar-nav {
+    padding: 0 8px 12px;
+
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    li {
+      margin-bottom: 0;
+      flex: 1;
+      min-width: calc(50% - 4px);
+    }
+
+    a {
+      justify-content: center;
+      text-align: center;
+    }
+  }
+
+  .sidebar-divider {
+    margin: 12px 16px;
+  }
+
+  .sidebar-footer {
+    padding: 16px;
+    margin-top: 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .sidebar-brand {
+    padding: 12px;
+    
+    &__text {
+      font-size: 16px;
+    }
+  }
+
+  .sidebar-nav {
+    a {
+      padding: 8px 10px;
+      font-size: 13px;
+      gap: 8px;
+
+      svg {
+        width: 18px;
+        height: 18px;
+      }
+    }
+  }
+
+  .sidebar-footer {
+    .btn-logout {
+      padding: 10px 14px;
+      font-size: 14px;
+    }
   }
 }

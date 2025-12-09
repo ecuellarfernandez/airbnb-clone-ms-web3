@@ -39,6 +39,9 @@ export class AdminListingsPageComponent implements OnInit {
     showDetailModal = false;
     detailListing: Listing | null = null;
 
+    errorMessage = '';
+    errorModalVisible = false;
+
     constructor(private facade: AdminFacade) { }
 
 ngOnInit(): void {
@@ -108,6 +111,8 @@ toggleStatus(l: Listing) {
                 },
                 error: (err) => {
                     console.error('Error al desactivar', err);
+                    this.errorMessage = err.error.message || 'Error desconocido';
+                    this.errorModalVisible = true;
                     this.closeConfirmModal();
                 }
             });
@@ -119,6 +124,8 @@ toggleStatus(l: Listing) {
                 },
                 error: (err) => {
                     console.error('Error al activar', err);
+                    this.errorMessage = err.error.message || 'Error desconocido';
+                    this.errorModalVisible = true;
                     this.closeConfirmModal();
                 }
             });

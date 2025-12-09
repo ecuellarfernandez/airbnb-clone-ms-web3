@@ -17,6 +17,15 @@ export class ProfileSidebarComponent {
     private router: Router
   ) {}
 
+  isAdmin = false;
+
+  ngOnInit(): void {
+    this.authService.getCurrentUser().pipe(take(1)).subscribe(response => {
+      const user = response && response.success ? response.data : null;
+      this.isAdmin = user ? this.authService.hasRole(user, 'ADMIN') : false;
+    });
+  }
+
   goToHome(): void {
     // getCurrentUser() returns Observable<StandardResult<User>>, subscribe and take one emission
     this.authService.getCurrentUser().pipe(take(1)).subscribe(response => {

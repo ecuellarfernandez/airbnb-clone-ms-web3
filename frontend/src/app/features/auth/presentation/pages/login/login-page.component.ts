@@ -60,7 +60,7 @@ export class LoginPageComponent implements OnInit {
                 
                 // Redirigir según el rol
                 if (roles.includes('ADMIN')) {
-                  this.router.navigate(['/admin']);
+                  this.router.navigate(['/admin/users']);
                 } else if (roles.includes('HOST')) {
                   this.router.navigate(['/']);
                 } else if (roles.includes('CLIENT')) {
