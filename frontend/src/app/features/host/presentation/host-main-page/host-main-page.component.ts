@@ -27,10 +27,10 @@ export class HostMainPageComponent implements OnInit {
 
   constructor(
     private hostListingsService: HostListingsService,
-    private hostService : HostService,
+    private hostService: HostService,
     private authService: AuthService,
-    private router : Router
-  ) {}
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
 
@@ -123,8 +123,8 @@ export class HostMainPageComponent implements OnInit {
             console.warn('Could not save to localStorage:', error);
           }
 
-          // Navegar con estado
-          this.router.navigate(['/listings/create'], {
+          // Navegar con estado a la ruta de formulario
+          this.router.navigate(['/listings/form'], {
             state: {
               listing: response.data,
               editMode: true
