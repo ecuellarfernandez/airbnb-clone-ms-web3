@@ -1,46 +1,47 @@
-<div class="card">
+<div class="card responsive-card">
   <header class="cardHeader">
     <h2>Alojamientos</h2>
-
     <div class="header-actions"></div>
   </header>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Título</th>
-        <th>Ciudad</th>
-        <th>País</th>
-        <th>Precio</th>
-        <th>Estado</th>
-        <th style="width: 200px">Acciones</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let listing of listings$ | async" class="clickable-row" (click)="openDetail(listing)">
-        <td>
-          <strong>{{ listing.title }}</strong>
-        </td>
-        <td class="muted">{{ listing.city }}</td>
-        <td class="muted">{{ listing.country }}</td>
-        <td>{{ listing.priceAmount | currency : listing.priceCurrency }}</td>
-        <td>
-          <span class="badge" [class.active]="listing.active" [class.inactive]="!listing.active">
-            {{ listing.active ? 'Activo' : 'Inactivo' }}
-          </span>
-        </td>
-        <td class="row-actions" (click)="$event.stopPropagation()">
-          <button *ngIf="listing.active" (click)="toggleStatus(listing)" class="small danger">
-            Desactivar
-          </button>
-          <button *ngIf="!listing.active" (click)="toggleStatus(listing)" class="small success">
-            Publicar
-          </button>
-          <button (click)="remove(listing)" class="small danger">Eliminar</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  <div class="responsive-table-wrapper">
+    <table class="responsive-table">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Ciudad</th>
+          <th>País</th>
+          <th>Precio</th>
+          <th>Estado</th>
+          <th style="width: 200px">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let listing of listings$ | async" class="clickable-row" (click)="openDetail(listing)">
+          <td>
+            <strong>{{ listing.title }}</strong>
+          </td>
+          <td class="muted">{{ listing.city }}</td>
+          <td class="muted">{{ listing.country }}</td>
+          <td>{{ listing.priceAmount | currency : listing.priceCurrency }}</td>
+          <td>
+            <span class="badge" [class.active]="listing.active" [class.inactive]="!listing.active">
+              {{ listing.active ? 'Activo' : 'Inactivo' }}
+            </span>
+          </td>
+          <td class="row-actions" (click)="$event.stopPropagation()">
+            <button *ngIf="listing.active" (click)="toggleStatus(listing)" class="small danger">
+              Desactivar
+            </button>
+            <button *ngIf="!listing.active" (click)="toggleStatus(listing)" class="small success">
+              Publicar
+            </button>
+            <button (click)="remove(listing)" class="small danger">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
   <!-- Empty state -->
   <div *ngIf="(listings$ | async)?.length === 0" class="empty-state">
@@ -82,6 +83,13 @@
   </div>
 </div>
 
+<!--
+  CSS SUGGESTION:
+  .responsive-table-wrapper { overflow-x: auto; }
+  .responsive-table { min-width: 700px; width: 100%; }
+  @media (max-width: 900px) { .responsive-card { width: 100%; } }
+-->
+
 <div class="modal" *ngIf="showForm" (click)="showForm = false">
   <div class="modal-body" (click)="$event.stopPropagation()">
     <app-listing-form [value]="editing" (cancel)="showForm = false" (submitForm)="save($event)">
@@ -100,6 +108,17 @@
   (confirm)="onConfirmStatusChange()"
   (cancel)="closeConfirmModal()"
 ></app-confirmation-modal>
+
+<app-confirmation-modal
+    [isOpen]="errorModalVisible"
+    [title]="'Error al intentar ejecutar la accion'"
+    [message]="errorMessage"
+    [confirmText]="'aceptar'"
+    [isDanger]="true"
+    (confirm)="errorModalVisible = false"
+    (cancel)="errorModalVisible = false"
+>
+</app-confirmation-modal>
 
 <!-- Modal de detalle del listing -->
 <div class="modal detail-modal" *ngIf="showDetailModal" (click)="closeDetailModal()">
