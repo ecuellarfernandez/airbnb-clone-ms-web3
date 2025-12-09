@@ -108,6 +108,9 @@ public class Listing {
     // Gestion de imagenes
     public void addImage(ListingImage image) {
         this.images.add(image);
+        if (this.id != null) {
+            image.setListingId(this.id);
+        }
     }
 
     public void setPrimaryImage(UUID imageId) {
