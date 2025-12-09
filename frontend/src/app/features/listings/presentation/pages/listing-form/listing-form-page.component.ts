@@ -39,6 +39,7 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   showValidationErrors = false;
   isEditMode = false;
   listingId?: string;
+  private currentHostId?: string; // Para rastrear el usuario actual y validar estado guardado
 
   propertyTypes: CategoryOption[] = getPropertyTypeCategories();
   spaceTypes: CategoryOption[] = getSpaceTypeCategories();
@@ -90,20 +91,29 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit(): void {
-    this.setHostId();
-    // Verificar modo edición ANTES de cargar estado guardado
+    // Verificar modo edición ANTES de todo
     this.checkForEditMode();
 
-    // Solo cargar estado guardado si NO estamos en modo edición
-    if (!this.isEditMode) {
-      this.loadSavedState();
+    // Si estamos en modo edición, limpiar cualquier estado de creación guardado
+    if (this.isEditMode) {
+      console.log('🔄 Edit mode - clearing any saved creation state');
+      this.formStateService.clearState();
     }
+
+    // Configurar hostId (esto también valida el estado guardado)
+    this.setHostId();
   }
 
   ngOnDestroy(): void {
-    // Solo guardar estado si NO estamos en modo edición
-    if (!this.isEditMode) {
-      this.saveCurrentState();
+    // Solo guardar estado si NO estamos en modo edición y hay datos parciales
+    if (!this.isEditMode && !this.isSubmitting) {
+      // Solo guardar si hay datos significativos en el formulario
+      const hasData = this.form.get('title')?.value ||
+        this.uploadedImages.length > 0 ||
+        this.categoryIdsArray.length > 0;
+      if (hasData) {
+        this.saveCurrentState();
+      }
     }
   }
 
@@ -276,13 +286,15 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       bedrooms: listing.bedrooms || 1,
       bathrooms: listing.bathrooms || 1,
       categoryIds: Array.isArray(listing.categoryIds) ? listing.categoryIds :
-                   Array.isArray(listing.categories) ? listing.categories.map((c: any) => c.id || c) : [],
+        Array.isArray(listing.categories) ? listing.categories.map((c: any) => c.id || c) : [],
       amenityIds: Array.isArray(listing.amenityIds) ? listing.amenityIds :
-                  Array.isArray(listing.amenities) ? listing.amenities.map((a: any) => a.id || a) : [],
-      images: Array.isArray(listing.images) ? listing.images.map((img: any) => ({
-        url: img.url || img.mediaUrl || img.src,
-        publicId: img.publicId,
-        isPrimary: img.isPrimary || false
+        Array.isArray(listing.amenities) ? listing.amenities.map((a: any) => a.id || a) : [],
+      images: Array.isArray(listing.images) ? listing.images.map((img: any, index: number) => ({
+        url: img.mediaUrl || img.url || img.src,
+        mediaUrl: img.mediaUrl || img.url || img.src,
+        publicId: img.publicId || '',
+        isPrimary: img.isPrimary ?? (index === 0),
+        displayOrder: img.displayOrder ?? index
       })) : []
     };
   }
@@ -308,18 +320,25 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
   }
 
   private addImageToFormForEdit(image: any, isPrimary: boolean = false): void {
+    // Usar mediaUrl como fuente primaria (viene del backend)
+    const imageUrl = image.mediaUrl || image.url;
+
     const imageGroup = this.fb.group({
-      url: [image.url, Validators.required],
-      publicId: [image.publicId],
-      isPrimary: [isPrimary]
+      url: [imageUrl, Validators.required],
+      mediaUrl: [imageUrl],
+      publicId: [image.publicId || ''],
+      isPrimary: [isPrimary],
+      displayOrder: [image.displayOrder ?? this.uploadedImages.length]
     });
 
     this.imagesArray.push(imageGroup);
     this.uploadedImages.push({
-      url: image.url,
-      publicId: image.publicId,
-      isPrimary: isPrimary
-    });
+      url: imageUrl,
+      mediaUrl: imageUrl,
+      publicId: image.publicId || '',
+      isPrimary: isPrimary,
+      displayOrder: image.displayOrder ?? this.uploadedImages.length
+    } as any);
   }
 
   isFieldInvalid(fieldPath: string): boolean {
@@ -363,7 +382,19 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     this.authService.getCurrentUser().pipe(take(1)).subscribe({
       next: (result) => {
         if (result.success && result.data) {
-          this.form.patchValue({ hostId: result.data.id });
+          const userId = String(result.data.id); // Convertir a string para compatibilidad
+          this.currentHostId = userId;
+          this.form.patchValue({ hostId: result.data.id }); // El form puede aceptar number
+
+          // Solo cargar estado guardado si NO estamos en modo edición
+          // y el estado pertenece al usuario actual
+          if (!this.isEditMode) {
+            if (this.formStateService.isStateValidForUser(userId)) {
+              this.loadSavedState();
+            } else {
+              console.log('🔄 No valid saved state for current user, starting fresh');
+            }
+          }
         }
       },
       error: (err) => console.error('Error fetching user', err)
@@ -475,17 +506,23 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
 
   private addImageToForm(image: CloudinaryImage): void {
     const isFirst = this.imagesArray.length === 0;
+    const displayOrder = this.imagesArray.length;
+
     const imageGroup = this.fb.group({
       url: [image.url, Validators.required],
-      publicId: [image.publicId],
-      isPrimary: [isFirst]
+      mediaUrl: [image.url], // Para compatibilidad con backend
+      publicId: [image.publicId || ''],
+      isPrimary: [isFirst],
+      displayOrder: [displayOrder]
     });
 
     this.imagesArray.push(imageGroup);
     this.uploadedImages.push({
       ...image,
-      isPrimary: isFirst
-    });
+      mediaUrl: image.url,
+      isPrimary: isFirst,
+      displayOrder: displayOrder
+    } as any);
   }
 
   removeImage(index: number): void {
@@ -654,10 +691,8 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       console.log('📦 PAYLOAD JSON COMPLETO:', JSON.stringify(payload, null, 2));
 
       if (this.isEditMode && this.listingId) {
-        const updateCommand: UpdateListingCommand = {
-          id: this.listingId,
-          ...payload
-        };
+        // Usar el método buildUpdatePayload para construir payload compatible con backend
+        const updateCommand = this.buildUpdatePayload(this.form.value);
 
         console.log('🔄 ACTUALIZANDO LISTING:', this.listingId);
         console.log('📤 Update Command:', JSON.stringify(updateCommand, null, 2));
@@ -667,6 +702,10 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
             console.log('📥 Update response:', response);
             if (response.success) {
               console.log('✅ Listing updated successfully!');
+
+              // Limpiar datos de edición del localStorage
+              localStorage.removeItem('listing-edit-data');
+
               this.isSubmitting = false;
               this.router.navigate(['/host']);
             } else {
@@ -700,8 +739,39 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
             if (response.success) {
               console.log('✅ Listing created successfully!');
               console.log('🆔 Created listing ID:', response.data?.id);
-              this.formStateService.clearState();
+
+              // Limpieza completa después de crear el listing exitosamente
+              console.log('🧹 Performing complete cleanup after creation...');
+
+              // 1. Limpiar todo el localStorage relacionado con el formulario
+              this.formStateService.clearAllFormData();
+
+              // 2. Resetear el formulario completamente
+              this.form.reset();
+
+              // 3. Limpiar arrays del formulario
+              this.categoryIdsArray.clear();
+              this.amenityIdsArray.clear();
+              this.imagesArray.clear();
+
+              // 4. Limpiar imágenes subidas
+              this.uploadedImages = [];
+
+              // 5. Volver al primer paso
+              this.currentStep = 0;
+
+              // 6. Resetear flags
+              this.showValidationErrors = false;
               this.isSubmitting = false;
+
+              // 7. Reconfigurar hostId para el siguiente uso
+              if (this.currentHostId) {
+                this.form.patchValue({ hostId: this.currentHostId });
+              }
+
+              console.log('✅ Complete cleanup done - form ready for new listing');
+
+              // Navegar a la página de host
               this.router.navigate(['/host']);
             } else {
               console.error('Failed to create listing:', response.message);
@@ -754,6 +824,74 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
     return normalized;
   }
 
+  /**
+   * Construye el payload para actualización compatible con el backend UpdateListingDTO
+   * Transforma: price.amount → priceAmount, price.currency → priceCurrency
+   * Transforma: images[].url → images[].mediaUrl
+   * NOTA: El ID NO va en el body, va en la URL del endpoint
+   */
+  private buildUpdatePayload(formValue: any): UpdateListingCommand {
+    // Asegurar que priceAmount sea un número válido para BigDecimal
+    const priceAmount = Number(formValue.price?.amount);
+    if (isNaN(priceAmount) || priceAmount <= 0) {
+      console.error('⚠️ Invalid price amount:', formValue.price?.amount);
+      throw new Error('El precio debe ser un número mayor a 0');
+    }
+
+    // Normalizar coordenadas - deben ser números o null para BigDecimal
+    const latitude = this.normalizeCoordinate(formValue.location?.latitude);
+    const longitude = this.normalizeCoordinate(formValue.location?.longitude);
+
+    const payload = {
+      id: this.listingId!, // Solo para el UpdateListingCommand, no se envía en el body
+      title: formValue.title?.trim(),
+      description: formValue.description?.trim(),
+      location: {
+        city: formValue.location?.city?.trim(),
+        country: formValue.location?.country?.trim(),
+        address: formValue.location?.address?.trim(),
+        latitude: latitude,
+        longitude: longitude
+      },
+      priceAmount: priceAmount,
+      priceCurrency: formValue.price?.currency || 'USD',
+      capacity: Number(formValue.capacity) || 1,
+      bedrooms: Number(formValue.bedrooms) || 0,
+      bathrooms: Number(formValue.bathrooms) || 0,
+      categoryIds: formValue.categoryIds || [],
+      amenityIds: formValue.amenityIds || [],
+      images: (formValue.images || []).map((img: any, index: number) => ({
+        mediaUrl: img.mediaUrl || img.url,
+        publicId: img.publicId || '',
+        isPrimary: img.isPrimary || false,
+        displayOrder: index
+      }))
+    };
+
+    console.log('🔍 Payload validation:');
+    console.log('  - Title:', payload.title, '(length:', payload.title?.length, ')');
+    console.log('  - Description length:', payload.description?.length);
+    console.log('  - Location:', payload.location);
+    console.log('  - Price:', payload.priceAmount, typeof payload.priceAmount);
+    console.log('  - Capacity/Bedrooms/Bathrooms:', payload.capacity, payload.bedrooms, payload.bathrooms);
+    console.log('  - Categories:', payload.categoryIds);
+    console.log('  - Amenities:', payload.amenityIds);
+    console.log('  - Images count:', payload.images?.length);
+
+    // Validar restricciones del backend
+    if (!payload.title || payload.title.length < 10 || payload.title.length > 100) {
+      console.error('⚠️ Title validation failed:', payload.title);
+      throw new Error('El título debe tener entre 10 y 100 caracteres');
+    }
+
+    if (!payload.description || payload.description.length < 50 || payload.description.length > 1000) {
+      console.error('⚠️ Description validation failed, length:', payload.description?.length);
+      throw new Error('La descripción debe tener entre 50 y 1000 caracteres');
+    }
+
+    return payload;
+  }
+
   private normalizeCoordinate(value: any): number | null {
     if (value === null || value === undefined || value === '') {
       return null;
@@ -780,7 +918,8 @@ export class ListingFormPageComponent implements OnInit, OnDestroy {
       formData: this.form.value,
       uploadedImages: this.uploadedImages,
       currentStep: this.currentStep,
-      lastSaved: new Date()
+      lastSaved: new Date(),
+      hostId: this.currentHostId // Guardar hostId para validar usuario
     };
     this.formStateService.saveState(state);
   }
