@@ -1,27 +1,27 @@
-<div class="dashboard">
-    <div class="cardBox">
-        <div class="card">
+<div class="dashboard responsive-dashboard">
+    <div class="cardBox responsive-cardbox">
+        <div class="card responsive-card">
             <div>
                 <div class="numbers">{{ (vm$ | async)?.totalListings }}</div>
                 <div class="cardName">Alojamientos</div>
             </div>
             <div class="iconBx"><i class="ri-home-5-line"></i></div>
         </div>
-        <div class="card">
+        <div class="card responsive-card">
             <div>
                 <div class="numbers">{{ (vm$ | async)?.totalReservations }}</div>
                 <div class="cardName">Reservas</div>
             </div>
             <div class="iconBx"><i class="ri-calendar-check-line"></i></div>
         </div>
-        <div class="card">
+        <div class="card responsive-card">
             <div>
                 <div class="numbers">{{ (vm$ | async)?.paidReservations }}</div>
                 <div class="cardName">Pagadas</div>
             </div>
             <div class="iconBx"><i class="ri-bank-card-line"></i></div>
         </div>
-        <div class="card">
+        <div class="card responsive-card">
             <div>
                 <div class="numbers">\${{ (vm$ | async)?.revenueEstimated }}</div>
                 <div class="cardName">Ingresos estimados</div>
@@ -30,12 +30,12 @@
         </div>
     </div>
 
-    <div class="details">
-        <div class="recentOrders">
+    <div class="details responsive-details">
+        <div class="recentOrders responsive-table-wrapper">
             <div class="cardHeader">
                 <h2>Top ciudades</h2>
             </div>
-            <table>
+            <table class="responsive-table">
                 <thead>
                     <tr>
                         <td>Ciudad</td>
@@ -51,11 +51,11 @@
             </table>
         </div>
 
-        <div class="recentCustomers">
+        <div class="recentCustomers responsive-table-wrapper">
             <div class="cardHeader">
                 <h2>Resumen</h2>
             </div>
-            <table>
+            <table class="responsive-table">
                 <tr>
                     <td>Reservas pagadas</td>
                     <td>{{ (vm$ | async)?.paidReservations }}</td>
@@ -72,3 +72,11 @@
         </div>
     </div>
 </div>
+<!--
+    CSS SUGGESTION:
+    .responsive-cardbox { display: flex; flex-wrap: wrap; gap: 1rem; }
+    .responsive-card { flex: 1 1 200px; min-width: 180px; }
+    .responsive-table-wrapper { overflow-x: auto; }
+    .responsive-table { min-width: 300px; width: 100%; }
+    @media (max-width: 900px) { .responsive-cardbox { flex-direction: column; } }
+-->
