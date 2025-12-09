@@ -54,6 +54,12 @@
           <span>Ver Reservas</span>
         </a>
       </li>
+      <li *ngIf="isAdmin">
+        <a routerLink="/admin" routerLinkActive="active">
+            <svg width="24px" height="24px" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <title>user-admin-network</title> <g id="Layer_2" data-name="Layer 2"> <g id="invisible_box" data-name="invisible box"> <rect width="48" height="48" fill="none"></rect> </g> <g id="icons_Q2" data-name="icons Q2"> <g> <circle cx="24" cy="7" r="5"></circle> <path d="M44,32H42V26a2,2,0,0,0-2-2H26V21h7V17c-2.7-1.4-5.8-3-9-3s-6.3,1.6-9,3v4h7v3H8a2,2,0,0,0-2,2v6H4a2,2,0,0,0-2,2v8a2,2,0,0,0,2,2h8a2,2,0,0,0,2-2V34a2,2,0,0,0-2-2H10V28H22v4H20a2,2,0,0,0-2,2v8a2,2,0,0,0,2,2h8a2,2,0,0,0,2-2V34a2,2,0,0,0-2-2H26V28H38v4H36a2,2,0,0,0-2,2v8a2,2,0,0,0,2,2h8a2,2,0,0,0,2-2V34A2,2,0,0,0,44,32ZM10,40H6V36h4Zm16,0H22V36h4Zm16,0H38V36h4Z"></path> </g> </g> </g> </g></svg>
+            <span>Entrar a modo Administrador</span>
+        </a>
+      </li>
     </ul>
   </nav>
 
@@ -69,7 +75,7 @@
         stroke-width="2"
       >
         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-        <polyline points="16 17 21 12 16 7"></polyline>
+        <polyline points="16 17 21 12 18 7"></polyline>
         <line x1="21" y1="12" x2="9" y2="12"></line>
       </svg>
       <span>Cerrar Sesión</span>
